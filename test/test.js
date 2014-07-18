@@ -3,20 +3,26 @@
  */
 (function () {
     "use strict";
-    var request = require('supertest');
+    var request = require('request');
     var should = require('should');
-    request = request('http://tnw.elmnts-test.com/lrs');
+    var LRS_ENDPOINT = 'http://tnw.elmnts-test.com/lrs';
+
+    // Generates an RFC4122 compliant uuid
+    // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
+    function generateUUID() {
+        var d = new Date().getTime();
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16);
+        });
+        return uuid;
+    };
 
     describe('Statement Requirements', function () {
         it('A Statement uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            var data = '[{"id":"ef11c918-b88b-4b20-a0a5-a4c32391fff9","id":"ef11c918-b88b-4b20-a0a5-a4c32391fff9","actor":{"mbox":"mailto:xapi@adlnet.gov"},"verb":{"id":"http://adlnet.gov/expapi/verbs/created","display":{"en-US":"created"}},"object":{"id":"http://example.adlnet.gov/xapi/example/activity"}}]'
-
-            request.put('/statement')
-                .set('X-Experience-API-Version', '1.0.1')
-                .expect(400)
-                .end(function (err, res) {
-                    done();
-                });
+            // Validation is done in the web server JSON parser or side side
+            done();
         });
 
         it('A Statement uses the "actor" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -60,23 +66,93 @@
         });
 
         it('A Statement contains an "actor" property (Multiplicity, 4.1.b)', function (done) {
-            done();
+            var data = require('../test/data/statement_no_actor.json');
+            var options = {
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            };
+
+            request(options, function (err, res, body) {
+                res.statusCode.should.be.equal(400);
+                done();
+            });
         });
 
         it('A Statement contains a "verb" property (Multiplicity, 4.1.b)', function (done) {
-            done();
+            var data = require('../test/data/statement_no_verb.json');
+            var options = {
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            };
+
+            request(options, function (err, res, body) {
+                res.statusCode.should.be.equal(400);
+                done();
+            });
         });
 
         it('A Statement contains an "object" property (Multiplicity, 4.1.b)', function (done) {
-            done();
+            var data = require('../test/data/statement_no_object.json');
+            var options = {
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            };
+
+            request(options, function (err, res, body) {
+                res.statusCode.should.be.equal(400);
+                done();
+            });
         });
 
         it('An "id" property is a String (Type, 4.1.1.description.a)', function (done) {
-            done();
+            var data = require('../test/data/statement_no_id.json');
+
+            // Generate random number from 1-10000 as id
+            data[0].id = Math.floor((Math.random() * 10000) + 1);
+            var options = {
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            };
+
+            request(options, function (err, res, body) {
+                res.statusCode.should.be.equal(400);
+                done();
+            });
         });
 
         it('An "id" property is a UUID following RFC 4122(Syntax, RFC 4122 )', function (done) {
-            done();
+            var data = require('../test/data/statement_no_id.json');
+
+            data[0].id = generateUUID();
+            var options = {
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            };
+
+            request(options, function (err, res, body) {
+                res.statusCode.should.be.equal(200);
+                done();
+            });
         });
 
         it('An "actor" property uses the "objectType" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -84,15 +160,60 @@
         });
 
         it('An "objectType" property is a String (Type, 4.1.2.1.table1.row1.a)', function (done) {
-            done();
+            var data = require('../test/data/statement_no_id.json');
+
+            data[0].actor.objectType = 123;
+            var options = {
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            };
+
+            request(options, function (err, res, body) {
+                res.statusCode.should.be.equal(400);
+                done();
+            });
         });
 
         it('An "actor" propertys "objectType" property is either "Agent" or "Group" (Vocabulary, 4.1.2.1.table1.row1.b, 4.1.2.1.table1.row1.b)', function (done) {
-            done();
+            var data = require('../test/data/statement_no_id.json');
+
+            data[0].actor.objectType = 'FooBar';
+            var options = {
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            };
+
+            request(options, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An Agent is defined by "objectType" of an "actor" or "object" with value "Agent" (4.1.2.1.table1.row1)', function (done) {
-            done();
+            var data = require('../test/data/statement_no_id.json');
+
+            data[0].actor.objectType = 'Agent';
+            var options = {
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            };
+
+            request(options, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('An Agent uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -100,7 +221,30 @@
         });
 
         it('A "name" property is a String (Type, 4.1.2.1.table1.row2.a)', function (done) {
-            done();
+            var data = require('../test/data/statement_no_id.json');
+
+            data[0].actor.objectType = 'Agent';
+            data[0].actor.name = 123;
+
+            var options = {
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            };
+
+            // Non string
+            request(options, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                // Test string
+                data.actor.name = 'FooBar';
+                request(options, function (err, res, body) {
+                    res.statusCode.should.equal(200);
+                    done();
+                });
+            });
         });
 
         it('An "actor" property with "objectType" as "Agent" uses one of the following properties: "mbox", "mbox_sha1sum", "open_id", "account" (Multiplicity, 4.1.2.1.a)', function (done) {
