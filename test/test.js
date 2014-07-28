@@ -1,11 +1,16 @@
 /**
+ * Description : This is a test suite that tests an LRS endpoint based on the testing requirements document
+ * found at https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
+ *
+ * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  * Created by vijay.budhram on 7/9/14.
+ * Riptide Software
  */
 (function () {
     "use strict";
 
     // Set the endpoint of the LRS you are testing.
-    // Currently, these tests do not support LRS authentication.
+    // For time being, it is assumed that the LRS endpoint does not require authentication.
     var LRS_ENDPOINT = 'http://testclient.elmnts-test.com/lrs';
 
     var request = require('request');
