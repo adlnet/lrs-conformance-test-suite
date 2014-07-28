@@ -1,4 +1,4 @@
-#lrs-conformance-tests
+LRS Conformance Tests
 =====================
 
 ### Description
