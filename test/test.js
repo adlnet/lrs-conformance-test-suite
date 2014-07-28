@@ -4,6 +4,8 @@
 (function () {
     "use strict";
 
+    // Set the endpoint of the LRS you are testing.
+    // Currently, these tests do not support LRS authentication.
     var LRS_ENDPOINT = 'http://testclient.elmnts-test.com/lrs';
 
     var request = require('request');
@@ -15,6 +17,7 @@
     var statementNoId = require('../test/data/statement_no_id.json');
     var statmentEmptyActor = require('../test/data/statement_empty_actor.json');
     var statmentEmptyVerb = require('../test/data/statement_empty_verb.json');
+    var statmentEmptyObject = require('../test/data/statement_empty_object.json');
 
     // Generates an RFC4122 compliant uuid
     // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
@@ -902,50 +905,136 @@
         });
 
         it('An "object" property uses the "objectType" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An "object" property uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An "object" property uses the "definition" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An "object" property contains an "id" property (Multiplicity, 4.1.4.1.table1.row2.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyObject);
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An "object" propertys "id" property is an IRI (Type, 4.1.4.1.table1.row2.a)', function (done) {
-            done();
+            var item = clone(statmentEmptyObject);
+            item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('An "object" propertys "objectType" property is either "Activity", "Agent", "Group", "SubStatement", or"StatementRef" (Vocabulary, 4.1.4.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyObject);
+            item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+            item[0].object.objectType = 'asdfasdf';
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An Activity is defined by the "objectType" of an "object" with value "Activity" (4.1.4.1.table1.row1.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyObject);
+            item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+            item[0].object.objectType = 'Activity';
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('An Activity uses the "definition" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An Activitys "definition" property is an Object (Type, 4.1.4.1.table1.row3.a)', function (done) {
-            done();
+            var item = clone(statmentEmptyObject);
+            item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+            item[0].object.objectType = 'Activity';
+            item[0].object.definition = 123123;
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An Activity Object is the contents of a "definition" property object of an Activity (Format, 4.1.4.1.table2)', function (done) {
-            done();
+            var item = clone(statmentEmptyObject);
+            item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+            item[0].object.objectType = 'Activity';
+            item[0].object.definition = {
+
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('An Activity Object contains at least one of the following properties: Implicit(Format, 4.1.4.1.table2)', function (done) {
-            done();
+            done(new Error('Implement Test'));
         });
     });
-}
-()
-    )
-;
+}());
