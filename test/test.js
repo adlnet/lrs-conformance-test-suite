@@ -3,15 +3,18 @@
  */
 (function () {
     "use strict";
+
+    var LRS_ENDPOINT = 'http://testclient.elmnts-test.com/lrs';
+
     var request = require('request');
     var should = require('should');
     var q = require('q');
-    var LRS_ENDPOINT = 'http://testclient.elmnts-test.com/lrs';
     var statementNoActor = require('../test/data/statement_no_actor.json');
     var statementNoVerb = require('../test/data/statement_no_verb.json');
     var statementNoObject = require('../test/data/statement_no_object.json');
     var statementNoId = require('../test/data/statement_no_id.json');
     var statmentEmptyActor = require('../test/data/statement_empty_actor.json');
+    var statmentEmptyVerb = require('../test/data/statement_empty_verb.json');
 
     // Generates an RFC4122 compliant uuid
     // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
@@ -23,53 +26,64 @@
         return uuid;
     };
 
-    function clone(item){
+    // Helper function to clone object
+    function clone(item) {
         return JSON.parse(JSON.stringify(item));
     }
 
     describe('Statement Requirements', function () {
         it('A Statement uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // Validation is done in the web server JSON parser or side side
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "actor" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "verb" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "object" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "result" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "context" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "timestamp" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "stored" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "authority" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "version" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Statement uses the "attachment" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
@@ -165,6 +179,7 @@
         });
 
         it('An "actor" property uses the "objectType" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
@@ -227,6 +242,7 @@
         });
 
         it('An Agent uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
@@ -279,6 +295,7 @@
         });
 
         it('An Agent uses the "mbox" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
@@ -303,7 +320,7 @@
         });
 
         it('An Agent uses the "mbox_sha1sum" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // Depending on application server, JSON parser should catch this
+            // JSON parser validates this
             done();
         });
 
@@ -328,6 +345,7 @@
         });
 
         it('An Agent uses the "open_id" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
@@ -352,6 +370,7 @@
         });
 
         it('An Agent uses the "account" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
@@ -400,10 +419,12 @@
         });
 
         it('A Group uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A Group uses the "member" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
@@ -422,17 +443,40 @@
                 },
                 json: data
             }, function (err, res, body) {
-                res.statusCode.should.equal(400);
+                res.statusCode.should.equal(200);
                 done();
             });
         });
 
         it('An Anonymous Group uses the "member" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An Anonymous Group uses the "member" property (Multiplicity, 4.1.2.2.table1.row3.b)', function (done) {
-            done();
+            var data = clone(statmentEmptyActor);
+            data[0].actor.objectType = 'Group';
+            data[0].actor.account = {
+                "homePage": "http://cloud.scorm.com/",
+                "name": "anonymous"
+            };
+
+            data[0].actor.member = [
+                {
+                    "mbox": "mailto:test@example.com"
+                }
+            ];
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: data
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('The "member" property is an array of Objects following Agent requirements (4.1.2.2.table1.row3.a)', function (done) {
@@ -444,7 +488,7 @@
             };
 
             data[0].actor.member = {
-                "mbox": "asdf@asdf.com"
+                "mbox": "mailto:test@example.com"
             };
             request({
                 url: LRS_ENDPOINT + '/statements',
@@ -462,7 +506,7 @@
         it('An Identified Group is defined by "objectType" of an "actor" or "object" with value "Group" and by one of "mbox", "mbox_sha1sum", "open_id", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
-            item[0].actor['open_id'] = 'asdf@asdf.com';
+            item[0].actor['open_id'] = 'mailto:test@example.com';
 
             request({
                 url: LRS_ENDPOINT + '/statements',
@@ -480,7 +524,30 @@
         it('An Identified Group uses one of the following properties: "mbox", "mbox_sha1sum", "open_id", "account" (Multiplicity, 4.1.2.1.a)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
-            item[0].actor['mbox'] = 'asdf@asdf.com';
+            item[0].actor['mbox'] = 'mailto:test@example.com';
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('An Identified Group uses the "mbox" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
+            done();
+        });
+
+        it('An Identified Group does not use the "mbox" property if "mbox_sha1sum", "open_id", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor['mbox'] = 'mailto:test@example.com';
+            item[0].actor['open_id'] = '12341234';
 
             request({
                 url: LRS_ENDPOINT + '/statements',
@@ -494,108 +561,344 @@
                 done();
             });
         });
-        it('An Identified Group uses the "mbox" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done();
-        });
-
-        it('An Identified Group does not use the "mbox" property if "mbox_sha1sum", "open_id", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
-            done();
-        });
 
         it('An Identified Group uses the "mbox_sha1sum" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An Identified Group does not use the "mbox_sha1sum" property if "mbox", "open_id", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor['mbox_sha1sum'] = '1234231412342312342423';
+            item[0].actor['mbox'] = 'mailto:test@example.com';
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An Identified Group uses the "open_id" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An Identified Group does not use the "open_id" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor['open_id'] = '1234231412342312342423';
+            item[0].actor['mbox'] = 'mailto:test@example.com';
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An Identified Group uses the "account" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An Identified Group does not use the "account" property if "mbox", "mbox_sha1sum", or "open_id" are used (Multiplicity, 4.1.2.1.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor.account = {
+                "homePage": "http://www.example.com",
+                "name": "1625378"
+            };
+            item[0].actor['open_id'] = '1234231412342312342423';
+            item[0].actor['mbox'] = 'mailto:test@example.com';
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An "mbox" property is an IRI (Type, 4.1.2.3.table1.row1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An "mbox" property has the form "mailto:email address" (Syntax, 4.1.2.3.table1.row1.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor['mbox'] = 'asdfasdf@ssss';
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An "mbox_sha1sum" property is it a String (Type, 4.1.2.3.table1.row2.a)', function (done) {
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor['mbox_sha1sum'] = 12312312312;
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An "open_id" property is a URI (Type, 4.1.2.3.table1.row3.a)', function (done) {
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor['open_id'] = 12312312312;
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An "account" property uses the "homePage" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An "account" property uses the "homePage" property (Multiplicity, 4.1.2.4.table1.row1.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor.account = {
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An "account" propertys homePage" property is an IRL (Type, 4.1.2.4.table1.row1.a)', function (done) {
-            done();
+            done(new Error('Implement Test'));
         });
 
         it('An "account" property uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('An "account" property uses the "name" property (Multiplicity, 4.1.2.4.table1.row2.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor.account = {
+                "name": 'asdf',
+                "homePage": 'http://www.example.com'
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('An "account" propertys "name" property is a String (Type, 4.1.2.4.table1.row1.a)', function (done) {
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor.account = {
+                "name": 234123213423
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('A "verb" property uses the "id" property at most one time (Multiplicity, 4.1.3.table1.row1.aultiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A "verb" property contains an "id" property (Multiplicity, 4.1.3.table1.row1.b)', function (done) {
-            done();
+            var item = clone(statmentEmptyVerb);
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('A "verb" propertys "id" property is an IRI (Type, 4.1.3.table1.row1.a)', function (done) {
-            done();
+            var item = clone(statmentEmptyVerb);
+            item[0].verb = {
+                "id": "http://adlnet.gov/expapi/verbs/created",
+                "display": {
+                    "en-US": "created"
+                }
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('A "verb" property uses the "display" property at most one time (Multiplicity, 4.1.a)', function (done) {
+            // JSON parser validates this
             done();
         });
 
         it('A "verb" propertys "display" property is a Language Map (Type, 4.1.3.table1.row2.a)', function (done) {
-            done();
+            var item = clone(statmentEmptyVerb);
+            item[0].verb.id = 'http://adlnet.gov/expapi/verbs/created';
+            item[0].verb.display = {
+                "en-US": "created"
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('A Language Map is defined as a list of language tag/String pairs has at least 1 entry Implicit', function (done) {
-            done();
+            var item = clone(statmentEmptyVerb);
+            item[0].verb.id = 'http://adlnet.gov/expapi/verbs/created';
+            item[0].verb.display = {
+                2345: 2345
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('A Language Map follows RFC5646 (Format, 5.2.a, RFC5646)', function (done) {
-            done();
+            var item = clone(statmentEmptyVerb);
+            item[0].verb.id = 'http://adlnet.gov/expapi/verbs/created';
+            item[0].verb.display = {
+                "sdfg": {
+                    "asdf": 23
+                }
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('A "display" property uses a Language Map (Format, 4.1.3.table1.row1.a)', function (done) {
-            done();
+            var item = clone(statmentEmptyVerb);
+            item[0].verb.id = 'http://adlnet.gov/expapi/verbs/created';
+            item[0].verb.display = {
+                "en-US": "created"
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('An "object" property uses the "objectType" property at most one time (Multiplicity, 4.1.a)', function (done) {
