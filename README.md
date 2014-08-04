@@ -32,7 +32,7 @@ The testing framework used in this project is [Mocha](http://visionmedia.github.
 
 List of [Mocha commands](http://visionmedia.github.io/mocha/#mocha.opts)
 
-### Running
+### Running Tests
 
 At command line type:
 
