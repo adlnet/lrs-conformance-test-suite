@@ -3,6 +3,7 @@
  * found at https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
+ *
  * Created by vijay.budhram on 7/9/14.
  * Riptide Software
  */
@@ -11,7 +12,7 @@
 
     // Set the endpoint of the LRS you are testing.
     // For time being, it is assumed that the LRS endpoint does not require authentication.
-    var LRS_ENDPOINT = 'http://tnw.elmnts-test.com/lrs';
+    var LRS_ENDPOINT = 'http://asdf.elmnts-test.com:8000/lrs';
 
     var request = require('request');
     var should = require('should');
@@ -322,7 +323,7 @@
             });
         });
 
-        describe('An "actor" property with "objectType" as "Agent" uses one of the following properties: "mbox", "mbox_sha1sum", "open_id", "account" (Multiplicity, 4.1.2.1.a)', function () {
+        describe('An "actor" property with "objectType" as "Agent" uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, 4.1.2.1.a)', function () {
             it('An "actor" property with "objectType" as "Agent" uses one of the following properties: "mbox" (Multiplicity, 4.1.2.1.a)', function (done) {
                 var dataMbox = clone(statmentEmptyActor);
                 dataMbox[0].actor.objectType = 'Agent';
@@ -357,7 +358,7 @@
                 });
             });
 
-            it('An "actor" property with "objectType" as "Agent" uses one of the following properties: "open_id" (Multiplicity, 4.1.2.1.a)', function (done) {
+            it('An "actor" property with "objectType" as "Agent" uses one of the following properties: "openid" (Multiplicity, 4.1.2.1.a)', function (done) {
                 var dataMbox = clone(statmentEmptyActor);
                 dataMbox[0].actor.objectType = 'Agent';
                 dataMbox[0].actor['openid'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
@@ -401,24 +402,63 @@
             done();
         });
 
-        it('An Agent does not use the "mbox" property if "mbox_sha1sum", "open_id", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
-            var data = clone(statmentEmptyActor);
-            data[0].actor.objectType = 'Agent';
-            data[0].actor['mbox'] = 'mailto:xapi@adlnet.gov';
-            data[0].actor['mbox_sha1sum'] = '1234231412342312342423';
-            request({
-                url: LRS_ENDPOINT + '/statements',
-                method: 'POST',
-                headers: {
-                    'X-Experience-API-Version': '1.0.1'
-                },
-                json: data
-            }, function (err, res, body) {
-                res.statusCode.should.equal(400);
-                done();
+        describe('An Agent does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, 4.1.2.1.b)', function () {
+            it('An Agent does not use the "mbox" property if "mbox_sha1sum" (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor['mbox'] = 'mailto:xapi@adlnet.gov';
+                data[0].actor['mbox_sha1sum'] = '1234231412342312342423';
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
             });
 
-            // TODO: Test other types
+            it('An Agent does not use the "mbox" property if "openid" (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor['mbox'] = 'mailto:xapi@adlnet.gov';
+                data[0].actor['openid'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+
+            it('An Agent does not use the "mbox" property if "account" (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor['mbox'] = 'mailto:xapi@adlnet.gov';
+                data[0].actor['account'] = {
+                    "homePage": "http://www.example.com",
+                    "name": "1625378"
+                };
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
         });
 
         it('An Agent uses the "mbox_sha1sum" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -426,50 +466,136 @@
             done();
         });
 
-        it('An Agent does not use the "mbox_sha1sum" property if "mbox", "open_id", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
-            var data = clone(statmentEmptyActor);
-            data[0].actor.objectType = 'Agent';
-            data[0].actor['mbox_sha1sum'] = '1234231412342312342423';
-            data[0].actor['openId'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
-            request({
-                url: LRS_ENDPOINT + '/statements',
-                method: 'POST',
-                headers: {
-                    'X-Experience-API-Version': '1.0.1'
-                },
-                json: data
-            }, function (err, res, body) {
-                res.statusCode.should.equal(400);
-                done();
+        describe('An Agent does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, 4.1.2.1.b)', function () {
+            it('An Agent does not use the "mbox_sha1sum" property if "mbox" (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor['mbox_sha1sum'] = '1234231412342312342423';
+                data[0].actor['mbox'] = 'mailto:asdf@asdf.com';
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
             });
 
-            // TODO: Test other types
+            it('An Agent does not use the "mbox_sha1sum" property if "openid" (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor['mbox_sha1sum'] = '12342341242134214';
+                data[0].actor['openid'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+
+            it('An Agent does not use the "mbox_sha1sum" property if "account" (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor['mbox_sha1sum'] = '1234123423422';
+                data[0].actor['account'] = {
+                    "homePage": "http://www.example.com",
+                    "name": "1625378"
+                };
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
         });
 
-        it('An Agent uses the "open_id" property at most one time (Multiplicity, 4.1.a)', function (done) {
+        it('An Agent uses the "openid" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
         });
 
-        it('An Agent does not use the "open_id" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
-            var data = clone(statmentEmptyActor);
-            data[0].actor.objectType = 'Agent';
-            data[0].actor['mbox'] = 'mailto:xapi@adlnet.gov';
-            data[0].actor['openId'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+        describe('An Agent does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, 4.1.2.1.b)', function () {
+            if ('An Agent does not use the "account" property if "mbox" (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor['account'] = {
+                    "homePage": "http://www.example.com",
+                    "name": "1625378"
+                };
+                data[0].actor['mbox'] = 'mailto:xapi@adlnet.gov';
 
-            request({
-                url: LRS_ENDPOINT + '/statements',
-                method: 'POST',
-                headers: {
-                    'X-Experience-API-Version': '1.0.1'
-                },
-                json: data
-            }, function (err, res, body) {
-                res.statusCode.should.equal(400);
-                done();
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
             });
 
-            // TODO: Test other types
+            if ('An Agent does not use the "account" property if "mbox_sha1sum" (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor['account'] = {
+                    "homePage": "http://www.example.com",
+                    "name": "1625378"
+                };
+                data[0].actor['mbox_sha1sum'] = '123423412342342134';
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+
+            if ('An Agent does not use the "account" property if "openid" (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor['account'] = {
+                    "homePage": "http://www.example.com",
+                    "name": "1625378"
+                };
+                data[0].actor['openid'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
         });
 
         it('An Agent uses the "account" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -477,27 +603,64 @@
             done();
         });
 
-        it('An Agent does not use the "account" property if "mbox", "mbox_sha1sum", or "open_id" are used (Multiplicity, 4.1.2.1.b)', function (done) {
-            var data = clone(statmentEmptyActor);
-            data[0].actor.objectType = 'Agent';
-            data[0].actor.account = {
-                "homePage": "http://cloud.scorm.com/",
-                "name": "anonymous"
-            };
-            data[0].actor['mbox'] = 'mailto:xapi@adlnet.gov';
-            request({
-                url: LRS_ENDPOINT + '/statements',
-                method: 'POST',
-                headers: {
-                    'X-Experience-API-Version': '1.0.1'
-                },
-                json: data
-            }, function (err, res, body) {
-                res.statusCode.should.equal(400);
-                done();
+        describe('An Agent does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)', function () {
+            it('An Agent does not use the "openid" property if mbox are used (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor.openid = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+                data[0].actor['mbox'] = 'mailto:xapi@adlnet.gov';
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
             });
 
-            // TODO: Test other types
+            it('An Agent does not use the "openid" property if mbox_sha1sum are used (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor.openid = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+                data[0].actor['mbox_sha1sum'] = 'mailto:xapi@adlnet.gov';
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+
+            it('An Agent does not use the "openid" property if account are used (Multiplicity, 4.1.2.1.b)', function (done) {
+                var data = clone(statmentEmptyActor);
+                data[0].actor.objectType = 'Agent';
+                data[0].actor.openid = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+                data[0].actor.account = {
+                    "homePage": "http://cloud.scorm.com/",
+                    "name": "group"
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: data
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
         });
 
         it('A Group is defined by "objectType" of an "actor" or "object" with value "Group" (4.1.2.2.table1.row2)', function (done) {
@@ -531,7 +694,7 @@
             done();
         });
 
-        it('An Anonymous Group is defined by "objectType" of an "actor" or "object" with value "Group" and by none of "mbox", "mbox_sha1sum", "open_id", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table1)', function (done) {
+        it('An Anonymous Group is defined by "objectType" of an "actor" or "object" with value "Group" and by none of "mbox", "mbox_sha1sum", "openid", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table1)', function (done) {
             var data = clone(statmentEmptyActor);
             data[0].actor.objectType = 'Group';
 
@@ -595,25 +758,164 @@
             });
         });
 
-        it('An Identified Group is defined by "objectType" of an "actor" or "object" with value "Group" and by one of "mbox", "mbox_sha1sum", "open_id", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
-            var item = clone(statmentEmptyActor);
-            item[0].actor.objectType = 'Group';
-            item[0].actor['openId'] = 'mailto:test@example.com';
+        describe('An Identified Group is defined by "objectType" of an "actor" or "object" with value "Group" and by one of "mbox", "mbox_sha1sum", "openid", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function () {
+            describe('An Identified Group is defined by "objectType" of an "actor"', function () {
+                it('An Identified Group is defined by "objectType" of an "actor" and "mbox" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
+                    var item = clone(statmentEmptyActor);
+                    item[0].actor.objectType = 'Group';
+                    item[0].actor['mbox'] = 'mailto:test@example.com';
 
-            request({
-                url: LRS_ENDPOINT + '/statements',
-                method: 'POST',
-                headers: {
-                    'X-Experience-API-Version': '1.0.1'
-                },
-                json: item
-            }, function (err, res, body) {
-                res.statusCode.should.equal(400);
-                done();
+                    request({
+                        url: LRS_ENDPOINT + '/statements',
+                        method: 'POST',
+                        headers: {
+                            'X-Experience-API-Version': '1.0.1'
+                        },
+                        json: item
+                    }, function (err, res, body) {
+                        res.statusCode.should.equal(200);
+                        done();
+                    });
+                });
+
+                it('An Identified Group is defined by "objectType" of an "actor" and by "mbox_sha1sum" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
+                    var item = clone(statmentEmptyActor);
+                    item[0].actor.objectType = 'Group';
+                    item[0].actor['mbox_sha1sum'] = '41341341241242';
+
+                    request({
+                        url: LRS_ENDPOINT + '/statements',
+                        method: 'POST',
+                        headers: {
+                            'X-Experience-API-Version': '1.0.1'
+                        },
+                        json: item
+                    }, function (err, res, body) {
+                        res.statusCode.should.equal(200);
+                        done();
+                    });
+                });
+
+                it('An Identified Group is defined by "objectType" of an "actor" and by "openid" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
+                    var item = clone(statmentEmptyActor);
+                    item[0].actor.objectType = 'Group';
+                    item[0].actor['openid'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+
+                    request({
+                        url: LRS_ENDPOINT + '/statements',
+                        method: 'POST',
+                        headers: {
+                            'X-Experience-API-Version': '1.0.1'
+                        },
+                        json: item
+                    }, function (err, res, body) {
+                        res.statusCode.should.equal(200);
+                        done();
+                    });
+                });
+
+                it('An Identified Group is defined by "objectType" of an "actor" and by "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
+                    var item = clone(statmentEmptyActor);
+                    item[0].actor.objectType = 'Group';
+                    item[0].actor.account = {
+                        "homePage": "http://www.example.com",
+                        "name": "1625378"
+                    };
+
+                    request({
+                        url: LRS_ENDPOINT + '/statements',
+                        method: 'POST',
+                        headers: {
+                            'X-Experience-API-Version': '1.0.1'
+                        },
+                        json: item
+                    }, function (err, res, body) {
+                        res.statusCode.should.equal(200);
+                        done();
+                    });
+                });
             });
+
+            describe('An Identified Group is defined by "objectType" of an "object" with value "Group"', function () {
+                it('An Identified Group is defined by "object" with value "Group" and "mbox" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
+                    var item = clone(statmentEmptyObject);
+                    item[0].object.objectType = 'Group';
+                    item[0].object['mbox'] = 'mailto:test@example.com';
+
+                    request({
+                        url: LRS_ENDPOINT + '/statements',
+                        method: 'POST',
+                        headers: {
+                            'X-Experience-API-Version': '1.0.1'
+                        },
+                        json: item
+                    }, function (err, res, body) {
+                        res.statusCode.should.equal(200);
+                        done();
+                    });
+                });
+
+                it('An Identified Group is defined by "object" with value "Group" and "mbox_sha1sum" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
+                    var item = clone(statmentEmptyObject);
+                    item[0].object.objectType = 'Group';
+                    item[0].object['mbox_sha1sum'] = '41341341241242';
+
+                    request({
+                        url: LRS_ENDPOINT + '/statements',
+                        method: 'POST',
+                        headers: {
+                            'X-Experience-API-Version': '1.0.1'
+                        },
+                        json: item
+                    }, function (err, res, body) {
+                        res.statusCode.should.equal(200);
+                        done();
+                    });
+                });
+
+                it('An Identified Group is defined by "object" with value "Group" and "openid" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
+                    var item = clone(statmentEmptyObject);
+                    item[0].object.objectType = 'Group';
+                    item[0].object['openid'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+
+                    request({
+                        url: LRS_ENDPOINT + '/statements',
+                        method: 'POST',
+                        headers: {
+                            'X-Experience-API-Version': '1.0.1'
+                        },
+                        json: item
+                    }, function (err, res, body) {
+                        res.statusCode.should.equal(200);
+                        done();
+                    });
+                });
+
+                it('An Identified Group is defined by "object" with value "Group" and "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)', function (done) {
+                    var item = clone(statmentEmptyObject);
+                    item[0].object.objectType = 'Group';
+                    item[0].object.account = {
+                        "homePage": "http://www.example.com",
+                        "name": "1625378"
+                    };
+
+                    request({
+                        url: LRS_ENDPOINT + '/statements',
+                        method: 'POST',
+                        headers: {
+                            'X-Experience-API-Version': '1.0.1'
+                        },
+                        json: item
+                    }, function (err, res, body) {
+                        res.statusCode.should.equal(200);
+                        done();
+                    });
+                });
+            });
+
         });
 
-        it('An Identified Group uses one of the following properties: "mbox", "mbox_sha1sum", "open_id", "account" (Multiplicity, 4.1.2.1.a)', function (done) {
+        it('An Identified Group uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, 4.1.2.1.a)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
             item[0].actor['mbox'] = 'mailto:test@example.com';
@@ -630,16 +932,17 @@
                 done();
             });
         });
+
         it('An Identified Group uses the "mbox" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
         });
 
-        it('An Identified Group does not use the "mbox" property if "mbox_sha1sum", "open_id", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
+        it('An Identified Group does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
             item[0].actor['mbox'] = 'mailto:test@example.com';
-            item[0].actor['openId'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+            item[0].actor['openid'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
 
             request({
                 url: LRS_ENDPOINT + '/statements',
@@ -659,7 +962,7 @@
             done();
         });
 
-        it('An Identified Group does not use the "mbox_sha1sum" property if "mbox", "open_id", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
+        it('An Identified Group does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
             item[0].actor['mbox_sha1sum'] = '1234231412342312342423';
@@ -678,15 +981,15 @@
             });
         });
 
-        it('An Identified Group uses the "open_id" property at most one time (Multiplicity, 4.1.a)', function (done) {
+        it('An Identified Group uses the "openid" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
         });
 
-        it('An Identified Group does not use the "open_id" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
+        it('An Identified Group does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
-            item[0].actor['openId'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+            item[0].actor['openid'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
             item[0].actor['mbox'] = 'mailto:test@example.com';
 
             request({
@@ -707,14 +1010,14 @@
             done();
         });
 
-        it('An Identified Group does not use the "account" property if "mbox", "mbox_sha1sum", or "open_id" are used (Multiplicity, 4.1.2.1.b)', function (done) {
+        it('An Identified Group does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, 4.1.2.1.b)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
             item[0].actor.account = {
                 "homePage": "http://www.example.com",
                 "name": "1625378"
             };
-            item[0].actor['openId'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
+            item[0].actor['openid'] = 'http://example.org/absolute/URI/with/absolute/path/to/resource.txt';
             item[0].actor['mbox'] = 'mailto:test@example.com';
 
             request({
@@ -771,10 +1074,10 @@
             });
         });
 
-        it('An "open_id" property is a URI (Type, 4.1.2.3.table1.row3.a)', function (done) {
+        it('An "openid" property is a URI (Type, 4.1.2.3.table1.row3.a)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
-            item[0].actor['openId'] = 12312312312;
+            item[0].actor['openid'] = 12312312312;
 
             request({
                 url: LRS_ENDPOINT + '/statements',
@@ -902,26 +1205,51 @@
             });
         });
 
-        it('A "verb" propertys "id" property is an IRI (Type, 4.1.3.table1.row1.a)', function (done) {
-            var item = clone(statmentEmptyVerb);
-            item[0].verb = {
-                "id": "http://adlnet.gov/expapi/verbs/created",
-                "display": {
-                    "en-US": "created"
-                }
-            };
+        describe('A "verb" propertys "id" property is an IRI (Type, 4.1.3.table1.row1.a)', function () {
+            it('should validate verb with IRI', function (done) {
+                var item = clone(statmentEmptyVerb);
+                item[0].verb = {
+                    "id": "http://adlnet.gov/expapi/verbs/created",
+                    "display": {
+                        "en-US": "created"
+                    }
+                };
 
-            request({
-                url: LRS_ENDPOINT + '/statements',
-                method: 'POST',
-                headers: {
-                    'X-Experience-API-Version': '1.0.1'
-                },
-                json: item
-            }, function (err, res, body) {
-                res.statusCode.should.equal(200);
-                done();
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(200);
+                    done();
+                });
             });
+
+            it('should reject verb with IRI', function (done) {
+                var item = clone(statmentEmptyVerb);
+                item[0].verb = {
+                    "id": 13123123131,
+                    "display": {
+                        "en-US": "created"
+                    }
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+
         });
 
         it('A "verb" property uses the "display" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -975,25 +1303,6 @@
                 item[0].verb.id = 'http://adlnet.gov/expapi/verbs/created';
                 item[0].verb.display = {
                     "2345": 2345
-                };
-
-                request({
-                    url: LRS_ENDPOINT + '/statements',
-                    method: 'POST',
-                    headers: {
-                        'X-Experience-API-Version': '1.0.1'
-                    },
-                    json: item
-                }, function (err, res, body) {
-                    res.statusCode.should.equal(400);
-                    done();
-                });
-            });
-
-            it('should reject language map with no entries', function (done) {
-                var item = clone(statmentEmptyVerb);
-                item[0].verb.id = 'http://adlnet.gov/expapi/verbs/created';
-                item[0].verb.display = {
                 };
 
                 request({
