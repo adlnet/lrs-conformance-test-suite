@@ -695,6 +695,7 @@
         });
 
         it('An Anonymous Group is defined by "objectType" of an "actor" or "object" with value "Group" and by none of "mbox", "mbox_sha1sum", "openid", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table1)', function (done) {
+            // TODO Expand test cases to cover all combinations
             var data = clone(statmentEmptyActor);
             data[0].actor.objectType = 'Group';
 
@@ -1034,8 +1035,21 @@
         });
 
         it('An "mbox" property is an IRI (Type, 4.1.2.3.table1.row1.a)', function (done) {
-            // JSON parser validates this
-            done();
+            var item = clone(statmentEmptyActor);
+            item[0].actor.objectType = 'Group';
+            item[0].actor['mbox'] = 'mailto:asdf@adsf.com';
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(200);
+                done();
+            });
         });
 
         it('An "mbox" property has the form "mailto:email address" (Syntax, 4.1.2.3.table1.row1.b)', function (done) {
@@ -1645,7 +1659,23 @@
         });
 
         it('An Activity Object contains at least one of the following properties: Implicit(Format, 4.1.4.1.table2)', function (done) {
-            done(new Error('Implement Test'));
+            var item = clone(statmentEmptyObject);
+            item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+            item[0].object.objectType = 'Activity';
+            item[0].object.definition = {
+            };
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
     });
 }());
