@@ -15,7 +15,7 @@ $ npm install
 
 ### Configuration
 
-Modify the LRS endpoint variable in test/test.js, to point to the LRS you are testing.
+Modify the LRS endpoint variable in test/test.js, to point to the LRS you are testing. This endpoint must not require authentication.
 
 ```js
 var LRS_ENDPOINT = 'http://testclient.elmnts-test.com/lrs';
