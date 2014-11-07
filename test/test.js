@@ -714,7 +714,10 @@
         it('An Anonymous Group is defined by "objectType" of an "actor" or "object" with value "Group" and by none of "mbox", "mbox_sha1sum", "openid", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table1)', function (done) {
             // TODO Expand test cases to cover all combinations
             var data = clone(statmentEmptyActor);
-            data[0].actor.objectType = 'Group';
+            data[0].actor = {
+                objectType: 'Group',
+                "mbox":"mailto:bob@example.com"
+            };
 
             request({
                 url: LRS_ENDPOINT + '/statements',
@@ -736,7 +739,10 @@
 
         it('An Anonymous Group uses the "member" property (Multiplicity, 4.1.2.2.table1.row3.b)', function (done) {
             var data = clone(statmentEmptyActor);
-            data[0].actor.objectType = 'Group';
+            data[0].actor = {
+                objectType: 'Group',
+                "mbox":"mailto:bob@example.com"
+            };
 
             data[0].actor.member = [
                 {
