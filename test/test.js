@@ -55,28 +55,9 @@
     }
 
     describe('Statement Requirements', function () {
-        it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('All Strings are encoded and interpreted as UTF-8 (6.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('All UUID types follow requirements of RFC4122 (Type, 4.1.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('All UUID types are in standard String form (Type, 4.1.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A TimeStamp is defined as a Date/Time formatted according to ISO 8601 (Format, ISO8601)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('A Statement uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement uses the "actor" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -124,7 +105,7 @@
             done();
         });
 
-        it('A Statement uses the "attachments" property at most one time (Multiplicity, 4.1.a)', function (done) {
+        it('A Statement uses the "attachment" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
         });
@@ -180,7 +161,7 @@
             });
         });
 
-        it('An Statement\'s "id" property is a String (Type, 4.1.1.description.a)', function (done) {
+        it('An "id" property is a String (Type, 4.1.1.description.a)', function (done) {
             var data = clone(statementNoId);
 
             // Generate random number from 1-10000 as id
@@ -200,7 +181,7 @@
             });
         });
 
-        it('An Statement\'s "id" property is a UUID following RFC 4122(Syntax, RFC 4122 )', function (done) {
+        it('An "id" property is a UUID following RFC 4122(Syntax, RFC 4122 )', function (done) {
             var data = clone(statementNoId);
 
             data[0].id = generateUUID();
@@ -296,7 +277,7 @@
 
         });
 
-        it('An Agent is defined by "objectType" of an "actor" property or "object" property with value "Agent" (4.1.2.1.table1.row1, 4.1.4.2.a)', function (done) {
+        it('An Agent is defined by "objectType" of an "actor" or "object" with value "Agent" (4.1.2.1.table1.row1)', function (done) {
             var data = clone(statementNoId);
 
             data[0].actor.objectType = 'Agent';
@@ -699,7 +680,7 @@
             });
         });
 
-        it('A Group is defined by "objectType" of an "actor" property or "object" property with value "Group" (4.1.2.2.table1.row2, 4.1.4.2.a)', function (done) {
+        it('A Group is defined by "objectType" of an "actor" or "object" with value "Group" (4.1.2.2.table1.row2)', function (done) {
             var data = clone(statmentEmptyActor);
             data[0].actor.objectType = 'Group';
             data[0].actor.account = {
@@ -735,7 +716,7 @@
             var data = clone(statmentEmptyActor);
             data[0].actor = {
                 objectType: 'Group',
-                "mbox": "mailto:bob@example.com"
+                "mbox":"mailto:bob@example.com"
             };
 
             request({
@@ -760,7 +741,7 @@
             var data = clone(statmentEmptyActor);
             data[0].actor = {
                 objectType: 'Group',
-                "mbox": "mailto:bob@example.com"
+                "mbox":"mailto:bob@example.com"
             };
 
             data[0].actor.member = [
@@ -1149,19 +1130,16 @@
             });
         });
 
-        it('An Account Object is the "account" property of a Group or Agent (Definition, 4.1.2.4)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Account Object property uses the "homePage" property at most one time (Multiplicity, 4.1.a)', function (done) {
+        it('An "account" property uses the "homePage" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
         });
 
-        it('An Account Object property uses the "homePage" property (Multiplicity, 4.1.2.4.table1.row1.b)', function (done) {
+        it('An "account" property uses the "homePage" property (Multiplicity, 4.1.2.4.table1.row1.b)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
-            item[0].actor.account = {};
+            item[0].actor.account = {
+            };
 
             request({
                 url: LRS_ENDPOINT + '/statements',
@@ -1176,7 +1154,7 @@
             });
         });
 
-        it('An Account Object propertys homePage" property is an IRL (Type, 4.1.2.4.table1.row1.a)', function (done) {
+        it('An "account" propertys homePage" property is an IRL (Type, 4.1.2.4.table1.row1.a)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
             item[0].actor.account = {
@@ -1197,12 +1175,12 @@
             });
         });
 
-        it('An Account Object property uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
+        it('An "account" property uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
         });
 
-        it('An Account Object property uses the "name" property (Multiplicity, 4.1.2.4.table1.row2.b)', function (done) {
+        it('An "account" property uses the "name" property (Multiplicity, 4.1.2.4.table1.row2.b)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
             item[0].actor.account = {
@@ -1223,7 +1201,7 @@
             });
         });
 
-        it('An Account Object property "name" property is a String (Type, 4.1.2.4.table1.row1.a)', function (done) {
+        it('An "account" propertys "name" property is a String (Type, 4.1.2.4.table1.row1.a)', function (done) {
             var item = clone(statmentEmptyActor);
             item[0].actor.objectType = 'Group';
             item[0].actor.account = {
@@ -1312,22 +1290,6 @@
 
         });
 
-        it('A Voiding Statement is defined as a Statement whose "verb" property\'s "id" property\'s IRI ending with "voided" **Implicit** (4.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Voiding Statement\'s "objectType" field has a value of "StatementRef" (Format, 4.3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Voiding Statement\'s Target is defined as the Statement corresponding to the "object" property\'s "id" property\'s IRI (4.3.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Voiding Statement cannot Target another Voiding Statement (4.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('A "verb" property uses the "display" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
@@ -1353,7 +1315,7 @@
             });
         });
 
-        describe('A Language Map is defined as an array of language tag/String pairs has at least 1 entry Implicit', function () {
+        describe('A Language Map is defined as a list of language tag/String pairs has at least 1 entry Implicit', function () {
             it('should reject invalid language map', function (done) {
                 var item = clone(statmentEmptyVerb);
                 item[0].verb.id = 'http://adlnet.gov/expapi/verbs/created';
@@ -1724,7 +1686,8 @@
             var item = clone(statmentEmptyObject);
             item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
             item[0].object.objectType = 'Activity';
-            item[0].object.definition = {};
+            item[0].object.definition = {
+            };
 
             request({
                 url: LRS_ENDPOINT + '/statements',
@@ -1738,523 +1701,11 @@
                 done();
             });
         });
-
-        it('An Activity Definition is defined as the contents of a "definition" property object of an Activity (Format, 4.1.4.1.table2)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition contains at least one of the following properties: name, description, type, moreInfo, interactionType, or extensions **Implicit**(Format, 4.1.4.1.table2, 4.1.4.1.table3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "name" property is a Language Map (Type, 4.1.4.1.table2.row1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "description" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "description" property is a Language Map (Type, 4.1.4.1.table2.row2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "type" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "type" property is an IRI (Type, 4.1.4.1.table2.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "moreInfo" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "moreinfo" property is an IRL (Type, 4.1.4.1.table2.row4.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "interactionType" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "correctResponsesPattern" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "choices" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "scale" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "source" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "target" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "steps" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t) **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "interactionType" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other” (4.1.4.1.table3.row1.a, SCORM 2004 4th Edition RTE Book)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "correctResponsesPattern" property is an array of Strings (4.1.4.1.table3.row2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "choices" property is an array of Interaction Components (4.1.4.1.table3.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "scale" property is an array of Interaction Components (4.1.4.1.table3.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "source" property is an array of Interaction Components (4.1.4.1.table3.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "target" property is an array of Interaction Components (4.1.4.1.table3.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "steps" property is an array of Interaction Components (4.1.4.1.table3.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Interaction Component is an Object (4.1.4.1.table4)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Interaction Component uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Interaction Component contains an "id" property (Multiplicity, 4.1.4.1.table4.row1.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Interaction Component\'s "id" property is a String (Type, 4.1.4.1.table4.row1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('Within an array of Interaction Components, the "id" property is unique (Multiplicty, 4.1.4.1.w)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Interaction Component uses the "description" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "description" property is a Language Map (Type, 4.1.4.1.table4.row2.a, 4.1.11.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition uses the "extensions" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "extension" property is an Object (Type, 4.1.4.1.table2.row1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement Reference is defined by the "objectType" of an "object" with value "StatementRef" (4.1.4.2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement Reference uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement Reference contains an "id" property (Multiplicity, 4.1.4.3.table1.row2.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement Reference\'s "id" property is a UUID (Type, 4.1.4.3.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement is defined by the "objectType" of an "object" with value "SubStatement" (4.1.4.3.d)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement follows the requirements of all Statements (4.1.4.3.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot have a Sub-Statement (4.1.4.2.g)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "id" property at the Statement level (4.1.4.2.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "stored" property (4.1.4.2.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "version" property (4.1.4.2.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "authority" property (4.1.4.2.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" property is an Object (Type, 4.1.5.table.row1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object uses a "scaled" property at most one time (Multiplicity, 4.1.5.1.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object\'s "scaled" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row1.a, SCORM 2004 4Ed)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object uses a "raw" property at most one time (Multiplicity, 4.1.5.1.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object\'s "raw" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row2.a, SCORM 2004 4Ed)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object uses a "min" property at most one time (Multiplicity, 4.1.5.1.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object\'s "min" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row3.a, SCORM 2004 4Ed)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object uses a "max" property at most one time (Multiplicity, 4.1.5.1.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object\'s "max" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row4.a, SCORM 2004 4Ed)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "result" property uses a "success" property at most one time (Multiplicity, 4.1.5.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "success" property is a Boolean (Type, 4.1.5.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "result" property uses a "completion" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "completion" property is a Boolean (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "result" property uses a "response" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "response" property is a String (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "result" property uses a "duration" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "duration" property is a formatted to ISO 8601 (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "duration" property keeps at least 0.01 seconds of precision (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "result" property uses an "extensions" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "extensions" property is an Object (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Extension is defined as an Object of any "extensions" property (Multiplicity, 5.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Extension\'s structure is that of "key"/"value" pairs (Format, 5.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Extension can be empty (Format, 5.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Extension "key" is an IRI (Format, 5.3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "context" property uses a "registration" property at most one time (Multiplicity, 4.1.6.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "registration" property is a UUID (Type, 4.1.6.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "context" property uses an "instructor" property at most one time (Multiplicity, 4.1.6.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "instructor" property is an Agent (Type, 4.1.6.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "context" property uses an "team" property at most one time (Multiplicity, 4.1.6.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "team" property is a Group (Type, 4.1.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "context" property uses a "contextActivities" property at most one time (Multiplicity, 4.1.6.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contextActivities" property is an Object (Type, 4.1.5.table1.row4.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contextActivities" property contains one or more key/value pairs (Format, 4.1..a, 4.1.6.2.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contextActivities" property\'s "key" has a value of "parent", "grouping", "category", or "other" (Format, 4.1.6.2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contextActivities" property\'s "value" is an Activity (Format, 4.1.6.2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A ContextActivity is defined as a single Activity of the "value" of the "contextActivities" property (definition)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "context" property uses an "revision" property at most one time (Multiplicity, 4.1.6.table1.row5.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "revision" property is a String (Type, 4.1.6.table1.row5.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (4.1.6.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "context" property uses an "platform" property at most one time (Multiplicity, 4.1.6.table1.row6.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "platform" property is a String (Type, 4.1.6.table1.row6.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement cannot contain both a "platform" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (4.1.6.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "context" property uses a "language" property at most one time (Multiplicity, 4.1.6.table1.row7.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "language" property is a String (Type, 4.1.6.table1.row7.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "language" property follows RFC5646 (Format, 4.1.6.table1.row7.a, RFC5646)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "context" property uses a "statement" property at most one time (Multiplicity, 4.1.6.table1.row8.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "statement" property is a Statement Reference (Type, 4.1.6.table1.row8.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "context" property uses an "extensions" property at most one time (Multiplicity, 4.1.6.table1.row9.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "timestamp" property is a TimeStamp (Type, 4.1.2.1.table1.row7.a, 4.1.2.1.table1.row7.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "stored" property is a TimeStamp (Type, 4.1.2.1.table1.row8.a, 4.1.2.1.table1.row8.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "authority" property is an Agent or Group (Type, 4.1.2.1.table1.row9.a, 4.1.2.1.table1.row9.b, 4.1.9.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "authority" property which is also a Group contains exactly two Agents (Type, 4.1.2.1.table1.row9.a, 4.1.2.1.table1.row9.b, 4.1.9.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "version" property enters the LRS with the value of "1.0.0" or is not used (Vocabulary, 4.1.10.e, 4.1.10.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "attachments" property is an array of Attachments (4.1.2.1.table1.row11.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Attachment is an Object (Definition, 4.1.11)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Attachment uses a "usageType" property exactly one time (Multiplicity, 4.1.11.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "usageType" property is an IRI (Multiplicity, 4.1.11.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Attachment uses a "display" property exactly one time (Multiplicity, 4.1.11.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Attachment uses a "description" property at most one time (Multiplicity, 4.1.11.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Attachment uses a "contentType" property exactly one time (Multiplicity, 4.1.11.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contentType" property is an Internet Media/MIME type (Format, 4.1.11.table1.row4.a, IETF.org)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Attachment uses a "length" property exactly one time (Multiplicity, 4.1.11.table1.row5.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "length" property is an Integer (Format, 4.1.11.table1.row5.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Attachment uses a "sha2" property exactly one time (Multiplicity, 4.1.11.table1.row6.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "sha2" property is a String (Format, 4.1.11.table1.row6.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Attachment uses a "fileUrl" property at most one time (Multiplicity, 4.1.11.table1.row7.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "fileUrl" property is an IRL (Format, 4.1.11.table1.row7.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "authority" property (4.1.12)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object is an Object (7.6)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses an "objectType" property exactly one time (Multiplicity, 7.6.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "objectType" property is a String and is "Person" (Format, Vocabulary, 7.6.table1.row1.a, 7.6.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses a "name" property at most one time (Multiplicity, 7.6.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "name" property is an Array of Strings (Multiplicity, 7.6.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses a "mbox" property at most one time (Multiplicity, 7.6.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "mbox" property is an Array of IRIs (Multiplicity, 7.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "mbox" entries have the form "mailto:emailaddress" (Format, 7.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "mbox_sha1sum" property is an Array of Strings (Multiplicity, 7.6.table1.row4.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses an "openid" property at most one time (Multiplicity, 7.6.table1.row5.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "openid" property is an Array of Strings (Multiplicity, 7.6.table1.row5.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses an "account" property at most one time (Multiplicity, 7.6.table1.row6.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "account" property is an Array of Account Objects (Multiplicity, 7.6.table1.row6.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-    });
-
-    describe('Learning Record Store (LRS) Requirements', function () {
-
     });
 
     describe('Document API Requirements', function () {
         describe('State Document API Test', function () {
-            it('should GET and include ETag (7.4) (7.4.b) (multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b)', function (done) {
+            it('should GET and include ETag (7.4) (7.4.b) (multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b)', function(done){
                 var parameters = {
                     activityId: "http://www.example.com/activityId/hashset",
                     agent: {
@@ -2268,8 +1719,8 @@
                     stateId: generateUUID()
                 };
                 var document = {
-                    "y": "car",
-                    "z": "van"
+                    "y" : "car",
+                    "z" : "van"
                 };
 
                 request({
@@ -2304,7 +1755,7 @@
                 });
             });
 
-            it('should fail GET when missing activityId (multiplicity, 7.4.table1.row1.b)', function (done) {
+            it('should fail GET when missing activityId (multiplicity, 7.4.table1.row1.b)', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -2330,7 +1781,7 @@
                 });
             });
 
-            it('should fail GET when activityId is not type of string (format, 7.4.table1.row1.a)', function (done) {
+            it('should fail GET when activityId is not type of string (format, 7.4.table1.row1.a)', function(done){
                 var parameters = {
                     activityId: {
                         "objectType": "object"
@@ -2359,7 +1810,7 @@
                 });
             });
 
-            it('should fail GET when missing agent (multiplicity, 7.4.table1.row2.b)', function (done) {
+            it('should fail GET when missing agent (multiplicity, 7.4.table1.row2.b)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     registration: "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
@@ -2379,7 +1830,7 @@
                 });
             });
 
-            it('should fail GET when agent is not type of JSON (format, 7.4.table1.row2.a)', function (done) {
+            it('should fail GET when agent is not type of JSON (format, 7.4.table1.row2.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: "fail",
@@ -2400,7 +1851,7 @@
                 });
             });
 
-            it('should fail GET when stateId is not type of String (format, 7.4.table1.row1.a)', function (done) {
+            it('should fail GET when stateId is not type of String (format, 7.4.table1.row1.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2429,7 +1880,7 @@
                 });
             });
 
-            it('should fail GET when registration is not type of UUID (format, 7.4.table1.row3.a)', function (done) {
+            it('should fail GET when registration is not type of UUID (format, 7.4.table1.row3.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2456,7 +1907,7 @@
                 });
             });
 
-            it('should fail GET all when since is not type of Timestamp (format, 7.4.table2.row4.a)', function (done) {
+            it('should fail GET all when since is not type of Timestamp (format, 7.4.table2.row4.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2483,7 +1934,7 @@
                 });
             });
 
-            it('should fail PUT when missing stateId', function (done) {
+            it('should fail PUT when missing stateId', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2509,7 +1960,7 @@
                 });
             });
 
-            it('should fail PUT when missing activityId (multiplicity, 7.4.table1.row1.b)', function (done) {
+            it('should fail PUT when missing activityId (multiplicity, 7.4.table1.row1.b)', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -2535,7 +1986,7 @@
                 });
             });
 
-            it('should fail PUT when activityId is not type of string (format, 7.4.table1.row1.a)', function (done) {
+            it('should fail PUT when activityId is not type of string (format, 7.4.table1.row1.a)', function(done){
                 var parameters = {
                     activityId: {
                         "objectType": "object"
@@ -2564,7 +2015,7 @@
                 });
             });
 
-            it('should fail PUT when missing agent (multiplicity, 7.4.table1.row2.b)', function (done) {
+            it('should fail PUT when missing agent (multiplicity, 7.4.table1.row2.b)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     registration: "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
@@ -2584,7 +2035,7 @@
                 });
             });
 
-            it('should fail PUT when agent is not type of JSON (format, 7.4.table1.row2.a)', function (done) {
+            it('should fail PUT when agent is not type of JSON (format, 7.4.table1.row2.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: "fail",
@@ -2605,7 +2056,7 @@
                 });
             });
 
-            it('should fail PUT when stateId is not type of String (format, 7.4.table1.row1.a)', function (done) {
+            it('should fail PUT when stateId is not type of String (format, 7.4.table1.row1.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2634,7 +2085,7 @@
                 });
             });
 
-            it('should fail PUT when registration is not type of UUID (format, 7.4.table1.row3.a)', function (done) {
+            it('should fail PUT when registration is not type of UUID (format, 7.4.table1.row3.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2661,7 +2112,7 @@
                 });
             });
 
-            it('should fail POST when missing stateId', function (done) {
+            it('should fail POST when missing stateId', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2687,7 +2138,7 @@
                 });
             });
 
-            it('should fail POST when missing activityId (multiplicity, 7.4.table1.row1.b)', function (done) {
+            it('should fail POST when missing activityId (multiplicity, 7.4.table1.row1.b)', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -2713,7 +2164,7 @@
                 });
             });
 
-            it('should fail POST when activityId is not type of string (format, 7.4.table1.row1.a)', function (done) {
+            it('should fail POST when activityId is not type of string (format, 7.4.table1.row1.a)', function(done){
                 var parameters = {
                     activityId: {
                         "objectType": "object"
@@ -2742,7 +2193,7 @@
                 });
             });
 
-            it('should fail POST when missing agent (multiplicity, 7.4.table1.row2.b)', function (done) {
+            it('should fail POST when missing agent (multiplicity, 7.4.table1.row2.b)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     registration: "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
@@ -2762,7 +2213,7 @@
                 });
             });
 
-            it('should fail POST when agent is not type of JSON (format, 7.4.table1.row2.a)', function (done) {
+            it('should fail POST when agent is not type of JSON (format, 7.4.table1.row2.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: "fail",
@@ -2783,7 +2234,7 @@
                 });
             });
 
-            it('should fail POST when stateId is not type of String (format, 7.4.table1.row1.a)', function (done) {
+            it('should fail POST when stateId is not type of String (format, 7.4.table1.row1.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2812,7 +2263,7 @@
                 });
             });
 
-            it('should fail POST when registration is not type of UUID (format, 7.4.table1.row3.a)', function (done) {
+            it('should fail POST when registration is not type of UUID (format, 7.4.table1.row3.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2839,7 +2290,7 @@
                 });
             });
 
-            it('should fail DELETE when missing activityId (multiplicity, 7.4.table1.row1.b)', function (done) {
+            it('should fail DELETE when missing activityId (multiplicity, 7.4.table1.row1.b)', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -2865,7 +2316,7 @@
                 });
             });
 
-            it('should fail DELETE when activityId is not type of string (format, 7.4.table1.row1.a)', function (done) {
+            it('should fail DELETE when activityId is not type of string (format, 7.4.table1.row1.a)', function(done){
                 var parameters = {
                     activityId: {
                         "objectType": "object"
@@ -2894,7 +2345,7 @@
                 });
             });
 
-            it('should fail DELETE when missing agent (multiplicity, 7.4.table1.row2.b)', function (done) {
+            it('should fail DELETE when missing agent (multiplicity, 7.4.table1.row2.b)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     registration: "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
@@ -2914,7 +2365,7 @@
                 });
             });
 
-            it('should fail DELETE when agent is not type of JSON (format, 7.4.table1.row2.a)', function (done) {
+            it('should fail DELETE when agent is not type of JSON (format, 7.4.table1.row2.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: "fail",
@@ -2935,7 +2386,7 @@
                 });
             });
 
-            it('should fail DELETE when stateId is not type of String (format, 7.4.table1.row1.a)', function (done) {
+            it('should fail DELETE when stateId is not type of String (format, 7.4.table1.row1.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -2964,7 +2415,7 @@
                 });
             });
 
-            it('should fail DELETE when registration is not type of UUID (format, 7.4.table1.row3.a)', function (done) {
+            it('should fail DELETE when registration is not type of UUID (format, 7.4.table1.row3.a)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -3320,7 +2771,7 @@
                 });
             });
 
-            it('should GET all (Array) when missing stateId (7.4.b)', function (done) {
+            it('should GET all (Array) when missing stateId (7.4.b)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     registration: "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
@@ -3348,14 +2799,14 @@
                 });
             });
 
-            it('should GET all (Array) using since (7.4.c) (7.4.table2.row4) (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function (done) {
+            it('should GET all (Array) using since (7.4.c) (7.4.table2.row4) (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
                         objectType: 'Agent',
                         account: {
                             homePage: 'http://www.example.com/agentId/1',
-                            name: 'Ricky James'
+                            name: 'Rick James'
                         }
                     },
                     registration: 'ec531277-b57b-4c15-8d91-d292c5b2b8f7',
@@ -3372,7 +2823,7 @@
                         objectType: 'Agent',
                         account: {
                             homePage: 'http://www.example.com/agentId/1',
-                            name: 'Ricky James'
+                            name: 'Rick James'
                         }
                     },
                     registration: 'ec531277-b57b-4c15-8d91-d292c5b2b8f7',
@@ -3440,7 +2891,7 @@
                 });
             });
 
-            it('should GET all (Array) restricted to registration using since', function (done) {
+            it('should GET all (Array) restricted to registration using since', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -3534,7 +2985,7 @@
                 });
             });
 
-            it('should DELETE (7.4.b)', function (done) {
+            it('should DELETE (7.4.b)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -3590,7 +3041,7 @@
                 });
             });
 
-            it('should DELETE all (Array) (7.4.d)', function (done) {
+            it('should DELETE all (Array) (7.4.d)', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -3698,7 +3149,7 @@
                 });
             });
 
-            it('should DELETE all (Array) restricted to registration', function (done) {
+            it('should DELETE all (Array) restricted to registration', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     agent: {
@@ -3813,14 +3264,14 @@
         });
 
         describe('Activity Document API Test', function () {
-            it('should GET', function (done) {
+            it('should GET', function(done){
                 var parameters = {
                     activityId: "http://www.example.com/activityId/hashset",
                     profileId: generateUUID()
                 };
                 var document = {
-                    "y": "car",
-                    "z": "van"
+                    "y" : "car",
+                    "z" : "van"
                 };
 
                 request({
@@ -3855,7 +3306,7 @@
                 });
             });
 
-            it('should fail GET when missing activityId', function (done) {
+            it('should fail GET when missing activityId', function(done){
                 var parameters = {
                     profileId: generateUUID()
                 };
@@ -3873,7 +3324,7 @@
                 });
             });
 
-            it('should fail GET when activityId is not type of string', function (done) {
+            it('should fail GET when activityId is not type of string', function(done){
                 var parameters = {
                     activityId: {
                         "objectType": "object"
@@ -3894,7 +3345,7 @@
                 });
             });
 
-            it('should fail GET when profileId is not type of String', function (done) {
+            it('should fail GET when profileId is not type of String', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     profileId: {
@@ -3915,7 +3366,7 @@
                 });
             });
 
-            it('should fail GET all when since is not type of Timestamp', function (done) {
+            it('should fail GET all when since is not type of Timestamp', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     since: "should fail"
@@ -3934,7 +3385,7 @@
                 });
             });
 
-            it('should fail PUT when missing profileId', function (done) {
+            it('should fail PUT when missing profileId', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset'
                 };
@@ -3952,7 +3403,7 @@
                 });
             });
 
-            it('should fail PUT when missing activityId', function (done) {
+            it('should fail PUT when missing activityId', function(done){
                 var parameters = {
                     profileId: generateUUID()
                 };
@@ -3970,7 +3421,7 @@
                 });
             });
 
-            it('should fail PUT when activityId is not type of string', function (done) {
+            it('should fail PUT when activityId is not type of string', function(done){
                 var parameters = {
                     activityId: {
                         "objectType": "object"
@@ -3991,7 +3442,7 @@
                 });
             });
 
-            it('should fail PUT when profileId is not type of String', function (done) {
+            it('should fail PUT when profileId is not type of String', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     profileId: {
@@ -4012,7 +3463,7 @@
                 });
             });
 
-            it('should fail POST when missing profileId', function (done) {
+            it('should fail POST when missing profileId', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset'
                 };
@@ -4030,7 +3481,7 @@
                 });
             });
 
-            it('should fail POST when missing activityId', function (done) {
+            it('should fail POST when missing activityId', function(done){
                 var parameters = {
                     profileId: generateUUID()
                 };
@@ -4048,7 +3499,7 @@
                 });
             });
 
-            it('should fail POST when activityId is not type of string', function (done) {
+            it('should fail POST when activityId is not type of string', function(done){
                 var parameters = {
                     activityId: {
                         "objectType": "object"
@@ -4069,7 +3520,7 @@
                 });
             });
 
-            it('should fail POST when profileId is not type of String', function (done) {
+            it('should fail POST when profileId is not type of String', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     profileId: {
@@ -4090,7 +3541,7 @@
                 });
             });
 
-            it('should fail DELETE when missing profileId', function (done) {
+            it('should fail DELETE when missing profileId', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset'
                 };
@@ -4108,7 +3559,7 @@
                 });
             });
 
-            it('should fail DELETE when missing activityId', function (done) {
+            it('should fail DELETE when missing activityId', function(done){
                 var parameters = {
                     profileId: generateUUID()
                 };
@@ -4126,7 +3577,7 @@
                 });
             });
 
-            it('should fail DELETE when activityId is not type of string', function (done) {
+            it('should fail DELETE when activityId is not type of string', function(done){
                 var parameters = {
                     activityId: {
                         "objectType": "object"
@@ -4147,7 +3598,7 @@
                 });
             });
 
-            it('should fail DELETE when profileId is not type of String', function (done) {
+            it('should fail DELETE when profileId is not type of String', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     profileId: {
@@ -4287,7 +3738,7 @@
                 });
             });
 
-            it('should GET all (Array) when missing profileId', function (done) {
+            it('should GET all (Array) when missing profileId', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset'
                 };
@@ -4307,7 +3758,7 @@
                 });
             });
 
-            it('should GET all (Array) using since', function (done) {
+            it('should GET all (Array) using since', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     profileId: generateUUID()
@@ -4660,7 +4111,7 @@
                 });
             });
 
-            it('should DELETE', function (done) {
+            it('should DELETE', function(done){
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset',
                     profileId: generateUUID()
@@ -4710,7 +4161,7 @@
         });
 
         describe('Agent Document API Test', function () {
-            it('should GET', function (done) {
+            it('should GET', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -4722,8 +4173,8 @@
                     profileId: generateUUID()
                 };
                 var document = {
-                    "y": "car",
-                    "z": "van"
+                    "y" : "car",
+                    "z" : "van"
                 };
 
                 request({
@@ -4758,7 +4209,7 @@
                 });
             });
 
-            it('should fail GET when missing agent', function (done) {
+            it('should fail GET when missing agent', function(done){
                 var parameters = {
                     profileId: generateUUID()
                 };
@@ -4776,7 +4227,7 @@
                 });
             });
 
-            it('should fail GET when agent is not type of actor', function (done) {
+            it('should fail GET when agent is not type of actor', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "object"
@@ -4797,7 +4248,7 @@
                 });
             });
 
-            it('should fail GET when profileId is not type of String', function (done) {
+            it('should fail GET when profileId is not type of String', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -4824,7 +4275,7 @@
                 });
             });
 
-            it('should fail GET all when since is not type of Timestamp', function (done) {
+            it('should fail GET all when since is not type of Timestamp', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -4849,7 +4300,7 @@
                 });
             });
 
-            it('should fail PUT when missing profileId', function (done) {
+            it('should fail PUT when missing profileId', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -4873,7 +4324,7 @@
                 });
             });
 
-            it('should fail PUT when missing agent', function (done) {
+            it('should fail PUT when missing agent', function(done){
                 var parameters = {
                     profileId: generateUUID()
                 };
@@ -4891,7 +4342,7 @@
                 });
             });
 
-            it('should fail PUT when agent is not type of string', function (done) {
+            it('should fail PUT when agent is not type of string', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "object"
@@ -4912,7 +4363,7 @@
                 });
             });
 
-            it('should fail PUT when profileId is not type of String', function (done) {
+            it('should fail PUT when profileId is not type of String', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -4939,7 +4390,7 @@
                 });
             });
 
-            it('should fail POST when missing profileId', function (done) {
+            it('should fail POST when missing profileId', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -4963,7 +4414,7 @@
                 });
             });
 
-            it('should fail POST when missing agent', function (done) {
+            it('should fail POST when missing agent', function(done){
                 var parameters = {
                     profileId: generateUUID()
                 };
@@ -4981,7 +4432,7 @@
                 });
             });
 
-            it('should fail POST when agent is not type of string', function (done) {
+            it('should fail POST when agent is not type of string', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "object"
@@ -5002,7 +4453,7 @@
                 });
             });
 
-            it('should fail POST when profileId is not type of String', function (done) {
+            it('should fail POST when profileId is not type of String', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -5029,7 +4480,7 @@
                 });
             });
 
-            it('should fail DELETE when missing profileId', function (done) {
+            it('should fail DELETE when missing profileId', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -5053,7 +4504,7 @@
                 });
             });
 
-            it('should fail DELETE when missing agent', function (done) {
+            it('should fail DELETE when missing agent', function(done){
                 var parameters = {
                     profileId: generateUUID()
                 };
@@ -5071,7 +4522,7 @@
                 });
             });
 
-            it('should fail DELETE when agent is not type of string', function (done) {
+            it('should fail DELETE when agent is not type of string', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "object"
@@ -5092,7 +4543,7 @@
                 });
             });
 
-            it('should fail DELETE when profileId is not type of String', function (done) {
+            it('should fail DELETE when profileId is not type of String', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -5256,7 +4707,7 @@
                 });
             });
 
-            it('should GET all (Array) when missing profileId', function (done) {
+            it('should GET all (Array) when missing profileId', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -5282,7 +4733,7 @@
                 });
             });
 
-            it('should GET all (Array) using since', function (done) {
+            it('should GET all (Array) using since', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
@@ -5683,7 +5134,7 @@
                 });
             });
 
-            it('should DELETE', function (done) {
+            it('should DELETE', function(done){
                 var parameters = {
                     agent: {
                         "objectType": "Agent",
