@@ -7,12 +7,12 @@
  * Created by vijay.budhram on 7/9/14.
  * Riptide Software
  */
-(function () {
+(function (process) {
     "use strict";
 
     // Set the endpoint of the LRS you are testing.
     // For time being, it is assumed that the LRS endpoint does not require authentication.
-    var LRS_ENDPOINT = 'http://test.localhost.com/lrs';
+    var LRS_ENDPOINT = process.env.LRS_ENDPOINT || 'http://asdf.elmnts-test.com:8001/lrs';
 
     var crypto = require('crypto');
     var request = require('request');
@@ -6988,4 +6988,4 @@
             });
         });
     });
-}());
+}(process));
