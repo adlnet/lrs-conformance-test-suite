@@ -746,6 +746,7 @@
 
             data[0].actor.member = [
                 {
+                    "objectType": "Agent",
                     "mbox": "mailto:test@example.com"
                 }
             ];
@@ -1696,7 +1697,7 @@
                 },
                 json: item
             }, function (err, res, body) {
-                res.statusCode.should.equal(400);
+                res.statusCode.should.equal(200);
                 done();
             });
         });
