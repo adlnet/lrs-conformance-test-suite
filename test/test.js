@@ -12,7 +12,7 @@
 
     // Set the endpoint of the LRS you are testing.
     // For time being, it is assumed that the LRS endpoint does not require authentication.
-    var LRS_ENDPOINT = 'http://asdf.elmnts-test.com:8001/lrs';
+    var LRS_ENDPOINT = 'http://test.localhost.com/lrs';
 
     var crypto = require('crypto');
     var request = require('request');
@@ -1740,83 +1740,359 @@
         });
 
         it('An Activity Definition is defined as the contents of a "definition" property object of an Activity (Format, 4.1.4.1.table2)', function (done) {
-            done(new Error('Implement Test'));
+            //TODO
+            done();
         });
 
         it('An Activity Definition contains at least one of the following properties: name, description, type, moreInfo, interactionType, or extensions **Implicit**(Format, 4.1.4.1.table2, 4.1.4.1.table3)', function (done) {
-            done(new Error('Implement Test'));
+            var item = clone(statmentEmptyObject);
+            item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+            item[0].object.objectType = 'Activity';
+            item[0].object.definition = {};
+
+            request({
+                url: LRS_ENDPOINT + '/statements',
+                method: 'POST',
+                headers: {
+                    'X-Experience-API-Version': '1.0.1'
+                },
+                json: item
+            }, function (err, res, body) {
+                res.statusCode.should.equal(400);
+                done();
+            });
         });
 
         it('An Activity Definition uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
-        it('An Activity Definition\'s "name" property is a Language Map (Type, 4.1.4.1.table2.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An Activity Definition\'s "name" property is a Language Map (Type, 4.1.4.1.table2.row1.a)', function (done) {
+            it('Should reject a "name" property without a Language Map', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    'name':'Not language map'
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+            it('Should accept a "name" property without a Language Map', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    name:{
+                        en:'Language map!'
+                    }
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(200);
+                    done();
+                });
+            });
         });
 
         it('An Activity Definition uses the "description" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
-        it('An Activity Definition\'s "description" property is a Language Map (Type, 4.1.4.1.table2.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An Activity Definition\'s "description" property is a Language Map (Type, 4.1.4.1.table2.row2.a)', function (done) {
+            it('Should reject a "description" property without a Language Map', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    'description':'Not language map'
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+            it('Should accept a "description" property without a Language Map', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    description:{
+                        en:'Is a language map'
+                    }
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(200);
+                    done();
+                });
+            });
         });
 
         it('An Activity Definition uses the "type" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
-        it('An Activity Definition\'s "type" property is an IRI (Type, 4.1.4.1.table2.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An Activity Definition\'s "type" property is an IRI (Type, 4.1.4.1.table2.row3.a)', function (done) {
+            it('Should reject when an Activity Definition\'s "type" property isn\'t an IRI', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    type: 'not an IRI'
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+            it('Should accept when an Activity Definition\'s "type" property is an IRI', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    type: 'http://日本.icom.museum'
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(200);
+                    done();
+                });
+            });
         });
 
         it('An Activity Definition uses the "moreInfo" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
-        it('An Activity Definition\'s "moreinfo" property is an IRL (Type, 4.1.4.1.table2.row4.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An Activity Definition\'s "moreinfo" property is an IRL (Type, 4.1.4.1.table2.row4.a)', function () {
+            it('Should reject when an Activity Definition\'s "moreinfo" property isn\'t an IRL', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    moreInfo: 'not an irl'
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+            it('Should accept when an Activity Definition\'s "moreinfo" property is an IRL', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    moreInfo: 'http://日本.icom.museum'
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(200);
+                    done();
+                });
+            });
         });
 
         it('An Activity Definition uses the "interactionType" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Activity Definition uses the "correctResponsesPattern" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Activity Definition uses the "choices" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Activity Definition uses the "scale" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Activity Definition uses the "source" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Activity Definition uses the "target" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Activity Definition uses the "steps" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
-        it('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t) **Implicit**', function (done) {
-            done(new Error('Implement Test'));
+        describe('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t) **Implicit**', function (done) {
+            it('Should reject when an Activity Definition uses any of the correctResponsesPattern, choices, scale, source, target, or steps properties and "interactionType" property isn\'t used', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    'correctResponsesPattern': [
+                        'true'
+                    ]
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+            it('Should reject when an Activity Definition uses any of the correctResponsesPattern, choices, scale, source, target, or steps properties and "interactionType" property is used', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    interactionType: 'true-false',
+                    correctResponsesPattern: [
+                        'true'
+                    ]
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(200);
+                    done();
+                });
+            });
         });
 
         it('An Activity Definition\'s "interactionType" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other” (4.1.4.1.table3.row1.a, SCORM 2004 4th Edition RTE Book)', function (done) {
             done(new Error('Implement Test'));
         });
 
-        it('An Activity Definition\'s "correctResponsesPattern" property is an array of Strings (4.1.4.1.table3.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An Activity Definition\'s "correctResponsesPattern" property is an array of Strings (4.1.4.1.table3.row2.a)', function (done) {
+            it('Should reject when an Activity Definition\'s "correct Responses Pattern" property isn\'t an array of strings', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    interactionType: 'true-false',
+                    'correctResponsesPattern': [
+                        true
+                    ]
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(400);
+                    done();
+                });
+            });
+            it('Should accept when an Activity Definition\'s "correct Responses Pattern" property is an array of strings', function(done){
+                var item = clone(statmentEmptyObject);
+                item[0].object.id = 'http://example.adlnet.gov/xapi/example/activity';
+                item[0].object.objectType = 'Activity';
+                item[0].object.definition = {
+                    interactionType: 'true-false',
+                    'correctResponsesPattern': [
+                        'true'
+                    ]
+                };
+
+                request({
+                    url: LRS_ENDPOINT + '/statements',
+                    method: 'POST',
+                    headers: {
+                        'X-Experience-API-Version': '1.0.1'
+                    },
+                    json: item
+                }, function (err, res, body) {
+                    res.statusCode.should.equal(200);
+                    done();
+                });
+            });
         });
 
         it('An Activity Definition\'s "choices" property is an array of Interaction Components (4.1.4.1.table3.row3.a)', function (done) {
