@@ -1,0 +1,9 @@
+{
+  "objectType": "Group",
+  "name": "Group Anonymous",
+  "account": {
+    "homePage": "http://www.example.com",
+    "name": "xAPI account name"
+  },
+  "member": [ "__../agents/" ]
+}
