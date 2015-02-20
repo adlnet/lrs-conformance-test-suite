@@ -1,6 +1,0 @@
-{
-  "objectType": "Group",
-  "name": "Group Anonymous",
-  "openid": "http://openid.example.org/12345",
-  "member": [ "__../agents/" ]
-}
