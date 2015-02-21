@@ -1,8 +1,17 @@
+/**
+ * Description : This is a test suite that tests an LRS endpoint based on the testing requirements document
+ * found at https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
+ *
+ * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
+ *
+ * Created by fwhorton on 2/20/15.
+ * Riptide Software
+ */
 var path = require('path');
 if (!process.env.EB_NODE_COMMAND) {
     (require('node-env-file'))(path.join(__dirname, './.env'));
 }
-(function(module, fs, extend, uuid, chai, lodash) {
+(function(module, fs, extend, uuid, lodash) {
 
     /** Appears to use absolute path */
     var CONFIG_FOLDER = './test/v1_0_2/configs';
@@ -158,16 +167,6 @@ if (!process.env.EB_NODE_COMMAND) {
             return URL_STATEMENTS;
         },
         /**
-         * Returns Chai expect.
-         * @returns {Function}
-         */
-        getExpect: function() {
-            chai.use(require('dirty-chai'));
-            chai.use(require('chai-as-promised'));
-            chai.config.includeStack = true;
-            return chai.expect;
-        },
-        /**
          * Returns Object whose keys are based on folder structure in template folder and value is
          * a function which returns JSON data.  For example: getJsonMapping().verbs.default returns
          * the JSON data from the verbs folder in the default.json file.
@@ -178,7 +177,7 @@ if (!process.env.EB_NODE_COMMAND) {
 
             var folders = fs.readdirSync(TEMPLATE_FOLDER);
             folders.forEach(function (folder) {
-                var fileMapping = {}
+                var fileMapping = {};
                 mapping[folder] = fileMapping;
 
                 var files = fs.readdirSync(TEMPLATE_FOLDER + '/' + folder);
@@ -215,10 +214,12 @@ if (!process.env.EB_NODE_COMMAND) {
         /**
          * Creates template and converts the mapping to JSON objects.
          *
-         * @param {Object} mapper - JSON mapper
-         * @returns {Array} list - Array list of string mappings
+         * @param {Array} list - Array list of converted string mappings to JSON
+         * @returns {Object}
          */
-        getTemplate: function(mapper, list) {
+        getTemplate: function(list) {
+            var mapper = module.exports.getJsonMapping();
+
             var templates = []
             list.forEach(function (item) {
                 var key = Object.keys(item)[0];
@@ -292,4 +293,4 @@ if (!process.env.EB_NODE_COMMAND) {
             }
         });
     };
-}(module, require('fs'), require('extend'), require('node-uuid'), require('chai'), require('lodash-node')));
+}(module, require('fs'), require('extend'), require('node-uuid'), require('lodash-node')));

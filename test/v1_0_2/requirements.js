@@ -12,7 +12,6 @@
 
     describe.only('Conformance Requirements', function () {
 
-        var mapping = helper.getJsonMapping();
         var configurations = helper.getTestConfiguration();
 
         configurations.forEach(function(configuration) {
@@ -20,10 +19,24 @@
 
                 configuration.config.forEach(function(test) {
                     it(test.name, function (done) {
+                        if (!test.template && ! test.override) {
+                            done('Invalid test: "' + test.name);
+                            return;
+                        }
+
                         try {
-                            var template = helper.getTemplate(mapping, test.template);
-                            template.push(test.override);
-                            var data = helper.createTestObject(template);
+                            var data = {};
+
+                            if (test.template) {
+                                // builds template and combines override
+                                var template = helper.getTemplate(test.template);
+                                template.push(test.override);
+                                // this handles if no override
+                                data = helper.createTestObject(template);
+                            } else {
+                                // uses override
+                                data = test.override;
+                            }
 
                             var promise = request(helper.getEndpoint())
                                 .post(helper.getEndpointStatements())
