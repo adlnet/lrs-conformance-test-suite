@@ -63,6 +63,36 @@ if (!process.env.EB_NODE_COMMAND) {
             return newHeader;
         },
         /**
+         * Convert template mapping to JSON objects.  Assumes there is one key / value and templates
+         * are denoted by wrapping the folder.filename (without extension) with double curly braces.
+         *
+         * @param {Array} list - Array list of converted string mappings to JSON
+         * @returns {Object}
+         */
+        convertTemplate: function(list) {
+            var mapper = module.exports.getJsonMapping();
+
+            var templates = []
+            list.forEach(function (item) {
+                var key = Object.keys(item)[0];
+                var value = item[key];
+
+                var object = {};
+                var template;
+                if (typeof value === 'string'
+                    && value.indexOf('{{') === 0
+                    && value.indexOf('}}') === value.length -2) {
+                    // if value appears to be template mapping '{{...}}'
+                    template = createMapping(mapper, item[key]);
+                    object[key] = template;
+                    templates.push(object);
+                } else {
+                    templates.push(item);
+                }
+            });
+            return templates;
+        },
+        /**
          * Iterates through array of objects.  Each value in array needs to be a JSON
          * object with one key / value.  This will merge all JSONs into one object
          * and return the result.
@@ -73,12 +103,12 @@ if (!process.env.EB_NODE_COMMAND) {
          * Index 2 (team) object is merged into Index 1 (context) value.
          *
          * var array = [
-         *   { statement: DATA_MAPPING.statements.authority },
-         *   { context: DATA_MAPPING.contexts.team },
+         *   { statement: '{{statements.authority}}' },
+         *   { context: '{{contexts.team}}' },
          *   {
          *     team: {
          *       attribute: {
-         *         "key": "value"
+         *         'key': 'value'
          *       }
          *     }
          *   }
@@ -167,7 +197,7 @@ if (!process.env.EB_NODE_COMMAND) {
             return URL_STATEMENTS;
         },
         /**
-         * Returns Object whose keys are based on folder structure in template folder and value is
+         * Returns Object whose keys are based on folder structure in templates folder and value is
          * a function which returns JSON data.  For example: getJsonMapping().verbs.default returns
          * the JSON data from the verbs folder in the default.json file.
          * @returns {Object}
@@ -212,26 +242,6 @@ if (!process.env.EB_NODE_COMMAND) {
             return shasum.digest('hex');
         },
         /**
-         * Creates template and converts the mapping to JSON objects.
-         *
-         * @param {Array} list - Array list of converted string mappings to JSON
-         * @returns {Object}
-         */
-        getTemplate: function(list) {
-            var mapper = module.exports.getJsonMapping();
-
-            var templates = []
-            list.forEach(function (item) {
-                var key = Object.keys(item)[0];
-                var template = createMapping(mapper, item[key]);
-
-                var object = {};
-                object[key] = template;
-                templates.push(object);
-            });
-            return templates;
-        },
-        /**
          * Creates test configuration object which combines all configurations into a single object
          * which will be iterated over to run tests dynamically.
          */
@@ -271,7 +281,9 @@ if (!process.env.EB_NODE_COMMAND) {
         var object = {};
 
         var nested = mapper;
-        var mapping = string.split('.');
+        var cleanString = string.substring(2);
+        cleanString = cleanString.substring(0, cleanString.length-2);
+        var mapping = cleanString.split('.');
         mapping.forEach(function (item) {
             nested = nested[item];
             if (nested) {

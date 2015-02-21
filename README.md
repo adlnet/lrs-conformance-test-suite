@@ -15,7 +15,7 @@ $ npm install
 
 ### Configuration
 
-Modify the LRS endpoint variable in test/test.js, to point to the LRS you are testing. This endpoint must not require authentication.
+Modify the LRS endpoint variable in test/.env, to point to the LRS you are testing. This endpoint must not require authentication.
 
 ```js
 var LRS_ENDPOINT = 'http://testclient.elmnts-test.com/lrs';
@@ -32,7 +32,71 @@ The testing framework used in this project is [Mocha](http://visionmedia.github.
 
 List of [Mocha commands](http://visionmedia.github.io/mocha/#mocha.opts)
 
+### Creating Tests
+
+
 ### Running Tests
+
+Within WebStorm (NodeJs):
+    Install dependencies using 'npm install' in the terminal.
+    Select 'Run' (from menu), then select 'Edit Configuration'
+    Click '+' symbol in top left of new window and select 'Mocha'
+    Edit 'Name' (if desired)
+    Edit 'Test Directory' to use the 'test/v1_0_2' folder
+    Run test using name provided
+
+Tests are run dynamically by using the '/configs' folder.  The structure is an array of JSON objects.  The name of the object is the requirement per xAPI specification (https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md).
+
+Everything within the config array defines a test that validates the requirement.
+    The 'name' key describes the test.
+    The 'template' key is an array of JSON objects (Currently only supporting JSON objects with one key).
+        Items in template use a single key with a reference to the JSON file to construct the template object.  Then values are overriden by subsequent items in array.  Template JSON files are referenced with a prefix of '{{' folder of template (period) filename <without extension> and suffix '}}' i.e. '{{statements.default}}'.  Templates mappings are replaced with their JSON object.
+            Examples how JSON objects are merged with subsequent items in array (Currently only supporting JSON objects with one key):
+                Example 1 shows how the second item in array can modify a specific attribute's value in the first item's JSON value -
+                templates: [
+                    {
+                        statement: {
+                           actor: { key: 'value' },
+                           verb: { key: 'value' },
+                           object: { key: 'value' }
+                       }
+                    },
+                    {
+                        actor: { key: 'another_value' }
+                    }
+                ]
+                The result are merged with the key 'actor' from the second item in array referencing the first item's value of 'actor' and the value is replaced -
+                result: {
+                        statement: {
+                           actor: { key: 'another_value' },
+                           verb: { key: 'value' },
+                           object: { key: 'value' }
+                       }
+                }
+
+                Example 2 shows how the second item in array can add a specific attribute in the first item's JSON value -
+                templates: [
+                    {
+                        statement: {
+                           actor: { key: 'value' },
+                           verb: { key: 'value' },
+                           object: { key: 'value' }
+                       }
+                    },
+                    {
+                        actor: { another_key: 'value' }
+                    }
+                ]
+                The result are merged with the key 'actor' from the second item in array referencing the first item's value of 'actor' and the their attributes are merged -
+                result: {
+                        statement: {
+                           actor: { key: 'value', another_key: 'value' },
+                           verb: { key: 'value' },
+                           object: { key: 'value' }
+                       }
+
+    The 'json' key is used to pass in a JSON object without templating.
+    The 'expect' key is an array with values that are applied to super-request expect().
 
 At command line type:
 

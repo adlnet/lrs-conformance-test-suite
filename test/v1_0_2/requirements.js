@@ -19,29 +19,32 @@
 
                 configuration.config.forEach(function(test) {
                     it(test.name, function (done) {
-                        if (!test.template && ! test.override) {
+                        if (!test.templates && !test.json) {
                             done('Invalid test: "' + test.name);
                             return;
                         }
 
+                        if (configuration.name.indexOf('(4.1.2.1.table1.row1, 4.1.4.2.a)') >= 0) {
+                            console.log('STOP');
+                        }
+
                         try {
                             var data = {};
-
-                            if (test.template) {
-                                // builds template and combines override
-                                var template = helper.getTemplate(test.template);
-                                template.push(test.override);
+                            if (test.templates) {
+                                // convert template mapping to JSON objects
+                                var converted = helper.convertTemplate(test.templates);
                                 // this handles if no override
-                                data = helper.createTestObject(template);
+                                var mockObject = helper.createTestObject(converted);
+                                var key = Object.keys(mockObject);
+                                data = mockObject[key];
                             } else {
-                                // uses override
-                                data = test.override;
+                                data = test.json;
                             }
 
                             var promise = request(helper.getEndpoint())
                                 .post(helper.getEndpointStatements())
                                 .headers(helper.addHeaderXapiVersion({}))
-                                .json(data.statement);
+                                .json(data);
 
                             promise.expect.apply(promise, test.expect).end(done);
                         } catch(error) {
