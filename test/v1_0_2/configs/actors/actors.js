@@ -13,10 +13,13 @@
     // defines overwriting data
     var INVALID_OBJECT = {key: 'value'};
     var INVALID_OBJECTTYPE_NUMERIC = {objectType: 123};
-    var INVALID_OBJECTTYPE_OBJECT = {objectType: {key: 'value'}};
+    var INVALID_OBJECTTYPE_OBJECT = {objectType: INVALID_OBJECT};
     var INVALID_OBJECTTYPE_NAME_NUMERIC = {name: 123};
-    var INVALID_OBJECTTYPE_NAME_OBJECT = {name: {key: "value"}};
+    var INVALID_OBJECTTYPE_NAME_OBJECT = {name: INVALID_OBJECT};
     var INVALID_MAIL_TO_IRI = 'http://should.fail.com';
+    var INVALID_URI = 'abc://should.fail.com';
+    var INVALID_ACCOUNT_HOMEPAGE_IRL = {account: {homePage: INVALID_URI}};
+    var INVALID_ACCOUNT_NAME_IRL = {account: {name: INVALID_OBJECT}};
 
     // configures tests
     module.exports.config = function () {
@@ -802,6 +805,816 @@
                             {context: '{{contexts.instructor}}'},
                             {instructor: '{{groups.identified_mbox_sha1sum}}'},
                             {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An "open_id" property is a URI (Type, 4.1.2.3.table1.row3.a)',
+                config: [
+                    {
+                        name: 'statement actor "agent openid" not URI',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "group openid" not URI',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "agent openid" not URI',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "group openid" not URI',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "agent openid" not URI',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "group openid" not URI',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "group openid" not URI',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "agent openid" not URI',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "group openid" not URI',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "agent openid" not URI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "group openid" not URI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent openid" not URI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group openid" not URI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group openid" not URI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            {openid: INVALID_URI}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Account Object is the "account" property of a Group or Agent (Definition, 4.1.2.4)',
+                config: [
+                    {
+                        name: 'statement actor "agent account" property exists',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement actor "group account" property exists',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement authority "agent account" property exists',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement authority "group account" property exists',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context instructor "agent account" property exists',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context instructor "group account" property exists',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context team "group account" property exists',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement as "agent account" property exists',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement as "group account" property exists',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s "agent account" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s "group account" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent account" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group account" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group account" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'}
+                        ],
+                        expect: [200]
+                    }
+                ]
+            },
+            {
+                name: 'An Account Object uses the "homePage" property (Multiplicity, 4.1.2.4.table1.row1.b)',
+                config: [
+                    {
+                        name: 'statement actor "agent" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "group" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "agent" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "group" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "agent" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "group" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "group" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "agent" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "group" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "agent" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "group" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group" account "homePage" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_homepage}}'}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Account Object\'s "homePage" property is an IRL (Type, 4.1.2.4.table1.row1.a)',
+                config: [
+                    {
+                        name: 'statement actor "agent" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "group" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "agent" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "group" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "agent" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "group" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "group" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "agent" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "group" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "agent" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "group" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group" account "homePage property is IRL',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_homepage}}'},
+                            INVALID_ACCOUNT_HOMEPAGE_IRL
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Account Object uses the "name" property (Multiplicity, 4.1.2.4.table1.row2.b)',
+                config: [
+                    {
+                        name: 'statement actor "agent" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                                {actor: '{{agents.account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "group" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "agent" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "group" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "agent" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "group" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "group" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "agent" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "group" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "agent" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "group" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group" account "name" property exists',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Account Object "name" property is a String (Type, 4.1.2.4.table1.row1.a)',
+                config: [
+                    {
+                        name: 'statement actor "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
                         ],
                         expect: [400]
                     }
