@@ -24,10 +24,6 @@
                             return;
                         }
 
-                        if (configuration.name.indexOf('(4.1.2.1.table1.row1, 4.1.4.2.a)') >= 0) {
-                            console.log('STOP');
-                        }
-
                         try {
                             var data = {};
                             if (test.templates) {
