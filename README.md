@@ -50,7 +50,7 @@ Tests are run dynamically by using the '/configs' folder.  The structure is an a
 Everything within the config array defines a test that validates the requirement.
     The 'name' key describes the test.
     The 'template' key is an array of JSON objects (Currently only supporting JSON objects with one key).
-        Items in template use a single key with a reference to the JSON file to construct the template object.  Then values are overriden by subsequent items in array.  Template JSON files are referenced with a prefix of '{{' folder of template (period) filename <without extension> and suffix '}}' i.e. '{{statements.default}}'.  Templates mappings are replaced with their JSON object.
+        Items in template use a single key with a reference to the JSON file to construct the template object.  Then values are overriden by subsequent items in array.  Template JSON files are referenced with a prefix of '{{' folder of template (period) filename <without extension> and suffix '}}' i.e. '{{statements.default}}'.  Templates mappings are replaced with their JSON object.  Removing attributes can be done by adding another template without the attribute.
             Examples how JSON objects are merged with subsequent items in array (Currently only supporting JSON objects with one key):
                 Example 1 shows how the second item in array can modify a specific attribute's value in the first item's JSON value -
                 templates: [
@@ -94,7 +94,30 @@ Everything within the config array defines a test that validates the requirement
                            verb: { key: 'value' },
                            object: { key: 'value' }
                        }
+               }
 
+                Example 3 shows how the second item in array is added to first item's JSON value -
+                templates: [
+                    {
+                        statement: {
+                           actor: { key: 'value' },
+                           verb: { key: 'value' },
+                           object: { key: 'value' }
+                       }
+                    },
+                    {
+                        another_key: 'value'
+                    }
+                ]
+                The result are merged with the key from the second item in array is not found in the first item's value so default behavior is to merge -
+                result: {
+                        statement: {
+                           actor: { key: 'value' },
+                           verb: { key: 'value' },
+                           object: { key: 'value' },
+                           another_key: 'value'
+                       }
+               }
     The 'json' key is used to pass in a JSON object without templating.
     The 'expect' key is an array with values that are applied to super-request expect().
 
