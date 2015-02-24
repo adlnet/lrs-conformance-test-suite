@@ -23,7 +23,7 @@
     module.exports.config = function () {
         return [
             {
-                name: 'Verify Templates',
+                name: 'Agents Verify Templates',
                 config: [
                     {
                         name: 'should pass statement actor template',
