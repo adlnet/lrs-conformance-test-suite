@@ -11,8 +11,10 @@
     "use strict"
 
     // defines overwriting data
-    var INVALID_OBJECTTYPE_INVALID_AGENT = {objectType: 'agent'};
-    var INVALID_OBJECTTYPE_INVALID_GROUP = {objectType: 'group'};
+    var FOREIGN_IDENTIFIER_ACCOUNT = {"account": {"homePage": "http://www.example.com", "name": "xAPI account name"}};
+    var FOREIGN_IDENTIFIER_MBOX = {"mbox": "mailto:xapi@adlnet.gov"};
+    var FOREIGN_IDENTIFIER_MBOX_SHA1SUM = {"mbox_sha1sum": "cd9b00a5611f94eaa7b1661edab976068e364975"};
+    var FOREIGN_IDENTIFIER_OPENID = {"openid": "http://openid.example.org/12345"};
 
     // configures tests
     module.exports.config = function () {
@@ -706,81 +708,955 @@
                 name: 'An Identified Group does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, 4.1.2.1.b)',
                 config: [
                     {
-                        name: 'statement actor requires member type "array"',
+                        name: 'statement actor "mbox" cannot be used with "account"',
                         templates: [
                             {statement: '{{statements.actor}}'},
-                            {actor: '{{groups.default}}'},
-                            {member: '{{agents.default}}'}
+                            {actor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement authority requires member type "array"',
+                        name: 'statement actor "mbox" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "mbox" cannot be used with "openid',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "mbox" cannot be used with "account"',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.default}}'},
-                            {member: '{{agents.default}}'}
+                            {authority: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement context instructor requires member type "array"',
+                        name: 'statement authority "mbox" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "mbox" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "mbox" cannot be used with "account"',
                         templates: [
                             {statement: '{{statements.context}}'},
                             {context: '{{contexts.instructor}}'},
-                            {instructor: '{{groups.default}}'},
-                            {member: '{{agents.default}}'}
+                            {instructor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement context team requires member type "array"',
+                        name: 'statement context instructor "mbox" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "mbox" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "mbox" cannot be used with "account"',
                         templates: [
                             {statement: '{{statements.context}}'},
                             {context: '{{contexts.team}}'},
-                            {team: '{{groups.default}}'},
-                            {member: '{{agents.default}}'}
+                            {team: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement substatement as group requires member type "array"',
+                        name: 'statement context team "mbox" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "mbox" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "mbox" cannot be used with "account"',
                         templates: [
                             {statement: '{{statements.object_actor}}'},
-                            {object: '{{groups.default}}'},
-                            {member: '{{agents.default}}'}
+                            {object: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement substatement"s group requires member type "array"',
+                        name: 'statement substatement as group "mbox" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "mbox" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "mbox" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.default}}'},
+                            {actor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "mbox" cannot be used with "mbox_sha1sum"',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.actor}}'},
-                            {actor: '{{groups.default}}'},
-                            {member: '{{agents.default}}'}
+                            {actor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement substatement"s context instructor requires member type "array"',
+                        name: 'statement substatement"s agent "mbox" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "mbox" cannot be used with "account"',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.instructor}}'},
-                            {instructor: '{{groups.default}}'},
-                            {member: '{{agents.default}}'}
+                            {instructor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement substatement"s context team requires member type "array"',
+                        name: 'statement substatement"s context instructor "mbox" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "mbox" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "mbox" cannot be used with "account"',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.team}}'},
-                            {team: '{{groups.default}}'},
-                            {member: '{{agents.default}}'}
+                            {team: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "mbox" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "mbox" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Identified Group does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, 4.1.2.1.b)',
+                config: [
+                    {
+                        name: 'statement actor "mbox_sha1sum" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "mbox_sha1sum" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "mbox_sha1sum" cannot be used with "openid',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "mbox_sha1sum" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "mbox_sha1sum" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "mbox_sha1sum" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "mbox_sha1sum" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "mbox_sha1sum" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "mbox_sha1sum" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "mbox_sha1sum" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "mbox_sha1sum" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "mbox_sha1sum" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "mbox_sha1sum" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "mbox_sha1sum" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "mbox_sha1sum" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.default}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "mbox_sha1sum" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "mbox_sha1sum" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "mbox_sha1sum" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "mbox_sha1sum" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "mbox_sha1sum" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "mbox_sha1sum" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "mbox_sha1sum" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "mbox_sha1sum" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_sha1sum}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Identified Group does not use the "open_id" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)',
+                config: [
+                    {
+                        name: 'statement actor "openid" cannot be used with "account',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "openid" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "openid" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "openid" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "openid" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "openid" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "openid" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "openid" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "openid" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "openid" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "openid" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "openid" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "openid" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "openid" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "openid" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "openid" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "openid" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.default}}'},
+                            {actor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "openid" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "openid" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "openid" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "openid" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "openid" cannot be used with "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_ACCOUNT
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "openid" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "openid" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_openid}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Identified Group does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, 4.1.2.1.b)',
+                config: [
+                    {
+                        name: 'statement actor "account" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "account" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "account" cannot be used with "openid',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "account" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "account" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "account" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "account" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "account" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "account" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "account" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "account" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "account" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "account" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "account" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as group "account" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "account" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.default}}'},
+                            {actor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "account" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s agent "account" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "account" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "account" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "account" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_OPENID
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "account" cannot be used with "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "account" cannot be used with "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_MBOX_SHA1SUM
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "account" cannot be used with "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_account}}'},
+                            FOREIGN_IDENTIFIER_OPENID
                         ],
                         expect: [400]
                     }

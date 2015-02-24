@@ -11,10 +11,12 @@
     "use strict"
 
     // defines overwriting data
+    var INVALID_OBJECT = {key: 'value'};
     var INVALID_OBJECTTYPE_NUMERIC = {objectType: 123};
     var INVALID_OBJECTTYPE_OBJECT = {objectType: {key: 'value'}};
     var INVALID_OBJECTTYPE_NAME_NUMERIC = {name: 123};
     var INVALID_OBJECTTYPE_NAME_OBJECT = {name: {key: "value"}};
+    var INVALID_MAIL_TO_IRI = 'http://should.fail.com';
 
     // configures tests
     module.exports.config = function () {
@@ -517,6 +519,291 @@
                             {instructor: '{{agents.openid}}'}
                         ],
                         expect: [200]
+                    }
+                ]
+            },
+            {
+                // An "mbox" property has the form "mailto:email address" (Syntax, 4.1.2.3.table1.row1.b)
+                name: 'An "mbox" property is an IRI (Type, 4.1.2.3.table1.row1.a)',
+                config: [
+                    {
+                        name: 'statement actor "agent mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "group mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "agent mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "group mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "agent mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "group mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "group mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "agent mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "group mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "agent mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "group mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group mbox" not IRI',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An "mbox_sha1sum" property is a String (Type, 4.1.2.3.table1.row2.a)',
+                config: [
+                    {
+                        name: 'statement actor "agent mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "group mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "agent mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "group mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "agent mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "group mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "group mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "agent mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "group mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "agent mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "group mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group mbox_sha1sum" not string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum}}'},
+                            {mbox_sha1sum: INVALID_OBJECT}
+                        ],
+                        expect: [400]
                     }
                 ]
             }
