@@ -13,28 +13,68 @@
     var LRS_ENDPOINT = process.env.LRS_ENDPOINT || 'http://asdf.elmnts-test.com:8001/lrs';
     var request = request(LRS_ENDPOINT);
 
-    describe('Miscellaneous Requirements', function () {
-        it('An LRS has a State API with endpoint "base IRI"+"/activities/state" (7.3.table1.row1.a ,7.3.table1.row1.c)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                agent: {
-                    "objectType": "Agent",
-                    "account": {
-                        "homePage": "http://www.example.com/agentId/1",
-                        "name": "Rick James"
-                    }
-                },
-                registration: "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
-                stateId: helper.generateUUID()
-            };
+    function sendRequest(type, url, params, body, expect) {
+        var reqUrl = params ? (url + '?' + qs.stringify(params)) : url;
+        var pre = request[type](reqUrl)
+            .set('X-Experience-API-Version', '1.0.1');
+        if (body) {
+            pre.send(body);
+        }
+        return pre.expect(expect);
+    }
 
-            request
-                .post('/activities/state?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send({})
-                .expect(204, function (err, res) {
-                    done();
-                });
+    function buildState() {
+        return {
+            activityId: 'http://www.example.com/activityId/hashset',
+            agent: {
+                "objectType": "Agent",
+                "account": {
+                    "homePage": "http://www.example.com/agentId/1",
+                    "name": "Rick James"
+                }
+            },
+            registration: helper.generateUUID(),
+            stateId: helper.generateUUID()
+        }
+    }
+
+    function buildActivityProfile() {
+        return {
+            activityId: 'http://www.example.com/activityId/hashset',
+            profileId: helper.generateUUID()
+        };
+    }
+
+    function buildAgentProfile() {
+        return {
+            activityId: 'http://www.example.com/activityId/hashset',
+            agent: {
+                "objectType": "Agent",
+                "account": {
+                    "homePage": "http://www.example.com/agentId/1",
+                    "name": "Rick James"
+                }
+            },
+            profileId: helper.generateUUID()
+        };
+    }
+
+    function buildDocument() {
+        var document = {
+            name: helper.generateUUID(),
+            location: {
+                name: helper.generateUUID()
+            }
+        };
+        document[helper.generateUUID()] = helper.generateUUID();
+        return document;
+    }
+
+    describe('Miscellaneous Requirements', function () {
+        it('An LRS has a State API with endpoint "base IRI"+"/activities/state" (7.3.table1.row1.a ,7.3.table1.row1.c)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
         it('An LRS has an Activities API with endpoint "base IRI" + /activities" (7.5) **Implicit** (in that it is not named this by the spec)', function (done) {
@@ -51,20 +91,10 @@
                 });
         });
 
-        it('An LRS has an Activity Profile API with endpoint "base IRI"+"/activities/profile" (7.3.table1.row2.a, 7.3.table1.row2.c)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                profileId: "ec531277-b57b-4c15-8d91-d292c5b2b8f7"
-            };
-
-            request
-                .post('/activities/profile?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send({})
-                .expect(204)
-                .then(function (res) {
-                    done();
-                });
+        it('An LRS has an Activity Profile API with endpoint "base IRI"+"/activities/profile" (7.3.table1.row2.a, 7.3.table1.row2.c)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/profile', parameters, document, 204);
         });
 
         it('An LRS has an Agents API with endpoint "base IRI" + /agents" (7.6) **Implicit** (in that it is not named this by the spec)', function (done) {
@@ -82,235 +112,88 @@
                 });
         });
 
-        it('An LRS has an Agent Profile API with endpoint "base IRI"+"/agents/profile" (7.3.table1.row3.a, 7.3.table1.row3.c)', function (done) {
-            var parameters = {
-                agent: {
-                    "objectType": "Agent",
-                    "account": {
-                        "homePage": "http://www.example.com/agentId/1",
-                        "name": "Rick James"
-                    }
-                },
-                profileId: "ec531277-b57b-4c15-8d91-d292c5b2b8f7"
-            };
-
-            request
-                .post('/agents/profile?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send({})
-                .expect(204, function (err, res) {
-                    done();
-                });
+        it('An LRS has an Agent Profile API with endpoint "base IRI"+"/agents/profile" (7.3.table1.row3.a, 7.3.table1.row3.c)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/agents/profile', parameters, document, 204);
         });
 
-        it('An LRS has an About API with endpoint "base IRI"+"/about" (7.7.a)', function (done) {
-            request
-                .get('/about')
-                .set('X-Experience-API-Version', '1.0.1')
-                .send({})
-                .expect(200, function (err, res) {
-                    done();
-                });
+        it('An LRS has an About API with endpoint "base IRI"+"/about" (7.7.a)', function () {
+            return sendRequest('get', '/about', undefined, undefined, 200);
         });
 
-        it('An LRS will accept a POST request to the State API (7.3.table1.row1.b)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                agent: {
-                    "objectType": "Agent",
-                    "account": {
-                        "homePage": "http://www.example.com/agentId/1",
-                        "name": "Rick James"
-                    }
-                },
-                stateId: helper.generateUUID()
-            };
-
-            request
-                .post('/activities/state?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send({})
-                .expect(204, function (err, res) {
-                    done();
-                });
+        it('An LRS will accept a POST request to the State API (7.3.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS will accept a POST request to the Activity Profile API (7.3.table1.row2.b)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                profileId: helper.generateUUID()
-            };
-
-            request
-                .post('/activities/profile?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send({})
-                .expect(204, function (err, res) {
-                    done();
-                });
+        it('An LRS will accept a POST request to the Activity Profile API (7.3.table1.row2.b)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/profile', parameters, document, 204);
         });
 
-        it('An LRS will accept a POST request to the Agent Profile API (7.3.table1.row3.b)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                agent: {
-                    "objectType": "Agent",
-                    "account": {
-                        "homePage": "http://www.example.com/agentId/1",
-                        "name": "Rick James"
-                    }
-                },
-                profileId: helper.generateUUID()
-            };
-
-            request
-                .post('/agents/profile?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send({})
-                .expect(204, function (err, res) {
-                    done();
-                });
+        it('An LRS will accept a POST request to the Agent Profile API (7.3.table1.row3.b)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/agents/profile', parameters, document, 204);
         });
 
-        it('An LRS cannot reject a POST request to the State API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                agent: {
-                    "objectType": "Agent",
-                    "account": {
-                        "homePage": "http://www.example.com/agentId/1",
-                        "name": "Rick James"
-                    }
-                },
-                stateId: helper.generateUUID()
-            };
+        describe('An LRS cannot reject a POST request to the State API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function (done) {
+            var parameters = buildState(),
+                documents = [buildDocument(), 1, true, undefined];
 
-            // TODO what types can it not accept?
-            var document = {
-                name : new Buffer('asdf')
-            };
-
-            request
-                .post('/activities/state?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send(document)
-                .expect(204, function (err, res) {
-                    done();
+            documents.forEach(function (document) {
+                it('Should accept POST to State with document ' + document, function () {
+                    return sendRequest('post', '/activities/state', parameters, document, 204);
                 });
+            });
         });
 
-        it('An LRS cannot reject a POST request to the Activity Profile API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                profileId: helper.generateUUID()
-            };
+        describe('An LRS cannot reject a POST request to the Activity Profile API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function () {
+            var parameters = buildActivityProfile(),
+                documents = [buildDocument(), 1, true, undefined];
 
-            // TODO what types can it not accept?
-            var document = {
-                name : new Buffer('asdf')
-            };
-
-            request
-                .post('/activities/profile?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send(document)
-                .expect(204, function (err, res) {
-                    done();
+            documents.forEach(function (document) {
+                it('Should accept POST to Activity profile with document ' + document, function () {
+                    return sendRequest('post', '/activities/profile', parameters, document, 204);
                 });
+            });
         });
 
-        it('An LRS cannot reject a POST request to the Agent Profile API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                agent: {
-                    "objectType": "Agent",
-                    "account": {
-                        "homePage": "http://www.example.com/agentId/1",
-                        "name": "Rick James"
-                    }
-                },
-                profileId: helper.generateUUID()
-            };
+        describe('An LRS cannot reject a POST request to the Agent Profile API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function () {
+            var parameters = buildAgentProfile(),
+                documents = [{}, 1, true, undefined];
 
-            // TODO what types can it not accept?
-            var document = {
-                name : new Buffer('asdf')
-            };
-
-            request
-                .post('/agents/profile?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send(document)
-                .expect(204, function (err, res) {
-                    done();
+            documents.forEach(function (document) {
+                it('Should accept POST to Agent profile with document ' + document, function () {
+                    return sendRequest('post', '/agents/profile', parameters, document, 204);
                 });
+            });
         });
 
-        it('An LRS\'s State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (7.3.f)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                agent: {
-                    "objectType": "Agent",
-                    "account": {
-                        "homePage": "http://www.example.com/agentId/1",
-                        "name": "Rick James"
-                    }
-                },
-                registration: "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
-                stateId: helper.generateUUID()
-            };
+        it('An LRS\'s State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (7.3.f)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
 
-            var document = {
-                name : 'xAPI'
-            };
-
-            request
-                .post('/activities/state?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send(document)
-                .expect(204, function () {
-                    request
-                        .get('/activities/state?' + qs.stringify(parameters))
-                        .set('X-Experience-API-Version', '1.0.1')
-                        .expect(200, function (err, res) {
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                        .then(function (res) {
                             res.body.should.eql(document);
-                            done();
                         });
                 });
         });
 
-        it('An LRS\'s State API, rejects a POST request if the document is found and either document\'s type is not "application/json" with error code 400 Bad Request (7.3.e)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                agent: {
-                    "objectType": "Agent",
-                    "account": {
-                        "homePage": "http://www.example.com/agentId/1",
-                        "name": "Rick James"
-                    }
-                },
-                registration: "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
-                stateId: helper.generateUUID()
-            };
+        it('An LRS\'s State API, rejects a POST request if the document is found and either document\'s type is not "application/json" with error code 400 Bad Request (7.3.e)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                anotherDocument = 'abc';
 
-            var document1 = {
-                name : 'xAPI'
-            };
-
-            var document2 = 'Orlando, Florida';
-
-            request
-                .post('/activities/state?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send(document1)
-                .expect(204, function () {
-                    request
-                        .post('/activities/state?' + qs.stringify(parameters))
-                        .set('X-Experience-API-Version', '1.0.1')
-                        .send(document2)
-                        .expect(400, function (err, res) {
-                            done();
-                        });
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('post', '/activities/state', parameters, anotherDocument, 400);
                 });
         });
 
@@ -329,169 +212,157 @@
         // TODO
         // A Document Merge re-serializes all Objects to finalize a single document (7.3.d)
 
-        it('An LRS\'s State API performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (7.3.d)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                agent: {
-                    "objectType": "Agent",
-                    "account": {
-                        "homePage": "http://www.example.com/agentId/1",
-                        "name": "Rick James"
-                    }
+        it('An LRS\'s State API performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (7.3.d)', function () {
+            var parameters = buildState(),
+                document = {
+                    car: 'Honda'
                 },
-                registration: "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
-                stateId: helper.generateUUID()
-            };
+                anotherDocument = {
+                    type: 'Civic'
+                };
 
-            var document1 = {
-                car : 'xapi'
-            };
-
-            var document2 = {
-                van : 'boom'
-            };
-
-            request
-                .post('/activities/state?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send(document1)
-                .expect(204, function () {
-                    request
-                        .post('/activities/state?' + qs.stringify(parameters))
-                        .set('X-Experience-API-Version', '1.0.1')
-                        .send(document2)
-                        .expect(204, function (err, res) {
-                            request
-                                .get('/activities/state?' + qs.stringify(parameters))
-                                .set('X-Experience-API-Version', '1.0.1')
-                                .expect(200, function (err, res) {
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('post', '/activities/state', parameters, anotherDocument, 204)
+                        .then(function () {
+                            return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                                .then(function (res) {
                                     res.body.should.eql({
-                                        car: 'xapi',
-                                        van: 'boom'
-                                    });
-                                    done();
+                                        car: 'Honda',
+                                        type: 'Civic'
+                                    })
                                 });
                         });
                 });
         });
 
-        it('An LRS\'s Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (7.3.f)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                profileId: helper.generateUUID()
-            };
+        it('An LRS\'s Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (7.3.f)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
 
-            var document1 = {
-                name : 'xAPI'
-            };
-
-            request
-                .post('/activities/profile?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send(document1)
-                .expect(204, function () {
-                    request
-                        .get('/activities/profile?' + qs.stringify(parameters))
-                        .set('X-Experience-API-Version', '1.0.1')
-                        .expect(200, function (err, res) {
-                            res.body.should.eql(document1);
-                            done();
-                        });
+            return sendRequest('post', '/activities/profile', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/activities/profile', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        })
                 });
         });
 
-        it('An LRS\'s Activity Profile API, rejects a POST request if the document is found and either document\'s type is not "application/json" with error code 400 Bad Request (7.3.e)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                profileId: helper.generateUUID()
-            };
+        it('An LRS\'s Activity Profile API, rejects a POST request if the document is found and either document\'s type is not "application/json" with error code 400 Bad Request (7.3.e)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument(),
+                anotherDocument = 'abc';
 
-            var document1 = {
-                name : 'xAPI'
-            };
-
-            var document2 = 'Orlando, Florida';
-
-            request
-                .post('/activities/profile?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send(document1)
-                .expect(204, function () {
-                    request
-                        .post('/activities/profile?' + qs.stringify(parameters))
-                        .set('X-Experience-API-Version', '1.0.1')
-                        .send(document2)
-                        .expect(400, function (err, res) {
-                            done();
-                        });
+            return sendRequest('post', '/activities/profile', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('post', '/activities/profile', parameters, anotherDocument, 400);
                 });
         });
 
-        it('An LRS\'s Activity Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (7.3.d)', function (done) {
-            var parameters = {
-                activityId: 'http://www.example.com/activityId/hashset',
-                profileId: helper.generateUUID()
-            };
+        it('An LRS\'s Activity Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (7.3.d)', function () {
+            var parameters = buildActivityProfile(),
+                document = {
+                    car: 'Honda'
+                },
+                anotherDocument = {
+                    type: 'Civic'
+                };
 
-            var document1 = {
-                car : 'xapi'
-            };
-
-            var document2 = {
-                van : 'boom'
-            };
-
-            request
-                .post('/activities/profile?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send(document1)
-                .expect(204, function () {
-                    request
-                        .post('/activities/profile?' + qs.stringify(parameters))
-                        .set('X-Experience-API-Version', '1.0.1')
-                        .send(document2)
-                        .expect(204, function (err, res) {
-                            request
-                                .get('/activities/profile?' + qs.stringify(parameters))
-                                .set('X-Experience-API-Version', '1.0.1')
-                                .expect(200, function (err, res) {
+            return sendRequest('post', '/activities/profile', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('post', '/activities/profile', parameters, anotherDocument, 204)
+                        .then(function () {
+                            return sendRequest('get', '/activities/profile', parameters, undefined, 200)
+                                .then(function (res) {
                                     res.body.should.eql({
-                                        car: 'xapi',
-                                        van: 'boom'
-                                    });
-                                    done();
+                                        car: 'Honda',
+                                        type: 'Civic'
+                                    })
                                 });
                         });
                 });
         });
 
-        it('An LRS\'s Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (7.3.f)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (7.3.f)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+
+            return sendRequest('post', '/agents/profile', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/agents/profile', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        })
+                });
         });
 
-        it('An LRS\'s Agent Profile API, rejects a POST request if the document is found and either document\'s type is not "application/json" with error code 400 Bad Request (7.3.e)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API, rejects a POST request if the document is found and either document\'s type is not "application/json" with error code 400 Bad Request (7.3.e)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument(),
+                anotherDocument = 'abc';
+
+            return sendRequest('post', '/agents/profile', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('post', '/agents/profile', parameters, anotherDocument, 400);
+                });
         });
 
-        it('An LRS\'s Agent Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (7.3.d)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (7.3.d)', function () {
+            var parameters = buildAgentProfile(),
+                document = {
+                    car: 'Honda'
+                },
+                anotherDocument = {
+                    type: 'Civic'
+                };
+
+            return sendRequest('post', '/agents/profile', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('post', '/agents/profile', parameters, anotherDocument, 204)
+                        .then(function () {
+                            return sendRequest('get', '/agents/profile', parameters, undefined, 200)
+                                .then(function (res) {
+                                    res.body.should.eql({
+                                        car: 'Honda',
+                                        type: 'Civic'
+                                    })
+                                });
+                        });
+                });
         });
 
-        it('An LRS\'s State API accepts PUT requests (7.4)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API accepts PUT requests (7.4)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('put', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.activityId;
+            return sendRequest('put', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a PUT request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a PUT request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var invalidTypes = [{}, 1, true, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should State API reject a PUT request with activityId type ' + type, function () {
+                    var parameters = buildState(),
+                        document = buildDocument();
+                    delete parameters.activityId;
+                    return sendRequest('put', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
         //+* In 1.0.3, the IRI requires a scheme, but does not in 1.0.2, thus we only test type String in this version**
-        it('An LRS\'s State API rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.agent;
+            return sendRequest('put', '/activities/state', parameters, document, 400);
         });
 
         it('An LRS\'s State API rejects a PUT request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function (done) {
