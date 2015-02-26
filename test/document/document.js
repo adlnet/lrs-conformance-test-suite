@@ -33,7 +33,6 @@
                     "name": "Rick James"
                 }
             },
-            registration: helper.generateUUID(),
             stateId: helper.generateUUID()
         }
     }
@@ -78,7 +77,7 @@
         });
 
         it('An LRS has an Activities API with endpoint "base IRI" + /activities" (7.5) **Implicit** (in that it is not named this by the spec)', function (done) {
-            // TODO Talk to Fred about why this is connecting to statements DAL
+            // TODO Why this is connecting to statements DAL
             var parameters = {
                 activityId: 'http://www.example.com/activityId/hashset'
             };
@@ -365,96 +364,218 @@
             return sendRequest('put', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a PUT request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a PUT request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.agent = 'not JSON brah';
+            return sendRequest('put', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API can process a PUT request with "registration" as a parameter  (multiplicity, 7.4.table1.row3.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a PUT request with "registration" as a parameter  (multiplicity, 7.4.table1.row3.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.registration = helper.generateUUID();
+            return sendRequest('put', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API rejects a PUT request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request(format, 7.4.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a PUT request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request(format, 7.4.table1.row3.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, 'not UUID'];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT with "registration" with type ' + type, function () {
+                    parameters.registration = type;
+                    return sendRequest('put', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API rejects a PUT request without "stateId" as a parameter with error code 400 Bad Request(multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a PUT request without "stateId" as a parameter with error code 400 Bad Request(multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.stateId;
+            return sendRequest('put', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a PUT request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request(format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a PUT request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request(format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT State with stateId type : ' + type, function () {
+                    parameters.stateId = type;
+                    return sendRequest('put', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API upon processing a successful PUT request returns code 204 No Content (7.4.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API upon processing a successful PUT request returns code 204 No Content (7.4.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('put', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API accepts POST requests (7.4)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API accepts POST requests (7.4)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.activityId;
+            return sendRequest('post', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a POST request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a POST request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT State with stateId type : ' + type, function () {
+                    parameters.activityId = type;
+                    return sendRequest('post', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API rejects a POST request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a POST request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.agent;
+            return sendRequest('post', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a POST request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a POST request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, 'not JSON', undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject POST State with agent type : ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('post', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API can process a POST request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a POST request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.registration = helper.generateUUID();
+            return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API rejects a POST request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a POST request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, 'not UUID'];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT with "registration" with type ' + type, function () {
+                    parameters.registration = type;
+                    return sendRequest('post', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API rejects a POST request without "stateId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a POST request without "stateId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.stateId;
+            return sendRequest('post', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a POST request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a POST request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject POST with "stateId" with type ' + type, function () {
+                    parameters.stateId = type;
+                    return sendRequest('post', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API upon processing a successful POST request returns code 204 No Content (7.4.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API upon processing a successful POST request returns code 204 No Content (7.4.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API accepts GET requests (7.4)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API accepts GET requests (7.4)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        });
+                });
         });
 
-        it('An LRS\'s State API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.activityId;
+            return sendRequest('get', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a GET request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a GET request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "activityId" with type ' + type, function () {
+                    parameters.activityId = type;
+                    return sendRequest('get', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.agent;
+            return sendRequest('get', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, 'not JSON bruh', undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "agent" with type ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('get', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API can process a GET request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a GET request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.registration = helper.generateUUID();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/activities/state', parameters, document, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        })
+                });
         });
 
-        it('An LRS\'s State API rejects a GET request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe.only('An LRS\'s State API rejects a GET request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, 'not UUID bruh'];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "registration" with type ' + type, function () {
+                    parameters.registration = type;
+                    return sendRequest('get', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
         it('An LRS\'s State API can process a GET request with "stateId" as a parameter (multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b)', function (done) {
