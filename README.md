@@ -17,35 +17,7 @@ $ npm install
 
 Modify the LRS endpoint variable in test/.env, to point to the LRS you are testing. This endpoint must not require authentication.
 
-```js
-var LRS_ENDPOINT = 'http://testclient.elmnts-test.com/lrs';
-```
-
-#### Test Reports
-The testing framework used in this project is [Mocha](http://visionmedia.github.io/mocha/). Add additional testing and reporting features by modifying the package.json test command.
-
-```js
-"scripts": {
-  "test": "node_modules/mocha/bin/mocha test/test.js --reporter nyan"
-}
-```
-
-List of [Mocha commands](http://visionmedia.github.io/mocha/#mocha.opts)
-
 ### Creating Tests
-
-
-### Running Tests
-
-Within WebStorm (NodeJs):
-    Install dependencies using 'npm install' in the terminal.
-    Select 'Run' (from menu), then select 'Edit Configuration'
-    Click '+' symbol in top left of new window and select 'Mocha'
-    Edit 'Name' (if desired)
-    Edit 'Test Directory' to use the 'test/v1_0_2' folder
-    Run test using name provided
-
-Tests are run dynamically by using the '/configs' folder.  The structure is an array of JSON objects.  The name of the object is the requirement per xAPI specification (https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md).
 
 Everything within the config array defines a test that validates the requirement.
     The 'name' key describes the test.
@@ -120,6 +92,33 @@ Everything within the config array defines a test that validates the requirement
                }
     The 'json' key is used to pass in a JSON object without templating.
     The 'expect' key is an array with values that are applied to super-request expect().
+
+### Running Tests
+
+Within WebStorm (NodeJs):
+    Install dependencies using 'npm install' in the terminal.
+    Select 'Run' (from menu), then select 'Edit Configuration'
+    Click '+' symbol in top left of new window and select 'Mocha'
+    Edit 'Name' (if desired)
+    Edit 'Test Directory' to use the 'test/v1_0_2' folder
+    Run test using name provided
+
+Tests are run dynamically by using the '/configs' folder.  The structure is an array of JSON objects.  The name of the object is the requirement per xAPI specification (https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md).
+
+```js
+var LRS_ENDPOINT = 'http://testclient.elmnts-test.com/lrs';
+```
+
+#### Test Reports
+The testing framework used in this project is [Mocha](http://visionmedia.github.io/mocha/). Add additional testing and reporting features by modifying the package.json test command.
+
+```js
+"scripts": {
+  "test": "node_modules/mocha/bin/mocha test/test.js --reporter nyan"
+}
+```
+
+List of [Mocha commands](http://visionmedia.github.io/mocha/#mocha.opts)
 
 At command line type:
 
