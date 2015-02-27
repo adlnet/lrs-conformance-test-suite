@@ -33,7 +33,6 @@
                     "name": "Rick James"
                 }
             },
-            registration: helper.generateUUID(),
             stateId: helper.generateUUID()
         }
     }
@@ -70,6 +69,11 @@
         return document;
     }
 
+    // Quick and dirty deep clone
+    function clone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+
     describe('Miscellaneous Requirements', function () {
         it('An LRS has a State API with endpoint "base IRI"+"/activities/state" (7.3.table1.row1.a ,7.3.table1.row1.c)', function () {
             var parameters = buildState(),
@@ -78,7 +82,7 @@
         });
 
         it('An LRS has an Activities API with endpoint "base IRI" + /activities" (7.5) **Implicit** (in that it is not named this by the spec)', function (done) {
-            // TODO Talk to Fred about why this is connecting to statements DAL
+            // TODO Why this is connecting to statements DAL
             var parameters = {
                 activityId: 'http://www.example.com/activityId/hashset'
             };
@@ -143,7 +147,6 @@
         describe('An LRS cannot reject a POST request to the State API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function (done) {
             var parameters = buildState(),
                 documents = [buildDocument(), 1, true, undefined];
-
             documents.forEach(function (document) {
                 it('Should accept POST to State with document ' + document, function () {
                     return sendRequest('post', '/activities/state', parameters, document, 204);
@@ -154,7 +157,6 @@
         describe('An LRS cannot reject a POST request to the Activity Profile API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function () {
             var parameters = buildActivityProfile(),
                 documents = [buildDocument(), 1, true, undefined];
-
             documents.forEach(function (document) {
                 it('Should accept POST to Activity profile with document ' + document, function () {
                     return sendRequest('post', '/activities/profile', parameters, document, 204);
@@ -165,7 +167,6 @@
         describe('An LRS cannot reject a POST request to the Agent Profile API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function () {
             var parameters = buildAgentProfile(),
                 documents = [{}, 1, true, undefined];
-
             documents.forEach(function (document) {
                 it('Should accept POST to Agent profile with document ' + document, function () {
                     return sendRequest('post', '/agents/profile', parameters, document, 204);
@@ -176,7 +177,6 @@
         it('An LRS\'s State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (7.3.f)', function () {
             var parameters = buildState(),
                 document = buildDocument();
-
             return sendRequest('post', '/activities/state', parameters, document, 204)
                 .then(function () {
                     return sendRequest('get', '/activities/state', parameters, undefined, 200)
@@ -190,7 +190,6 @@
             var parameters = buildState(),
                 document = buildDocument(),
                 anotherDocument = 'abc';
-
             return sendRequest('post', '/activities/state', parameters, document, 204)
                 .then(function () {
                     return sendRequest('post', '/activities/state', parameters, anotherDocument, 400);
@@ -220,7 +219,6 @@
                 anotherDocument = {
                     type: 'Civic'
                 };
-
             return sendRequest('post', '/activities/state', parameters, document, 204)
                 .then(function () {
                     return sendRequest('post', '/activities/state', parameters, anotherDocument, 204)
@@ -239,7 +237,6 @@
         it('An LRS\'s Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (7.3.f)', function () {
             var parameters = buildActivityProfile(),
                 document = buildDocument();
-
             return sendRequest('post', '/activities/profile', parameters, document, 204)
                 .then(function () {
                     return sendRequest('get', '/activities/profile', parameters, undefined, 200)
@@ -253,7 +250,6 @@
             var parameters = buildActivityProfile(),
                 document = buildDocument(),
                 anotherDocument = 'abc';
-
             return sendRequest('post', '/activities/profile', parameters, document, 204)
                 .then(function () {
                     return sendRequest('post', '/activities/profile', parameters, anotherDocument, 400);
@@ -268,7 +264,6 @@
                 anotherDocument = {
                     type: 'Civic'
                 };
-
             return sendRequest('post', '/activities/profile', parameters, document, 204)
                 .then(function () {
                     return sendRequest('post', '/activities/profile', parameters, anotherDocument, 204)
@@ -287,7 +282,6 @@
         it('An LRS\'s Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (7.3.f)', function () {
             var parameters = buildAgentProfile(),
                 document = buildDocument();
-
             return sendRequest('post', '/agents/profile', parameters, document, 204)
                 .then(function () {
                     return sendRequest('get', '/agents/profile', parameters, undefined, 200)
@@ -301,7 +295,6 @@
             var parameters = buildAgentProfile(),
                 document = buildDocument(),
                 anotherDocument = 'abc';
-
             return sendRequest('post', '/agents/profile', parameters, document, 204)
                 .then(function () {
                     return sendRequest('post', '/agents/profile', parameters, anotherDocument, 400);
@@ -316,7 +309,6 @@
                 anotherDocument = {
                     type: 'Civic'
                 };
-
             return sendRequest('post', '/agents/profile', parameters, document, 204)
                 .then(function () {
                     return sendRequest('post', '/agents/profile', parameters, anotherDocument, 204)
@@ -365,173 +357,420 @@
             return sendRequest('put', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a PUT request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a PUT request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.agent = 'not JSON brah';
+            return sendRequest('put', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API can process a PUT request with "registration" as a parameter  (multiplicity, 7.4.table1.row3.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a PUT request with "registration" as a parameter  (multiplicity, 7.4.table1.row3.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.registration = helper.generateUUID();
+            return sendRequest('put', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API rejects a PUT request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request(format, 7.4.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a PUT request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request(format, 7.4.table1.row3.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, 'not UUID'];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT with "registration" with type ' + type, function () {
+                    parameters.registration = type;
+                    return sendRequest('put', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API rejects a PUT request without "stateId" as a parameter with error code 400 Bad Request(multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a PUT request without "stateId" as a parameter with error code 400 Bad Request(multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.stateId;
+            return sendRequest('put', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a PUT request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request(format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a PUT request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request(format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT State with stateId type : ' + type, function () {
+                    parameters.stateId = type;
+                    return sendRequest('put', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API upon processing a successful PUT request returns code 204 No Content (7.4.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API upon processing a successful PUT request returns code 204 No Content (7.4.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('put', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API accepts POST requests (7.4)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API accepts POST requests (7.4)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.activityId;
+            return sendRequest('post', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a POST request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a POST request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT State with stateId type : ' + type, function () {
+                    parameters.activityId = type;
+                    return sendRequest('post', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API rejects a POST request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a POST request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.agent;
+            return sendRequest('post', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a POST request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a POST request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, 'not JSON', undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject POST State with agent type : ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('post', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API can process a POST request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a POST request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.registration = helper.generateUUID();
+            return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API rejects a POST request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a POST request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, 'not UUID'];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT with "registration" with type ' + type, function () {
+                    parameters.registration = type;
+                    return sendRequest('post', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API rejects a POST request without "stateId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a POST request without "stateId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            delete parameters.stateId;
+            return sendRequest('post', '/activities/state', parameters, document, 400);
         });
 
-        it('An LRS\'s State API rejects a POST request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a POST request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject POST with "stateId" with type ' + type, function () {
+                    parameters.stateId = type;
+                    return sendRequest('post', '/activities/state', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API upon processing a successful POST request returns code 204 No Content (7.4.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API upon processing a successful POST request returns code 204 No Content (7.4.a)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS\'s State API accepts GET requests (7.4)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API accepts GET requests (7.4)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        });
+                });
         });
 
-        it('An LRS\'s State API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState();
+            delete parameters.activityId;
+            return sendRequest('get', '/activities/state', parameters, undefined, 400);
         });
 
-        it('An LRS\'s State API rejects a GET request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a GET request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "activityId" with type ' + type, function () {
+                    parameters.activityId = type;
+                    return sendRequest('get', '/activities/state', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function () {
+            var parameters = buildState();
+            delete parameters.agent;
+            return sendRequest('get', '/activities/state', parameters, undefined, 400);
         });
 
-        it('An LRS\'s State API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function () {
+            var parameters = buildState(),
+                invalidTypes = [1, true, 'not JSON bruh', undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "agent" with type ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('get', '/activities/state', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API can process a GET request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a GET request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.registration = helper.generateUUID();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        });
+                });
         });
 
-        it('An LRS\'s State API rejects a GET request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a GET request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function () {
+            var parameters = buildState(),
+                invalidTypes = [1, true, 'not UUID bruh'];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "registration" with type ' + type, function () {
+                    parameters.registration = type;
+                    return sendRequest('get', '/activities/state', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API can process a GET request with "stateId" as a parameter (multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a GET request with "stateId" as a parameter (multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        })
+                });
         });
 
-        it('An LRS\'s State API rejects a GET request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a GET request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "stateId" with type ' + type, function () {
+                    parameters.stateId = type;
+                    return sendRequest('get', '/activities/state', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API can process a GET request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a GET request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.since = new Date(Date.now() - 60 * 1000); // Date 1 minute ago
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        });
+                });
         });
 
-        it('An LRS\'s State API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.4.table2.row4.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.4.table2.row4.a)', function () {
+            var parameters = buildState();
+            parameters.since = 'not a timestamp dog';
+            return sendRequest('get', '/activities/state', parameters, undefined, 400);
         });
 
-        it('An LRS\'s State API upon processing a successful GET request with a valid "stateId" as a parameter returns the document satisfying the requirements of the GET and code 200 OK (7.4.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API upon processing a successful GET request with a valid "stateId" as a parameter returns the document satisfying the requirements of the GET and code 200 OK (7.4.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        });
+                });
         });
 
         //+* NOTE:  **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**
-        it('An LRS\'s State API upon processing a successful GET request without "stateId" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK (7.4.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API upon processing a successful GET request without "stateId" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK (7.4.c)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    delete parameters.stateId;
+                    return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.be.instanceOf(Array);
+                        });
+                });
         });
 
-        it('An LRS\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request (7.4.table2.row4)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request (7.4.table2.row4)', function () {
+            var parameters = buildState(),
+                document = buildDocument(),
+                anotherDocument = buildDocument();
+            var anotherParameters = clone(parameters);
+            anotherParameters.stateId = helper.generateUUID();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('post', '/activities/state', anotherParameters, anotherDocument, 204)
+                        .then(function () {
+                            delete parameters.stateId;
+                            parameters.since = new Date(Date.now() - 1000);
+                            return sendRequest('get', '/activities/state', parameters, undefined, 200)
+                                .then(function (res) {
+                                    res.body.should.be.instanceOf(Array);
+                                    res.body.length.should.equal(2);
+                                });
+                        });
+                });
         });
 
-        it('An LRS\'s State API accepts DELETE requests (7.4)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API accepts DELETE requests (7.4)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 204);
+                });
         });
 
-        it('An LRS\'s State API rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState();
+            delete parameters.activityId;
+            return sendRequest('delete', '/activities/state', parameters, undefined, 400);
         });
 
-        it('An LRS\'s State API rejects a DELETE request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a DELETE request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "activityId" with type ' + type, function () {
+                    parameters.activityId = type;
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API rejects a DELETE request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API rejects a DELETE request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.4.table1.row2.b)', function () {
+            var parameters = buildState();
+            delete parameters.agent;
+            return sendRequest('delete', '/activities/state', parameters, undefined, 400);
         });
 
-        it('An LRS\'s State API rejects a DELETE request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a DELETE request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function () {
+            var parameters = buildState(),
+                invalidTypes = [1, true, 'not JSON son', undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "agent" with type ' + type, function () {
+                    parameters.activityId = type;
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API can process a DELETE request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a DELETE request with "registration" as a parameter (multiplicity, 7.4.table1.row3.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.registration = helper.generateUUID();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 204);
+                });
         });
 
-        it('An LRS\'s State API rejects a DELETE request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a DELETE request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function () {
+            var parameters = buildState(),
+                invalidTypes = [1, true, 'not UUID son'];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "registration" with type ' + type, function () {
+                    parameters.registration = type;
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API can process a DELETE request with "stateId" as a parameter (multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a DELETE request with "stateId" as a parameter (multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b)', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 204);
+                });
         });
 
-        it('An LRS\'s State API rejects a DELETE request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a DELETE request  with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+            var parameters = buildState(),
+                invalidTypes = [1, true, {}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "stateId" with type ' + type, function () {
+                    parameters.stateId = type;
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s State API can process a DELETE request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)  **Is this valid??**', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API can process a DELETE request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)  **Is this valid??**', function () {
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.since = new Date();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 204);
+                });
         });
 
-        it('An LRS\'s State API rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.4.table2.row4.a)  **And this would follow...**', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s State API rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.4.table2.row4.a)  **And this would follow...**', function (done) {
+            var parameters = buildState(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "since" with type ' + type, function () {
+                    parameters.since = type;
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 400);
+                });
+            });
         });
 
         it('An LRS\'s State API upon processing a successful DELETE request with a valid "stateId" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content (7.4.b)', function (done) {
-            done(new Error('Implement Test'));
+            var parameters = buildState(),
+                document = buildDocument();
+            parameters.since = new Date();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 204)
+                        .then(function(){
+                            return sendRequest('get', '/activities/state', parameters, undefined, 200); 
+                        })
+                });
         });
 
         //+* NOTE:  **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**
