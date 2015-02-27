@@ -23,6 +23,10 @@
         return pre.expect(expect);
     }
 
+    function buildActivity() {
+        return 'http://www.example.com/activityId/hashset';
+    }
+
     function buildState() {
         return {
             activityId: 'http://www.example.com/activityId/hashset',
@@ -760,98 +764,184 @@
             });
         });
 
-        it('An LRS\'s State API upon processing a successful DELETE request with a valid "stateId" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content (7.4.b)', function (done) {
+        it('An LRS\'s State API upon processing a successful DELETE request with a valid "stateId" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content (7.4.b)', function () {
             var parameters = buildState(),
                 document = buildDocument();
-            parameters.since = new Date();
             return sendRequest('post', '/activities/state', parameters, document, 204)
                 .then(function () {
-                    return sendRequest('delete', '/activities/state', parameters, undefined, 204)
-                        .then(function(){
-                            return sendRequest('get', '/activities/state', parameters, undefined, 200); 
-                        })
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 204);
                 });
         });
 
         //+* NOTE:  **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**
-        it('An LRS\'s State API upon processing a successful DELETE request without "stateId" as a parameter deletes documents satisfying the requirements of the DELETE and code 200 OK (7.4.d)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s State API upon processing a successful DELETE request without "stateId" as a parameter deletes documents satisfying the requirements of the DELETE and code 200 OK (7.4.d)', function () {
+            // TODO Spec doesn't state this should be 200
+            var parameters = buildState(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/state', parameters, document, 204)
+                .then(function () {
+                    delete parameters.stateId;
+                    return sendRequest('delete', '/activities/state', parameters, undefined, 200);
+                });
         });
 
         it('An LRS\'s Activities API accepts GET requests (7.5)', function (done) {
-            done(new Error('Implement Test'));
+            var parameters = buildActivity(),
+                document = buildDocument();
+            return sendRequest('get', '/activities', parameters, document, 400)
+                .then(function (res) {
+                    // TODO Why Statement DAL?
+                    done(new Error('Implement Test'));
+                });
         });
 
-        it('An LRS\'s Activities API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activities API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table1.row1.b)', function () {
+            var parameters = buildActivity(),
+                document = buildDocument();
+            delete parameters.activityId;
+            return sendRequest('get', '/activities', parameters, document, 400);
         });
 
-        it('An LRS\'s Activities API rejects a GET request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activities API rejects a GET request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table1.row1.a)', function () {
+            var parameters = buildActivity(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "since" with type ' + type, function () {
+                    parameters.since = type;
+                    return sendRequest('get', '/activities', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Activities API upon processing a successful GET request returns the complete Activity Object (7.5)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activities API upon processing a successful GET request returns the complete Activity Object (7.5)', function () {
+            var parameters = buildActivity(),
+                document = buildDocument();
+            return sendRequest('get', '/activities', parameters, document, 200);
         });
 
-        it('An LRS\'s Activity Profile API accepts PUT requests (7.5)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API accepts PUT requests (7.5)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            return sendRequest('put', '/activities/profile', parameters, document, 204);
         });
 
-        it('An LRS\'s Activity Profile API rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            delete parameters.activityId;
+            return sendRequest('put', '/activities/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Activity Profile API API rejects a PUT request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Activity Profile API API rejects a PUT request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT with "activityId" with type ' + type, function () {
+                    parameters.activityId = type;
+                    return sendRequest('put', '/activities/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Activity Profile API rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            delete parameters.profileId;
+            return sendRequest('put', '/activities/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Activity Profile API rejects a PUT request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Activity Profile API rejects a PUT request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT with "profileId" with type ' + type, function () {
+                    parameters.profileId = type;
+                    return sendRequest('put', '/activities/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Activity Profile API upon processing a successful PUT request returns code 204 No Content (7.5.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API upon processing a successful PUT request returns code 204 No Content (7.5.b)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            return sendRequest('put', '/activities/profile', parameters, document, 204);
         });
 
-        it('An LRS\'s Activity Profile API accepts POST requests (7.5)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API accepts POST requests (7.5)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/profile', parameters, document, 204);
         });
 
-        it('An LRS\'s Activity Profile API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            delete parameters.activityId;
+            return sendRequest('post', '/activities/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Activity Profile API rejects a POST request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Activity Profile API rejects a POST request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject POST with "activityId" with type ' + type, function () {
+                    parameters.activityId = type;
+                    return sendRequest('post', '/activities/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Activity Profile API rejects a POST request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API rejects a POST request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            delete parameters.profileId;
+            return sendRequest('post', '/activities/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Activity Profile API API rejects a POST request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Activity Profile API rejects a POST request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject POST with "profileId" with type ' + type, function () {
+                    parameters.profileId = type;
+                    return sendRequest('post', '/activities/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Activity Profile API upon processing a successful POST request returns code 204 No Content (7.5.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API upon processing a successful POST request returns code 204 No Content (7.5.b)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/activities/profile', parameters, document, 204);
         });
 
-        it('An LRS\'s Activity Profile API accepts DELETE requests (7.5)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API accepts DELETE requests (7.5)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            return sendRequest('delete', '/activities/profile', parameters, document, 204);
         });
 
-        it('An LRS\'s Activity Profile API rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Activity Profile API rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument();
+            delete parameters.activityId;
+            return sendRequest('delete', '/activities/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Activity Profile API rejects a DELETE request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Activity Profile API rejects a DELETE request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
+            var parameters = buildActivityProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "activityId" with type ' + type, function () {
+                    parameters.activityId = type;
+                    return sendRequest('delete', '/activities/profile', parameters, document, 400);
+                });
+            });
         });
 
         it('An LRS\'s Activity Profile API rejects a DELETE request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table2.row1.c)', function (done) {
