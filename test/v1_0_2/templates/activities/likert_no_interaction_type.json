@@ -1,0 +1,35 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "definition": {
+    "correctResponsesPattern": [
+      "likert_3"
+    ],
+    "scale": [
+      {
+        "id": "likert_0",
+        "description": {
+          "en-US": "It's OK"
+        }
+      },
+      {
+        "id": "likert_1",
+        "description": {
+          "en-US": "It's Pretty Cool"
+        }
+      },
+      {
+        "id": "likert_2",
+        "description": {
+          "en-US": "It's Damn Cool"
+        }
+      },
+      {
+        "id": "likert_3",
+        "description": {
+          "en-US": "It's Gonna Change the World"
+        }
+      }
+    ]
+  }
+}

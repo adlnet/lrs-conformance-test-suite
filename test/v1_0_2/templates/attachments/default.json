@@ -1,0 +1,10 @@
+[
+  {
+    "usageType": "http://example.com/attachment-usage/test",
+    "display": {"en-US": "A test attachment"},
+    "description": {"en-US": "A test attachment (description)"},
+    "contentType": "text/plain; charset=ascii",
+    "length": 27,
+    "fileUrl": "http://over.there.com"
+  }
+]

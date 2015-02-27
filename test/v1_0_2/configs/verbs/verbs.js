@@ -85,7 +85,7 @@
                 ]
             },
             {
-                // A Voiding Statement is defined as a Statement whose "verb" property\'s "id" property\'s IRI ending with "voided" **Implicit** (4.3)
+                // A Voiding Statement is defined as a Statement whose "verb" property\'s "id" property\'s IRI ending with "voided" (4.3)
                 name: 'A Voiding Statement\'s "objectType" field has a value of "StatementRef" (Format, 4.3.a)',
                 config: [
                     {
