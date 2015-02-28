@@ -398,7 +398,7 @@
         });
     });
 
-    describe('Miscellaneous Requirements', function () {
+    describe.skip('Miscellaneous Requirements', function () {
         it('An LRS returns a ContextActivity in an array, even if only a single ContextActivity is returned (4.1.6.2.c, 4.1.6.2.d)', function (done) {
             done(new Error('Implement Test'));
         });
@@ -1430,7 +1430,7 @@
             done(new Error('Implement Test'));
         });
 
-        describe('State Document API Test', function () {
+        describe.skip('State Document API Test', function () {
             it('should GET and include ETag (7.4) (7.4.b) (multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b)', function (done) {
                 var parameters = {
                     activityId: "http://www.example.com/activityId/hashset",
