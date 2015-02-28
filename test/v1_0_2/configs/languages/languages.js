@@ -28,6 +28,8 @@
             // A "display" property is a Language Map (Type, 4.1.3.table1.row1.a, 4.1.11.table1.row2.a)
             // An Activity Definition's "name" property is a Language Map (Type, 4.1.4.1.table2.row1.a)
             // An Activity Definition's "description" property is a Language Map (Type, 4.1.4.1.table2.row2.a)
+            // A "description" property is a Language Map (Type, 4.1.4.1.table4.row2.a, 4.1.11.table1.row3.a)
+            // A "language" property follows RFC5646 (Format, 4.1.6.table1.row7.a, RFC5646)
             {
                 name: 'Languages Verify Templates',
                 config: [
@@ -37,7 +39,7 @@
                             {statement: '{{statements.verb}}'},
                             {verb: '{{verbs.no_display}}'}
                         ],
-                        expect: [400]
+                        expect: [200]
                     },
                     {
                         name: 'should pass statement object template',
@@ -45,24 +47,15 @@
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.no_languages}}'}
                         ],
-                        expect: [400]
+                        expect: [200]
                     },
                     {
                         name: 'should pass statement attachment template',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {
-                                attachments: [
-                                    {
-                                        "usageType": "http://example.com/attachment-usage/test",
-                                        "contentType": "text/plain; charset=ascii",
-                                        "length": 27,
-                                        "fileUrl": "http://over.there.com"
-                                    }
-                                ]
-                            }
+                            {attachments: '{{attachments.default}}'}
                         ],
-                        expect: [400]
+                        expect: [200]
                     },
                     {
                         name: 'should pass statement substatement verb template',
@@ -71,17 +64,16 @@
                             {object: '{{substatements.verb}}'},
                             {verb: '{{verbs.no_display}}'}
                         ],
-                        expect: [400]
+                        expect: [200]
                     },
                     {
                         name: 'should pass statement substatement object template',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_NAME_LANGUAGE}
+                            {object: '{{activities.no_languages}}'}
                         ],
-                        expect: [400]
+                        expect: [200]
                     }
                 ]
             },

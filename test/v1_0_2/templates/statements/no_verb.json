@@ -1,0 +1,11 @@
+{
+  "actor": {
+    "objectType": "Agent",
+    "name": "xAPI mbox",
+    "mbox": "mailto:xapi@adlnet.gov"
+  },
+  "object": {
+    "objectType": "Activity",
+    "id": "http://www.example.com/meetings/occurances/34534"
+  }
+}

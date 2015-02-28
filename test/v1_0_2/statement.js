@@ -12,27 +12,17 @@
 
     describe.skip('Statement Requirements', function () {
         it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('All Strings are encoded and interpreted as UTF-8 (6.1.a)', function (done) {
             done(new Error('Implement Test'));
         });
 
-        it('All UUID types follow requirements of RFC4122 (Type, 4.1.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('All UUID types are in standard String form (Type, 4.1.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A TimeStamp is defined as a Date/Time formatted according to ISO 8601 (Format, ISO8601)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('A Statement uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement uses the "actor" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -207,10 +197,6 @@
             done();
         });
 
-        it('An Activity Definition is defined as the contents of a "definition" property object of an Activity (Format, 4.1.4.1.table2)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An Activity Definition uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
@@ -276,462 +262,140 @@
             done();
         });
 
-        it('A Statement contains an "actor" property (Multiplicity, 4.1.b)', function (done) {
-            var data = helper.clone(STATEMENT_BASIC_ACTOR_AGENT);
-            delete data.actor;
-
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .expect(400, done);
-        });
-
-        it('A Statement contains a "verb" property (Multiplicity, 4.1.b)', function (done) {
-            var data = helper.clone(STATEMENT_BASIC_ACTOR_AGENT);
-            delete data.verb;
-
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .expect(400, done);
-        });
-
-        it('A Statement contains an "object" property (Multiplicity, 4.1.b)', function (done) {
-            var data = helper.clone(STATEMENT_BASIC_ACTOR_AGENT);
-            delete data.object;
-
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .expect(400, done);
-        });
-
-        it('An Statement\'s "id" property is a String (Type, 4.1.1.description.a)', function (done) {
-            var data = helper.clone(STATEMENT_BASIC_ACTOR_AGENT);
-            data.id = 123;
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .expect(400).end(function (error) { if (error) done(error) });
-
-            data = helper.clone(STATEMENT_BASIC_ACTOR_AGENT);
-            data.id = { test: 'object' };
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .expect(400, done);
-        });
-
-        it('An Statement\'s "id" property is a UUID following RFC 4122(Syntax, RFC 4122 )', function (done) {
-            var data = helper.clone(STATEMENT_BASIC_ACTOR_AGENT);
-            data.id = 'Z1111111-1111-1111-1111-111111111111';
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .expect(400, done);
-
-            data = helper.clone(STATEMENT_BASIC_ACTOR_AGENT);
-            data.id = helper.generateUUID();
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .expect(200, done);
-        });
-
-        it('A "description" property is a Language Map (Type, 4.1.4.1.table4.row2.a, 4.1.11.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An Activity Definition uses the "extensions" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Activity Definition\'s "extension" property is an Object (Type, 4.1.4.1.table2.row1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement Reference is defined by the "objectType" of an "object" with value "StatementRef" (4.1.4.2.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement Reference uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement Reference contains an "id" property (Multiplicity, 4.1.4.3.table1.row2.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement Reference\'s "id" property is a UUID (Type, 4.1.4.3.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement is defined by the "objectType" of an "object" with value "SubStatement" (4.1.4.3.d)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement follows the requirements of all Statements (4.1.4.3.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot have a Sub-Statement (4.1.4.2.g)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "id" property at the Statement level (4.1.4.2.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "stored" property (4.1.4.2.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "version" property (4.1.4.2.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "authority" property (4.1.4.2.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" property is an Object (Type, 4.1.5.table.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A "score" Object uses a "scaled" property at most one time (Multiplicity, 4.1.5.1.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object\'s "scaled" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row1.a, SCORM 2004 4Ed)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A "score" Object uses a "raw" property at most one time (Multiplicity, 4.1.5.1.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object\'s "raw" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row2.a, SCORM 2004 4Ed)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A "score" Object uses a "min" property at most one time (Multiplicity, 4.1.5.1.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object\'s "min" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row3.a, SCORM 2004 4Ed)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A "score" Object uses a "max" property at most one time (Multiplicity, 4.1.5.1.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "score" Object\'s "max" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row4.a, SCORM 2004 4Ed)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "result" property uses a "success" property at most one time (Multiplicity, 4.1.5.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "success" property is a Boolean (Type, 4.1.5.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "result" property uses a "completion" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "completion" property is a Boolean (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "result" property uses a "response" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "response" property is a String (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "result" property uses a "duration" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "duration" property is a formatted to ISO 8601 (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "duration" property keeps at least 0.01 seconds of precision (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "result" property uses an "extensions" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "extensions" property is an Object (Type, 4.1.5.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Extension is defined as an Object of any "extensions" property (Multiplicity, 5.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Extension\'s structure is that of "key"/"value" pairs (Format, 5.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Extension can be empty (Format, 5.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Extension "key" is an IRI (Format, 5.3.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "context" property uses a "registration" property at most one time (Multiplicity, 4.1.6.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "registration" property is a UUID (Type, 4.1.6.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "context" property uses an "instructor" property at most one time (Multiplicity, 4.1.6.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "instructor" property is an Agent (Type, 4.1.6.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "context" property uses an "team" property at most one time (Multiplicity, 4.1.6.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "team" property is a Group (Type, 4.1.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "context" property uses a "contextActivities" property at most one time (Multiplicity, 4.1.6.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contextActivities" property is an Object (Type, 4.1.5.table1.row4.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contextActivities" property contains one or more key/value pairs (Format, 4.1..a, 4.1.6.2.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contextActivities" property\'s "key" has a value of "parent", "grouping", "category", or "other" (Format, 4.1.6.2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contextActivities" property\'s "value" is an Activity (Format, 4.1.6.2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A ContextActivity is defined as a single Activity of the "value" of the "contextActivities" property (definition)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "context" property uses an "revision" property at most one time (Multiplicity, 4.1.6.table1.row5.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "revision" property is a String (Type, 4.1.6.table1.row5.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (4.1.6.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "context" property uses an "platform" property at most one time (Multiplicity, 4.1.6.table1.row6.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "platform" property is a String (Type, 4.1.6.table1.row6.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement cannot contain both a "platform" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (4.1.6.b)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "context" property uses a "language" property at most one time (Multiplicity, 4.1.6.table1.row7.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "language" property is a String (Type, 4.1.6.table1.row7.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "language" property follows RFC5646 (Format, 4.1.6.table1.row7.a, RFC5646)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "context" property uses a "statement" property at most one time (Multiplicity, 4.1.6.table1.row8.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "statement" property is a Statement Reference (Type, 4.1.6.table1.row8.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('A Statement\'s "context" property uses an "extensions" property at most one time (Multiplicity, 4.1.6.table1.row9.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "timestamp" property is a TimeStamp (Type, 4.1.2.1.table1.row7.a, 4.1.2.1.table1.row7.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "stored" property is a TimeStamp (Type, 4.1.2.1.table1.row8.a, 4.1.2.1.table1.row8.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "authority" property is an Agent or Group (Type, 4.1.2.1.table1.row9.a, 4.1.2.1.table1.row9.b, 4.1.9.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An "authority" property which is also a Group contains exactly two Agents (Type, 4.1.2.1.table1.row9.a, 4.1.2.1.table1.row9.b, 4.1.9.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "version" property enters the LRS with the value of "1.0.0" or is not used (Vocabulary, 4.1.10.e, 4.1.10.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Statement\'s "attachments" property is an array of Attachments (4.1.2.1.table1.row11.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An Attachment is an Object (Definition, 4.1.11)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Attachment uses a "usageType" property exactly one time (Multiplicity, 4.1.11.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "usageType" property is an IRI (Multiplicity, 4.1.11.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Attachment uses a "display" property exactly one time (Multiplicity, 4.1.11.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Attachment uses a "description" property at most one time (Multiplicity, 4.1.11.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Attachment uses a "contentType" property exactly one time (Multiplicity, 4.1.11.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "contentType" property is an Internet Media/MIME type (Format, 4.1.11.table1.row4.a, IETF.org)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Attachment uses a "length" property exactly one time (Multiplicity, 4.1.11.table1.row5.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "length" property is an Integer (Format, 4.1.11.table1.row5.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Attachment uses a "sha2" property exactly one time (Multiplicity, 4.1.11.table1.row6.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "sha2" property is a String (Format, 4.1.11.table1.row6.a)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Attachment uses a "fileUrl" property at most one time (Multiplicity, 4.1.11.table1.row7.c)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
-
-        it('A "fileUrl" property is an IRL (Format, 4.1.11.table1.row7.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Sub-Statement cannot use the "authority" property (4.1.12)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object is an Object (7.6)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses an "objectType" property exactly one time (Multiplicity, 7.6.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "objectType" property is a String and is "Person" (Format, Vocabulary, 7.6.table1.row1.a, 7.6.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses a "name" property at most one time (Multiplicity, 7.6.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "name" property is an Array of Strings (Multiplicity, 7.6.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses a "mbox" property at most one time (Multiplicity, 7.6.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "mbox" property is an Array of IRIs (Multiplicity, 7.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "mbox" entries have the form "mailto:emailaddress" (Format, 7.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "mbox_sha1sum" property is an Array of Strings (Multiplicity, 7.6.table1.row4.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses an "openid" property at most one time (Multiplicity, 7.6.table1.row5.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "openid" property is an Array of Strings (Multiplicity, 7.6.table1.row5.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses an "account" property at most one time (Multiplicity, 7.6.table1.row6.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "account" property is an Array of Account Objects (Multiplicity, 7.6.table1.row6.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-    });
-
-    describe('Learning Record Store (LRS) Requirements', function () {
-
     });
 
     describe('Miscellaneous Requirements', function () {
@@ -1709,6 +1373,63 @@
     });
 
     describe('Document API Requirements', function () {
+
+        it('A Person Object is an Object (7.6)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object uses an "objectType" property exactly one time (Multiplicity, 7.6.table1.row1.c)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object\'s "objectType" property is a String and is "Person" (Format, Vocabulary, 7.6.table1.row1.a, 7.6.table1.row1.b)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object uses a "name" property at most one time (Multiplicity, 7.6.table1.row2.c)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object\'s "name" property is an Array of Strings (Multiplicity, 7.6.table1.row2.a)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object uses a "mbox" property at most one time (Multiplicity, 7.6.table1.row3.c)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object\'s "mbox" property is an Array of IRIs (Multiplicity, 7.6.table1.row3.a)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object\'s "mbox" entries have the form "mailto:emailaddress" (Format, 7.6.table1.row3.a)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object\'s "mbox_sha1sum" property is an Array of Strings (Multiplicity, 7.6.table1.row4.a)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object uses an "openid" property at most one time (Multiplicity, 7.6.table1.row5.c)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object\'s "openid" property is an Array of Strings (Multiplicity, 7.6.table1.row5.a)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object uses an "account" property at most one time (Multiplicity, 7.6.table1.row6.c)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('A Person Object\'s "account" property is an Array of Account Objects (Multiplicity, 7.6.table1.row6.a)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
         describe('State Document API Test', function () {
             it('should GET and include ETag (7.4) (7.4.b) (multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b)', function (done) {
                 var parameters = {

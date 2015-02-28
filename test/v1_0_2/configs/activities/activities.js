@@ -34,6 +34,14 @@
             'en-US': 'An example meeting that happened on a specific occasion with certain people present.'
         }
     };
+    var INVALID_INTERACTION_COMPONENT_DUPLICATE_ID = [
+        {
+            'id': 'valid'
+        },
+        {
+            'id': 'valid'
+        }
+    ];
     var VALID_EXTENSIONS = {
         'http://example.com/profiles/meetings/extension/location': 'X:\\meetings\\minutes\\examplemeeting.one',
         'http://example.com/profiles/meetings/extension/reporter': {
@@ -53,14 +61,14 @@
             'Bob"s your uncle'
         ]
     };
-    var VALID_MORE_INFO = 'http://virtualmeeting.example.com/345256';
+    var VALID_MORE_INFO = {moreInfo: 'http://virtualmeeting.example.com/345256'};
     var VALID_NAME = {
         'name': {
             'en-GB': 'example meeting',
                 'en-US': 'example meeting'
         }
     };
-    var VALID_TYPE = 'http://adlnet.gov/expapi/activities/meeting';
+    var VALID_TYPE = {type: 'http://adlnet.gov/expapi/activities/meeting'};
 
     // configures tests
     module.exports.config = function () {
@@ -69,7 +77,7 @@
                 name: 'Activities Verify Templates',
                 config: [
                     {
-                        name: 'should pass statement activity template',
+                        name: 'should pass statement activity default template',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.default}}'}
@@ -77,11 +85,96 @@
                         expect: [200]
                     },
                     {
-                        name: 'should pass statement substatement activity template',
+                        name: 'should pass statement substatement activity default template',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.default}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement activity choice template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.choice}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement activity likert template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.likert}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement activity matching template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement activity performance template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.performance}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement activity sequencing template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.sequencing}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement substatement activity choice template',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.choice}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement substatement activity likert template',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.likert}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement substatement activity matching template',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement substatement activity performance template',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.performance}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'should pass statement substatement activity sequencing template',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.sequencing}}'}
                         ],
                         expect: [200]
                     }
@@ -147,6 +240,30 @@
                             {object: '{{activities.default}}'}
                         ],
                         expect: [200]
+                    }
+                ]
+            },
+            {
+                name: 'An Activity Definition is defined as the contents of a "definition" property object of an Activity (Format, 4.1.4.1.table2)',
+                config: [
+                    {
+                        name: 'statement activity "definition" not object',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_definition}}'},
+                            {definition: INVALID_STRING}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "definition" not object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_definition}}'},
+                            {definition: INVALID_STRING}
+                        ],
+                        expect: [400]
                     }
                 ]
             },
@@ -892,7 +1009,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.sequencing}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
+                            {definition: {choices: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
                         ],
                         expect: [400]
                     }
@@ -1297,6 +1414,149 @@
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.performance}}'},
                             {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'Within an array of Interaction Components, the "id" property is unique (Multiplicty, 4.1.4.1.w)',
+                config: [
+                    {
+                        name: 'statement activity choice "choices" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity likert "scale" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity matching "source" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity matching "target" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity performance "steps" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity sequencing "choices" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity choice "choices" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity likert "scale" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity matching "source" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity matching "target" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity performance "steps" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity sequencing "choices" cannot use same "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: INVALID_INTERACTION_COMPONENT_DUPLICATE_ID}}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Activity Definition\'s "extension" property is an Object (Type, 4.1.4.1.table2.row1.a)',
+                config: [
+                    {
+                        name: 'statement activity "extension" invalid string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_definition}}'},
+                            {definition: {extensions: INVALID_STRING}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "extension" invalid string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_definition}}'},
+                            {definition: {extensions: INVALID_STRING}}
                         ],
                         expect: [400]
                     }

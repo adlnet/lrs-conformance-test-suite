@@ -12,7 +12,7 @@
 
     // defines overwriting data
     var INVALID_URI = 'abc://should.fail.com';
-    var INVALID_LANGUAGE_MAP = {"id": "http://adlnet.gov/expapi/verbs/attended", "display": { "abc": "attended"}};
+    var INVALID_LANGUAGE_MAP = {'display': { 'a12345': 'attended'}};
 
     // configures tests
     module.exports.config = function () {
@@ -110,19 +110,21 @@
                 name: 'A "verb" property\'s "display" property is a Language Map (Type, 4.1.3.table1.row2.a)',
                 config: [
                     {
-                        name: 'statement verb "id" not IRI',
+                        name: 'statement verb "display" not language',
                         templates: [
                             {statement: '{{statements.verb}}'},
-                            {verb: INVALID_LANGUAGE_MAP}
+                            {verb: '{{verbs.default}}'},
+                            INVALID_LANGUAGE_MAP
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement substatement verb "id" not IRI',
+                        name: 'statement substatement verb "display" not language',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.verb}}'},
-                            {verb: INVALID_LANGUAGE_MAP}
+                            {verb: '{{verbs.default}}'},
+                            INVALID_LANGUAGE_MAP
                         ],
                         expect: [400]
                     }

@@ -11,10 +11,10 @@
     "use strict"
 
     // defines overwriting data
-    var FOREIGN_IDENTIFIER_ACCOUNT = {"account": {"homePage": "http://www.example.com", "name": "xAPI account name"}};
-    var FOREIGN_IDENTIFIER_MBOX = {"mbox": "mailto:xapi@adlnet.gov"};
-    var FOREIGN_IDENTIFIER_MBOX_SHA1SUM = {"mbox_sha1sum": "cd9b00a5611f94eaa7b1661edab976068e364975"};
-    var FOREIGN_IDENTIFIER_OPENID = {"openid": "http://openid.example.org/12345"};
+    var FOREIGN_IDENTIFIER_ACCOUNT = {'account': {'homePage': 'http://www.example.com', 'name': 'xAPI account name'}};
+    var FOREIGN_IDENTIFIER_MBOX = {'mbox': 'mailto:xapi@adlnet.gov'};
+    var FOREIGN_IDENTIFIER_MBOX_SHA1SUM = {'mbox_sha1sum': 'cd9b00a5611f94eaa7b1661edab976068e364975'};
+    var FOREIGN_IDENTIFIER_OPENID = {'openid': 'http://openid.example.org/12345'};
 
     // configures tests
     module.exports.config = function () {
