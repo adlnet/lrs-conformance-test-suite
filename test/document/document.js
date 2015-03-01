@@ -1103,132 +1103,290 @@
         });
 
 
-        it('An LRS\'s Agent Profile API accepts PUT requests (7.6)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API accepts PUT requests (7.6)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('put', '/agents/profile', parameters, document, 204);
         });
 
-        it('An LRS\'s Agent Profile API rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row1.c)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            delete parameters.agent;
+            return sendRequest('put', '/agents/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Agent Profile API rejects a PUT request  with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, 7.6.table3.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Agent Profile API rejects a PUT request  with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, 7.6.table3.row1.a)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, 'not Agent bruh', {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT with "agent" with type ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('put', '/agents/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Agent Profile API rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row2.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row2.c)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            delete parameters.profileId;
+            return sendRequest('put', '/agents/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Agent Profile API rejects a PUT request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Agent Profile API rejects a PUT request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
+            var parameters = buildAgentProfile(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject PUT with "profileId" with type ' + type, function () {
+                    parameters.profileId = type;
+                    return sendRequest('put', '/agents/profile', parameters, undefined, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Agent Profile API upon processing a successful PUT request returns code 204 No Content (7.6.e)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API upon processing a successful PUT request returns code 204 No Content (7.6.e)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('put', '/agents/profile', parameters, document, 204);
         });
 
-        it('An LRS\'s Agent Profile API accepts POST requests (7.6)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API accepts POST requests (7.6)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/agents/profile', parameters, document, 204);
         });
 
-        it('An LRS\'s Agent Profile API rejects a POST request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API rejects a POST request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row1.c)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            delete parameters.agent;
+            return sendRequest('post', '/agents/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Agent Profile API rejects a POST request  with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, 7.6.table3.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API rejects a POST request  with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, 7.6.table3.row1.a)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject POST with "agent" with type ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('post', '/agents/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Agent Profile API rejects a POST request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row2.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API rejects a POST request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row2.c)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            delete parameters.profileId;
+            return sendRequest('post', '/agents/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Agent Profile API rejects a POST request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Agent Profile API rejects a POST request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject POST with "profileId" with type ' + type, function () {
+                    parameters.profileId = type;
+                    return sendRequest('post', '/agents/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Agent Profile API upon processing a successful POST request returns code 204 No Content (7.6.e)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API upon processing a successful POST request returns code 204 No Content (7.6.e)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/agents/profile', parameters, document, 204);
         });
 
-        it('An LRS\'s Agent Profile API accepts DELETE requests (7.6)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API accepts DELETE requests (7.6)', function () {
+            var parameters = buildAgentProfile();
+            return sendRequest('delete', '/agents/profile', parameters, undefined, 204);
         });
 
-        it('An LRS\'s Agent Profile API rejects a DELETE request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API rejects a DELETE request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row1.c)', function () {
+            var parameters = buildAgentProfile();
+            delete parameters.agent;
+            return sendRequest('delete', '/agents/profile', parameters, undefined, 400);
         });
 
-        it('An LRS\'s Agent Profile API rejects a DELETE request  with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, 7.6.table3.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Agent Profile API rejects a DELETE request  with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, 7.6.table3.row1.a)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "agent" with type ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('delete', '/agents/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Agent Profile API rejects a DELETE request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row2.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API rejects a DELETE request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row2.c)', function () {
+            var parameters = buildAgentProfile();
+            delete parameters.profileId;
+            return sendRequest('delete', '/agents/profile', parameters, undefined, 400);
         });
 
-        it('An LRS\'s Agent Profile API rejects a DELETE request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Agent Profile API rejects a DELETE request  with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "profileId" with type ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('delete', '/agents/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Agent Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content (7.6.e)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content (7.6.e)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/agents/profile', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('delete', '/agents/profile', parameters, undefined, 204);
+                });
         });
 
-        it('An LRS\'s Agent Profile API accepts GET requests (7.6)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API accepts GET requests (7.6)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/agents/profile', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/agents/profile', parameters, undefined, 200);
+                });
         });
 
-        it('An LRS\'s Agent Profile API rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row1.c, 7.6.table4.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, 7.6.table3.row1.c, 7.6.table4.row1.c)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            delete parameters.agent;
+            return sendRequest('get', '/agents/profile', parameters, document, 400);
         });
 
-        it('An LRS\'s Agent Profile API rejects a GET request with "agent" as a parameter if it is not an Actor Object with error code 400 Bad Request (format, 7.6.table3.row1.c, 7.6.table4.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Agent Profile API rejects a GET request with "agent" as a parameter if it is not an Actor Object with error code 400 Bad Request (format, 7.6.table3.row1.c, 7.6.table4.row1.c)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {"not_actor": "yup"}, 'not Actor'];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "agent" with type ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('get', '/agents/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Agent Profile API can process a GET request with "since" as a parameter (Multiplicity, 7.6.table4.row2.a, 7.5.table4.row2.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API can process a GET request with "since" as a parameter (Multiplicity, 7.6.table4.row2.a, 7.5.table4.row2.c)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            parameters.since = new Date();
+            return sendRequest('post', '/agents/profile', parameters, document, 204)
+                .then(function () {
+                    parameters.since = new Date(Date.now() - 1000);
+                    return sendRequest('get', '/agents/profile', parameters, undefined, 200);
+                });
         });
 
-        it('An LRS\'s Agent Profile API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.6.table4.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        describe('An LRS\'s Agent Profile API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.6.table4.row2.a)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument(),
+                invalidTypes = [1, true, {}, 'not timestamp'];
+            invalidTypes.forEach(function (type) {
+                it('Should reject GET with "since" with type ' + type, function () {
+                    parameters.agent = type;
+                    return sendRequest('get', '/agents/profile', parameters, document, 400);
+                });
+            });
         });
 
-        it('An LRS\'s Agent Profile API upon processing a successful GET request with a valid "profileId" as a parameter returns the document satisfying the requirements of the GET and code 200 OK (7.6, 7.6.f)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API upon processing a successful GET request with a valid "profileId" as a parameter returns the document satisfying the requirements of the GET and code 200 OK (7.6, 7.6.f)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/agents/profile', parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', '/agents/profile', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.eql(document);
+                        })
+                });
         });
 
-        it('An LRS\'s Agent Profile API upon processing a successful GET request without "profileId" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK (7.6, 7.6.g)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s Agent Profile API upon processing a successful GET request without "profileId" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK (7.6, 7.6.g)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/agents/profile', parameters, document, 204)
+                .then(function () {
+                    delete parameters.profileId;
+                    return sendRequest('get', '/agents/profile', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.be.instanceOf(Array);
+                            res.body.length.should.be.greaterThan(1);
+                        })
+                });
         });
 
-        it('An LRS\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present (7.6.table4.row2, 7.6.g)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present (7.6.table4.row2, 7.6.g)', function () {
+            var parameters = buildAgentProfile(),
+                document = buildDocument();
+            return sendRequest('post', '/agents/profile', parameters, document, 204)
+                .then(function () {
+                    parameters.since = new Date(Date.now() - 1000);
+                    delete parameters.profileId;
+                    return sendRequest('get', '/agents/profile', parameters, undefined, 200)
+                        .then(function (res) {
+                            res.body.should.be.instanceOf(Array);
+                            res.body.length.should.be.greaterThan(1);
+                        })
+                });
         });
 
-        it('An LRS\'s About API accepts GET requests (7.7.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s About API accepts GET requests (7.7.b)', function () {
+            return sendRequest('get', '/about', undefined, undefined, 200);
         });
 
-        it('An LRS\'s Activity Profile API upon processing a successful GET request returns a version property and code 200 OK (multiplicity, 7.7.table1.row1.c, 7.7.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s About API upon processing a successful GET request returns a version property and code 200 OK (multiplicity, 7.7.table1.row1.c, 7.7.c)', function () {
+            return sendRequest('get', '/about', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.version.should.be.instanceOf(Array);
+                });
         });
 
-        it('An LRS\'s About API\'s version property is an array of strings (format, 7.7.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s About API\'s version property is an array of strings (format, 7.7.table1.row1.a)', function () {
+            return sendRequest('get', '/about', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.version.should.be.instanceOf(Array);
+                });
         });
 
-        it('An LRS\'s About API\'s version property contains at least one string of "1.0.1" (7.7.d)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s About API\'s version property contains at least one string of "1.0.1" (7.7.d)', function () {
+            return sendRequest('get', '/about', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.version.should.be.instanceOf(Array);
+                    res.body.version.length.should.be.greaterThan(0);
+                });
         });
 
-        it('An LRS\'s About API\'s version property can only have values of ".9", ".95", "1.0", "1.0.0", or ""1.0." + X" with (7.7.d.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s About API\'s version property can only have values of ".9", ".95", "1.0", "1.0.0", or ""1.0." + X" with (7.7.d.a)', function () {
+            return sendRequest('get', '/about', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.version.should.be.instanceOf(Array);
+                    res.body.version.length.should.be.greaterThan(0);
+                    var validVersions = ['.9','.95','1.0','1.0.0','1.0.1'];
+                    res.body.version.forEach(function(item){
+                        validVersions.should.containEql(item);
+                    })
+                });
         });
 
-        it('An LRS\'s About API upon processing a successful GET request can return an Extension with code 200 OK (multiplicity, 7.7.table1.row2.c, 7.7.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('An LRS\'s About API upon processing a successful GET request can return an Extension with code 200 OK (multiplicity, 7.7.table1.row2.c, 7.7.c)', function () {
+            return sendRequest('get', '/about', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.extensions.should.be.instanceOf(Object);
+                });
         });
 
         it('Any LRS API that accepts a POST request can accept a POST request with a single query string parameter named "method" on that request (7.8.a)', function (done) {
