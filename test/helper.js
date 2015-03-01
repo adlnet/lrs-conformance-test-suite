@@ -248,21 +248,17 @@ if (!process.env.EB_NODE_COMMAND) {
         getTestConfiguration: function() {
             var list = [];
 
-            var folders = fs.readdirSync(CONFIG_FOLDER);
-            folders.forEach(function (folder) {
-                var files = fs.readdirSync(CONFIG_FOLDER + '/' + folder);
-                files.forEach(function (file) {
-                    if (file.indexOf('.js') <= 0) {
-                        return;
-                    }
+            var files = fs.readdirSync(CONFIG_FOLDER);
+            files.forEach(function (file) {
+                if (file.indexOf('.js') <= 0) {
+                    return;
+                }
 
-                    var subfolder = CONFIG_FOLDER_RELATIVE + '/' + folder;
-                    var configFile = require(subfolder + '/' + file);
-                    var config = configFile.config();
-                    validateConfiguration(config, '/' + folder + '/' + file);
+                var configFile = require(CONFIG_FOLDER_RELATIVE + '/' + file);
+                var config = configFile.config();
+                validateConfiguration(config, '/' + file);
 
-                   list = list.concat(config);
-                });
+               list = list.concat(config);
             });
             return list;
         },

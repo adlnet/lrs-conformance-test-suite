@@ -159,7 +159,7 @@
                 name: 'A Sub-Statement cannot use the "version" property (4.1.4.2.f)',
                 config: [
                     {
-                        name: 'substatement invalid with property "stored"',
+                        name: 'substatement invalid with property "version"',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.default}}'},

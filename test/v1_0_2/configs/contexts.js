@@ -550,7 +550,7 @@
                         name: 'statement substatement context "revision" is invalid with object agent',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.object_agent_default}}'},
+                            {object: '{{substatements.agent_default}}'},
                             {context: '{{contexts.no_platform}}'}
                         ],
                         expect: [400]
@@ -559,7 +559,7 @@
                         name: 'statement substatement context "revision" is invalid with object group',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.object_group_default}}'},
+                            {object: '{{substatements.group_default}}'},
                             {context: '{{contexts.no_platform}}'}
                         ],
                         expect: [400]
@@ -657,7 +657,7 @@
                         name: 'statement substatement context "platform" is invalid with object agent',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.object_agent_default}}'},
+                            {object: '{{substatements.agent_default}}'},
                             {context: '{{contexts.no_revision}}'}
                         ],
                         expect: [400]
@@ -666,7 +666,7 @@
                         name: 'statement substatement context "platform" is invalid with object group',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.object_group_default}}'},
+                            {object: '{{substatements.group_default}}'},
                             {context: '{{contexts.no_revision}}'}
                         ],
                         expect: [400]

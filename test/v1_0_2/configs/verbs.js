@@ -109,7 +109,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement verb voided verb does not use substatement with "StatementRef"',
+                        name: 'statement verb voided does not use object "StatementRef"',
                         templates: [
                             {statement: '{{statements.verb}}'},
                             {verb: '{{verbs.voided}}'}

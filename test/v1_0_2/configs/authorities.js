@@ -49,7 +49,7 @@
                         name: 'should pass statement authority template',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {authority: '{{agents.anonymous_two_member}}'}
+                            {authority: '{{groups.anonymous_two_member}}'}
                         ],
                         expect: [200]
                     }
@@ -62,7 +62,7 @@
                         name: 'statement "authority" invalid one member',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {authority: '{{agents.anonymous_no_member}}'},
+                            {authority: '{{groups.anonymous_no_member}}'},
                             {member: INVALID_ONE_MEMBER}
                         ],
                         expect: [400]
@@ -71,7 +71,7 @@
                         name: 'statement "authority" invalid three member',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {authority: '{{agents.anonymous_no_member}}'},
+                            {authority: '{{groups.anonymous_no_member}}'},
                             {member: INVALID_THREE_MEMBER}
                         ],
                         expect: [400]
