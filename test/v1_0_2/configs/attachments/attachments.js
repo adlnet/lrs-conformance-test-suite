@@ -164,6 +164,51 @@
                         expect: [400]
                     }
                 ]
+            },
+            {
+                name: 'A "display" property is a Language Map (Type, 4.1.3.table1.row1.a, 4.1.11.table1.row2.a)',
+                config: [
+                    {
+                        name: 'statement attachment "description" language map numeric',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {
+                                attachments: [
+                                    {
+                                        'usageType': 'http://example.com/attachment-usage/test',
+                                        'display': {'en-US': 'A test attachment'},
+                                        'description': INVALID_NUMERIC,
+                                        'contentType': 'text/plain; charset=ascii',
+                                        'length': 27,
+                                        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+                                        'fileUrl': 'http://over.there.com/file.txt'
+                                    }
+                                ]
+                            }
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement attachment "description" language map string',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {
+                                attachments: [
+                                    {
+                                        'usageType': 'http://example.com/attachment-usage/test',
+                                        'display': {'en-US': 'A test attachment'},
+                                        'description': 'should error',
+                                        'contentType': 'text/plain; charset=ascii',
+                                        'length': 27,
+                                        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+                                        'fileUrl': 'http://over.there.com/file.txt'
+                                    }
+                                ]
+                            }
+                        ],
+                        expect: [400]
+                    }
+                ]
             }
         ];
     };

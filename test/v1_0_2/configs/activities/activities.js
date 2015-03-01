@@ -12,6 +12,7 @@
 
     // defines overwriting data
     var INVALID_IRI = 'abc://should.fail.com';
+    var INVALID_NUMERIC = 12345;
     var INVALID_OBJECT = {key: 'value'};
     var INVALID_STRING = 'should error';
     var INVALID_INTERACTION_COMPONENT_ID = {
@@ -23,6 +24,11 @@
     var INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE = {
         'id': 'valid',
         'description': INVALID_OBJECT
+    };
+    var INVALID_INTERACTION_NO_ID = {
+        'description': {
+            'en-US': 'valid'
+        }
     };
     var INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING = {
         'id': 'valid',
@@ -430,6 +436,92 @@
                 ]
             },
             {
+                name: 'An Activity Definition\'s "name" property is a Language Map (Type, 4.1.4.1.table2.row1.a)',
+                config: [
+                    {
+                        name: 'statement object "name" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_languages}}'},
+                            {definition: INVALID_NUMERIC}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object "name" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_languages}}'},
+                            {definition: INVALID_STRING}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "name" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_languages}}'},
+                            {definition: INVALID_NUMERIC}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "name" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_languages}}'},
+                            {definition: INVALID_STRING}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Activity Definition\'s "description" property is a Language Map (Type, 4.1.4.1.table2.row2.a)',
+                config: [
+                    {
+                        name: 'statement object "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_languages}}'},
+                            {definition: INVALID_NUMERIC}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_languages}}'},
+                            {definition: INVALID_STRING}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_languages}}'},
+                            {definition: INVALID_NUMERIC}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_languages}}'},
+                            {definition: INVALID_STRING}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
                 name: 'An Activity Definition\'s "type" property is an IRI (Type, 4.1.4.1.table2.row3.a)',
                 config: [
                     {
@@ -822,9 +914,6 @@
                 ]
             },
             {
-                // An Interaction Component is an Object (4.1.4.1.table4)
-                // An Interaction Component contains an "id" property (Multiplicity, 4.1.4.1.table4.row1.b)
-                // An Interaction Component's "id" property is a String (Type, 4.1.4.1.table4.row1.a)
                 name: 'An Activity Definition\'s "choices" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
                 config: [
                     {
@@ -1016,9 +1105,6 @@
                 ]
             },
             {
-                // An Interaction Component is an Object (4.1.4.1.table4)
-                // An Interaction Component contains an "id" property (Multiplicity, 4.1.4.1.table4.row1.b)
-                // An Interaction Component's "id" property is a String (Type, 4.1.4.1.table4.row1.a)
                 name: 'An Activity Definition\'s "scale" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
                 config: [
                     {
@@ -1117,9 +1203,6 @@
                 ]
             },
             {
-                // An Interaction Component is an Object (4.1.4.1.table4)
-                // An Interaction Component contains an "id" property (Multiplicity, 4.1.4.1.table4.row1.b)
-                // An Interaction Component's "id" property is a String (Type, 4.1.4.1.table4.row1.a)
                 name: 'An Activity Definition\'s "source" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
                 config: [
                     {
@@ -1218,9 +1301,6 @@
                 ]
             },
             {
-                // An Interaction Component is an Object (4.1.4.1.table4)
-                // An Interaction Component contains an "id" property (Multiplicity, 4.1.4.1.table4.row1.b)
-                // An Interaction Component's "id" property is a String (Type, 4.1.4.1.table4.row1.a)
                 name: 'An Activity Definition\'s "target" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
                 config: [
                     {
@@ -1319,9 +1399,6 @@
                 ]
             },
             {
-                // An Interaction Component is an Object (4.1.4.1.table4)
-                // An Interaction Component contains an "id" property (Multiplicity, 4.1.4.1.table4.row1.b)
-                // An Interaction Component's "id" property is a String (Type, 4.1.4.1.table4.row1.a)
                 name: 'An Activity Definition\'s "steps" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
                 config: [
                     {
@@ -1414,6 +1491,363 @@
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.performance}}'},
                             {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Interaction Component is an Object (4.1.4.1.table4)',
+                config: [
+                    {
+                        name: 'statement activity "choice choices" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "likert scale" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "matching source" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "matching target" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "performance steps" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "sequencing choices" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "choice choices" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "likert scale" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "matching source" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "matching target" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "performance steps" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "sequencing choices" is not an object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [INVALID_STRING]}}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'Interaction Component contains an "id" property (Multiplicity, 4.1.4.1.table4.row1.b)',
+                config: [
+                    {
+                        name: 'statement activity "choice choices" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "likert scale" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "matching source" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "matching target" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "performance steps" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "sequencing choices" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "choice choices" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "likert scale" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "matching source" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "matching target" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "performance steps" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "sequencing choices" missing "id"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [INVALID_INTERACTION_NO_ID]}}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An Interaction Component\'s "id" property is a String (Type, 4.1.4.1.table4.row1.a)',
+                config: [
+                    {
+                        name: 'statement activity "choice choices id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "likert scale id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "matching source id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "matching target id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "performance steps id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "sequencing choices id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "choice choices id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "likert scale id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "matching source id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "matching target id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "performance steps id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [INVALID_INTERACTION_COMPONENT_ID]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "sequencing choices id" not a string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [INVALID_INTERACTION_COMPONENT_ID]}}
                         ],
                         expect: [400]
                     }

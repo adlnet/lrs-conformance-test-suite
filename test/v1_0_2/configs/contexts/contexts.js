@@ -11,9 +11,14 @@
     "use strict"
 
     // defines overwriting data
+    var INVALID_LANGUAGE = {a12345: 'should fail'};
     var INVALID_NUMERIC = 12345;
     var INVALID_OBJECT = {key: 'should fail'};
     var INVALID_STRING = 'should fail';
+    var VALID_ACTIVITY = {
+        "objectType": "Activity",
+        "id": "http://www.example.com/meetings/occurances/34534"
+    };
 
     // configures tests
     module.exports.config = function () {
@@ -310,14 +315,94 @@
                 ]
             },
             {
-                // A ContextActivity is defined as a single Activity of the "value" of the "contextActivities" property (definition)
                 name: 'A "contextActivities" property\'s "value" is an Activity (Format, 4.1.6.2.a)',
+                config: [
+                    {
+                            name: 'statement context "contextActivities parent" value is activity array',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.parent}}'},
+                            {contextActivities: [VALID_ACTIVITY]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context "contextActivities grouping" value is activity array',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.grouping}}'},
+                            {contextActivities: [VALID_ACTIVITY]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context "contextActivities category" value is activity array',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.category}}'},
+                            {contextActivities: [VALID_ACTIVITY]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context "contextActivities other" value is activity array',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.other}}'},
+                            {contextActivities: [VALID_ACTIVITY]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context "contextActivities parent" value is activity array',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.parent}}'},
+                            {contextActivities: [VALID_ACTIVITY]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context "contextActivities grouping" value is activity array',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.grouping}}'},
+                            {contextActivities: [VALID_ACTIVITY]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context "contextActivities category" value is activity array',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.category}}'},
+                            {contextActivities: [VALID_ACTIVITY]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context "contextActivities other" value is activity array',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.other}}'},
+                            {contextActivities: [VALID_ACTIVITY]}
+                        ],
+                        expect: [200]
+                    }
+                ]
+            },
+            {
+                name: 'A ContextActivity is defined as a single Activity of the "value" of the "contextActivities" property (definition)',
                 config: [
                     {
                         name: 'statement context "contextActivities parent" value is activity',
                         templates: [
                             {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'}
+                            {context: '{{contexts.parent}}'}
                         ],
                         expect: [200]
                     },
@@ -350,7 +435,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
-                            {context: '{{contexts.default}}'}
+                            {context: '{{contexts.parent}}'}
                         ],
                         expect: [200]
                     },
@@ -635,6 +720,30 @@
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.default}}'},
                             {language: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'A "language" property follows RFC5646 (Format, 4.1.6.table1.row7.a, RFC5646)',
+                config: [
+                    {
+                        name: 'statement context "language" is is invalid language',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: INVALID_LANGUAGE}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement context "language" is is invalid language',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: INVALID_LANGUAGE}
                         ],
                         expect: [400]
                     }

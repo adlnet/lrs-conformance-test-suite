@@ -16,6 +16,7 @@
     var INVALID_OBJECTTYPE_OBJECT = {objectType: INVALID_OBJECT};
     var INVALID_OBJECTTYPE_NAME_NUMERIC = {name: 123};
     var INVALID_OBJECTTYPE_NAME_OBJECT = {name: INVALID_OBJECT};
+    var INVALID_MAIL_TO_EMAIL = 'mailto:should.fail.com';
     var INVALID_MAIL_TO_IRI = 'http://should.fail.com';
     var INVALID_URI = 'abc://should.fail.com';
     var INVALID_ACCOUNT_HOMEPAGE_IRL = {account: {homePage: INVALID_URI}};
@@ -526,7 +527,6 @@
                 ]
             },
             {
-                // An "mbox" property has the form "mailto:email address" (Syntax, 4.1.2.3.table1.row1.b)
                 name: 'An "mbox" property is an IRI (Type, 4.1.2.3.table1.row1.a)',
                 config: [
                     {
@@ -663,6 +663,148 @@
                             {context: '{{contexts.instructor}}'},
                             {instructor: '{{groups.identified_mbox}}'},
                             {mbox: INVALID_MAIL_TO_IRI}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An "mbox" property has the form "mailto:email address" (Syntax, 4.1.2.3.table1.row1.b)',
+                config: [
+                    {
+                        name: 'statement actor "agent mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "group mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "agent mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "group mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "agent mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "group mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "group mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "agent mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "group mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "agent mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "group mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group mbox" not mailto:email address',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox}}'},
+                            {mbox: INVALID_MAIL_TO_EMAIL}
                         ],
                         expect: [400]
                     }

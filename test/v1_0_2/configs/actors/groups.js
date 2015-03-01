@@ -415,7 +415,6 @@
                 ]
             },
             {
-                // An Identified Group uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, 4.1.2.1.a)
                 name: 'An Identified Group is defined by "objectType" of an "actor" or "object" with value "Group" and by one of "mbox", "mbox_sha1sum", "openid", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)',
                 config: [
                     {
@@ -699,6 +698,295 @@
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.team}}'},
                             {team: '{{groups.identified_account}}'}
+                        ],
+                        expect: [200]
+                    }
+                ]
+            },
+            {
+                name: 'An Identified Group uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, 4.1.2.1.a)',
+                config: [
+                    {
+                        name: 'statement actor identified group accepts "mbox"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement actor identified group accepts "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement actor identified group accepts "openid"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_openid_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement actor identified group accepts "account"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement authority identified group accepts "mbox"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement authority identified group accepts "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_mbox_sha1sum_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement authority identified group accepts openid"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_openid_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement authority identified group accepts account"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context instructor identified group accepts "mbox"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context instructor identified group accepts "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context instructor identified group accepts "openid"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context instructor identified group accepts "account"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context team identified group accepts "mbox"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context team identified group accepts "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_sha1sum_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context team identified group accepts "openid"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_openid_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context team identified group accepts "account"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_account_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement as group identified group accepts "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement as group identified group accepts "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_mbox_sha1sum_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement as group identified group accepts "openid"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_openid_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement as group identified group accepts "account"',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s group identified group accepts "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_mbox_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s group identified group accepts "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_mbox_sha1sum_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s group identified group accepts "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_openid_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s group identified group accepts "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_account_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor identified group accepts "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor identified group accepts "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_mbox_sha1sum_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor identified group accepts "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_openid_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor identified group accepts "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context team identified group accepts "mbox"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context team identified group accepts "mbox_sha1sum"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_mbox_sha1sum_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context team identified group accepts "openid"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_openid_no_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement"s context team identified group accepts "account"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.team}}'},
+                            {team: '{{groups.identified_account_no_member}}'}
                         ],
                         expect: [200]
                     }
