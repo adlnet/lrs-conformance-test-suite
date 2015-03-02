@@ -31,7 +31,7 @@
         process.env.LRS_ENDPOINT = options.endpoint;
 
         mocha.addFile(
-            path.join(__dirname, '../test/test.js')
+            path.join(__dirname, '../test/v1_0_2/document.js')
         );
 
         mocha.run(function (failures) {
