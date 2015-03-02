@@ -10,7 +10,7 @@
 (function (module, process, request, should, helper) {
     "use strict"
 
-    describe.only('Conformance Requirements', function () {
+    describe('Conformance Requirements using Templating', function () {
 
         var configurations = helper.getTestConfiguration();
 
