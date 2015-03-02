@@ -17,7 +17,11 @@
     var INVALID_STRING = 'should fail';
     var INVALID_UUID_TOO_MANY_DIGITS = 'AA97B177-9383-4934-8543-0F91A7A028368';
     var INVALID_UUID_INVALID_LETTER = 'MA97B177-9383-4934-8543-0F91A7A02836';
-    var INVALID_VERSION = '0.9.9';
+    var INVALID_VERSION_0_9_9 = '0.9.9';
+    var INVALID_VERSION_1_1_0 = '1.1.0';
+    var VALID_EXTENSION = {extensions: {'http://example.com/null': 'null'}};
+    var VALID_VERSION_1_0 = '1.0';
+    var VALID_VERSION_1_0_9 = '1.0.9';
 
     // configures tests
     module.exports.config = function () {
@@ -191,7 +195,124 @@
                         name: 'statement "version" invalid',
                         templates: [
                             {statement: '{{statements.default}}'},
-                            {version: INVALID_VERSION}
+                            {version: INVALID_VERSION_0_9_9}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to "null", except in an "extensions" property (4.1.12.d.a)',
+                config: [
+                    {
+                        name: 'statement actor should fail on "null"',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.mbox}}'},
+                            {name: 'null'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement verb should fail on "null"',
+                        templates: [
+                            {statement: '{{statements.verb}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: {'en-US': 'null'}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity extensions can be empty',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_extensions}}'},
+                            {definition: VALID_EXTENSION}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement result extensions can be empty',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.no_extensions}}'},
+                            VALID_EXTENSION
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context extensions can be empty',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.no_extensions}}'},
+                            VALID_EXTENSION
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement activity extensions can be empty',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_extensions}}'},
+                            {definition: VALID_EXTENSION}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement result extensions can be empty',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.no_extensions}}'},
+                            VALID_EXTENSION
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context extensions can be empty',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.no_extensions}}'},
+                            VALID_EXTENSION
+                        ],
+                        expect: [200]
+                    }
+                ]
+            },
+            {
+                name: 'An LRS rejects with error code 400 Bad Request, a Request which uses "version" and has the value set to anything but "1.0" or "1.0.x", where x is the semantic versioning number (Format, 4.1.10.b, 6.2.c, 6.2.f)',
+                config: [
+                    {
+                        name: 'statement "version" valid 1.0',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {version: VALID_VERSION_1_0}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement "version" valid 1.0.9',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {version: VALID_VERSION_1_0_9}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement "version" invalid 0.9.9',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {version: INVALID_VERSION_0_9_9}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "version" invalid 1.1.0',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {version: INVALID_VERSION_1_1_0}
                         ],
                         expect: [400]
                     }

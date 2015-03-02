@@ -401,6 +401,49 @@
                         expect: [400]
                     }
                 ]
+            },
+            {
+                name: 'An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (4.1.12.d.a)',
+                config: [
+                    {
+                        name: 'statement result "extensions" property is numeric',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: INVALID_NUMERIC}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement result "extensions" property is string',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: INVALID_STRING}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement result "extensions" property is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: INVALID_NUMERIC}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement result "extensions" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: INVALID_STRING}
+                        ],
+                        expect: [400]
+                    }
+                ]
             }
         ];
     };

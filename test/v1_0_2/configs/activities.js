@@ -48,6 +48,7 @@
             'id': 'valid'
         }
     ];
+    var VALID_ACTIVITY = {id: 'http://www.example.com/meetings/occurances/34534'};
     var VALID_EXTENSIONS = {
         'http://example.com/profiles/meetings/extension/location': 'X:\\meetings\\minutes\\examplemeeting.one',
         'http://example.com/profiles/meetings/extension/reporter': {
@@ -1993,6 +1994,28 @@
                             {definition: {extensions: INVALID_STRING}}
                         ],
                         expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An LRS generates an "objectType" property of "Activity" to any "object" property if none is provided (Modify, 4.1.4.a)',
+                config: [
+                    {
+                        name: 'statement activity without "objectType" is valid',
+                        templates: [
+                            {statement: '{{statements.no_object}}'},
+                            {object: VALID_ACTIVITY}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement activity without "objectType" is valid',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.no_object}}'},
+                            {object: VALID_ACTIVITY}
+                        ],
+                        expect: [200]
                     }
                 ]
             }

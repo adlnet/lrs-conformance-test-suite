@@ -77,6 +77,20 @@
                         expect: [400]
                     }
                 ]
+            },
+            {
+                name: 'An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group of more than two Agents (Format, 4.1.9.a)',
+                config: [
+                    {
+                        name: 'statement "authority" invalid three member',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_no_member}}'},
+                            {member: INVALID_THREE_MEMBER}
+                        ],
+                        expect: [400]
+                    }
+                ]
             }
         ];
     };
