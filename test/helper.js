@@ -11,7 +11,7 @@ var path = require('path');
 if (!process.env.EB_NODE_COMMAND) {
     (require('node-env-file'))(path.join(__dirname, './.env'));
 }
-(function(module, fs, extend, uuid, lodash) {
+(function (module, fs, extend, uuid, lodash, qs, FormUrlencode) {
 
     /** Appears to use absolute path */
     var CONFIG_FOLDER = './test/v1_0_2/configs';
@@ -57,7 +57,7 @@ if (!process.env.EB_NODE_COMMAND) {
          * Adds xAPI header version.
          * @returns {String}
          */
-        addHeaderXapiVersion: function(header) {
+        addHeaderXapiVersion: function (header) {
             var newHeader = extend(true, {}, header);
             newHeader['X-Experience-API-Version'] = XAPI_VERSION;
             return newHeader;
@@ -69,10 +69,10 @@ if (!process.env.EB_NODE_COMMAND) {
          * @param {Array} list - Array list of converted string mappings to JSON
          * @returns {Object}
          */
-        convertTemplate: function(list) {
+        convertTemplate: function (list) {
             var mapper = module.exports.getJsonMapping();
 
-            var templates = []
+            var templates = [];
             list.forEach(function (item) {
                 var key = Object.keys(item)[0];
                 var value = item[key];
@@ -81,7 +81,7 @@ if (!process.env.EB_NODE_COMMAND) {
                 var template;
                 if (typeof value === 'string'
                     && value.indexOf('{{') === 0
-                    && value.indexOf('}}') === value.length -2) {
+                    && value.indexOf('}}') === value.length - 2) {
                     // if value appears to be template mapping '{{...}}'
                     template = createMapping(mapper, item[key]);
                     object[key] = template;
@@ -116,11 +116,11 @@ if (!process.env.EB_NODE_COMMAND) {
          * @param {Array} array - Array of objects with on key / value.
          * @returns {Object}
          */
-        createTestObject: function(array) {
+        createTestObject: function (array) {
             var from = {};
 
             array.reverse();
-            array.forEach(function(to, index) {
+            array.forEach(function (to, index) {
                 if (index === 0) {
                     from = to;
                     return;
@@ -137,63 +137,63 @@ if (!process.env.EB_NODE_COMMAND) {
          * http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
          * @returns {String}
          */
-        generateUUID: function() {
+        generateUUID: function () {
             return uuid.v4();
         },
         /**
          * Returns endpoint to web application.
          * @returns {String}
          */
-        getEndpoint: function() {
+        getEndpoint: function () {
             return LRS_ENDPOINT;
         },
         /**
          * Returns endpoint to statements.
          * @returns {String}
          */
-        getEndpointAbout: function() {
+        getEndpointAbout: function () {
             return URL_ABOUT;
         },
         /**
          * Returns endpoint to activities.
          * @returns {String}
          */
-        getEndpointActivities: function() {
+        getEndpointActivities: function () {
             return URL_ACTIVITIES;
         },
         /**
          * Returns endpoint to activities.
          * @returns {String}
          */
-        getEndpointActivitiesProfile: function() {
+        getEndpointActivitiesProfile: function () {
             return URL_ACTIVITIES_PROFILE;
         },
         /**
          * Returns endpoint to activities.
          * @returns {String}
          */
-        getEndpointActivitiesState: function() {
+        getEndpointActivitiesState: function () {
             return URL_ACTIVITIES_STATE;
         },
         /**
          * Returns endpoint to activities.
          * @returns {String}
          */
-        getEndpointAgents: function() {
+        getEndpointAgents: function () {
             return URL_AGENTS;
         },
         /**
          * Returns endpoint to activities.
          * @returns {String}
          */
-        getEndpointAgentsProfile: function() {
+        getEndpointAgentsProfile: function () {
             return URL_AGENTS_PROFILE;
         },
         /**
          * Returns endpoint to activities.
          * @returns {String}
          */
-        getEndpointStatements: function() {
+        getEndpointStatements: function () {
             return URL_STATEMENTS;
         },
         /**
@@ -202,7 +202,7 @@ if (!process.env.EB_NODE_COMMAND) {
          * the JSON data from the verbs folder in the default.json file.
          * @returns {Object}
          */
-        getJsonMapping: function() {
+        getJsonMapping: function () {
             var mapping = {};
 
             var folders = fs.readdirSync(TEMPLATE_FOLDER);
@@ -232,7 +232,7 @@ if (!process.env.EB_NODE_COMMAND) {
          * @param content
          * @returns {string}
          */
-        getSHA1Sum: function(content) {
+        getSHA1Sum: function (content) {
             if (typeof content !== 'string') {
                 content = JSON.stringify(content);
             }
@@ -245,7 +245,7 @@ if (!process.env.EB_NODE_COMMAND) {
          * Creates test configuration object which combines all configurations into a single object
          * which will be iterated over to run tests dynamically.
          */
-        getTestConfiguration: function() {
+        getTestConfiguration: function () {
             var list = [];
 
             var files = fs.readdirSync(CONFIG_FOLDER);
@@ -258,7 +258,7 @@ if (!process.env.EB_NODE_COMMAND) {
                 var config = configFile.config();
                 validateConfiguration(config, '/' + file);
 
-               list = list.concat(config);
+                list = list.concat(config);
             });
             return list;
         },
@@ -268,8 +268,116 @@ if (!process.env.EB_NODE_COMMAND) {
          * @param {other} other - JSON object
          * @returns {boolean}
          */
-        isEqual: function(original, other) {
+        isEqual: function (original, other) {
             return lodash.isEqual(original, other);
+        },
+        /**
+         * Returns a string of a form encoded content with headers.
+         * @param content content to encode
+         * @returns {*}
+         */
+        buildFormBody: function (content) {
+            return FormUrlencode.encode({
+                'X-Experience-API-Version': '1.0.2',
+                'Content-Type': 'application/json',
+                content: content
+            });
+        },
+        /**
+         * Returns an example Activity params.
+         * @returns {string}
+         */
+        buildActivity: function () {
+            return 'http://www.example.com/activityId/hashset';
+        },
+        /**
+         * Returns an example State params.
+         * @returns {json} state
+         */
+        buildState: function () {
+            return {
+                activityId: 'http://www.example.com/activityId/hashset',
+                agent: {
+                    "objectType": "Agent",
+                    "account": {
+                        "homePage": "http://www.example.com/agentId/1",
+                        "name": "Rick James"
+                    }
+                },
+                stateId: this.generateUUID()
+            }
+        },
+        /**
+         * Returns an example ActivityProfile params.
+         * @returns {json} activity profile
+         */
+        buildActivityProfile: function () {
+            return {
+                activityId: 'http://www.example.com/activityId/hashset',
+                profileId: this.generateUUID()
+            };
+        },
+        /**
+         * Returns an example AgentProfile.
+         * @returns {json} agent profile
+         */
+        buildAgentProfile: function () {
+            return {
+                activityId: 'http://www.example.com/activityId/hashset',
+                agent: {
+                    "objectType": "Agent",
+                    "account": {
+                        "homePage": "http://www.example.com/agentId/1",
+                        "name": "Rick James"
+                    }
+                },
+                profileId: this.generateUUID()
+            };
+        },
+        /**
+         * Returns an example Agent params.
+         * @returns {json} agent
+         */
+        buildAgent: function () {
+            return {
+                "agent": {
+                    "name": "Rick James",
+                    "objectType": "Agent",
+                    "account": {
+                        "homePage": "http://www.example.com/agentId/1",
+                        "name": "Rick James"
+                    }
+                }
+            };
+        },
+        /**
+         * Return sample document.
+         * @returns {json} document
+         */
+        buildDocument: function () {
+            var document = {
+                name: this.generateUUID(),
+                location: {
+                    name: this.generateUUID()
+                }
+            };
+            document[this.generateUUID()] = this.generateUUID();
+            return document;
+        },
+        /**
+         * Return sample statement.
+         * @returns {object} statement
+         */
+        buildStatement: function () {
+            return clone(require('../data/statement_full.json'));
+        },
+        /**
+         * Deep clone object.
+         * @param obj
+         * @returns {*}
+         */
+        clone: function (obj) {
+            return JSON.parse(JSON.stringify(obj));
         }
     };
 
@@ -278,7 +386,7 @@ if (!process.env.EB_NODE_COMMAND) {
 
         var nested = mapper;
         var cleanString = string.substring(2);
-        cleanString = cleanString.substring(0, cleanString.length-2);
+        cleanString = cleanString.substring(0, cleanString.length - 2);
         var mapping = cleanString.split('.');
         mapping.forEach(function (item) {
             nested = nested[item];
@@ -287,7 +395,7 @@ if (!process.env.EB_NODE_COMMAND) {
             } else {
                 throw (new Error('Not mapped: ' + string));
             }
-        })
+        });
         return object;
     }
 
@@ -296,9 +404,9 @@ if (!process.env.EB_NODE_COMMAND) {
             if (!configuration.name) {
                 throw (new Error('Invalid configuration "missing name": ' + location));
                 return false;
-            } else if (!Array.isArray(configuration.config)){
+            } else if (!Array.isArray(configuration.config)) {
                 throw (new Error('Invalid configuration "config not array": ' + location));
             }
         });
-    };
-}(module, require('fs'), require('extend'), require('node-uuid'), require('lodash-node')));
+    }
+}(module, require('fs'), require('extend'), require('node-uuid'), require('lodash-node'), require('qs'), require('form-urlencoded')));
