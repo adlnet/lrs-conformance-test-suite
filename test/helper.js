@@ -59,7 +59,7 @@ if (!process.env.EB_NODE_COMMAND) {
          */
         addHeaderXapiVersion: function (header) {
             var newHeader = extend(true, {}, header);
-            newHeader['X-Experience-API-Version'] = XAPI_VERSION;
+            newHeader['X-Experience-API-Version'] = module.exports.getXapiVersion();
             return newHeader;
         },
         /**
@@ -261,6 +261,13 @@ if (!process.env.EB_NODE_COMMAND) {
                 list = list.concat(config);
             });
             return list;
+        },
+        /**
+         * Returns xAPI version.
+         * @returns {String}
+         */
+        getXapiVersion: function() {
+            return XAPI_VERSION;
         },
         /**
          * Performs deep compare of JSON original / other parameters to determine equivalence.

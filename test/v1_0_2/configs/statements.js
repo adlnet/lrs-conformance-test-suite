@@ -19,7 +19,7 @@
     var INVALID_UUID_INVALID_LETTER = 'MA97B177-9383-4934-8543-0F91A7A02836';
     var INVALID_VERSION_0_9_9 = '0.9.9';
     var INVALID_VERSION_1_1_0 = '1.1.0';
-    var VALID_EXTENSION = {extensions: {'http://example.com/null': 'null'}};
+    var VALID_EXTENSION = {extensions: {'http://example.com/null': null}};
     var VALID_VERSION_1_0 = '1.0';
     var VALID_VERSION_1_0_9 = '1.0.9';
 
@@ -209,7 +209,7 @@
                         templates: [
                             {statement: '{{statements.actor}}'},
                             {actor: '{{agents.mbox}}'},
-                            {name: 'null'}
+                            {name: null}
                         ],
                         expect: [400]
                     },
@@ -218,7 +218,25 @@
                         templates: [
                             {statement: '{{statements.verb}}'},
                             {verb: '{{verbs.default}}'},
-                            {display: {'en-US': 'null'}}
+                            {display: {'en-US': null}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context should fail on "null"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{context.default}}'},
+                            {registration: null}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object should fail on "null"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.default}}'},
+                            {definition: {moreInfo: null}}
                         ],
                         expect: [400]
                     },
@@ -313,6 +331,95 @@
                         templates: [
                             {statement: '{{statements.default}}'},
                             {version: INVALID_VERSION_1_1_0}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An LRS rejects with error code 400 Bad Request, a Request which the "X-Experience-API-Version" header\'s value is anything but "1.0" or "1.0.x", where x is the semantic versioning number to any API except the About API (Format, 6.2.d, 6.2.e, 6.2.f, 7.7.f)',
+                config: [
+                    {
+                        name: 'statement "version" valid 1.0',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {version: VALID_VERSION_1_0}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement "version" valid 1.0.9',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {version: VALID_VERSION_1_0_9}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement "version" invalid 0.9.9',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {version: INVALID_VERSION_0_9_9}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "version" invalid 1.1.0',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {version: INVALID_VERSION_1_1_0}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An LRS rejects with error code 400 Bad Request any Statement violating a Statement Requirement. (4.1.12, Varies)',
+                config: [
+                    {
+                        name: 'statement "actor" missing reply 400',
+                        templates: [
+                            {statement: '{{statements.no_actor}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "verb" missing reply 400',
+                        templates: [
+                            {statement: '{{statements.no_verb}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "object" missing reply 400',
+                        templates: [
+                            {statement: '{{statements.no_object}}'}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+                name: 'An LRS rejects with error code 400 Bad Request any Statement violating a Statement Requirement. (4.1.12, Varies)',
+                config: [
+                    {
+                        name: 'statement "actor" missing reply 400',
+                        templates: [
+                            {statement: '{{statements.no_actor}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "verb" missing reply 400',
+                        templates: [
+                            {statement: '{{statements.no_verb}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "object" missing reply 400',
+                        templates: [
+                            {statement: '{{statements.no_object}}'}
                         ],
                         expect: [400]
                     }

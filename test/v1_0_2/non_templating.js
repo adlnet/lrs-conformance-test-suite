@@ -7,8 +7,534 @@
  * Created by vijay.budhram on 7/9/14.
  * Riptide Software
  */
-(function (process) {
+(function (module, fs, request, qs, should, helper) {
     "use strict";
+
+    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
+        it('should populate authority', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var statement = JSON.parse(res.body);
+                            if (statement.authority) {
+                                done();
+                            } else {
+                                done(new Error('Statement "authority" has not been set.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('A Voiding Statement cannot Target another Voiding Statement (4.3)', function () {
+        var voidingId;
+
+        beforeEach('persist voiding statement', function (done) {
+            var templates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data).expect(200).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        voidingId = res.body[0];
+                        done();
+                    }
+                });
+        });
+
+        it('should fail when "StatementRef" points to a voiding statement', function (done) {
+            var templates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.object.id = voidingId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data).expect(400, done);
+        });
+    });
+
+    describe('An LRS returns a ContextActivity in an array, even if only a single ContextActivity is returned (4.1.6.2.c, 4.1.6.2.d)', function () {
+        var types = ['parent', 'grouping', 'category', 'other'];
+
+        types.forEach(function (type) {
+            it('should return array for statement context "' +  type + '"  when single ContextActivity is passed', function (done) {
+                var templates = [
+                    {statement: '{{statements.context}}'},
+                    {context: '{{contexts.' +  type + '}}'}
+                ];
+                var data = createFromTemplate(templates);
+                data = data.statement;
+                data.id = helper.generateUUID();
+
+                request(helper.getEndpoint())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addHeaderXapiVersion({}))
+                    .json(data)
+                    .expect(200)
+                    .end()
+                    .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                    .headers(helper.addHeaderXapiVersion({}))
+                    .expect(200).end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            try {
+                                var statement = JSON.parse(res.body);
+                                var contextType = statement.context.contextActivities[type];
+                                if (Array.isArray(contextType)) {
+                                    done();
+                                } else {
+                                    done(new Error('Statement "' +  type + '" not an array.'));
+                                }
+                            } catch (error) {
+                                done(error);
+                            }
+                        }
+                    });
+            });
+        });
+
+        types.forEach(function (type) {
+            it('should return array for statement substatement context "' +  type + '"  when single ContextActivity is passed', function (done) {
+                var templates = [
+                    {statement: '{{statements.object_substatement}}'},
+                    {object: '{{substatements.context}}'},
+                    {context: '{{contexts.' +  type + '}}'}
+                ];
+                var data = createFromTemplate(templates);
+                data = data.statement;
+                data.id = helper.generateUUID();
+
+                request(helper.getEndpoint())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addHeaderXapiVersion({}))
+                    .json(data)
+                    .expect(200)
+                    .end()
+                    .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                    .headers(helper.addHeaderXapiVersion({}))
+                    .expect(200).end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            try {
+                                var statement = JSON.parse(res.body);
+                                var contextType = statement.object.context.contextActivities[type];
+                                if (Array.isArray(contextType)) {
+                                    done();
+                                } else {
+                                    done(new Error('Statement substatement "' +  type + '" not an array.'));
+                                }
+                            } catch (error) {
+                                done(error);
+                            }
+                        }
+                    });
+            });
+        });
+    });
+
+    describe('An LRS rejects with error code 400 Bad Request, a Request which uses Attachments and does not have a "Content-Type" header with value "application/json" or "multipart/mixed" (Format, 4.1.11.a, 4.1.11.b)', function () {
+        var data;
+        var attachment;
+
+        beforeEach('create attachment templates', function () {
+            var templates = [
+                {statement: '{{statements.attachment}}'},
+                {
+                    attachments: [
+                        {
+                            "usageType": "http://example.com/attachment-usage/test",
+                            "display": {"en-US": "A test attachment"},
+                            "description": {"en-US": "A test attachment (description)"},
+                            "contentType": "text/plain; charset=ascii",
+                            "length": 27,
+                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
+                            "fileUrl": "http://over.there.com/file.txt"
+                        }
+                    ]
+                }
+            ];
+            data = createFromTemplate(templates);
+            data = data.statement;
+
+            attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+        });
+
+        it('should succeed when attachment uses "fileUrl" and request content-type is "application/json"', function (done) {
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data).expect(200, done);
+        });
+
+        it('should fail when attachment uses "fileUrl" and request content-type is "multipart/form-data"', function (done) {
+            var header = {'Content-Type': 'multipart/form-data; boundary=-------314159265358979323846'};
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(JSON.stringify(data)).expect(400, done);
+        });
+
+        it('should succeed when attachment is raw data and request content-type is "multipart/mixed"', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(200, done);
+        });
+
+        it('should fail when attachment is raw data and request content-type is "multipart/form-data"', function (done) {
+            var header = {'Content-Type': 'multipart/form-data; boundary=-------314159265358979323846'};
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+    });
+
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content-Type" header with value "application/json", and has a discrepancy in the number of Attachments vs. the number of fileURL members (4.1.11.a)', function () {
+        it('should succeed when attachment uses "fileUrl" and request content-type is "application/json"', function (done) {
+            var templates = [
+                {statement: '{{statements.attachment}}'},
+                {
+                    attachments: [
+                        {
+                            "usageType": "http://example.com/attachment-usage/test",
+                            "display": {"en-US": "A test attachment"},
+                            "description": {"en-US": "A test attachment (description)"},
+                            "contentType": "text/plain; charset=ascii",
+                            "length": 27,
+                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
+                            "fileUrl": "http://over.there.com/file.txt"
+                        },
+                        {
+                            "usageType": "http://example.com/attachment-usage/test",
+                            "display": {"en-US": "A test attachment"},
+                            "description": {"en-US": "A test attachment (description)"},
+                            "contentType": "text/plain; charset=ascii",
+                            "length": 27,
+                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a"
+                        }
+                    ]
+                }
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data).expect(400, done);
+        });
+    });
+
+    describe.skip('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "Content-Type" with value "multipart/mixed" (RFC 1341)', function () {
+        it('should fail when attachment is raw data and first part content type is not "application/json"', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_content_type.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+    });
+
+    describe.skip('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "boundary" (4.1.11.b, RFC 1341)', function () {
+        it('should fail if boundary not provided in body', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_no_boundary.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+    });
+
+    describe('A Boundary is defined as the value of the body header named "boundary" (Definition, 4.1.11.b, RFC 1341)', function () {
+        it('should fail if boundary not provided in header', function (done) {
+            var header = {'Content-Type': 'multipart/mixed;'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+    });
+
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a Boundary before each "Content-Type" header (4.1.11.b, RFC 1341)', function () {
+        it('should fail if boundary not provided in body', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_no_boundary.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+    });
+
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not the first document part with a "Content-Type" header with a value of "application/json" (RFC 1341, 4.1.11.b.a)', function () {
+        it('should fail when attachment is raw data and first part content type is not "application/json"', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_content_type.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+    });
+
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have all of the Statements in the first document part (RFC 1341, 4.1.11.b.a)', function () {
+        it('should fail when statements separated into multiple parts', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_statement_parts.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+    });
+
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "Content-Transfer-Encoding" with a value of "binary" (4.1.11.b.c, 4.1.11.b.e)', function () {
+        it('should fail when attachments Content-Transfer-Encoding missing', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_no_content_transfer_encoding.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+
+        it('should fail when attachments Content-Transfer-Encoding not "binary"', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_content_transfer_encoding.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+    });
+
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "X-Experience-API-Hash" with a value of one of those found in a "sha2" property of a Statement in the first part of this document (4.1.11.b.c, 4.1.11.b.d)', function () {
+        it('should fail when attachments missing header "X-Experience-API-Hash"', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_no_x_experience_api_hash.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+
+        it('should fail when attachments header "X-Experience-API-Hash" does not match "sha2"', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_no_match_sha2.part', {encoding: 'binary'});
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(400, done);
+        });
+    });
+
+    describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (Format, 6.2.a, 6.2.f, 7.7.f)', function () {
+        it('should pass when GET without header "X-Experience-API-Version"', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointAbout())
+                .expect(200, done);
+        });
+
+        it('should fail when statement GET without header "X-Experience-API-Version"', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
+                .body(attachment).expect(400, done);
+        });
+
+        it('should fail when statement POST without header "X-Experience-API-Version"', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .json(data).expect(400, done);
+        });
+
+        it('should fail when statement PUT without header "X-Experience-API-Version"', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
+                .json(data).expect(400, done);
+        });
+    });
+
+    describe('An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to "1.0.1" (4.1.10.b)', function () {
+        it('should set "version" to "1.0.1" when not provided by client', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200).end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    try {
+                        var statement = JSON.parse(res.body);
+                        if (statement.version === "1.0.1") {
+                            done();
+                        } else {
+                            done(new Error('Statement "version" has not been set.'));
+                        }
+                    } catch (error) {
+                        done(error);
+                    }
+                }
+            });
+        });
+    });
+
+    describe('An LRS will not modify Statements based on a "version" before "1.0.1" (6.2.l)', function () {
+        it('should not convert newer version format to prior version format', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var statement = JSON.parse(res.body);
+                            if (helper.isEqual(data.actor, statement.actor)
+                                && helper.isEqual(data.object, statement.object)
+                                && helper.isEqual(data.verb, statement.verb)) {
+                                done();
+                            } else {
+                                done(new Error('Statement from LRS not same as statement sent.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter with differing case (7.0.b)', function () {
+        it('should fail on PUT statement when not using "statementId"', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?StatementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "statementId"', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?StatementId=' + helper.generateUUID())
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "voidedStatementId"', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?VoidedStatementId=' + helper.generateUUID())
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "agent"', function (done) {
+            var templates = [
+                {Agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + qs.stringify(data))
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+    });
 
     describe.skip('Miscellaneous Requirements', function () {
         it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
@@ -161,10 +687,6 @@
         });
 
         it('A Voiding Statement\'s Target is defined as the Statement corresponding to the "object" property\'s "id" property\'s IRI (4.3.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Voiding Statement cannot Target another Voiding Statement (4.3)', function (done) {
             done(new Error('Implement Test'));
         });
 
@@ -453,19 +975,11 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS rejects with error code 400 Bad Request any Statement violating a Statement Requirement. (4.1.12, Varies)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (done) {
             done(new Error('Implement Test'));
         });
 
         it('An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (4.1.12.d.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS returns a ContextActivity in an array, even if only a single ContextActivity is returned (4.1.6.2.c, 4.1.6.2.d)', function (done) {
             done(new Error('Implement Test'));
         });
 
@@ -477,55 +991,11 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a Request which uses Attachments and does not have a "Content-Type" header with value "application/json" or "multipart/mixed" (Format, 4.1.11.a, 4.1.11.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
             done(new Error('Implement Test'));
         });
 
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content-Type" header with value "application/json", and has a discrepancy in the number of Attachments vs. the number of fileURL members (4.1.11.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "Content-Type" with value "multipart/mixed" (RFC 1341)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "boundary" (4.1.11.b, RFC 1341)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Boundary is defined as the value of the body header named "boundary" (Definition, 4.1.11.b, RFC 1341)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a Boundary before each "Content-Type" header (4.1.11.b, RFC 1341)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not the first document part with a "Content-Type" header with a value of "application/json" (RFC 1341, 4.1.11.b.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have all of the Statements in the first document part (RFC 1341, 4.1.11.b.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "Content-Transfer-Encoding" with a value of "binary" (4.1.11.b.c, 4.1.11.b.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "X-Experience-API-Hash" with a value of one of those found in a "sha2" property of a Statement in the first part of this document (4.1.11.b.c, 4.1.11.b.d)', function (done) {
             done(new Error('Implement Test'));
         });
 
@@ -541,35 +1011,11 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (Format, 6.2.a, 6.2.f, 7.7.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a Request which the "X-Experience-API-Version" header\'s value is anything but "1.0" or "1.0.x", where x is the semantic versioning number to any API except the About API (Format, 6.2.d, 6.2.e, 6.2.f, 7.7.f)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to "1.0.1" (4.1.10.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS will not modify Statements based on a "version" before "1.0.1" (6.2.l)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS sends a header response with "X-Experience-API-Version" as the name and "1.0.1" as the value (Format, 6.2.a, 6.2.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS implements all of the Statement, State, Agent, and Activity Profile sub-APIs **Implicit**', function (done) {
             done(new Error('Implement Test'));
         });
 
         it('An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter not recognized by the LRS (7.0.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter with differing case (7.0.b)', function (done) {
             done(new Error('Implement Test'));
         });
 
@@ -809,4 +1255,13 @@
             done(new Error('Implement Test'));
         });
     });
-}(process));
+
+    function createFromTemplate(templates) {
+        // convert template mapping to JSON objects
+        var converted = helper.convertTemplate(templates);
+        // this handles if no override
+        var mockObject = helper.createTestObject(converted);
+        return mockObject;
+    }
+
+}(module, require('fs'), require('super-request'), require('qs'), require('should'), require('./../helper')));
