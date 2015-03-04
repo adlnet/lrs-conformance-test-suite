@@ -37,6 +37,7 @@
     "querystring": "^0.2.0",
     "qs": "^2.3.3",
     "form-urlencoded": "0.0.7",
-    "supertest-as-promised": "^1.0.0"
+    "supertest-as-promised": "^1.0.0",
+    "valid-url": "^1.0.9"
   }
 }

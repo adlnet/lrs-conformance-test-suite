@@ -10,7 +10,7 @@
 (function (module, process, request, should, helper) {
     "use strict"
 
-    describe('Conformance Requirements using Templating', function () {
+    describe.skip('Conformance Requirements using Templating', function () {
 
         var configurations = helper.getTestConfiguration();
 
