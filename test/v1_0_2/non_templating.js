@@ -7,7 +7,7 @@
  * Created by vijay.budhram on 7/9/14.
  * Riptide Software
  */
-(function (module, fs, extend, request, qs, should, helper, validUrl) {
+(function (module, fs, extend, moment, request, qs, should, helper, validUrl) {
     "use strict";
 
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
@@ -1271,6 +1271,818 @@
         });
     });
 
+    describe('LRS\'s Statement API accepts GET requests (7.2.3)', function () {
+        it('should return using GET', function (done) {
+            it('should return "more" property as an IRL', function (done) {
+                request(helper.getEndpoint())
+                    .get(helper.getEndpointStatements())
+                    .headers(helper.addHeaderXapiVersion({}))
+                    .expect(200, done);
+            });
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "statementId" as a parameter (7.2.3)', function () {
+        it('should process using GET with "statementId"', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .end(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "voidedStatementId" as a parameter  (7.2.3)', function () {
+        var voidedId;
+
+        beforeEach('persist voided statement', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var voided = createFromTemplate(templates);
+            voided = voided.statement;
+            voided.id = helper.generateUUID();
+            voidedId = voided.id;
+
+            var templates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            var voiding = createFromTemplate(templates);
+            voiding = voiding.statement;
+            voiding.object.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200)
+                .end()
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voiding).expect(200, done);
+        });
+
+        it('should process using GET with "voidedStatementId"', function (done) {
+            var query = qs.stringify({statementId: voidedId});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API rejects a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function () {
+        var id;
+
+        beforeEach('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+            id = data.id;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+
+        it('should fail when using "statementId" with "agent"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data.statementId = id;
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "statementId" with "verb"', function (done) {
+            var data = {
+                statementId: id,
+                verb: 'http://adlnet.gov/expapi/non/existent'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "statementId" with "activity"', function (done) {
+            var data = {
+                statementId: id,
+                activity: 'http://www.example.com/meetings/occurances/12345'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "statementId" with "registration"', function (done) {
+            var data = {
+                statementId: id,
+                registration: helper.generateUUID()
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "statementId" with "related_activities"', function (done) {
+            var data = {
+                statementId: id,
+                related_activities: true
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "statementId" with "related_agents"', function (done) {
+            var data = {
+                statementId: id,
+                related_agents: true
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "statementId" with "since"', function (done) {
+            var data = {
+                statementId: id,
+                since: '2012-06-01T19:09:13.245Z'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "statementId" with "until"', function (done) {
+            var data = {
+                statementId: id,
+                until: '2012-06-01T19:09:13.245Z'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "statementId" with "limit"', function (done) {
+            var data = {
+                statementId: id,
+                limit: 1
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "statementId" with "ascending"', function (done) {
+            var data = {
+                statementId: id,
+                ascending: true
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should pass when using "statementId" with "format"', function (done) {
+            var data = {
+                statementId: id,
+                format: 'ids'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+
+        it('should pass when using "statementId" with "attachments"', function (done) {
+            var data = {
+                statementId: id,
+                attachments: true
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "agent" as a parameter  **Implicit**', function () {
+        it('should process using GET with "agent"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "verb" as a parameter  **Implicit**', function () {
+        it('should process using GET with "verb"', function (done) {
+            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "activity" as a parameter  **Implicit**', function () {
+        it('should process using GET with "activity"', function (done) {
+            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "registration" as a parameter  **Implicit**', function () {
+        it('should process using GET with "registration"', function (done) {
+            var query = qs.stringify({registration: helper.generateUUID()});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "related_activities" as a parameter  **Implicit**', function () {
+        it('should process using GET with "related_activities"', function (done) {
+            var query = qs.stringify({related_activities: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "related_agents" as a parameter  **Implicit**', function () {
+        it('should process using GET with "related_agents"', function (done) {
+            var query = qs.stringify({related_agents: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "since" as a parameter  **Implicit**', function () {
+        it('should process using GET with "since"', function (done) {
+            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "until" as a parameter  **Implicit**', function () {
+        it('should process using GET with "until"', function (done) {
+            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+            });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "limit" as a parameter  **Implicit**', function () {
+        it('should process using GET with "limit"', function (done) {
+            var query = qs.stringify({limit: 1});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "format" as a parameter  **Implicit**', function () {
+        it('should process using GET with "format"', function (done) {
+            var query = qs.stringify({format: 'ids'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "attachments" as a parameter  **Implicit**', function () {
+        it('should process using GET with "attachments"', function (done) {
+            var query = qs.stringify({attachments: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API can process a GET request with "ascending" as a parameter  **Implicit**', function () {
+        it('should process using GET with "ascending"', function (done) {
+            var query = qs.stringify({ascending: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API rejects a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function () {
+        var voidedId;
+
+        beforeEach('persist voided statement', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var voided = createFromTemplate(templates);
+            voided = voided.statement;
+            voided.id = helper.generateUUID();
+            voidedId = voided.id;
+
+            var templates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            var voiding = createFromTemplate(templates);
+            voiding = voiding.statement;
+            voiding.object.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200)
+                .end()
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voiding).expect(200, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "agent"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data.statementId = voidedId;
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "verb"', function (done) {
+            var data = {
+                statementId: voidedId,
+                verb: 'http://adlnet.gov/expapi/non/existent'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "activity"', function (done) {
+            var data = {
+                statementId: voidedId,
+                activity: 'http://www.example.com/meetings/occurances/12345'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "registration"', function (done) {
+            var data = {
+                statementId: voidedId,
+                registration: helper.generateUUID()
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "related_activities"', function (done) {
+            var data = {
+                statementId: voidedId,
+                related_activities: true
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "related_agents"', function (done) {
+            var data = {
+                statementId: voidedId,
+                related_agents: true
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "since"', function (done) {
+            var data = {
+                statementId: voidedId,
+                since: '2012-06-01T19:09:13.245Z'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "until"', function (done) {
+            var data = {
+                statementId: voidedId,
+                until: '2012-06-01T19:09:13.245Z'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "limit"', function (done) {
+            var data = {
+                statementId: voidedId,
+                limit: 1
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail when using "voidedStatementId" with "ascending"', function (done) {
+            var data = {
+                statementId: voidedId,
+                ascending: true
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should pass when using "voidedStatementId" with "format"', function (done) {
+            var data = {
+                statementId: voidedId,
+                format: 'ids'
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+
+        it('should pass when using "voidedStatementId" with "attachments"', function (done) {
+            var data = {
+                statementId: voidedId,
+                attachments: true
+            };
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API upon processing a successful GET request with a "statementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (7.2.3)', function () {
+        var id;
+
+        beforeEach('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+            id = data.id;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+
+        it('should retrieve statement using "statementId"', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?statementId=' + id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var statement = JSON.parse(res.body);
+                            if (statement.id === id) {
+                                done();
+                            } else {
+                                done(new Error('Statement "id" does not match requested statementId.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('An LRS\'s Statement API upon processing a successful GET request with a "voidedStatementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (7.2.3)', function () {
+        var voidedId;
+
+        beforeEach('persist voided statement', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var voided = createFromTemplate(templates);
+            voided = voided.statement;
+            voided.id = helper.generateUUID();
+            voidedId = voided.id;
+
+            var templates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            var voiding = createFromTemplate(templates);
+            voiding = voiding.statement;
+            voiding.object.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200)
+                .end()
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voiding).expect(200, done);
+        });
+
+        it('should return a voided statement when using GET "voidedStatementId"', function (done) {
+            var query = qs.stringify({voidedStatementId: voidedId});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var statement = JSON.parse(res.body);
+                            if (statement.id === voidedId) {
+                                done();
+                            } else {
+                                done(new Error('Statement "id" does not match requested voidedStatementId.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('An LRS\'s Statement API upon processing a successful GET request with neither a "statementId" nor a "voidedStatementId" parameter, returns code 200 OK and a StatementResult Object.  (7.2.3)', function () {
+        it('should return StatementResult using GET without "statementId" or "voidedStatementId"', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('An LRS\'s "X-Experience-API-Consistent-Through" header\'s value is not before (temporal) any of the "stored" values of any of the returned Statements (7.2.3.c).', function () {
+        it('should return "X-Experience-API-Consistent-Through" when using GET for statements', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+
+                                var statements = result.statements;
+                                for (var i = 0; i < statements.length; i++) {
+                                    var stored =  moment(statements[i].stored, moment.ISO_8601);
+                                    if (!through.isValid() || !stored.isValid()) {
+                                        done(new Error('Statement dates not valid.'));
+                                    }
+                                    if (through.isBefore(stored)) {
+                                        done(new Error('Statement "stored" date is after "X-Experience-API-Consistent-Through.'));
+                                    }
+                                }
+                                done();
+                            } else {
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('An LRS\'s Statement API upon processing a GET request, returns a header with name "X-Experience-API-Consistent-Through" regardless of the code returned. (7.2.3.c)', function () {
+        it('should return "X-Experience-API-Consistent-Through"', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('An LRS\'s "X-Experience-API-Consistent-Through" header is an ISO 8601 combined date and time (Type, 7.2.3.c).', function () {
+        it('should return valid "X-Experience-API-Consistent-Through"', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
     describe('Miscellaneous Requirements', function () {
         it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
             // JSON parser validates this
@@ -1738,99 +2550,7 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS\'s Statement API accepts GET requests (7.2.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "statementId" as a parameter (7.2.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "voidedStatementId" as a parameter  (7.2.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "agent" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "verb" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "activity" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "registration" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "related_activities" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "related_agents" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "since" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "until" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "limit" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "format" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "attachments" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API can process a GET request with "ascending" as a parameter  **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API rejects a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API rejects a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API upon processing a successful GET request with a "statementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (7.2.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API upon processing a successful GET request with a "voidedStatementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (7.2.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API upon processing a successful GET request with neither a "statementId" nor a "voidedStatementId" parameter, returns code 200 OK and a StatementResult Object.  (7.2.3)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API upon processing a GET request, returns a header with name "X-Experience-API-Consistent-Through" regardless of the code returned. (7.2.3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS\'s Statement API, upon receiving a GET request, has a field in the header with name "Content-Type" **Assumed?****', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s "X-Experience-API-Consistent-Through" header is an ISO 8601 combined date and time (Type, 7.2.3.c).', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s "X-Experience-API-Consistent-Through" header\'s value is not before (temporal) any of the "stored" values of any of the returned Statements (7.2.3.c).', function (done) {
             done(new Error('Implement Test'));
         });
 
@@ -1849,11 +2569,6 @@
         it('A "statements" property which is too large for a single page will create a container for each additional page (4.2.table1.row1.b)', function (done) {
             // TODO What determines to large? Property to set?
             done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "more" property (Multiplicity, Format, 4.2.table1.row2.c)', function (done) {
-            // JSON parser validates this
-            done();
         });
 
         it('A "more" property IRL is accessible for at least 24 hours after being returned (4.2.a)', function (done) {
@@ -1880,4 +2595,4 @@
         return mockObject;
     }
 
-}(module, require('fs'), require('extend'), require('super-request'), require('qs'), require('should'), require('./../helper'), require('valid-url')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('qs'), require('should'), require('./../helper'), require('valid-url')));
