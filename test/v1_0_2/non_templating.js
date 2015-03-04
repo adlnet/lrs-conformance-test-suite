@@ -1654,62 +1654,6 @@
             done();
         });
 
-        it('A Person Object is an Object (7.6)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses an "objectType" property exactly one time (Multiplicity, 7.6.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "objectType" property is a String and is "Person" (Format, Vocabulary, 7.6.table1.row1.a, 7.6.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses a "name" property at most one time (Multiplicity, 7.6.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "name" property is an Array of Strings (Multiplicity, 7.6.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses a "mbox" property at most one time (Multiplicity, 7.6.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "mbox" property is an Array of IRIs (Multiplicity, 7.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "mbox" entries have the form "mailto:emailaddress" (Format, 7.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "mbox_sha1sum" property is an Array of Strings (Multiplicity, 7.6.table1.row4.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses an "openid" property at most one time (Multiplicity, 7.6.table1.row5.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "openid" property is an Array of Strings (Multiplicity, 7.6.table1.row5.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object uses an "account" property at most one time (Multiplicity, 7.6.table1.row6.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A Person Object\'s "account" property is an Array of Account Objects (Multiplicity, 7.6.table1.row6.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (done) {
             done(new Error('Implement Test'));
         });
