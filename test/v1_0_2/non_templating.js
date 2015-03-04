@@ -7,7 +7,7 @@
  * Created by vijay.budhram on 7/9/14.
  * Riptide Software
  */
-(function (module, fs, request, qs, should, helper) {
+(function (module, fs, extend, request, qs, should, helper) {
     "use strict";
 
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
@@ -502,23 +502,26 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
+            var query = qs.stringify({StatementId: data.id});
             request(helper.getEndpoint())
-                .put(helper.getEndpointStatements() + '?StatementId=' + data.id)
+                .put(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .json(data)
                 .expect(400, done);
         });
 
         it('should fail on GET statement when not using "statementId"', function (done) {
+            var query = qs.stringify({StatementId: helper.generateUUID()});
             request(helper.getEndpoint())
-                .get(helper.getEndpointStatements() + '?StatementId=' + helper.generateUUID())
+                .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .expect(400, done);
         });
 
         it('should fail on GET statement when not using "voidedStatementId"', function (done) {
+            var query = qs.stringify({VoidedStatementId: helper.generateUUID()});
             request(helper.getEndpoint())
-                .get(helper.getEndpointStatements() + '?VoidedStatementId=' + helper.generateUUID())
+                .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .expect(400, done);
         });
@@ -529,10 +532,526 @@
             ];
             var data = createFromTemplate(templates);
 
+            var query = qs.stringify(data);
             request(helper.getEndpoint())
-                .get(helper.getEndpointStatements() + '?' + qs.stringify(data))
+                .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "verb"', function (done) {
+            var query = qs.stringify({Verb: 'http://adlnet.gov/expapi/verbs/attended'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "activity"', function (done) {
+            var query = qs.stringify({Activity: 'http://www.example.com/meetings/occurances/34534'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "registration"', function (done) {
+            var query = qs.stringify({Registration: 'ec531277-b57b-4c15-8d91-d292c5b2b8f7'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "related_activities"', function (done) {
+            var query = qs.stringify({Related_Activities: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "related_agents"', function (done) {
+            var query = qs.stringify({Related_Agents: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "since"', function (done) {
+            var query = qs.stringify({Since: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "until"', function (done) {
+            var query = qs.stringify({Until: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "limit"', function (done) {
+            var query = qs.stringify({Limit: 10});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "format"', function (done) {
+            var query = qs.stringify({Format: 'ids'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "attachments"', function (done) {
+            var query = qs.stringify({Attachments: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+
+        it('should fail on GET statement when not using "ascending"', function (done) {
+            var query = qs.stringify({Ascending: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(400, done);
+        });
+    });
+
+    describe('An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**', function () {
+        it('should fail with statement "DELETE"', function (done) {
+            var query = qs.stringify({statementId: helper.generateUUID()});
+            request(helper.getEndpoint())
+                .delete(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(405, done);
+        });
+
+        it('should fail with activities "DELETE"', function (done) {
+            var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
+            request(helper.getEndpoint())
+                .delete(helper.getEndpointActivitiesProfile() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(405, done);
+        });
+
+        it('should fail with activities "POST"', function (done) {
+            var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
+            request(helper.getEndpoint())
+                .post(helper.getEndpointActivitiesProfile() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(405, done);
+        });
+
+        it('should fail with activities "PUT"', function (done) {
+            var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
+            request(helper.getEndpoint())
+                .put(helper.getEndpointActivitiesProfile() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(405, done);
+        });
+
+        it('should fail with agents "DELETE"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .delete(helper.getEndpointAgents() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(405, done);
+        });
+
+        it('should fail with agents "POST"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .post(helper.getEndpointAgents() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(405, done);
+        });
+
+        it('should fail with agents "PUT"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .put(helper.getEndpointAgents() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(405, done);
+        });
+    });
+
+    describe('An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing (7.0.c, **Implicit**)', function () {
+        it('should not persist any statements on a single failure', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var correct = createFromTemplate(templates);
+            correct = correct.statement;
+            var incorrect = extend(true, {}, correct);
+
+            correct.id = helper.generateUUID();
+            incorrect.id = helper.generateUUID();
+
+            incorrect.verb.id = 'should fail';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json([correct, incorrect])
+                .expect(400)
+                .end()
+                .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(404, done);
+        });
+    });
+
+    describe('An LRS has a Statement API with endpoint "base IRI"+"/statements" (7.2)', function () {
+        it('should allow "/statements" POST', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+
+        it('should allow "/statements" PUT', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(204, done);
+        });
+
+        it('should allow "/statements" GET', function (done) {
+            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API accepts PUT requests (7.2.1)', function () {
+        it('should persist statement using "PUT"', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(204, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API accepts PUT requests only if it contains a "statementId" parameter (Multiplicity, 7.2.1.table1.a)', function () {
+        it('should persist statement using "statementId" parameter', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(204, done);
+        });
+
+        it('should fail without using "statementId" parameter', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API accepts PUT requests only if the "statementId" parameter is a String (Type, 7.2.1.table1.b)', function () {
+        it('should fail statement using "statementId" parameter as boolean', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = true;
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+
+        it('should fail statement using "statementId" parameter as object', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = {key: 'should fail'};
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(400, done);
+        });
+    });
+
+    describe('An LRS cannot modify a Statement, state, or Object in the event it receives a Statement with statementID equal to a Statement in the LRS already. (7.2.1.a, 7.2.2.b)', function () {
+        it('should not update statement with matching "statementId" on POST', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            var modified = extend(true, {}, data);
+            modified.verb.id = 'different value';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end()
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(modified)
+                .end()
+                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var statement = JSON.parse(res.body);
+                            if (statement.verb.id = data.verb.id) {
+                                done();
+                            } else {
+                                done(new Error('Statement "verb" should not be updated.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should not update statement with matching "statementId" on PUT', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            var modified = extend(true, {}, data);
+            modified.verb.id = 'different value';
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(204)
+                .end()
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(modified)
+                .end()
+                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var statement = JSON.parse(res.body);
+                            if (statement.verb.id = data.verb.id) {
+                                done();
+                            } else {
+                                done(new Error('Statement "verb" should not be updated.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('An LRS\'s Statement API upon processing a successful PUT request returns code 204 No Content (7.2.1)', function () {
+        it('should persist statement and return status 204', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(204, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API rejects with error code 409 Conflict any Statement with the "statementID" parameter equal to a Statement in the LRS already **Implicit** (7.2.1.b, 7.2.2.b)', function () {
+        it('should return 409 or 204 when statement ID already exists on POST', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end()
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else if (res.statusCode === 409 || res.statusCode === 204) {
+                        done();
+                    } else {
+                        done(new Error('Missing no update status code using POST'))
+                    }
+                });
+        });
+
+        it('should return 409 or 204 when statement ID already exists on PUT', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID();
+
+            request(helper.getEndpoint())
+                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end()
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else if (res.statusCode === 409 || res.statusCode === 204) {
+                        done();
+                    } else {
+                        done(new Error('Missing no update status code using POST'))
+                    }
+                });
+        });
+    });
+
+    describe('An LRS\'s Statement API accepts POST requests (7.2.2)', function () {
+        it('should persist statement using "POST"', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200, done);
+        });
+    });
+
+    describe('An LRS\'s Statement API upon processing a successful POST request returns code 204 No Content and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
+        it('should persist statement using "POST" and return array if IDs', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.id = helper.generateUUID()
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err)
+                    } else {
+                        try {
+                            var ids = res.body;
+                            if (Array.isArray(ids) && ids[0] === data.id) {
+                                done();
+                            } else {
+                                done(new Error('Statement "POST" is not array of IDs.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
         });
     });
 
@@ -1019,14 +1538,6 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing (7.0.c, **Implicit**)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS can only reject Statements using the error codes in this specification **Implicit**', function (done) {
             done(new Error('Implement Test'));
         });
@@ -1055,47 +1566,11 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS has a Statement API with endpoint "base IRI"+"/statements" (7.2)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API accepts PUT requests (7.2.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
             done(new Error('Implement Test'));
         });
 
-        it('An LRS\'s Statement API accepts PUT requests only if it contains a "statementId" parameter (Multiplicity, 7.2.1.table1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API accepts PUT requests only if the "statementId" parameter is a String (Type, 7.2.1.table1.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS cannot modify a Statement, state, or Object in the event it receives a Statement with statementID equal to a Statement in the LRS already. (7.2.1.a, 7.2.2.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API upon processing a successful PUT request returns code 204 No Content (7.2.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API rejects with error code 409 Conflict any Statement with the "statementID" parameter equal to a Statement in the LRS already **Implicit** (7.2.1.b, 7.2.2.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('A POST request is defined as a "pure" POST, as opposed to a GET taking on the form of a POST (7.2.2.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API accepts POST requests (7.2.2)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API upon processing a successful POST request returns code 204 No Content and all Statement UUIDs within the POST **Implicit** (7.2.2)', function (done) {
             done(new Error('Implement Test'));
         });
 
@@ -1264,4 +1739,4 @@
         return mockObject;
     }
 
-}(module, require('fs'), require('super-request'), require('qs'), require('should'), require('./../helper')));
+}(module, require('fs'), require('extend'), require('super-request'), require('qs'), require('should'), require('./../helper')));
