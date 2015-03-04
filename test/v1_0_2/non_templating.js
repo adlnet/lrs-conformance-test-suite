@@ -1022,6 +1022,33 @@
         });
     });
 
+    describe('The LRS will NOT reject a GET request which returns an empty "statements" property (**Implicit**, 4.2.table1.row1.b)', function () {
+        it('should return empty array list of The LRS will NOT reject a GET request which returns an empty "statements" property (**Implicit**, 4.2.table1.row1.b)', function (done) {
+            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err)
+                    } else {
+                        try {
+                            var ids = JSON.parse(res.body).statements;
+                            if (Array.isArray(ids) && ids[0] === data.id) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" is not array of IDs.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
     describe('An LRS\'s Statement API upon processing a successful POST request returns code 204 No Content and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
         it('should persist statement using "POST" and return array if IDs', function (done) {
             var templates = [
@@ -1041,17 +1068,206 @@
                         done(err)
                     } else {
                         try {
-                            var ids = res.body;
-                            if (Array.isArray(ids) && ids[0] === data.id) {
+                            var ids = JSON.parse(res.body).statements;
+                            if (Array.isArray(ids) && ids.length === 0) {
                                 done();
                             } else {
-                                done(new Error('Statement "POST" is not array of IDs.'));
+                                done(new Error('Statement "GET" is not empty array.'));
                             }
                         } catch (error) {
                             done(error);
                         }
                     }
                 });
+        });
+    });
+
+    describe('A "more" property is an IRL (Format, 4.2.table1.row2.a)', function () {
+        it('should return "more" property as an IRL', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?limit=1')
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var more = JSON.parse(res.body).more;
+                            if (more && validUrl.isUri(more)) {
+                                done();
+                            } else {
+                                done(new Error('Statement GET "more" is missing or not IRL.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe.skip('The "more" property an empty string if the entire results of the original GET request have been returned (4.2.table1.row2.b) (Do we need to be specific about the "type" of empty string?)', function () {
+        it('should return empty "more" property when all statements returned', function (done) {
+            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var more = JSON.parse(res.body).more;
+                            if (more === '') {
+                                done();
+                            } else {
+                                done(new Error('Statement GET "more" is missing or not an empty string.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('If not empty, the "more" property\'s IRL refers to a specific container object corresponding to the next page of results from the orignal GET request (4.2.table1.row1.b)', function () {
+        it('should return "more" which refers to next page of results', function (done) {
+            it('should return "more" property as an IRL', function (done) {
+                request(helper.getEndpoint())
+                    .get(helper.getEndpointStatements() + '?limit=1')
+                    .headers(helper.addHeaderXapiVersion({}))
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            try {
+                                var more = JSON.parse(res.body).more;
+                                if (more && validUrl.isUri(more)) {
+                                    done();
+                                } else {
+                                    done(new Error('Statement GET "more" is missing or not IRL.'));
+                                }
+                            } catch (error) {
+                                done(error);
+                            }
+                        }
+                    });
+            });
+        });
+    });
+
+    describe('A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS (4.2.c)', function () {
+        var voidedId;
+
+        beforeEach('persist voided statement', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var voided = createFromTemplate(templates);
+            voided = voided.statement;
+            voided.id = helper.generateUUID();
+            voidedId = voided.id;
+
+            var templates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            var voiding = createFromTemplate(templates);
+            voiding = voiding.statement;
+            voiding.object.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200)
+                .end()
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voiding).expect(200, done);
+        });
+
+        it('should return a voided statement when using GET "voidedStatementId"', function (done) {
+            var query = qs.stringify({voidedStatementId: voidedId});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var statement = JSON.parse(res.body);
+                            if (statement.id === voidedId) {
+                                done();
+                            } else {
+                                done(new Error('Statement "voidedStatementId" was not returned.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('An LRS\'s Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request (7.2.4.a)', function () {
+        var voidedId;
+
+        beforeEach('persist voided statement', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var voided = createFromTemplate(templates);
+            voided = voided.statement;
+            voided.id = helper.generateUUID();
+            voidedId = voided.id;
+
+            var templates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            var voiding = createFromTemplate(templates);
+            voiding = voiding.statement;
+            voiding.object.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200)
+                .end()
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voiding).expect(200, done);
+        });
+
+        it('should not return a voided statement if using GET "statementId"', function (done) {
+            var query = qs.stringify({statementId: voidedId});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var statement = JSON.parse(res.body);
+                            if (statement.id) {
+                                done(new Error('Statement "statementId" should not be returned.'));
+                            } else {
+                                done();
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+
         });
     });
 
@@ -1686,28 +1902,6 @@
             done(new Error('Implement Test'));
         });
 
-        it.only('The LRS will NOT reject a GET request which returns an empty "statements" property (**Implicit**, 4.2.table1.row1.b)', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = createFromTemplate(templates);
-            data.id = helper.generateUUID();
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .expect(200)
-                .end(function () {
-                    request(helper.getEndpoint())
-                        .get(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
-                        .headers(helper.addHeaderXapiVersion({}))
-                        .expect(200)
-                        .end(function (err, res) {
-                            done();
-                        });
-                });
-        });
-
         it('A "statements" property which is too large for a single page will create a container for each additional page (4.2.table1.row1.b)', function (done) {
             // TODO What determines to large? Property to set?
             done(new Error('Implement Test'));
@@ -1718,75 +1912,6 @@
             done();
         });
 
-        it('A "more" property is an IRL (Format, 4.2.table1.row2.a)', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = createFromTemplate(templates).statement;
-            var statements =[data, data];
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(statements)
-                .expect(200)
-                .end(function () {
-                    request(helper.getEndpoint())
-                        .get(helper.getEndpointStatements() + '?limit=1')
-                        .headers(helper.addHeaderXapiVersion({}))
-                        .expect(200)
-                        .end(function (err, res) {
-                            validUrl.isUri(JSON.parse(res.body).more).should.equal(true);
-                            done();
-                        });
-                });
-        });
-
-        it('The "more" property an empty string if the entire results of the original GET request have been returned (4.2.table1.row2.b) (Do we need to be specific about the "type" of empty string?)', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = createFromTemplate(templates).statement;
-            var statements =[data, data];
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(statements)
-                .expect(200)
-                .end(function () {
-                    request(helper.getEndpoint())
-                        .get(helper.getEndpointStatements() + '?limit=1')
-                        .headers(helper.addHeaderXapiVersion({}))
-                        .expect(200)
-                        .end(function (err, res) {
-                            JSON.parse(res.body).more.should.be.undefined;
-                            done();
-                        });
-                });
-        });
-
-        it('If not empty, the "more" property\'s IRL refers to a specific container object corresponding to the next page of results from the orignal GET request (4.2.table1.row1.b)', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = createFromTemplate(templates).statement;
-            var statements =[data, data];
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(statements)
-                .expect(200)
-                .end(function () {
-                    request(helper.getEndpoint())
-                        .get(helper.getEndpointStatements() + '?limit=2')
-                        .headers(helper.addHeaderXapiVersion({}))
-                        .expect(200)
-                        .end(function (err, res) {
-                            JSON.parse(res.body).more.should.be.defined;
-                            done();
-                        });
-                });
-        });
-
         it('A "more" property IRL is accessible for at least 24 hours after being returned (4.2.a)', function (done) {
             // TODO Skipping for now
             done(new Error('Implement Test'));
@@ -1795,59 +1920,6 @@
         it('A "more" property\'s referenced container object follows the same rules as the original GET request, originating with a single "statements" property and a single "more" property (4.2.table1.row1.b)', function (done) {
             // TODO Seems like a duplicate from 2 above
             done()
-        });
-
-        it('A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS (4.2.c)', function (done) {
-            var templates = [
-                {statement: '{{statements.voided}}'}
-            ];
-            var data = createFromTemplate(templates).statement;
-            data.object.id = helper.generateUUID();
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .end(function (err) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        done();
-                    }
-                });
-        });
-
-        it('An LRS\'s Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request (7.2.4.a)', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = createFromTemplate(templates).statement;
-            data.id = helper.generateUUID();
-
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
-                .end(function (err, res) {
-                    var statementId = res.body[0];
-                    templates = [
-                        {statement: '{{statements.voided}}'}
-                    ];
-                    var voidS = createFromTemplate(templates).statement;
-                    voidS.object.id = statementId;
-                    request(helper.getEndpoint())
-                        .post(helper.getEndpointStatements())
-                        .headers(helper.addHeaderXapiVersion({}))
-                        .json(voidS)
-                        .end(function () {
-                            request(helper.getEndpoint())
-                                .get(helper.getEndpointStatements() + '?voidedStatementId=' + statementId)
-                                .headers(helper.addHeaderXapiVersion({}))
-                                .end(function (err, res) {
-                                    statementId.should.eql(JSON.parse(res.body).statements[0].id);
-                                    done();
-                                });
-                        });
-                });
         });
 
         it('An LRS\'s Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it (7.2.4.b)', function (done) {
