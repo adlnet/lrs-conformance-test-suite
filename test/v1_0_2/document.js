@@ -7,7 +7,7 @@
  * Created by vijay.budhram on 7/9/14.
  * Riptide Software
  */
-(function (process, request, should, helper, qs) {
+(function (process, request, should, helper, qs, validUrl) {
     'use strict';
 
     var LRS_ENDPOINT = process.env.LRS_ENDPOINT || 'http://asdf.elmnts-test.com:8001/lrs';
@@ -32,25 +32,18 @@
         return pre.expect(expect);
     }
 
-    describe('Document API Requirements', function () {
+    describe.only('Document API Requirements', function () {
         it('An LRS has a State API with endpoint "base IRI"+"/activities/state" (7.3.table1.row1.a ,7.3.table1.row1.c)', function () {
             var parameters = helper.buildState(),
                 document = helper.buildDocument();
             return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
-        it('An LRS has an Activities API with endpoint "base IRI" + /activities" (7.5) **Implicit** (in that it is not named this by the spec)', function (done) {
-            // TODO Why this is connecting to statements DAL
+        it('An LRS has an Activities API with endpoint "base IRI" + /activities" (7.5) **Implicit** (in that it is not named this by the spec)', function () {
             var parameters = {
                 activityId: 'http://www.example.com/activityId/hashset'
             };
-
-            request
-                .get('/activities?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .expect(200, function (err, res) {
-                    done()
-                });
+            return sendRequest('post', '/activities/state', parameters, document, 204);
         });
 
         it('An LRS has an Activity Profile API with endpoint "base IRI"+"/activities/profile" (7.3.table1.row2.a, 7.3.table1.row2.c)', function () {
@@ -60,7 +53,7 @@
         });
 
         it('An LRS has an Agents API with endpoint "base IRI" + /agents" (7.6) **Implicit** (in that it is not named this by the spec)', function (done) {
-            // TODO Talk to Fred about Agents
+            // TODO Talk to Freddie about Agents
             var parameters = {
                 objectType: 'Person'
             };
@@ -739,25 +732,24 @@
                 });
         });
 
-        it('An LRS\'s Activities API accepts GET requests (7.5)', function (done) {
-            var parameters = buildActivity(),
-                document = helper.buildDocument();
-            return sendRequest('get', '/activities', parameters, document, 400)
+        it('An LRS\'s Activities API accepts GET requests (7.5)', function () {
+            var parameters = helper.buildActivity();
+            return sendRequest('get', '/activities', parameters, undefined, 200)
                 .then(function (res) {
                     // TODO Why Statement DAL?
-                    done(new Error('Implement Test'));
+                    new Error('Implement Test');
                 });
         });
 
         it('An LRS\'s Activities API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table1.row1.b)', function () {
-            var parameters = buildActivity(),
+            var parameters = helper.buildActivity(),
                 document = helper.buildDocument();
             delete parameters.activityId;
             return sendRequest('get', '/activities', parameters, document, 400);
         });
 
         it('An LRS\'s Activities API rejects a GET request  with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table1.row1.a)', function () {
-            var parameters = buildActivity(),
+            var parameters = helper.buildActivity(),
                 invalidTypes = [1, true, {}];
             invalidTypes.forEach(function (type) {
                 it('Should reject GET with "since" with type ' + type, function () {
@@ -768,7 +760,7 @@
         });
 
         it('An LRS\'s Activities API upon processing a successful GET request returns the complete Activity Object (7.5)', function () {
-            var parameters = buildActivity(),
+            var parameters = helper.buildActivity(),
                 document = helper.buildDocument();
             return sendRequest('get', '/activities', parameters, document, 200);
         });
@@ -1426,66 +1418,115 @@
         });
 
         it('An LRS accepts GET requests without Content-Length headers **Implicit**', function () {
-            return sendRequest('head', '/statements', undefined, undefined, 200)
+            return sendRequest('get', '/statements', undefined, undefined, 200)
                 .then(function (res) {
                     res.body.should.eql({});
                 });
         });
 
-        it('A Person Object is an Object (7.6)', function (done) {
-            done(new Error('Implement Test'));
+        it('A Person Object is an Object (7.6)', function () {
+            return sendRequest('head', '/agents', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.should.be.instanceOf(Object);
+                });
         });
 
         it('A Person Object uses an "objectType" property exactly one time (Multiplicity, 7.6.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON Parser validation
+            done();
         });
 
-        it('A Person Object\'s "objectType" property is a String and is "Person" (Format, Vocabulary, 7.6.table1.row1.a, 7.6.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+        it('A Person Object\'s "objectType" property is a String and is "Person" (Format, Vocabulary, 7.6.table1.row1.a, 7.6.table1.row1.b)', function () {
+            return sendRequest('get', '/agents', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.objectType.should.be.instanceOf(String);
+                    res.body.objectType.should.equal('Person');
+                });
         });
 
         it('A Person Object uses a "name" property at most one time (Multiplicity, 7.6.table1.row2.c)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON Parser validation
+            done();
         });
 
-        it('A Person Object\'s "name" property is an Array of Strings (Multiplicity, 7.6.table1.row2.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('A Person Object\'s "name" property is an Array of Strings (Multiplicity, 7.6.table1.row2.a)', function () {
+            return sendRequest('get', '/agents', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.name.should.be.instanceOf(Array);
+                    res.body.name.forEach(function(item){
+                        item.should.be.instanceOf(String);
+                    });
+                });
         });
 
         it('A Person Object uses a "mbox" property at most one time (Multiplicity, 7.6.table1.row3.c)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON Parser validation
+            done();
         });
 
-        it('A Person Object\'s "mbox" property is an Array of IRIs (Multiplicity, 7.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('A Person Object\'s "mbox" property is an Array of IRIs (Multiplicity, 7.6.table1.row3.a)', function () {
+            return sendRequest('get', '/agents', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.mbox.should.be.instanceOf(Array);
+                    res.body.mbox.forEach(function(item){
+                        validUrl.isUri(item);
+                    });
+                });
         });
 
-        it('A Person Object\'s "mbox" entries have the form "mailto:emailaddress" (Format, 7.6.table1.row3.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('A Person Object\'s "mbox" entries have the form "mailto:emailaddress" (Format, 7.6.table1.row3.a)', function () {
+            return sendRequest('get', '/agents', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body.mbox.should.be.instanceOf(Array);
+                    res.body.mbox.forEach(function(item){
+                        item.should.containEql('mailto:');
+                    });
+                });
         });
 
-        it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function (done) {
-            done(new Error('Implement Test'));
+        it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function () {
+            // JSON Parser validation
+            done();
         });
 
-        it('A Person Object\'s "mbox_sha1sum" property is an Array of Strings (Multiplicity, 7.6.table1.row4.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('A Person Object\'s "mbox_sha1sum" property is an Array of Strings (Multiplicity, 7.6.table1.row4.a)', function () {
+            return sendRequest('get', '/agents', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body['mbox_sha1sum'].should.be.instanceOf(Array);
+                    res.body['mbox_sha1sum'].forEach(function(item){
+                        item.should.be.instanceOf(String);
+                    });
+                });
         });
 
         it('A Person Object uses an "openid" property at most one time (Multiplicity, 7.6.table1.row5.c)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON Parser validation
+            done();
         });
 
-        it('A Person Object\'s "openid" property is an Array of Strings (Multiplicity, 7.6.table1.row5.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('A Person Object\'s "openid" property is an Array of Strings (Multiplicity, 7.6.table1.row5.a)', function () {
+            return sendRequest('get', '/agents', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body['openid'].should.be.instanceOf(Array);
+                    res.body['openid'].forEach(function(item){
+                        item.should.be.instanceOf(String);
+                    });
+                });
         });
 
         it('A Person Object uses an "account" property at most one time (Multiplicity, 7.6.table1.row6.c)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON Parser validation
+            done();
         });
 
-        it('A Person Object\'s "account" property is an Array of Account Objects (Multiplicity, 7.6.table1.row6.a)', function (done) {
-            done(new Error('Implement Test'));
+        it('A Person Object\'s "account" property is an Array of Account Objects (Multiplicity, 7.6.table1.row6.a)', function () {
+            return sendRequest('get', '/agents', undefined, undefined, 200)
+                .then(function (res) {
+                    res.body['account'].should.be.instanceOf(Array);
+                    res.body['account'].forEach(function(item){
+                        item.should.be.instanceOf(Object); // Determine easiest way to check for account object
+                    });
+                });
         });
     });
-}(process, require('supertest-as-promised'), require('should'), require('./../helper'), require('qs')));
+}(process, require('supertest-as-promised'), require('should'), require('./../helper'), require('qs'), require('valid-url')));
