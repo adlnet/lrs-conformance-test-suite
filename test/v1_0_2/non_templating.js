@@ -391,7 +391,7 @@
         it('should fail when statement GET without header "X-Experience-API-Version"', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
-                .body(attachment).expect(400, done);
+                .expect(400, done);
         });
 
         it('should fail when statement POST without header "X-Experience-API-Version"', function (done) {
@@ -871,6 +871,7 @@
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err);
@@ -912,13 +913,14 @@
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err);
                     } else {
                         try {
                             var statement = JSON.parse(res.body);
-                            if (statement.verb.id = data.verb.id) {
+                            if (statement.verb.id === data.verb.id) {
                                 done();
                             } else {
                                 done(new Error('Statement "verb" should not be updated.'));
@@ -989,7 +991,7 @@
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addHeaderXapiVersion({}))
                 .json(data)
-                .expect(200)
+                .expect(204)
                 .end()
                 .post(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
@@ -1023,23 +1025,22 @@
     });
 
     describe('The LRS will NOT reject a GET request which returns an empty "statements" property (**Implicit**, 4.2.table1.row1.b)', function () {
-        it('should return empty array list of The LRS will NOT reject a GET request which returns an empty "statements" property (**Implicit**, 4.2.table1.row1.b)', function (done) {
+        it('should return empty array list', function (done) {
             var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err)
                     } else {
                         try {
-                            var ids = JSON.parse(res.body).statements;
-                            if (Array.isArray(ids) && ids[0] === data.id) {
+                            var result = JSON.parse(res.body);
+                            if (Array.isArray(result.statements) && result.statements.length === 0) {
                                 done();
                             } else {
-                                done(new Error('Statement "GET" is not array of IDs.'));
+                                done(new Error('Statement "GET" result is not empty.'));
                             }
                         } catch (error) {
                             done(error);
@@ -1068,11 +1069,11 @@
                         done(err)
                     } else {
                         try {
-                            var ids = JSON.parse(res.body).statements;
-                            if (Array.isArray(ids) && ids.length === 0) {
+                            var ids = res.body;
+                            if (Array.isArray(ids) && ids.length > 0) {
                                 done();
                             } else {
-                                done(new Error('Statement "GET" is not empty array.'));
+                                done(new Error('Statement "POST" is an empty array.'));
                             }
                         } catch (error) {
                             done(error);
@@ -1093,8 +1094,8 @@
                         done(err);
                     } else {
                         try {
-                            var more = JSON.parse(res.body).more;
-                            if (more && validUrl.isUri(more)) {
+                            var result = JSON.parse(res.body);
+                            if (result.more && validUrl.isUri(result.more)) {
                                 done();
                             } else {
                                 done(new Error('Statement GET "more" is missing or not IRL.'));
@@ -1135,28 +1136,26 @@
 
     describe('If not empty, the "more" property\'s IRL refers to a specific container object corresponding to the next page of results from the orignal GET request (4.2.table1.row1.b)', function () {
         it('should return "more" which refers to next page of results', function (done) {
-            it('should return "more" property as an IRL', function (done) {
-                request(helper.getEndpoint())
-                    .get(helper.getEndpointStatements() + '?limit=1')
-                    .headers(helper.addHeaderXapiVersion({}))
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            done(err);
-                        } else {
-                            try {
-                                var more = JSON.parse(res.body).more;
-                                if (more && validUrl.isUri(more)) {
-                                    done();
-                                } else {
-                                    done(new Error('Statement GET "more" is missing or not IRL.'));
-                                }
-                            } catch (error) {
-                                done(error);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?limit=1')
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.more && validUrl.isUri(result.more)) {
+                                done();
+                            } else {
+                                done(new Error('Statement GET "more" is missing or not IRL.'));
                             }
+                        } catch (error) {
+                            done(error);
                         }
-                    });
-            });
+                    }
+                });
         });
     });
 
@@ -1199,6 +1198,7 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err);
@@ -1257,6 +1257,7 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err);
@@ -1279,12 +1280,10 @@
 
     describe('LRS\'s Statement API accepts GET requests (7.2.3)', function () {
         it('should return using GET', function (done) {
-            it('should return "more" property as an IRL', function (done) {
-                request(helper.getEndpoint())
-                    .get(helper.getEndpointStatements())
-                    .headers(helper.addHeaderXapiVersion({}))
-                    .expect(200, done);
-            });
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .expect(200, done);
         });
     });
 
@@ -1305,7 +1304,7 @@
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addHeaderXapiVersion({}))
-                .end(200, done);
+                .expect(200, done);
         });
     });
 
@@ -1344,7 +1343,7 @@
         });
 
         it('should process using GET with "voidedStatementId"', function (done) {
-            var query = qs.stringify({statementId: voidedId});
+            var query = qs.stringify({voidedStatementId: voidedId});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
@@ -1382,7 +1381,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1396,7 +1394,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1410,7 +1407,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1424,7 +1420,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1438,7 +1433,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1452,7 +1446,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1466,7 +1459,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1480,7 +1472,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1494,7 +1485,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1508,7 +1498,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1522,7 +1511,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
 
@@ -1536,7 +1524,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1552,7 +1539,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1563,7 +1549,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1574,7 +1559,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1585,29 +1569,78 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
 
     describe('An LRS\'s Statement API can process a GET request with "related_activities" as a parameter  **Implicit**', function () {
+        var statement;
+
+        before('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:pri@adlnet.gov"
+                }}
+            ];
+            var data = createFromTemplate(templates);
+            statement = data.statement;
+            statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(statement)
+                .expect(200, done);
+        });
+
         it('should process using GET with "related_activities"', function (done) {
-            var query = qs.stringify({related_activities: true});
+            var query = qs.stringify({
+                activity: statement.context.contextActivities.category.id,
+                related_activities: true
+            });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
 
     describe('An LRS\'s Statement API can process a GET request with "related_agents" as a parameter  **Implicit**', function () {
+        var statement;
+
+        before('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:pri@adlnet.gov"
+                }}
+            ];
+            var data = createFromTemplate(templates);
+            statement = data.statement;
+            statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(statement)
+                .expect(200, done);
+        });
+
         it('should process using GET with "related_agents"', function (done) {
-            var query = qs.stringify({related_agents: true});
+            var query = qs.stringify({
+                agent: statement.context.instructor,
+                related_agents: true
+            });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1618,7 +1651,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1629,7 +1661,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
             });
     });
@@ -1640,7 +1671,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1651,7 +1681,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1662,7 +1691,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1673,7 +1701,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1723,7 +1750,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1737,7 +1763,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1751,7 +1776,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1765,7 +1789,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1779,7 +1802,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1793,7 +1815,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1807,7 +1828,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1821,7 +1841,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1835,7 +1854,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1849,7 +1867,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(400, done);
         });
 
@@ -1863,7 +1880,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
 
@@ -1877,7 +1893,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200, done);
         });
     });
@@ -1905,7 +1920,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?statementId=' + id)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200).end(function (err, res) {
                     if (err) {
                         done(err);
@@ -1985,11 +1999,56 @@
     });
 
     describe('An LRS\'s Statement API upon processing a successful GET request with neither a "statementId" nor a "voidedStatementId" parameter, returns code 200 OK and a StatementResult Object.  (7.2.3)', function () {
+        var statement;
+        var substatement;
+
+        before('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:pri@adlnet.gov"
+                }}
+            ];
+            var data = createFromTemplate(templates);
+            statement = data.statement;
+            statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(statement)
+                .expect(200, done);
+        });
+
+        before('persist substatement', function (done) {
+            var templates = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:sub@adlnet.gov"
+                }}
+            ];
+            var data = createFromTemplate(templates);
+            substatement = data.statement;
+            substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(substatement)
+                .expect(200, done);
+        });
+
         it('should return StatementResult using GET without "statementId" or "voidedStatementId"', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2019,7 +2078,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2040,11 +2098,10 @@
         });
 
         it('should return StatementResult using GET with "verb"', function (done) {
-            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = qs.stringify({verb: statement.verb.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2065,11 +2122,10 @@
         });
 
         it('should return StatementResult using GET with "activity"', function (done) {
-            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            var query = qs.stringify({activity: statement.object.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2090,11 +2146,10 @@
         });
 
         it('should return StatementResult using GET with "registration"', function (done) {
-            var query = qs.stringify({registration: helper.generateUUID()});
+            var query = qs.stringify({registration: statement.context.registration});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2115,11 +2170,13 @@
         });
 
         it('should return StatementResult using GET with "related_activities"', function (done) {
-            var query = qs.stringify({related_activities: true});
+            var query = qs.stringify({
+                activity: statement.context.contextActivities.category.id,
+                related_activities: true
+            });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2140,11 +2197,13 @@
         });
 
         it('should return StatementResult using GET with "related_agents"', function (done) {
-            var query = qs.stringify({related_agents: true});
+            var query = qs.stringify({
+                agent: statement.context.instructor,
+                related_agents: true
+            });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2169,7 +2228,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2194,7 +2252,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2219,7 +2276,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2244,7 +2300,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2269,7 +2324,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2294,7 +2348,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2356,7 +2409,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2386,7 +2438,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2411,7 +2462,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2436,7 +2486,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2461,7 +2510,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2486,7 +2534,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2511,7 +2558,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2536,7 +2582,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2561,7 +2606,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2586,7 +2630,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2611,7 +2654,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2636,7 +2678,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2661,7 +2702,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2683,11 +2723,33 @@
     });
 
     describe('An LRS\'s "X-Experience-API-Consistent-Through" header is an ISO 8601 combined date and time (Type, 7.2.3.c).', function () {
+        var statement;
+
+        before('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:pri@adlnet.gov"
+                }}
+            ];
+            var data = createFromTemplate(templates);
+            statement = data.statement;
+            statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(statement)
+                .expect(200, done);
+        });
+
         it('should return valid "X-Experience-API-Consistent-Through" using GET', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2717,7 +2779,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2742,7 +2803,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2767,7 +2827,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2792,7 +2851,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2813,11 +2871,13 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_activities"', function (done) {
-            var query = qs.stringify({related_activities: true});
+            var query = qs.stringify({
+                activity: statement.context.contextActivities.category.id,
+                related_activities: true
+            });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2838,11 +2898,13 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_agents"', function (done) {
-            var query = qs.stringify({related_agents: true});
+            var query = qs.stringify({
+                agent: statement.context.instructor,
+                related_agents: true
+            });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2867,7 +2929,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2892,7 +2953,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2917,7 +2977,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2942,7 +3001,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2967,7 +3025,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2992,7 +3049,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3014,11 +3070,56 @@
     });
 
     describe('A "statements" property is an Array of Statements (Type, 4.2.table1.row1.a)', function () {
+        var statement;
+        var substatement;
+
+        before('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:pri@adlnet.gov"
+                }}
+            ];
+            var data = createFromTemplate(templates);
+            statement = data.statement;
+            statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(statement)
+                .expect(200, done);
+        });
+
+        before('persist substatement', function (done) {
+            var templates = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:sub@adlnet.gov"
+                }}
+            ];
+            var data = createFromTemplate(templates);
+            substatement = data.statement;
+            substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(substatement)
+                .expect(200, done);
+        });
+
         it('should return StatementResult with statements as array using GET without "statementId" or "voidedStatementId"', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3048,7 +3149,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3069,11 +3169,10 @@
         });
 
         it('should return StatementResult with statements as array using GET with "verb"', function (done) {
-            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = qs.stringify({verb: statement.verb.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3094,11 +3193,10 @@
         });
 
         it('should return StatementResult with statements as array using GET with "activity"', function (done) {
-            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            var query = qs.stringify({activity: statement.object.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3119,11 +3217,10 @@
         });
 
         it('should return StatementResult with statements as array using GET with "registration"', function (done) {
-            var query = qs.stringify({registration: helper.generateUUID()});
+            var query = qs.stringify({registration: statement.context.registration});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3144,11 +3241,13 @@
         });
 
         it('should return StatementResult with statements as array using GET with "related_activities"', function (done) {
-            var query = qs.stringify({related_activities: true});
+            var query = qs.stringify({
+                activity: statement.context.contextActivities.category.id,
+                related_activities: true
+            });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3156,7 +3255,7 @@
                     } else {
                         try {
                             var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
+                            if (Array.isArray(result.statements)) {
                                 done();
                             } else {
                                 done(new Error('Statement "GET" does not return StatementResult.'));
@@ -3169,11 +3268,13 @@
         });
 
         it('should return StatementResult with statements as array using GET with "related_agents"', function (done) {
-            var query = qs.stringify({related_agents: true});
+            var query = qs.stringify({
+                agent: statement.context.instructor,
+                related_agents: true
+            });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3198,7 +3299,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3223,7 +3323,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3248,7 +3347,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3273,7 +3371,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3298,7 +3395,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3323,7 +3419,6 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(data)
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3454,13 +3549,14 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err);
                     } else {
                         try {
-                            var results = JSON.parse(res.body).statements;
-                            if (results.length === 0) {
+                            var results = JSON.parse(res.body);
+                            if (Array.isArray(results.statements) && results.statements.length === 0) {
                                 done();
                             } else {
                                 done(new Error('StatementRefs should not be returned when using "since".'));
@@ -3480,13 +3576,14 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err);
                     } else {
                         try {
-                            var results = JSON.parse(res.body).statements;
-                            if (results.length === 0) {
+                            var results = JSON.parse(res.body);
+                            if (Array.isArray(results.statements) && results.statements.length === 0) {
                                 done();
                             } else {
                                 done(new Error('StatementRefs should not be returned when using "until".'));
@@ -3506,13 +3603,14 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err);
                     } else {
                         try {
-                            var results = JSON.parse(res.body).statements;
-                            if (results.length === 0) {
+                            var results = JSON.parse(res.body);
+                            if (Array.isArray(results.statements) && results.statements.length === 0) {
                                 done();
                             } else {
                                 done(new Error('StatementRefs should not be returned when using "limit".'));
@@ -3531,16 +3629,18 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
+                .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err);
                     } else {
                         try {
-                            var results = JSON.parse(res.body).statements;
-                            if (results.length > 0) {
+                            var results = JSON.parse(res.body);
+                            if (Array.isArray(results.statements) && results.statements.length > 0) {
+                                var statements = results.statements;
                                 var found = false;
-                                for (var i = 0; i < results.length; i++) {
-                                    var result = results[i];
+                                for (var i = 0; i < statements.length; i++) {
+                                    var result = statements[i];
                                     if (result.id === statementRefId) {
                                         found = true;
                                         break;
@@ -3562,7 +3662,7 @@
         });
     });
 
-    describe('Miscellaneous Requirements', function () {
+    describe.skip('Miscellaneous Requirements', function () {
         it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
             // JSON parser validates this
             done();
