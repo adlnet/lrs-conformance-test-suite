@@ -49,7 +49,7 @@
     describe('A Voiding Statement cannot Target another Voiding Statement (4.3)', function () {
         var voidingId;
 
-        beforeEach('persist voiding statement', function (done) {
+        before('persist voiding statement', function (done) {
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -171,7 +171,7 @@
         var data;
         var attachment;
 
-        beforeEach('create attachment templates', function () {
+        before('create attachment templates', function () {
             var templates = [
                 {statement: '{{statements.attachment}}'},
                 {
@@ -1161,17 +1161,24 @@
     });
 
     describe('A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS (4.2.c)', function () {
-        var voidedId;
+        var voidedId = helper.generateUUID();
 
-        beforeEach('persist voided statement', function (done) {
+        before('persist voided statement', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
             var voided = createFromTemplate(templates);
             voided = voided.statement;
-            voided.id = helper.generateUUID();
-            voidedId = voided.id;
+            voided.id = voidedId;
 
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200, done);
+        });
+
+        before('persist voiding statement', function (done) {
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -1183,12 +1190,8 @@
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(voided)
-                .expect(200)
-                .end()
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(voiding).expect(200, done);
+                .json(voiding)
+                .expect(200, done);
         });
 
         it('should return a voided statement when using GET "voidedStatementId"', function (done) {
@@ -1216,17 +1219,24 @@
     });
 
     describe('An LRS\'s Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request (7.2.4.a)', function () {
-        var voidedId;
+        var voidedId = helper.generateUUID();
 
-        beforeEach('persist voided statement', function (done) {
+        before('persist voided statement', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
             var voided = createFromTemplate(templates);
             voided = voided.statement;
-            voided.id = helper.generateUUID();
-            voidedId = voided.id;
+            voided.id = voidedId;
 
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200, done);
+        });
+
+        before('persist voiding statement', function (done) {
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -1238,12 +1248,8 @@
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(voided)
-                .expect(200)
-                .end()
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(voiding).expect(200, done);
+                .json(voiding)
+                .expect(200, done);
         });
 
         it('should not return a voided statement if using GET "statementId"', function (done) {
@@ -1304,17 +1310,24 @@
     });
 
     describe('An LRS\'s Statement API can process a GET request with "voidedStatementId" as a parameter  (7.2.3)', function () {
-        var voidedId;
+        var voidedId = helper.generateUUID();
 
-        beforeEach('persist voided statement', function (done) {
+        before('persist voided statement', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
             var voided = createFromTemplate(templates);
             voided = voided.statement;
-            voided.id = helper.generateUUID();
-            voidedId = voided.id;
+            voided.id = voidedId;
 
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200, done);
+        });
+
+        before('persist voiding statement', function (done) {
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -1326,12 +1339,8 @@
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(voided)
-                .expect(200)
-                .end()
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(voiding).expect(200, done);
+                .json(voiding)
+                .expect(200, done);
         });
 
         it('should process using GET with "voidedStatementId"', function (done) {
@@ -1346,7 +1355,7 @@
     describe('An LRS\'s Statement API rejects a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function () {
         var id;
 
-        beforeEach('persist statement', function (done) {
+        before('persist statement', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -1670,17 +1679,24 @@
     });
 
     describe('An LRS\'s Statement API rejects a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function () {
-        var voidedId;
+        var voidedId = helper.generateUUID();
 
-        beforeEach('persist voided statement', function (done) {
+        before('persist voided statement', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
             var voided = createFromTemplate(templates);
             voided = voided.statement;
-            voided.id = helper.generateUUID();
-            voidedId = voided.id;
+            voided.id = voidedId;
 
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200, done);
+        });
+
+        before('persist voiding statement', function (done) {
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -1692,12 +1708,8 @@
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(voided)
-                .expect(200)
-                .end()
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(voiding).expect(200, done);
+                .json(voiding)
+                .expect(200, done);
         });
 
         it('should fail when using "voidedStatementId" with "agent"', function (done) {
@@ -1873,7 +1885,7 @@
     describe('An LRS\'s Statement API upon processing a successful GET request with a "statementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (7.2.3)', function () {
         var id;
 
-        beforeEach('persist statement', function (done) {
+        before('persist statement', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -1914,17 +1926,24 @@
     });
 
     describe('An LRS\'s Statement API upon processing a successful GET request with a "voidedStatementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (7.2.3)', function () {
-        var voidedId;
+        var voidedId = helper.generateUUID();
 
-        beforeEach('persist voided statement', function (done) {
+        before('persist voided statement', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
             var voided = createFromTemplate(templates);
             voided = voided.statement;
-            voided.id = helper.generateUUID();
-            voidedId = voided.id;
+            voided.id = voidedId;
 
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200, done);
+        });
+
+        before('persist voiding statement', function (done) {
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -1936,12 +1955,8 @@
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
-                .json(voided)
-                .expect(200)
-                .end()
-                .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
-                .json(voiding).expect(200, done);
+                .json(voiding)
+                .expect(200, done);
         });
 
         it('should return a voided statement when using GET "voidedStatementId"', function (done) {
@@ -1973,6 +1988,311 @@
         it('should return StatementResult using GET without "statementId" or "voidedStatementId"', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "agent"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "verb"', function (done) {
+            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "activity"', function (done) {
+            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "registration"', function (done) {
+            var query = qs.stringify({registration: helper.generateUUID()});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "related_activities"', function (done) {
+            var query = qs.stringify({related_activities: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "related_agents"', function (done) {
+            var query = qs.stringify({related_agents: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "since"', function (done) {
+            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "until"', function (done) {
+            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "limit"', function (done) {
+            var query = qs.stringify({limit: 1});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "ascending"', function (done) {
+            var query = qs.stringify({ascending: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "format"', function (done) {
+            var query = qs.stringify({format: 'ids'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult using GET with "attachments"', function (done) {
+            var query = qs.stringify({attachments: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .json(data)
                 .expect(200)
@@ -2032,9 +2352,314 @@
     });
 
     describe('An LRS\'s Statement API upon processing a GET request, returns a header with name "X-Experience-API-Consistent-Through" regardless of the code returned. (7.2.3.c)', function () {
-        it('should return "X-Experience-API-Consistent-Through"', function (done) {
+        it('should return "X-Experience-API-Consistent-Through" using GET', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "agent"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "verb"', function (done) {
+            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "activity"', function (done) {
+            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "registration"', function (done) {
+            var query = qs.stringify({registration: helper.generateUUID()});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "related_activities"', function (done) {
+            var query = qs.stringify({related_activities: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "related_agents"', function (done) {
+            var query = qs.stringify({related_agents: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
+            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "until"', function (done) {
+            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
+            var query = qs.stringify({limit: 1});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "ascending"', function (done) {
+            var query = qs.stringify({ascending: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "format"', function (done) {
+            var query = qs.stringify({format: 'ids'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = res.headers['X-Experience-API-Consistent-Through'];
+                            if (through) {
+                                done();
+                            } else {
+                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "attachments"', function (done) {
+            var query = qs.stringify({attachments: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .json(data)
                 .expect(200)
@@ -2058,7 +2683,7 @@
     });
 
     describe('An LRS\'s "X-Experience-API-Consistent-Through" header is an ISO 8601 combined date and time (Type, 7.2.3.c).', function () {
-        it('should return valid "X-Experience-API-Consistent-Through"', function (done) {
+        it('should return valid "X-Experience-API-Consistent-Through" using GET', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addHeaderXapiVersion({}))
@@ -2074,6 +2699,860 @@
                                 done();
                             } else {
                                 done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "agent"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "verb"', function (done) {
+            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "activity"', function (done) {
+            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "registration"', function (done) {
+            var query = qs.stringify({registration: helper.generateUUID()});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "related_activities"', function (done) {
+            var query = qs.stringify({related_activities: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "related_agents"', function (done) {
+            var query = qs.stringify({related_agents: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
+            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "until"', function (done) {
+            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
+            var query = qs.stringify({limit: 1});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "ascending"', function (done) {
+            var query = qs.stringify({ascending: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "format"', function (done) {
+            var query = qs.stringify({format: 'ids'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return "X-Experience-API-Consistent-Through" using GET with "attachments"', function (done) {
+            var query = qs.stringify({attachments: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                            if (!through.isValid()) {
+                                done();
+                            } else {
+                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('A "statements" property is an Array of Statements (Type, 4.2.table1.row1.a)', function () {
+        it('should return StatementResult with statements as array using GET without "statementId" or "voidedStatementId"', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "agent"', function (done) {
+            var templates = [
+                {agent: '{{agents.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+
+            var query = qs.stringify(data);
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "verb"', function (done) {
+            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "activity"', function (done) {
+            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "registration"', function (done) {
+            var query = qs.stringify({registration: helper.generateUUID()});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "related_activities"', function (done) {
+            var query = qs.stringify({related_activities: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "related_agents"', function (done) {
+            var query = qs.stringify({related_agents: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "since"', function (done) {
+            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "until"', function (done) {
+            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "limit"', function (done) {
+            var query = qs.stringify({limit: 1});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "ascending"', function (done) {
+            var query = qs.stringify({ascending: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "format"', function (done) {
+            var query = qs.stringify({format: 'ids'});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementResult with statements as array using GET with "attachments"', function (done) {
+            var query = qs.stringify({attachments: true});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var result = JSON.parse(res.body);
+                            if (result.statements && Array.isArray(result.statements)) {
+                                done();
+                            } else {
+                                done(new Error('Statement "GET" does not return StatementResult.'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+    });
+
+    describe('An LRS\'s Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it (7.2.4.b)', function () {
+        var voidedId = helper.generateUUID();
+        var statementRefId = helper.generateUUID();
+
+        before('persist voided statement', function (done) {
+            var voidedTemplates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var voided = createFromTemplate(voidedTemplates);
+            voided = voided.statement;
+            voided.id = voidedId;
+            voidedId = voided.id;
+            voided.verb.id = 'http://adlnet.gov/expapi/test/voided/target';
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voided)
+                .expect(200, done);
+        });
+
+        before('persist voiding statement', function (done) {
+            var voidingTemplates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            var voiding = createFromTemplate(voidingTemplates);
+            voiding = voiding.statement;
+            voiding.object.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(voiding)
+                .expect(200, done);
+        });
+
+        before('persist context with statement reference', function (done) {
+            var contextTemplates = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.default}}'}
+            ];
+            var context = createFromTemplate(contextTemplates);
+            context = context.statement;
+            context.context.statement.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(context)
+                .expect(200, done);
+        });
+
+        before('persist substatement context with statement references', function (done) {
+            var substatementContextTemplates = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.context}}'},
+                {context: '{{contexts.default}}'}
+            ];
+            var substatementContext = createFromTemplate(substatementContextTemplates);
+            substatementContext = substatementContext.statement;
+            substatementContext.object.context.statement.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(substatementContext)
+                .expect(200, done);
+        });
+
+        before('persist object with statement references', function (done) {
+            var statementRefTemplates = [
+                {statement: '{{statements.object_statementref}}'}
+            ];
+            var statementRef = createFromTemplate(statementRefTemplates);
+            statementRef = statementRef.statement;
+            statementRef.id = statementRefId;
+            statementRef.object.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(statementRef)
+                .expect(200, done);
+        });
+
+        before('persist substatement with statement references', function (done) {
+            var subStatementStatementRefTemplates = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.statementref}}'}
+            ];
+            var subStatementStatementRef = createFromTemplate(subStatementStatementRefTemplates);
+            subStatementStatementRef = subStatementStatementRef.statement;
+            subStatementStatementRef.object.object.id = voidedId;
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json(subStatementStatementRef)
+                .expect(200, done);
+        });
+
+        it('should not return StatementRef when using "since"', function (done) {
+            var query = qs.stringify({
+                verb: 'http://adlnet.gov/expapi/test/voided/target',
+                since: '2010-01-01T19:09:13.245Z'
+            });
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var results = JSON.parse(res.body).statements;
+                            if (results.length === 0) {
+                                done();
+                            } else {
+                                done(new Error('StatementRefs should not be returned when using "since".'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should not return StatementRef when using "until"', function (done) {
+            var query = qs.stringify({
+                verb: 'http://adlnet.gov/expapi/test/voided/target',
+                until: '2050-01-01T19:09:13.245Z'
+            });
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var results = JSON.parse(res.body).statements;
+                            if (results.length === 0) {
+                                done();
+                            } else {
+                                done(new Error('StatementRefs should not be returned when using "until".'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should not return StatementRef when using "limit"', function (done) {
+            var query = qs.stringify({
+                verb: 'http://adlnet.gov/expapi/test/voided/target',
+                limit: 10
+            });
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var results = JSON.parse(res.body).statements;
+                            if (results.length === 0) {
+                                done();
+                            } else {
+                                done(new Error('StatementRefs should not be returned when using "limit".'));
+                            }
+                        } catch (error) {
+                            done(error);
+                        }
+                    }
+                });
+        });
+
+        it('should return StatementRef when not using "since", "until", "limit"', function (done) {
+            var query = qs.stringify({
+                verb: 'http://adlnet.gov/expapi/test/voided/target'
+            });
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addHeaderXapiVersion({}))
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        try {
+                            var results = JSON.parse(res.body).statements;
+                            if (results.length > 0) {
+                                var found = false;
+                                for (var i = 0; i < results.length; i++) {
+                                    var result = results[i];
+                                    if (result.id === statementRefId) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (found) {
+                                    done();
+                                } else {
+                                    done(new Error('StatementRefs "id" was not found.'));
+                                }
+                            } else {
+                                done(new Error('StatementRefs should be returned when not using "since", "until", "limit".'));
                             }
                         } catch (error) {
                             done(error);
@@ -2466,6 +3945,16 @@
             done();
         });
 
+        it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, 4.2.table1.row1.c)', function (done) {
+            // JSON parser validates this
+            done();
+        });
+
+        it('A "more" property\'s referenced container object follows the same rules as the original GET request, originating with a single "statements" property and a single "more" property (4.2.table1.row1.b)', function (done) {
+            // JSON parser validates this
+            done();
+        });
+
         it('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (done) {
             done(new Error('Implement Test'));
         });
@@ -2554,14 +4043,6 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, 4.2.table1.row1.c)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "statements" property is an Array of Statements (Type, 4.2.table1.row1.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done) {
             done(new Error('Implement Test'));
         });
@@ -2573,16 +4054,6 @@
 
         it('A "more" property IRL is accessible for at least 24 hours after being returned (4.2.a)', function (done) {
             // TODO Skipping for now
-            done(new Error('Implement Test'));
-        });
-
-        it('A "more" property\'s referenced container object follows the same rules as the original GET request, originating with a single "statements" property and a single "more" property (4.2.table1.row1.b)', function (done) {
-            // TODO Seems like a duplicate from 2 above
-            done()
-        });
-
-        it('An LRS\'s Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it (7.2.4.b)', function (done) {
-            // TODO Clarify this
             done(new Error('Implement Test'));
         });
     });
