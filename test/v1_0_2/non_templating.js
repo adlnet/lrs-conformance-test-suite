@@ -7,7 +7,7 @@
  * Created by vijay.budhram on 7/9/14.
  * Riptide Software
  */
-(function (module, fs, extend, moment, request, qs, should, helper, validUrl) {
+(function (module, fs, extend, moment, request, requestPromise, qs, should, helper, validUrl) {
     "use strict";
 
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
@@ -631,17 +631,17 @@
     describe('An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**', function () {
         it('should fail with statement "DELETE"', function (done) {
             var query = qs.stringify({statementId: helper.generateUUID()});
-            request(helper.getEndpoint())
+            requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .set('X-Experience-API-Version', '1.0.1')
                 .expect(405, done);
         });
 
         it('should fail with activities "DELETE"', function (done) {
             var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
-            request(helper.getEndpoint())
+            requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointActivitiesProfile() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .set('X-Experience-API-Version', '1.0.1')
                 .expect(405, done);
         });
 
@@ -668,9 +668,9 @@
             var data = createFromTemplate(templates);
 
             var query = qs.stringify(data);
-            request(helper.getEndpoint())
+            requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointAgents() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .set('X-Experience-API-Version', '1.0.1')
                 .expect(405, done);
         });
 
@@ -4166,4 +4166,4 @@
         return mockObject;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('qs'), require('should'), require('./../helper'), require('valid-url')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('qs'), require('should'), require('./../helper'), require('valid-url')));
