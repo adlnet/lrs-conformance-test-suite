@@ -3,7 +3,7 @@ LRS Conformance Tests
 
 ### Description
 
-This is a NodeJS project that tests the 'MUST' requirements of an LRS and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is not meant to be a comprehensive test and new tests will be periodically added based on the testing requirements. Currently, this test suite does not support authenticated LRS endpoints.
+This is a NodeJS project that tests the 'MUST' requirements of an LRS and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite does not support authenticated LRS endpoints.  The endpoint should not point to a production environment.  The data persisted is never voided or removed and ideally the datastore should be cleansed since some tests retrieve all entries.
 
 ### Installation
 
@@ -106,19 +106,21 @@ The result are merged with the key from the second item in array is not found in
 }
 ```
 
-### Running Tests Within WebStorm (NodeJs):
-    Install dependencies using 'npm install' in the terminal.
-    Select 'Run' (from menu), then select 'Edit Configuration'
-    Click '+' symbol in top left of new window and select 'Mocha'
-    Edit 'Name' (if desired)
-    Edit 'Test Directory' to use the 'test/v1_0_2' folder
-    Run test using name provided
+### Running Tests:
 
-Tests are run dynamically by using the '/configs' folder.  The structure is an array of JSON objects.  The name of the object is the requirement per [xAPI specification](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md).
+Some tests were created dynamically by using the '/configs' folder while other tests were manually created.  The name of the describe is the requirement per [xAPI specification](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) and the integration tests validate the describe.
 
 ```js
 var LRS_ENDPOINT = 'http://testclient.elmnts-test.com:80/lrs';
 ```
+
+WebStorm (NodeJs)
+* Install dependencies using 'npm install' in the terminal.
+* Select 'Run' (from menu), then select 'Edit Configuration'
+* Click '+' symbol in top left of new window and select 'Mocha'
+* Edit 'Name' (if desired)
+* Edit 'Test Directory' to use the 'test/v1_0_2' folder
+* Run test using name provided
 
 #### Test Reports
 The testing framework used in this project is [Mocha](http://mochajs.org/). Add additional testing and reporting features by modifying the package.json test command.
