@@ -121,7 +121,7 @@ var LRS_ENDPOINT = 'http://testclient.elmnts-test.com:80/lrs';
 ```
 
 #### Test Reports
-The testing framework used in this project is [Mocha](http://visionmedia.github.io/mocha/). Add additional testing and reporting features by modifying the package.json test command.
+The testing framework used in this project is [Mocha](http://mochajs.org/). Add additional testing and reporting features by modifying the package.json test command.
 
 ```js
 "scripts": {
@@ -129,7 +129,7 @@ The testing framework used in this project is [Mocha](http://visionmedia.github.
 }
 ```
 
-List of [Mocha commands](http://visionmedia.github.io/mocha/#mocha.opts)
+List of [Mocha commands](http://mochajs.org/#mocha.opts)
 
 At command line type:
 
