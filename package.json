@@ -1,6 +1,6 @@
 {
   "name": "lrs-conformance-tests",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "lrs-conformance-tests =====================",
   "main": "test.js",
   "scripts": {
@@ -14,6 +14,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/RiptideCloud/lrs-conformance-tests/issues"
+  },
+  "bin": {
+    "lrs-test": "./bin/lrs-test.js"
   },
   "homepage": "https://github.com/RiptideCloud/lrs-conformance-tests",
   "dependencies": {
