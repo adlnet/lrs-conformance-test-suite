@@ -1,0 +1,18 @@
+{
+  "actor": {
+    "objectType": "Agent",
+    "name": "xAPI account",
+    "mbox": "mailto:xapi@adlnet.gov"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/attended",
+    "display": {
+      "en-GB": "attended",
+      "en-US": "attended"
+    }
+  },
+  "object": {
+    "objectType": "StatementRef",
+    "id": "8f87ccde-bb56-4c2e-ab83-44982ef22df0"
+  }
+}

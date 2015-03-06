@@ -1,0 +1,12 @@
+{
+  "score": {
+    "scaled": 0.95,
+    "raw": 95,
+    "min": 0,
+    "max": 100
+  },
+  "success": true,
+  "completion": true,
+  "response": "We agreed on some example actions.",
+  "duration": "PT1H0M0S"
+}

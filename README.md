@@ -3,46 +3,130 @@ LRS Conformance Tests
 
 ### Description
 
-This is a NodeJS project that tests the 'MUST' requirements of an LRS and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is not meant to be a comprehensive test and new tests will be periodically added based on the testing requirements. Currently, this test suite does not support authenticated LRS endpoints.
+This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec) and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite does not support authenticated LRS endpoints. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
 
 ### Installation
 
-Install NodeJS testing dependencies.
+In the project working directory run the following commands.
 
 ```bash
 $ npm install
+$ npm link
 ```
 
-### Configuration
+Verify installation
+```bash
+$ lrs-test --help
 
-Modify the LRS endpoint variable in test/test.js, to point to the LRS you are testing. This endpoint must not require authentication.
+Usage: lrs-test [options]
 
-```js
-var LRS_ENDPOINT = 'http://testclient.elmnts-test.com/lrs';
+Options:
+
+  -h, --help             output usage information
+  -V, --version          output the version number
+  -e, --endpoint <path>  The LRS connection string
 ```
 
-#### Test Reports
-The testing framework used in this project is [Mocha](http://visionmedia.github.io/mocha/). Add additional testing and reporting features by modifying the package.json test command.
+### Running Test Suite
 
-```js
-"scripts": {
-  "test": "node_modules/mocha/bin/mocha test/test.js --reporter nyan"
-}
-```
-
-List of [Mocha commands](http://visionmedia.github.io/mocha/#mocha.opts)
-
-### Running Tests
-
-At command line type:
+Example:
 
 ```bash
-$ npm test
+$ lrs-test --endpoint http://localhost/lrs
+```
+
+### Creating/Exending Test Suite
+
+Everything within the config array defines a test that validates the requirement.
+* The 'name' key describes the test.
+* The 'json' key is used to pass in a JSON object without templating.
+* The 'expect' key is an array with values that are applied to super-request expect().
+* The 'template' key is an array of JSON objects (Currently only supporting JSON objects with one key).
+    * Items in template use a single key with a reference to the JSON file to construct the template object.  Then values are overriden by subsequent items in array.  Template JSON files are referenced with a prefix of '{{' folder of template (period) filename <without extension> and suffix '}}' i.e. '{{statements.default}}'.  Templates mappings are replaced with their JSON object.  The easiest way to create a JSON without a property is to create another template.
+
+Examples how JSON objects are merged with subsequent items in array (Currently only supporting JSON objects with one key):
+
+* Example 1 shows how the second item in array can modify a specific attribute's value in the first item's JSON value -
+
+```
+templates: [
+    {
+        statement: {
+           actor: { key: 'value' },
+           verb: { key: 'value' },
+           object: { key: 'value' }
+       }
+    },
+    {
+        actor: { key: 'another_value' }
+    }
+]
+```
+The result are merged with the key 'actor' from the second item in array referencing the first item's value of 'actor' and the value is replaced -
+```
+{
+    statement: {
+       actor: { key: 'another_value' },
+       verb: { key: 'value' },
+       object: { key: 'value' }
+   }
+}
+```
+* Example 2 shows how the second item in array can add a specific attribute in the first item's JSON value -
+```
+templates: [
+    {
+        statement: {
+           actor: { key: 'value' },
+           verb: { key: 'value' },
+           object: { key: 'value' }
+       }
+    },
+    {
+        actor: { another_key: 'value' }
+    }
+]
+```
+The result are merged with the key 'actor' from the second item in array referencing the first item's value of 'actor' and the their attributes are merged -
+```
+{
+    statement: {
+       actor: { key: 'value', another_key: 'value' },
+       verb: { key: 'value' },
+       object: { key: 'value' }
+   }
+}
+```
+* Example 3 shows how the second item in array is added to first item's JSON value -
+```
+templates: [
+    {
+        statement: {
+           actor: { key: 'value' },
+           verb: { key: 'value' },
+           object: { key: 'value' }
+       }
+    },
+    {
+        another_key: 'value'
+    }
+]
+```
+The result are merged with the key from the second item in array is not found in the first item's value so default behavior is to merge -
+```
+{
+    statement: {
+       actor: { key: 'value' },
+       verb: { key: 'value' },
+       object: { key: 'value' },
+       another_key: 'value'
+   }
+}
 ```
 
 ### License
 MIT License
->Copyright (c) 2014 Riptide Software
+>Copyright (c) 2015 Riptide Software
 
 >Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
