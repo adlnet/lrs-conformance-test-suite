@@ -1,7 +1,7 @@
 {
   "name": "lrs-conformance-tests",
   "version": "0.0.2",
-  "description": "lrs-conformance-tests =====================",
+  "description": "lrs-conformance-tests",
   "main": "test.js",
   "scripts": {
     "test": "node_modules/mocha/bin/mocha test/v1_0_2/*.js --reporter nyan"
