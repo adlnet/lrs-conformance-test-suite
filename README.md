@@ -37,7 +37,7 @@ Example:
 $ lrs-test --endpoint http://localhost/lrs
 ```
 
-### Creating/Exending Test Suite
+### Creating/Extending Test Suite
 
 Everything within the config array defines a test that validates the requirement.
 * The 'name' key describes the test.
