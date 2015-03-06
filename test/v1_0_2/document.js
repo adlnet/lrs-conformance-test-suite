@@ -32,7 +32,7 @@
         return pre.expect(expect);
     }
 
-    describe.only('Document API Requirements', function () {
+    describe('Document API Requirements', function () {
         it('An LRS has a State API with endpoint "base IRI"+"/activities/state" (7.3.table1.row1.a ,7.3.table1.row1.c)', function () {
             var parameters = helper.buildState(),
                 document = helper.buildDocument();
