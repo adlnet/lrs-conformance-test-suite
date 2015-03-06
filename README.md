@@ -10,7 +10,7 @@ This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](h
 Clone and install
 
 ```bash
-$ git clone https://github.com/RiptideCloud/lrs-conformance-tests.git
+$ git clone https://github.com/TryxAPI/lrs-conformance-tests.git
 $ cd lrs-conformance-tests
 $ npm install
 $ npm link
