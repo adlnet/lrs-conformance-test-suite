@@ -5,7 +5,7 @@
  * Created by vijay.budhram on 3/5/15.
  * Riptide Software
  */
-(function (process, require, program, exit, packageJson, Q, Joi, fs, path, Mocha, spawn) {
+(function (process, require, program, exit, packageJson, Q, Joi, fs, path, Mocha) {
     'use strict';
 
     program
@@ -23,7 +23,7 @@
         }).unknown(false),
         mocha = new Mocha({
             uii: 'bdd',
-            reporter: 'doc',
+            reporter: 'nyan',
             timeout: '15000'
         });
 
@@ -64,4 +64,4 @@
         exit(1);
     });
 
-}(process, require, require('commander'), require('exit'), require('../package.json'), require('q'), require('joi'), require('fs'), require('path'), require('mocha'), require('child_process').spawn));
+}(process, require, require('commander'), require('exit'), require('../package.json'), require('q'), require('joi'), require('fs'), require('path'), require('mocha')));

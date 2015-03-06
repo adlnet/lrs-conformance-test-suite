@@ -3,7 +3,7 @@ LRS Conformance Tests
 
 ### Description
 
-This is a NodeJS project that tests the 'MUST' requirements of an LRS and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite does not support authenticated LRS endpoints. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
+This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec) and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite does not support authenticated LRS endpoints. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
 
 ### Installation
 
