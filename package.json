@@ -8,17 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/RiptideCloud/lrs-conformance-tests.git"
+    "url": "git://github.com/TryxAPI/lrs-conformance-tests.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RiptideCloud/lrs-conformance-tests/issues"
+    "url": "https://github.com/TryxAPI/lrs-conformance-tests/issues"
   },
   "bin": {
     "lrs-test": "./bin/lrs-test.js"
   },
-  "homepage": "https://github.com/RiptideCloud/lrs-conformance-tests",
+  "homepage": "https://github.com/TryxAPI/lrs-conformance-tests",
   "dependencies": {
     "chai": "<1.10.0",
     "chai-as-promised": "^4.1.1",
