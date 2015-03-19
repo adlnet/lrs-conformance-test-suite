@@ -2,8 +2,6 @@
 /**
  * Description : This is the command line interface for running the lrs conformance test suite.
  *
- * Created by vijay.budhram on 3/5/15.
- * Riptide Software
  */
 (function (process, require, program, exit, packageJson, Q, Joi, fs, path, Mocha) {
     'use strict';

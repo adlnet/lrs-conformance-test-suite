@@ -128,7 +128,6 @@ The result are merged with the key from the second item in array is not found in
 
 ### License
 MIT License
->Copyright (c) 2015 Riptide Software
 
 >Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

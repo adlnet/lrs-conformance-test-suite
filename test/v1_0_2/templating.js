@@ -4,11 +4,9 @@
  *
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
- * Created by fwhorton on 2/20/15.
- * Riptide Software
  */
 (function (module, process, request, should, helper) {
-    "use strict"
+    "use strict";
 
     describe('Conformance Requirements using Templating', function () {
 

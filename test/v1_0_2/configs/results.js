@@ -4,11 +4,9 @@
  *
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
- * Created by fwhorton on 2/20/15.
- * Riptide Software
  */
 (function (module) {
-    "use strict"
+    "use strict";
 
     // defines overwriting data
     var INVALID_DURATION = 'PA1H0M0S';

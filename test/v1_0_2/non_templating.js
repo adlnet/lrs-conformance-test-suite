@@ -4,8 +4,6 @@
  *
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
- * Created by vijay.budhram on 7/9/14.
- * Riptide Software
  */
 (function (module, fs, extend, moment, request, requestPromise, qs, should, helper, validUrl) {
     "use strict";

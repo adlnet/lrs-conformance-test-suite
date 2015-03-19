@@ -4,8 +4,6 @@
  *
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
- * Created by fwhorton on 2/20/15.
- * Riptide Software
  */
 var path = require('path');
 if (!process.env.EB_NODE_COMMAND) {
