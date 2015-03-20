@@ -263,7 +263,7 @@
         });
     });
 
-    describe.skip('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "Content-Type" with value "multipart/mixed" (RFC 1341)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "Content-Type" with value "multipart/mixed" (RFC 1341)', function () {
         it('should fail when attachment is raw data and first part content type is not "application/json"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_content_type.part', {encoding: 'binary'});
@@ -275,7 +275,7 @@
         });
     });
 
-    describe.skip('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "boundary" (4.1.11.b, RFC 1341)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "boundary" (4.1.11.b, RFC 1341)', function () {
         it('should fail if boundary not provided in body', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_no_boundary.part', {encoding: 'binary'});
@@ -4053,6 +4053,39 @@
             done();
         });
 
+        it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
+            // Using requirement: An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**
+            done();
+        });
+
+        it('A POST request is defined as a "pure" POST, as opposed to a GET taking on the form of a POST (7.2.2.e)', function (done) {
+            // All of these "defined" aren't really tests, rather ways to disambiguate future tests.
+            done();
+        });
+
+        it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
+            // Not concerned with "Content-Type" when use a GET request
+            done();
+        });
+
+        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.e)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d) (7.2.3.e)', function (done) {
+            // Not concerned with "Content-Type" when use a GET request
+            done();
+        });
+
+        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
+            // RFC 1341: MIME-Version header field is required at the top level of a message. It is not required for each body part of a multipart entity
+            done();
+        });
+
         it('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (done) {
             done(new Error('Implement Test'));
         });
@@ -4066,26 +4099,6 @@
         });
 
         it('An LRS rejects with error code 403 Forbidden a Request whose "authority" is a Agent or Group that is not authorized (4.1.9.b, 6.4.2)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d) (7.2.3.e)', function (done) {
             done(new Error('Implement Test'));
         });
 
@@ -4125,14 +4138,6 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A POST request is defined as a "pure" POST, as opposed to a GET taking on the form of a POST (7.2.2.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('A GET request is defined as either a GET request or a POST request containing a GET request (7.2.3, 7.2.2.e)', function (done) {
             done(new Error('Implement Test'));
         });
@@ -4146,12 +4151,10 @@
         });
 
         it('A "statements" property which is too large for a single page will create a container for each additional page (4.2.table1.row1.b)', function (done) {
-            // TODO What determines to large? Property to set?
             done(new Error('Implement Test'));
         });
 
         it('A "more" property IRL is accessible for at least 24 hours after being returned (4.2.a)', function (done) {
-            // TODO Skipping for now
             done(new Error('Implement Test'));
         });
     });
