@@ -5,7 +5,7 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
-(function (module, fs, extend, moment, request, requestPromise, qs, should, helper, validUrl) {
+(function (module, fs, extend, moment, request, requestPromise, qs, should, validUrl, helper, multipartParser) {
     "use strict";
 
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
@@ -1083,7 +1083,18 @@
 
     describe('A "more" property is an IRL (Format, 4.2.table1.row2.a)', function () {
         it('should return "more" property as an IRL', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            var statement = data.statement;
+
             request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json([statement, statement])
+                .expect(200)
+                .end()
                 .get(helper.getEndpointStatements() + '?limit=1')
                 .headers(helper.addHeaderXapiVersion({}))
                 .expect(200)
@@ -3143,7 +3154,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = qs.stringify(data.agent);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
@@ -3413,27 +3424,55 @@
         });
 
         it('should return StatementResult with statements as array using GET with "attachments"', function (done) {
-            var query = qs.stringify({attachments: true});
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
+
             request(helper.getEndpoint())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
-                .expect(200)
-                .end(function (err, res) {
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment).expect(200).end(function (err, res) {
                     if (err) {
                         done(err);
                     } else {
                         try {
                             var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
+                            if (Array.isArray(result) && result.length > 0) {
+                                var query = qs.stringify({ statementId: result[0], attachments: true});
+
+                                request(helper.getEndpoint())
+                                    .get(helper.getEndpointStatements() + '?' + query)
+                                    .headers(helper.addHeaderXapiVersion({}))
+                                    .expect(200)
+                                    .end(function (err, res) {
+                                        if (err) {
+                                            done(err);
+                                        } else {
+                                            try {
+                                                var boundary = multipartParser.getBoundary(res.headers['content-type']);
+                                                if (boundary) {
+                                                    var parsed = multipartParser.parseMultipart(boundary, res.body);
+                                                    var result = JSON.parse(parsed[0].body);
+                                                    if (result.statements && Array.isArray(result.statements)) {
+                                                        done();
+                                                    } else {
+                                                        done(new Error('Statement "GET" does not return StatementResult.'));
+                                                    }
+                                                } else  {
+                                                    done(new Error('Statement "GET" does not contain boundary in content-type.'));
+                                                }
+                                            } catch (error) {
+                                                done(error);
+                                            }
+                                        }
+                                    });
                             } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
+                                done(new Error('Statement "POST" did not return array of IDs.'));
                             }
                         } catch (error) {
                             done(error);
                         }
                     }
-                });
+                })
         });
     });
 
@@ -4167,4 +4206,4 @@
         return mockObject;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('qs'), require('should'), require('./../helper'), require('valid-url')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('qs'), require('should'), require('valid-url'), require('./../helper'), require('./../multipartParser')));
