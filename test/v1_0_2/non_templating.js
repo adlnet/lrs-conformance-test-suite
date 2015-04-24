@@ -2191,7 +2191,7 @@
                             expect(statement).to.have.property('stored');
                             var stored =  moment(statement.stored, moment.ISO_8601);
                             expect(stored.isValid()).to.be.true;
-                            expect(stored.isBefore(through)).to.be.true;
+                            expect(stored.isBefore(through) || stored.isSame(through)).to.be.true;
                         }
                         done();
                     }
