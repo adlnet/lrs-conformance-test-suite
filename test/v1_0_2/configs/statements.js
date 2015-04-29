@@ -224,7 +224,7 @@
                         name: 'statement context should fail on "null"',
                         templates: [
                             {statement: '{{statements.context}}'},
-                            {context: '{{context.default}}'},
+                            {context: '{{contexts.default}}'},
                             {registration: null}
                         ],
                         expect: [400]
