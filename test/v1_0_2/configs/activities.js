@@ -11,7 +11,7 @@
     // defines overwriting data
     var INVALID_IRI = 'abc://should.fail.com';
     var INVALID_NUMERIC = 12345;
-    var INVALID_OBJECT = {key: 'value'};
+    var INVALID_OBJECT = {test: 'value'};
     var INVALID_STRING = 'should error';
     var INVALID_INTERACTION_COMPONENT_ID = {
         'id': INVALID_OBJECT,
@@ -48,10 +48,12 @@
     ];
     var VALID_ACTIVITY = {id: 'http://www.example.com/meetings/occurances/34534'};
     var VALID_EXTENSIONS = {
-        'http://example.com/profiles/meetings/extension/location': 'X:\\meetings\\minutes\\examplemeeting.one',
-        'http://example.com/profiles/meetings/extension/reporter': {
-            'name': 'Thomas',
-            'id': 'http://openid.com/342'
+        extensions: {
+            'http://example.com/profiles/meetings/extension/location': 'X:\\meetings\\minutes\\examplemeeting.one',
+            'http://example.com/profiles/meetings/extension/reporter': {
+                'name': 'Thomas',
+                'id': 'http://openid.com/342'
+            }
         }
     };
     var VALID_INTERACTION_COMPONENT = {
@@ -1621,7 +1623,7 @@
                         name: 'statement activity "choice choices" missing "id"',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.choice}}'},
+                            {object: '{{activities.choice_no_choices}}'},
                             {definition: {choices: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1630,7 +1632,7 @@
                         name: 'statement activity "likert scale" missing "id"',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.likert}}'},
+                            {object: '{{activities.likert_no_scale}}'},
                             {definition: {scale: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1639,7 +1641,7 @@
                         name: 'statement activity "matching source" missing "id"',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.matching}}'},
+                            {object: '{{activities.matching_no_source}}'},
                             {definition: {source: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1648,7 +1650,7 @@
                         name: 'statement activity "matching target" missing "id"',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.matching}}'},
+                            {object: '{{activities.matching_no_target}}'},
                             {definition: {target: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1657,7 +1659,7 @@
                         name: 'statement activity "performance steps" missing "id"',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.performance}}'},
+                            {object: '{{activities.performance_no_steps}}'},
                             {definition: {steps: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1666,7 +1668,7 @@
                         name: 'statement activity "sequencing choices" missing "id"',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.sequencing}}'},
+                            {object: '{{activities.sequencing_no_choices}}'},
                             {definition: {choices: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1676,7 +1678,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.choice}}'},
+                            {object: '{{activities.choice_no_choices}}'},
                             {definition: {choices: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1686,7 +1688,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.likert}}'},
+                            {object: '{{activities.likert_no_scale}}'},
                             {definition: {scale: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1696,7 +1698,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.matching}}'},
+                            {object: '{{activities.matching_no_source}}'},
                             {definition: {source: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1706,7 +1708,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.matching}}'},
+                            {object: '{{activities.matching_no_target}}'},
                             {definition: {target: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1716,7 +1718,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.performance}}'},
+                            {object: '{{activities.performance_no_steps}}'},
                             {definition: {steps: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]
@@ -1726,7 +1728,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.sequencing}}'},
+                            {object: '{{activities.sequencing_no_choices}}'},
                             {definition: {choices: [INVALID_INTERACTION_NO_ID]}}
                         ],
                         expect: [400]

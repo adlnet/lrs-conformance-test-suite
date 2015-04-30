@@ -1482,7 +1482,7 @@
                 });
         });
 
-        it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function () {
+        it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function (done) {
             // JSON Parser validation
             done();
         });

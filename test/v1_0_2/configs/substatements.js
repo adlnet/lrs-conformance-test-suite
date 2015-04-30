@@ -119,7 +119,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.default}}'},
+                            {object: '{{statements.object_substatement_default}}'}
                         ],
                         expect: [400]
                     }
@@ -133,7 +133,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.default}}'},
-                            {id: 'fd41c918-b88b-4b20-a0a5-a4c32391aaa0'},
+                            {id: 'fd41c918-b88b-4b20-a0a5-a4c32391aaa0'}
                         ],
                         expect: [400]
                     }
@@ -147,7 +147,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.default}}'},
-                            {stored: '2013-05-18T05:32:34.804Z'},
+                            {stored: '2013-05-18T05:32:34.804Z'}
                         ],
                         expect: [400]
                     }
@@ -161,7 +161,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.default}}'},
-                            {version: '1.0.0'},
+                            {version: '1.0.0'}
                         ],
                         expect: [400]
                     }
@@ -171,25 +171,11 @@
                 name: 'A Sub-Statement cannot use the "authority" property (4.1.4.2.f)',
                 config: [
                     {
-                        name: 'substatement invalid with property "stored"',
+                        name: 'substatement invalid with property "authority"',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{statements.authority}}'},
-                            {authority: '{{agents.default}}'},
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
-                name: 'A Sub-Statement cannot use the "authority" property (4.1.12)',
-                config: [
-                    {
-                        name: 'substatement invalid with property "stored"',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{statements.authority}}'},
-                            {authority: '{{agents.default}}'},
+                            {authority: '{{agents.default}}'}
                         ],
                         expect: [400]
                     }

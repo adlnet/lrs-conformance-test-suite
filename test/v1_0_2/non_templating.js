@@ -5,8 +5,10 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
-(function (module, fs, extend, moment, request, requestPromise, qs, should, helper, validUrl) {
+(function (module, fs, extend, moment, request, requestPromise, qs, chai, validUrl, helper, multipartParser) {
     "use strict";
+
+    var expect = chai.expect;
 
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
         it('should populate authority', function (done) {
@@ -29,16 +31,8 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var statement = JSON.parse(res.body);
-                            if (statement.authority) {
-                                done();
-                            } else {
-                                done(new Error('Statement "authority" has not been set.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var statement = parse(res.body, done);
+                        expect(statement).to.have.property('authority');
                     }
                 });
         });
@@ -105,21 +99,16 @@
                     .end()
                     .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                     .headers(helper.addHeaderXapiVersion({}))
-                    .expect(200).end(function (err, res) {
+                    .expect(200)
+                    .end(function (err, res) {
                         if (err) {
                             done(err);
                         } else {
-                            try {
-                                var statement = JSON.parse(res.body);
-                                var contextType = statement.context.contextActivities[type];
-                                if (Array.isArray(contextType)) {
-                                    done();
-                                } else {
-                                    done(new Error('Statement "' + type + '" not an array.'));
-                                }
-                            } catch (error) {
-                                done(error);
-                            }
+                            var statement = parse(res.body, done);
+                            expect(statement).to.have.property('context').to.have.property('contextActivities');
+                            expect(statement.context.contextActivities).to.have.property(type);
+                            expect(statement.context.contextActivities[type]).to.be.an('array');
+                            done();
                         }
                     });
             });
@@ -144,21 +133,16 @@
                     .end()
                     .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                     .headers(helper.addHeaderXapiVersion({}))
-                    .expect(200).end(function (err, res) {
+                    .expect(200)
+                    .end(function (err, res) {
                         if (err) {
                             done(err);
                         } else {
-                            try {
-                                var statement = JSON.parse(res.body);
-                                var contextType = statement.object.context.contextActivities[type];
-                                if (Array.isArray(contextType)) {
-                                    done();
-                                } else {
-                                    done(new Error('Statement substatement "' + type + '" not an array.'));
-                                }
-                            } catch (error) {
-                                done(error);
-                            }
+                            var statement = parse(res.body, done);
+                            expect(statement).to.have.property('object').to.have.property('context').to.have.property('contextActivities');
+                            expect(statement.object.context.contextActivities).to.have.property(type);
+                            expect(statement.object.context.contextActivities[type]).to.be.an('array');
+                            done();
                         }
                     });
             });
@@ -228,7 +212,7 @@
     });
 
     describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content-Type" header with value "application/json", and has a discrepancy in the number of Attachments vs. the number of fileURL members (4.1.11.a)', function () {
-        it('should succeed when attachment uses "fileUrl" and request content-type is "application/json"', function (done) {
+        it('should fail when passing statement attachments and missing attachment"s binary', function (done) {
             var templates = [
                 {statement: '{{statements.attachment}}'},
                 {
@@ -263,7 +247,7 @@
         });
     });
 
-    describe.skip('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "Content-Type" with value "multipart/mixed" (RFC 1341)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "Content-Type" with value "multipart/mixed" (RFC 1341)', function () {
         it('should fail when attachment is raw data and first part content type is not "application/json"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_content_type.part', {encoding: 'binary'});
@@ -275,7 +259,7 @@
         });
     });
 
-    describe.skip('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "boundary" (4.1.11.b, RFC 1341)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "boundary" (4.1.11.b, RFC 1341)', function () {
         it('should fail if boundary not provided in body', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_no_boundary.part', {encoding: 'binary'});
@@ -418,7 +402,7 @@
     });
 
     describe('An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to "1.0.1" (4.1.10.b)', function () {
-        it('should set "version" to "1.0.1" when not provided by client', function (done) {
+        it('should respond with header "version" set to "1.0.1"', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -434,22 +418,8 @@
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addHeaderXapiVersion({}))
-                .expect(200).end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        try {
-                            var statement = JSON.parse(res.body);
-                            if (statement.version === "1.0.1") {
-                                done();
-                            } else {
-                                done(new Error('Statement "version" has not been set.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
-                    }
-                });
+                .expect(200)
+                .expect('x-experience-api-version', '1.0.1', done);
         });
     });
 
@@ -474,18 +444,11 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var statement = JSON.parse(res.body);
-                            if (helper.isEqual(data.actor, statement.actor)
-                                && helper.isEqual(data.object, statement.object)
-                                && helper.isEqual(data.verb, statement.verb)) {
-                                done();
-                            } else {
-                                done(new Error('Statement from LRS not same as statement sent.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var statement = parse(res.body, done);
+                        expect(helper.isEqual(data.actor, statement.actor)).to.be.true;
+                        expect(helper.isEqual(data.object, statement.object)).to.be.true;
+                        expect(helper.isEqual(data.verb, statement.verb)).to.be.true;
+                        done();
                     }
                 });
         });
@@ -638,7 +601,7 @@
         it('should fail with activities "DELETE"', function (done) {
             var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
             requestPromise(helper.getEndpoint())
-                .delete(helper.getEndpointActivitiesProfile() + '?' + query)
+                .delete(helper.getEndpointActivities() + '?' + query)
                 .set('X-Experience-API-Version', '1.0.1')
                 .expect(405, done);
         });
@@ -646,7 +609,7 @@
         it('should fail with activities "POST"', function (done) {
             var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
             request(helper.getEndpoint())
-                .post(helper.getEndpointActivitiesProfile() + '?' + query)
+                .post(helper.getEndpointActivities() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .expect(405, done);
         });
@@ -654,7 +617,7 @@
         it('should fail with activities "PUT"', function (done) {
             var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
             request(helper.getEndpoint())
-                .put(helper.getEndpointActivitiesProfile() + '?' + query)
+                .put(helper.getEndpointActivities() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .expect(405, done);
         });
@@ -874,16 +837,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var statement = JSON.parse(res.body);
-                            if (statement.verb.id = data.verb.id) {
-                                done();
-                            } else {
-                                done(new Error('Statement "verb" should not be updated.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var statement = parse(res.body, done);
+                        expect(statement.verb.id).to.equal(data.verb.id);
+                        done();
                     }
                 });
         });
@@ -916,16 +872,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var statement = JSON.parse(res.body);
-                            if (statement.verb.id === data.verb.id) {
-                                done();
-                            } else {
-                                done(new Error('Statement "verb" should not be updated.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var statement = parse(res.body, done);
+                        expect(statement.verb.id).to.equal(data.verb.id);
+                        done();
                     }
                 });
         });
@@ -972,7 +921,7 @@
                     } else if (res.statusCode === 409 || res.statusCode === 204) {
                         done();
                     } else {
-                        done(new Error('Missing no update status code using POST'))
+                        done(new Error('Missing: no update status code using POST'))
                     }
                 });
         });
@@ -1000,7 +949,7 @@
                     } else if (res.statusCode === 409 || res.statusCode === 204) {
                         done();
                     } else {
-                        done(new Error('Missing no update status code using POST'))
+                        done(new Error('Missing: no update status code using PUT'))
                     }
                 });
         });
@@ -1033,16 +982,9 @@
                     if (err) {
                         done(err)
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (Array.isArray(result.statements) && result.statements.length === 0) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" result is not empty.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array').to.be.length(0);
+                        done();
                     }
                 });
         });
@@ -1066,16 +1008,8 @@
                     if (err) {
                         done(err)
                     } else {
-                        try {
-                            var ids = res.body;
-                            if (Array.isArray(ids) && ids.length > 0) {
-                                done();
-                            } else {
-                                done(new Error('Statement "POST" is an empty array.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        expect(res.body).to.be.an('array').to.have.length.above(0);
+                        done();
                     }
                 });
         });
@@ -1083,7 +1017,18 @@
 
     describe('A "more" property is an IRL (Format, 4.2.table1.row2.a)', function () {
         it('should return "more" property as an IRL', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            var statement = data.statement;
+
             request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion({}))
+                .json([statement, statement])
+                .expect(200)
+                .end()
                 .get(helper.getEndpointStatements() + '?limit=1')
                 .headers(helper.addHeaderXapiVersion({}))
                 .expect(200)
@@ -1091,16 +1036,10 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.more && validUrl.isUri(result.more)) {
-                                done();
-                            } else {
-                                done(new Error('Statement GET "more" is missing or not IRL.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('more');
+                        expect(validUrl.isUri(result.more)).to.be.truthy;
+                        done();
                     }
                 });
         });
@@ -1117,16 +1056,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var more = JSON.parse(res.body).more;
-                            if (more === '') {
-                                done();
-                            } else {
-                                done(new Error('Statement GET "more" is missing or not an empty string.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('more').to.be.truthy;
+                        done();
                     }
                 });
         });
@@ -1142,16 +1074,10 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.more && validUrl.isUri(result.more)) {
-                                done();
-                            } else {
-                                done(new Error('Statement GET "more" is missing or not IRL.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('more');
+                        expect(validUrl.isUri(result.more)).to.be.truthy;
+                        done();
                     }
                 });
         });
@@ -1201,16 +1127,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var statement = JSON.parse(res.body);
-                            if (statement.id === voidedId) {
-                                done();
-                            } else {
-                                done(new Error('Statement "voidedStatementId" was not returned.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var statement = parse(res.body, done);
+                        expect(statement.id).to.equal(voidedId);
+                        done();
                     }
                 });
         });
@@ -1255,23 +1174,7 @@
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        try {
-                            var statement = JSON.parse(res.body);
-                            if (statement.id) {
-                                done(new Error('Statement "statementId" should not be returned.'));
-                            } else {
-                                done();
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
-                    }
-                });
+                .expect(404, done);
 
         });
     });
@@ -1660,7 +1563,7 @@
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .expect(200, done);
-            });
+        });
     });
 
     describe('An LRS\'s Statement API can process a GET request with "limit" as a parameter  **Implicit**', function () {
@@ -1723,8 +1626,7 @@
 
         before('persist voiding statement', function (done) {
             var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
+                {statement: '{{statements.voided}}'}
             ];
             var voiding = createFromTemplate(templates);
             voiding = voiding.statement;
@@ -1870,7 +1772,7 @@
 
         it('should pass when using "voidedStatementId" with "format"', function (done) {
             var data = {
-                statementId: voidedId,
+                voidedStatementId: voidedId,
                 format: 'ids'
             };
 
@@ -1883,7 +1785,7 @@
 
         it('should pass when using "voidedStatementId" with "attachments"', function (done) {
             var data = {
-                statementId: voidedId,
+                voidedStatementId: voidedId,
                 attachments: true
             };
 
@@ -1922,16 +1824,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var statement = JSON.parse(res.body);
-                            if (statement.id === id) {
-                                done();
-                            } else {
-                                done(new Error('Statement "id" does not match requested statementId.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var statement = parse(res.body, done);
+                        expect(statement.id).to.equal(id);
+                        done();
                     }
                 });
         });
@@ -1981,16 +1876,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var statement = JSON.parse(res.body);
-                            if (statement.id === voidedId) {
-                                done();
-                            } else {
-                                done(new Error('Statement "id" does not match requested voidedStatementId.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var statement = parse(res.body, done);
+                        expect(statement.id).to.equal(voidedId);
+                        done();
                     }
                 });
         });
@@ -2052,16 +1940,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2081,16 +1962,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2105,16 +1979,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2129,16 +1996,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2153,16 +2013,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2180,16 +2033,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2207,16 +2053,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2231,16 +2070,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2255,16 +2087,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2279,16 +2104,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2303,16 +2121,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -2327,16 +2138,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var results = parse(res.body, done);
+                        expect(results).to.have.property('statements');
+                        done();
                     }
                 });
         });
@@ -2351,16 +2155,13 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var boundary = multipartParser.getBoundary(res.headers['content-type']);
+                        expect(boundary).to.be.ok;
+                        var parsed = multipartParser.parseMultipart(boundary, res.body);
+                        expect(parsed).to.be.ok;
+                        var results = parse(parsed[0].body, done);
+                        expect(results).to.have.property('statements');
+                        done();
                     }
                 });
         });
@@ -2376,27 +2177,23 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
 
-                                var statements = result.statements;
-                                for (var i = 0; i < statements.length; i++) {
-                                    var stored =  moment(statements[i].stored, moment.ISO_8601);
-                                    if (!through.isValid() || !stored.isValid()) {
-                                        done(new Error('Statement dates not valid.'));
-                                    }
-                                    if (through.isBefore(stored)) {
-                                        done(new Error('Statement "stored" date is after "X-Experience-API-Consistent-Through.'));
-                                    }
-                                }
-                                done();
-                            } else {
-                            }
-                        } catch (error) {
-                            done(error);
+                        var results = parse(res.body, done);
+                        expect(results).to.have.property('statements');
+
+                        var statements = results.statements;
+                        for (var i = 0; i < statements.length; i++) {
+                            var statement = statements[i];
+                            expect(statement).to.have.property('stored');
+                            var stored =  moment(statement.stored, moment.ISO_8601);
+                            expect(stored.isValid()).to.be.true;
+                            expect(stored.isBefore(through) || stored.isSame(through)).to.be.true;
                         }
+                        done();
                     }
                 });
         });
@@ -2412,16 +2209,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2441,16 +2231,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2465,16 +2248,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2489,16 +2265,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2513,16 +2282,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2537,16 +2299,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2561,16 +2316,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2585,16 +2333,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2609,16 +2350,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2633,16 +2367,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2657,16 +2384,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2681,16 +2401,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2705,16 +2418,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = res.headers['X-Experience-API-Consistent-Through'];
-                            if (through) {
-                                done();
-                            } else {
-                                done(new Error('Statement "X-Experience-API-Consistent-Through" not in header.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
                     }
                 });
         });
@@ -2753,16 +2459,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -2782,16 +2484,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -2806,16 +2504,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -2830,16 +2524,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -2854,16 +2544,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -2881,16 +2567,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -2908,16 +2590,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -2932,16 +2610,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -2956,16 +2630,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -2980,16 +2650,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -3004,16 +2670,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -3028,16 +2690,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -3052,16 +2710,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var through = moment(res.headers['X-Experience-API-Consistent-Through'], moment.ISO_8601);
-                            if (!through.isValid()) {
-                                done();
-                            } else {
-                                done(new Error('Header "X-Experience-API-Consistent-Through" not valid.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var value = res.headers['x-experience-api-consistent-through'];
+                        expect(value).to.be.ok;
+                        var through = moment(value, moment.ISO_8601);
+                        expect(through).to.be.ok;
+                        expect(through.isValid()).to.be.true;
+                        done();
                     }
                 });
         });
@@ -3123,16 +2777,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3143,7 +2790,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = qs.stringify(data.agent);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
@@ -3152,16 +2799,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3176,16 +2816,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3200,16 +2833,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3224,16 +2850,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3251,16 +2870,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3278,16 +2890,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3302,16 +2907,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3326,16 +2924,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3350,16 +2941,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3374,16 +2958,9 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
@@ -3398,23 +2975,24 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var result = parse(res.body, done);
+                        expect(result).to.have.property('statements').to.be.an('array');
+                        done();
                     }
                 });
         });
 
         it('should return StatementResult with statements as array using GET with "attachments"', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
             var query = qs.stringify({attachments: true});
+
             request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addHeaderXapiVersion(header))
+                .body(attachment)
+                .expect(200)
+                .end()
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addHeaderXapiVersion({}))
                 .expect(200)
@@ -3422,23 +3000,23 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var result = JSON.parse(res.body);
-                            if (result.statements && Array.isArray(result.statements)) {
-                                done();
-                            } else {
-                                done(new Error('Statement "GET" does not return StatementResult.'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var boundary = multipartParser.getBoundary(res.headers['content-type']);
+                        expect(boundary).to.be.ok;
+                        var parsed = multipartParser.parseMultipart(boundary, res.body);
+                        expect(parsed).to.be.ok;
+                        var results = parse(parsed[0].body, done);
+                        expect(results).to.have.property('statements');
+                        done();
                     }
                 });
         });
     });
 
     describe('An LRS\'s Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it (7.2.4.b)', function () {
+        var verbTemplate = 'http://adlnet.gov/expapi/test/voided/target/';
+        var verb = verbTemplate + helper.generateUUID();
         var voidedId = helper.generateUUID();
+        var voidingId = helper.generateUUID();
         var statementRefId = helper.generateUUID();
 
         before('persist voided statement', function (done) {
@@ -3448,8 +3026,8 @@
             var voided = createFromTemplate(voidedTemplates);
             voided = voided.statement;
             voided.id = voidedId;
-            voidedId = voided.id;
-            voided.verb.id = 'http://adlnet.gov/expapi/test/voided/target';
+            voided.verb.id = verb;
+            voided.timestamp = '2005-01-01T19:09:13.245Z';
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3465,7 +3043,9 @@
             ];
             var voiding = createFromTemplate(voidingTemplates);
             voiding = voiding.statement;
+            voiding.id = voidingId;
             voiding.object.id = voidedId;
+            voiding.timestamp = '2015-01-01T19:09:13.245Z';
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3482,6 +3062,7 @@
             var context = createFromTemplate(contextTemplates);
             context = context.statement;
             context.context.statement.id = voidedId;
+            context.timestamp = '2013-01-01T19:09:13.245Z';
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3499,6 +3080,7 @@
             var substatementContext = createFromTemplate(substatementContextTemplates);
             substatementContext = substatementContext.statement;
             substatementContext.object.context.statement.id = voidedId;
+            substatementContext.timestamp = '2013-01-01T19:09:13.245Z';
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3515,6 +3097,7 @@
             statementRef = statementRef.statement;
             statementRef.id = statementRefId;
             statementRef.object.id = voidedId;
+            statementRef.timestamp = '2010-01-01T19:09:13.245Z';
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3531,6 +3114,7 @@
             var subStatementStatementRef = createFromTemplate(subStatementStatementRefTemplates);
             subStatementStatementRef = subStatementStatementRef.statement;
             subStatementStatementRef.object.object.id = voidedId;
+            subStatementStatementRef.timestamp = '2013-01-01T19:09:13.245Z';
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3539,10 +3123,10 @@
                 .expect(200, done);
         });
 
-        it('should not return StatementRef when using "since"', function (done) {
+        it('should only return Object StatementRef when using "since"', function (done) {
             var query = qs.stringify({
-                verb: 'http://adlnet.gov/expapi/test/voided/target',
-                since: '2010-01-01T19:09:13.245Z'
+                verb: verb,
+                since: '2011-01-01T19:09:13.245Z'
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
@@ -3552,24 +3136,19 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var results = JSON.parse(res.body);
-                            if (Array.isArray(results.statements) && results.statements.length === 0) {
-                                done();
-                            } else {
-                                done(new Error('StatementRefs should not be returned when using "since".'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var results = parse(res.body, done);
+                        expect(results).to.have.property('statements');
+                        expect(results.statements).to.have.length(1);
+                        expect(results.statements[0]).to.have.property('id').to.equal(voidingId);
+                        done();
                     }
                 });
         });
 
-        it('should not return StatementRef when using "until"', function (done) {
+        it('should only return Object StatementRef when using "until"', function (done) {
             var query = qs.stringify({
-                verb: 'http://adlnet.gov/expapi/test/voided/target',
-                until: '2050-01-01T19:09:13.245Z'
+                verb: verb,
+                until: '2014-01-01T19:09:13.245Z'
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
@@ -3579,24 +3158,19 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var results = JSON.parse(res.body);
-                            if (Array.isArray(results.statements) && results.statements.length === 0) {
-                                done();
-                            } else {
-                                done(new Error('StatementRefs should not be returned when using "until".'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var results = parse(res.body, done);
+                        expect(results).to.have.property('statements');
+                        expect(results.statements).to.have.length(1);
+                        expect(results.statements[0]).to.have.property('id').to.equal(statementRefId);
+                        done();
                     }
                 });
         });
 
-        it('should not return StatementRef when using "limit"', function (done) {
+        it('should only return Object StatementRef when using "limit"', function (done) {
             var query = qs.stringify({
-                verb: 'http://adlnet.gov/expapi/test/voided/target',
-                limit: 10
+                verb: verb,
+                limit: 1
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
@@ -3606,23 +3180,18 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var results = JSON.parse(res.body);
-                            if (Array.isArray(results.statements) && results.statements.length === 0) {
-                                done();
-                            } else {
-                                done(new Error('StatementRefs should not be returned when using "limit".'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var results = parse(res.body, done);
+                        expect(results).to.have.property('statements');
+                        expect(results.statements).to.have.length(1);
+                        expect(results.statements[0]).to.have.property('id').to.equal(statementRefId);
+                        done();
                     }
                 });
         });
 
         it('should return StatementRef when not using "since", "until", "limit"', function (done) {
             var query = qs.stringify({
-                verb: 'http://adlnet.gov/expapi/test/voided/target'
+                verb: verb
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
@@ -3632,29 +3201,12 @@
                     if (err) {
                         done(err);
                     } else {
-                        try {
-                            var results = JSON.parse(res.body);
-                            if (Array.isArray(results.statements) && results.statements.length > 0) {
-                                var statements = results.statements;
-                                var found = false;
-                                for (var i = 0; i < statements.length; i++) {
-                                    var result = statements[i];
-                                    if (result.id === statementRefId) {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if (found) {
-                                    done();
-                                } else {
-                                    done(new Error('StatementRefs "id" was not found.'));
-                                }
-                            } else {
-                                done(new Error('StatementRefs should be returned when not using "since", "until", "limit".'));
-                            }
-                        } catch (error) {
-                            done(error);
-                        }
+                        var results = parse(res.body, done);
+                        expect(results).to.have.property('statements');
+                        expect(results.statements).to.have.length(2);
+                        expect(results.statements[0]).to.have.property('id').to.equal(statementRefId);
+                        expect(results.statements[1]).to.have.property('id').to.equal(voidingId);
+                        done();
                     }
                 });
         });
@@ -4053,6 +3605,39 @@
             done();
         });
 
+        it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
+            // Using requirement: An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**
+            done();
+        });
+
+        it('A POST request is defined as a "pure" POST, as opposed to a GET taking on the form of a POST (7.2.2.e)', function (done) {
+            // All of these "defined" aren't really tests, rather ways to disambiguate future tests.
+            done();
+        });
+
+        it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
+            // Not concerned with "Content-Type" when use a GET request
+            done();
+        });
+
+        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.e)', function (done) {
+            done(new Error('Implement Test'));
+        });
+
+        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d) (7.2.3.e)', function (done) {
+            // Not concerned with "Content-Type" when use a GET request
+            done();
+        });
+
+        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
+            // RFC 1341: MIME-Version header field is required at the top level of a message. It is not required for each body part of a multipart entity
+            done();
+        });
+
         it('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (done) {
             done(new Error('Implement Test'));
         });
@@ -4066,26 +3651,6 @@
         });
 
         it('An LRS rejects with error code 403 Forbidden a Request whose "authority" is a Agent or Group that is not authorized (4.1.9.b, 6.4.2)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d) (7.2.3.e)', function (done) {
             done(new Error('Implement Test'));
         });
 
@@ -4125,14 +3690,6 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A POST request is defined as a "pure" POST, as opposed to a GET taking on the form of a POST (7.2.2.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('A GET request is defined as either a GET request or a POST request containing a GET request (7.2.3, 7.2.2.e)', function (done) {
             done(new Error('Implement Test'));
         });
@@ -4146,12 +3703,10 @@
         });
 
         it('A "statements" property which is too large for a single page will create a container for each additional page (4.2.table1.row1.b)', function (done) {
-            // TODO What determines to large? Property to set?
             done(new Error('Implement Test'));
         });
 
         it('A "more" property IRL is accessible for at least 24 hours after being returned (4.2.a)', function (done) {
-            // TODO Skipping for now
             done(new Error('Implement Test'));
         });
     });
@@ -4164,4 +3719,15 @@
         return mockObject;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('qs'), require('should'), require('./../helper'), require('valid-url')));
+    function parse(string, done) {
+        var parsed;
+        try {
+            parsed = JSON.parse(string);
+        } catch (error) {
+            done(error);
+        }
+        return parsed;
+    }
+
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('qs'), require('chai'), require('valid-url'), require('./../helper'), require('./../multipartParser')));
+

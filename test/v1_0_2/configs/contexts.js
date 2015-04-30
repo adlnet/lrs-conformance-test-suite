@@ -320,7 +320,11 @@
                         templates: [
                             {statement: '{{statements.context}}'},
                             {context: '{{contexts.parent}}'},
-                            {contextActivities: [VALID_ACTIVITY]}
+                            {
+                                contextActivities: {
+                                    parent: [VALID_ACTIVITY]
+                                }
+                            }
                         ],
                         expect: [200]
                     },
@@ -329,7 +333,11 @@
                         templates: [
                             {statement: '{{statements.context}}'},
                             {context: '{{contexts.grouping}}'},
-                            {contextActivities: [VALID_ACTIVITY]}
+                            {
+                                contextActivities: {
+                                    grouping: [VALID_ACTIVITY]
+                                }
+                            }
                         ],
                         expect: [200]
                     },
@@ -338,7 +346,11 @@
                         templates: [
                             {statement: '{{statements.context}}'},
                             {context: '{{contexts.category}}'},
-                            {contextActivities: [VALID_ACTIVITY]}
+                            {
+                                contextActivities: {
+                                    category: [VALID_ACTIVITY]
+                                }
+                            }
                         ],
                         expect: [200]
                     },
@@ -347,7 +359,11 @@
                         templates: [
                             {statement: '{{statements.context}}'},
                             {context: '{{contexts.other}}'},
-                            {contextActivities: [VALID_ACTIVITY]}
+                            {
+                                contextActivities: {
+                                    other: [VALID_ACTIVITY]
+                                }
+                            }
                         ],
                         expect: [200]
                     },
@@ -357,7 +373,11 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.parent}}'},
-                            {contextActivities: [VALID_ACTIVITY]}
+                            {
+                                contextActivities: {
+                                    parent: [VALID_ACTIVITY]
+                                }
+                            }
                         ],
                         expect: [200]
                     },
@@ -367,7 +387,11 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.grouping}}'},
-                            {contextActivities: [VALID_ACTIVITY]}
+                            {
+                                contextActivities: {
+                                    grouping: [VALID_ACTIVITY]
+                                }
+                            }
                         ],
                         expect: [200]
                     },
@@ -377,7 +401,11 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.category}}'},
-                            {contextActivities: [VALID_ACTIVITY]}
+                            {
+                                contextActivities: {
+                                    category: [VALID_ACTIVITY]
+                                }
+                            }
                         ],
                         expect: [200]
                     },
@@ -387,7 +415,11 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.other}}'},
-                            {contextActivities: [VALID_ACTIVITY]}
+                            {
+                                contextActivities: {
+                                    other: [VALID_ACTIVITY]
+                                }
+                            }
                         ],
                         expect: [200]
                     }

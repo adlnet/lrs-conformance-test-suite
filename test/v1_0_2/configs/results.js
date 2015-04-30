@@ -13,8 +13,9 @@
     var INVALID_NUMERIC = 12345;
     var INVALID_OBJECT = {key: 'invalid'};
     var INVALID_STRING = 'should fail';
-    var VALID_DECIMAL_DIGITS = .6767676;
     var VALID_DURATION = 'PT1H0M0.1S';
+    var VALID_DECIMAL_DIGITS = .6767676;
+    var VALID_MAX_DECIMAL_DIGITS = 100.6767676;
 
     // configures tests
     module.exports.config = function () {
@@ -164,7 +165,7 @@
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},
-                            {score: {max: VALID_DECIMAL_DIGITS}}
+                            {score: {max: VALID_MAX_DECIMAL_DIGITS}}
                         ],
                         expect: [200]
                     },
@@ -174,7 +175,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.result}}'},
                             {result: '{{results.default}}'},
-                            {score: {max: VALID_DECIMAL_DIGITS}}
+                            {score: {max: VALID_MAX_DECIMAL_DIGITS}}
                         ],
                         expect: [200]
                     }
