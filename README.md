@@ -3,7 +3,7 @@ LRS Conformance Tests
 
 ### Description
 
-This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec) and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite does not support authenticated LRS endpoints. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
+This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec) and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite only supports basic authentication. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
 
 ### Installation
 
@@ -26,15 +26,20 @@ Options:
 
   -h, --help             output usage information
   -V, --version          output the version number
-  -e, --endpoint <path>  The LRS connection string
+  -e, --endpoint <path>  the LRS connection string
+  -a, --basicAuth <true / false>  enables basic authentication
+  -u, --authUser <username>  sets user name (required when basic authentication enabled)
+  -p, --authPass <password>  sets password (required when basic authentication enabled)
 ```
 
 ### Running Test Suite
 
 Example:
 
-```bash
-$ lrs-test --endpoint http://localhost/lrs
+```
+bash $ lrs-test --endpoint http://localhost/lrs --basicAuth true --authUser username --authPass password
+
+bash $ lrs-test -e http://localhost/lrs -a true -u username -p password
 ```
 
 ### Creating/Extending Test Suite

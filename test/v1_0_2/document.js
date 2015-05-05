@@ -22,10 +22,13 @@
      */
     function sendRequest(type, url, params, body, expect) {
         var reqUrl = params ? (url + '?' + qs.stringify(params)) : url;
-        var pre = request[type](reqUrl)
-            .set('X-Experience-API-Version', '1.0.1');
+
+        var headers = helper.addAllHeaders({});
+        var pre = request[type](reqUrl);
         if (body) {
-            pre.send(body);
+            pre.send(body)
+                .set('X-Experience-API-Version', headers['X-Experience-API-Version'])
+                .set('Authorization', headers['Authorization']);
         }
         return pre.expect(expect);
     }

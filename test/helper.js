@@ -52,12 +52,34 @@ if (!process.env.EB_NODE_COMMAND) {
 
     module.exports = {
         /**
+         * Adds all headers.
+         * @returns {Object}
+         */
+        addAllHeaders: function (header) {
+            var newHeader = extend(true, {}, header);
+            newHeader = module.exports.addHeaderXapiVersion(newHeader);
+            newHeader = module.exports.addBasicAuthenicationHeader(newHeader);
+            return newHeader;
+        },
+        /**
          * Adds xAPI header version.
-         * @returns {String}
+         * @returns {Object}
          */
         addHeaderXapiVersion: function (header) {
             var newHeader = extend(true, {}, header);
             newHeader['X-Experience-API-Version'] = module.exports.getXapiVersion();
+            return newHeader;
+        },
+        /**
+         * Adds basic authentication.
+         * @returns {Object}
+         */
+        addBasicAuthenicationHeader: function (header) {
+            var newHeader = extend(true, {}, header);
+            if (process.env.BASIC_AUTH_ENABLED === 'true') {
+                var userPass = new Buffer(process.env.BASIC_AUTH_USER + ':' + process.env.BASIC_AUTH_PASSWORD).toString('base64');
+                newHeader['Authorization'] = 'Basic ' + userPass;
+            }
             return newHeader;
         },
         /**
