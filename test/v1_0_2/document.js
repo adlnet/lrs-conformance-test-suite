@@ -8,8 +8,7 @@
 (function (process, request, should, helper, qs, validUrl) {
     'use strict';
 
-    var LRS_ENDPOINT = process.env.LRS_ENDPOINT || 'http://asdf.elmnts-test.com:8001/lrs';
-    var request = request(LRS_ENDPOINT);
+    var request = request(helper.getEndpoint());
 
     /**
      * Sends an HTTP request using supertest
@@ -26,10 +25,10 @@
         var headers = helper.addAllHeaders({});
         var pre = request[type](reqUrl);
         if (body) {
-            pre.send(body)
-                .set('X-Experience-API-Version', headers['X-Experience-API-Version'])
-                .set('Authorization', headers['Authorization']);
+            pre.send(body);
         }
+        pre.set('X-Experience-API-Version', headers['X-Experience-API-Version'])
+            .set('Authorization', headers['Authorization']);
         return pre.expect(expect);
     }
 
@@ -58,14 +57,7 @@
             var parameters = {
                 objectType: 'Person'
             };
-
-            request
-                .get('/agents?' + qs.stringify(parameters))
-                .set('X-Experience-API-Version', '1.0.1')
-                .send({})
-                .expect(200, function (err, res) {
-                    done();
-                });
+            return sendRequest('get', '/agents', parameters, undefined, 200);
         });
 
         it('An LRS has an Agent Profile API with endpoint "base IRI"+"/agents/profile" (7.3.table1.row3.a, 7.3.table1.row3.c)', function () {
