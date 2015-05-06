@@ -21,12 +21,12 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200).end(function (err, res) {
                     if (err) {
                         done(err);
@@ -51,7 +51,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data).expect(200).end(function (err, res) {
                     if (err) {
                         done(err);
@@ -73,7 +73,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data).expect(400, done);
         });
     });
@@ -93,12 +93,12 @@
 
                 request(helper.getEndpoint())
                     .post(helper.getEndpointStatements())
-                    .headers(helper.addHeaderXapiVersion({}))
+                    .headers(helper.addAllHeaders({}))
                     .json(data)
                     .expect(200)
                     .end()
                     .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                    .headers(helper.addHeaderXapiVersion({}))
+                    .headers(helper.addAllHeaders({}))
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -127,12 +127,12 @@
 
                 request(helper.getEndpoint())
                     .post(helper.getEndpointStatements())
-                    .headers(helper.addHeaderXapiVersion({}))
+                    .headers(helper.addAllHeaders({}))
                     .json(data)
                     .expect(200)
                     .end()
                     .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                    .headers(helper.addHeaderXapiVersion({}))
+                    .headers(helper.addAllHeaders({}))
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -179,7 +179,7 @@
         it('should succeed when attachment uses "fileUrl" and request content-type is "application/json"', function (done) {
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data).expect(200, done);
         });
 
@@ -188,7 +188,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(JSON.stringify(data)).expect(400, done);
         });
 
@@ -197,7 +197,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(200, done);
         });
 
@@ -206,7 +206,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
     });
@@ -242,7 +242,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data).expect(400, done);
         });
     });
@@ -254,7 +254,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
     });
@@ -266,7 +266,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
     });
@@ -278,7 +278,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
     });
@@ -290,7 +290,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
     });
@@ -302,7 +302,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
     });
@@ -314,7 +314,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
     });
@@ -326,7 +326,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
 
@@ -336,7 +336,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
     });
@@ -348,7 +348,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
 
@@ -358,7 +358,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
         });
     });
@@ -412,12 +412,12 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .expect('x-experience-api-version', '1.0.1', done);
         });
@@ -434,12 +434,12 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200).end(function (err, res) {
                     if (err) {
                         done(err);
@@ -466,7 +466,7 @@
             var query = qs.stringify({StatementId: data.id});
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(400, done);
         });
@@ -475,7 +475,7 @@
             var query = qs.stringify({StatementId: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -483,7 +483,7 @@
             var query = qs.stringify({VoidedStatementId: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -496,7 +496,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -504,7 +504,7 @@
             var query = qs.stringify({Verb: 'http://adlnet.gov/expapi/verbs/attended'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -512,7 +512,7 @@
             var query = qs.stringify({Activity: 'http://www.example.com/meetings/occurances/34534'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -520,7 +520,7 @@
             var query = qs.stringify({Registration: 'ec531277-b57b-4c15-8d91-d292c5b2b8f7'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -528,7 +528,7 @@
             var query = qs.stringify({Related_Activities: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -536,7 +536,7 @@
             var query = qs.stringify({Related_Agents: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -544,7 +544,7 @@
             var query = qs.stringify({Since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -552,7 +552,7 @@
             var query = qs.stringify({Until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -560,7 +560,7 @@
             var query = qs.stringify({Limit: 10});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -568,7 +568,7 @@
             var query = qs.stringify({Format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -576,7 +576,7 @@
             var query = qs.stringify({Attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -584,7 +584,7 @@
             var query = qs.stringify({Ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
     });
@@ -610,7 +610,7 @@
             var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
             request(helper.getEndpoint())
                 .post(helper.getEndpointActivities() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(405, done);
         });
 
@@ -618,7 +618,7 @@
             var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
             request(helper.getEndpoint())
                 .put(helper.getEndpointActivities() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(405, done);
         });
 
@@ -644,7 +644,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .post(helper.getEndpointAgents() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(405, done);
         });
 
@@ -657,7 +657,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .put(helper.getEndpointAgents() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(405, done);
         });
     });
@@ -678,12 +678,12 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json([correct, incorrect])
                 .expect(400)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(404, done);
         });
     });
@@ -698,7 +698,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200, done);
         });
@@ -713,7 +713,7 @@
 
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(204, done);
         });
@@ -722,7 +722,7 @@
             var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -738,7 +738,7 @@
 
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(204, done);
         });
@@ -755,7 +755,7 @@
 
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(204, done);
         });
@@ -770,7 +770,7 @@
 
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(400, done);
         });
@@ -787,7 +787,7 @@
 
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(400, done);
         });
@@ -802,7 +802,7 @@
 
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(400, done);
         });
@@ -822,16 +822,16 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(modified)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -857,16 +857,16 @@
 
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(204)
                 .end()
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(modified)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -891,7 +891,7 @@
 
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(204, done);
         });
@@ -908,12 +908,12 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .end(function (err, res) {
                     if (err) {
@@ -936,12 +936,12 @@
 
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(204)
                 .end()
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .end(function (err, res) {
                     if (err) {
@@ -965,7 +965,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200, done);
         });
@@ -976,7 +976,7 @@
             var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -1001,7 +1001,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end(function (err, res) {
@@ -1025,12 +1025,12 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json([statement, statement])
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?limit=1')
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -1050,7 +1050,7 @@
             var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -1068,7 +1068,7 @@
         it('should return "more" which refers to next page of results', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?limit=1')
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -1096,7 +1096,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voided)
                 .expect(200, done);
         });
@@ -1112,7 +1112,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voiding)
                 .expect(200, done);
         });
@@ -1121,7 +1121,7 @@
             var query = qs.stringify({voidedStatementId: voidedId});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -1148,7 +1148,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voided)
                 .expect(200, done);
         });
@@ -1164,7 +1164,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voiding)
                 .expect(200, done);
         });
@@ -1173,7 +1173,7 @@
             var query = qs.stringify({statementId: voidedId});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(404, done);
 
         });
@@ -1183,7 +1183,7 @@
         it('should return using GET', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1199,12 +1199,12 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1222,7 +1222,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voided)
                 .expect(200, done);
         });
@@ -1238,7 +1238,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voiding)
                 .expect(200, done);
         });
@@ -1247,7 +1247,7 @@
             var query = qs.stringify({voidedStatementId: voidedId});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1266,7 +1266,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200, done);
         });
@@ -1281,7 +1281,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1294,7 +1294,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1307,7 +1307,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1320,7 +1320,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1333,7 +1333,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1346,7 +1346,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1359,7 +1359,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1372,7 +1372,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1385,7 +1385,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1398,7 +1398,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1411,7 +1411,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
 
@@ -1424,7 +1424,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1439,7 +1439,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1449,7 +1449,7 @@
             var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1459,7 +1459,7 @@
             var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1469,7 +1469,7 @@
             var query = qs.stringify({registration: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1493,7 +1493,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(statement)
                 .expect(200, done);
         });
@@ -1505,7 +1505,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1529,7 +1529,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(statement)
                 .expect(200, done);
         });
@@ -1541,7 +1541,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1551,7 +1551,7 @@
             var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1561,7 +1561,7 @@
             var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1571,7 +1571,7 @@
             var query = qs.stringify({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1581,7 +1581,7 @@
             var query = qs.stringify({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1591,7 +1591,7 @@
             var query = qs.stringify({attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1601,7 +1601,7 @@
             var query = qs.stringify({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1619,7 +1619,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voided)
                 .expect(200, done);
         });
@@ -1634,7 +1634,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voiding)
                 .expect(200, done);
         });
@@ -1649,7 +1649,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1662,7 +1662,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1675,7 +1675,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1688,7 +1688,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1701,7 +1701,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1714,7 +1714,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1727,7 +1727,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1740,7 +1740,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1753,7 +1753,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1766,7 +1766,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
@@ -1779,7 +1779,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
 
@@ -1792,7 +1792,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
@@ -1811,7 +1811,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200, done);
         });
@@ -1819,7 +1819,7 @@
         it('should retrieve statement using "statementId"', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?statementId=' + id)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200).end(function (err, res) {
                     if (err) {
                         done(err);
@@ -1845,7 +1845,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voided)
                 .expect(200, done);
         });
@@ -1861,7 +1861,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voiding)
                 .expect(200, done);
         });
@@ -1870,7 +1870,7 @@
             var query = qs.stringify({voidedStatementId: voidedId});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -1904,7 +1904,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(statement)
                 .expect(200, done);
         });
@@ -1926,7 +1926,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(substatement)
                 .expect(200, done);
         });
@@ -1934,7 +1934,7 @@
         it('should return StatementResult using GET without "statementId" or "voidedStatementId"', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -1956,7 +1956,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -1973,7 +1973,7 @@
             var query = qs.stringify({verb: statement.verb.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -1990,7 +1990,7 @@
             var query = qs.stringify({activity: statement.object.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2007,7 +2007,7 @@
             var query = qs.stringify({registration: statement.context.registration});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2027,7 +2027,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2047,7 +2047,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2064,7 +2064,7 @@
             var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2081,7 +2081,7 @@
             var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2098,7 +2098,7 @@
             var query = qs.stringify({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2115,7 +2115,7 @@
             var query = qs.stringify({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2132,7 +2132,7 @@
             var query = qs.stringify({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2149,7 +2149,7 @@
             var query = qs.stringify({attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2171,7 +2171,7 @@
         it('should return "X-Experience-API-Consistent-Through" when using GET for statements', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2203,7 +2203,7 @@
         it('should return "X-Experience-API-Consistent-Through" using GET', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2225,7 +2225,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2242,7 +2242,7 @@
             var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2259,7 +2259,7 @@
             var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2276,7 +2276,7 @@
             var query = qs.stringify({registration: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2293,7 +2293,7 @@
             var query = qs.stringify({related_activities: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2310,7 +2310,7 @@
             var query = qs.stringify({related_agents: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2327,7 +2327,7 @@
             var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2344,7 +2344,7 @@
             var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2361,7 +2361,7 @@
             var query = qs.stringify({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2378,7 +2378,7 @@
             var query = qs.stringify({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2395,7 +2395,7 @@
             var query = qs.stringify({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2412,7 +2412,7 @@
             var query = qs.stringify({attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2445,7 +2445,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(statement)
                 .expect(200, done);
         });
@@ -2453,7 +2453,7 @@
         it('should return valid "X-Experience-API-Consistent-Through" using GET', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2478,7 +2478,7 @@
             var query = qs.stringify(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2498,7 +2498,7 @@
             var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2518,7 +2518,7 @@
             var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2538,7 +2538,7 @@
             var query = qs.stringify({registration: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2561,7 +2561,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2584,7 +2584,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2604,7 +2604,7 @@
             var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2624,7 +2624,7 @@
             var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2644,7 +2644,7 @@
             var query = qs.stringify({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2664,7 +2664,7 @@
             var query = qs.stringify({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2684,7 +2684,7 @@
             var query = qs.stringify({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2704,7 +2704,7 @@
             var query = qs.stringify({attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2741,7 +2741,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(statement)
                 .expect(200, done);
         });
@@ -2763,7 +2763,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(substatement)
                 .expect(200, done);
         });
@@ -2771,7 +2771,7 @@
         it('should return StatementResult with statements as array using GET without "statementId" or "voidedStatementId"', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2793,7 +2793,7 @@
             var query = qs.stringify(data.agent);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2810,7 +2810,7 @@
             var query = qs.stringify({verb: statement.verb.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2827,7 +2827,7 @@
             var query = qs.stringify({activity: statement.object.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2844,7 +2844,7 @@
             var query = qs.stringify({registration: statement.context.registration});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2864,7 +2864,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2884,7 +2884,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2901,7 +2901,7 @@
             var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2918,7 +2918,7 @@
             var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2935,7 +2935,7 @@
             var query = qs.stringify({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2952,7 +2952,7 @@
             var query = qs.stringify({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2969,7 +2969,7 @@
             var query = qs.stringify({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -2989,12 +2989,12 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion(header))
+                .headers(helper.addAllHeaders(header))
                 .body(attachment)
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3031,7 +3031,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voided)
                 .expect(200, done);
         });
@@ -3049,7 +3049,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(voiding)
                 .expect(200, done);
         });
@@ -3066,7 +3066,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(context)
                 .expect(200, done);
         });
@@ -3084,7 +3084,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(substatementContext)
                 .expect(200, done);
         });
@@ -3101,7 +3101,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(statementRef)
                 .expect(200, done);
         });
@@ -3118,7 +3118,7 @@
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .json(subStatementStatementRef)
                 .expect(200, done);
         });
@@ -3130,7 +3130,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3152,7 +3152,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3174,7 +3174,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -3195,7 +3195,7 @@
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addHeaderXapiVersion({}))
+                .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {

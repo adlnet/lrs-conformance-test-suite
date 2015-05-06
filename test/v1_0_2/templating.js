@@ -37,7 +37,7 @@
 
                             var promise = request(helper.getEndpoint())
                                 .post(helper.getEndpointStatements())
-                                .headers(helper.addHeaderXapiVersion({}))
+                                .headers(helper.addAllHeaders({}))
                                 .json(data);
 
                             promise.expect.apply(promise, test.expect).end(done);
