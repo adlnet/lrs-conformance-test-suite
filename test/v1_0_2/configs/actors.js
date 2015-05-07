@@ -1123,7 +1123,7 @@
                         name: 'statement authority "group account" property exists',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_account}}'}
+                            {authority: '{{groups.authority_group}}'}
                         ],
                         expect: [200]
                     },

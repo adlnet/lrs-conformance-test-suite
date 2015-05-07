@@ -108,7 +108,7 @@
                         name: 'statement authority "objectType" accepts "Group"',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.default}}'}
+                            {authority: '{{groups.authority_group}}'}
                         ],
                         expect: [200]
                     },
@@ -184,7 +184,7 @@
                         name: 'statement authority does not require functional identifier',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.anonymous}}'}
+                            {authority: '{{groups.authority_group}}'}
                         ],
                         expect: [200]
                     },
