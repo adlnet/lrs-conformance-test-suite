@@ -12,10 +12,10 @@ if (!process.env.EB_NODE_COMMAND) {
 (function (module, fs, extend, uuid, lodash, qs, FormUrlencode) {
 
     /** Appears to use absolute path */
-    var CONFIG_FOLDER = './test/v1_0_2/configs';
+    var CONFIG_FOLDER = './test/' + process.env.DIRECTORY + '/configs';
 
     /** Appears to use relative path */
-    var CONFIG_FOLDER_RELATIVE = './v1_0_2/configs';
+    var CONFIG_FOLDER_RELATIVE = './' + process.env.DIRECTORY + '/configs';
 
     /** Test directory */
     var DIRECTORY = process.env.DIRECTORY;
@@ -24,10 +24,10 @@ if (!process.env.EB_NODE_COMMAND) {
     var LRS_ENDPOINT = process.env.LRS_ENDPOINT;
 
     /** Appears to use absolute path */
-    var TEMPLATE_FOLDER = './test/v1_0_2/templates';
+    var TEMPLATE_FOLDER = './test/' + process.env.DIRECTORY + '/templates';
 
     /** Appears to use relative path */
-    var TEMPLATE_FOLDER_RELATIVE = './v1_0_2/templates';
+    var TEMPLATE_FOLDER_RELATIVE = './' + process.env.DIRECTORY + '/templates';
 
     /** Endpoint About */
     var URL_ABOUT = '/about';

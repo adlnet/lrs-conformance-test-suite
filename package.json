@@ -27,6 +27,7 @@
     "exit": "^0.1.2",
     "extend": "^2.0.0",
     "form-urlencoded": "0.0.7",
+    "isemail": "^1.1.1",
     "joi": "^6.4.1",
     "lodash-node": "^3.2.0",
     "mocha": "^1.20.1",
@@ -41,7 +42,6 @@
     "string": "^3.1.0",
     "super-request": "0.0.8",
     "supertest": "^0.13.0",
-    "supertest-as-promised": "^1.0.0",
-    "validator": "^3.39.0"
+    "supertest-as-promised": "^1.0.0"
   }
 }
