@@ -17,6 +17,9 @@ if (!process.env.EB_NODE_COMMAND) {
     /** Appears to use relative path */
     var CONFIG_FOLDER_RELATIVE = './v1_0_2/configs';
 
+    /** Test directory */
+    var DIRECTORY = process.env.DIRECTORY;
+
     /** Defines endpoint of the LRS you are testing.  Currently assumes authentication is not required */
     var LRS_ENDPOINT = process.env.LRS_ENDPOINT;
 
@@ -315,7 +318,9 @@ if (!process.env.EB_NODE_COMMAND) {
          * @returns {string}
          */
         buildActivity: function () {
-            return 'http://www.example.com/activityId/hashset';
+            return {
+                activityId: 'http://www.example.com/activityId/hashset'
+            };
         },
         /**
          * Returns an example State params.
@@ -350,7 +355,6 @@ if (!process.env.EB_NODE_COMMAND) {
          */
         buildAgentProfile: function () {
             return {
-                activityId: 'http://www.example.com/activityId/hashset',
                 agent: {
                     "objectType": "Agent",
                     "account": {
@@ -396,7 +400,7 @@ if (!process.env.EB_NODE_COMMAND) {
          * @returns {object} statement
          */
         buildStatement: function () {
-            return clone(require('../data/statement_full.json'));
+            return module.exports.clone(require('./' + DIRECTORY + '/templates/statements/default.json'));
         },
         /**
          * Deep clone object.
