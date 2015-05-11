@@ -25,7 +25,8 @@ Usage: lrs-test [options]
 Options:
 
   -h, --help             output usage information
-  -V, --version          output the version number
+  -V, --version          output the lrs-conformance version number
+  -d, --directory        points to test version directory within '/test' (defaults to v1_0_2)
   -e, --endpoint <path>  the LRS connection string
   -a, --basicAuth <true / false>  enables basic authentication
   -u, --authUser <username>  sets user name (required when basic authentication enabled)
