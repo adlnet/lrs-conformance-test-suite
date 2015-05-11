@@ -5,7 +5,7 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
-(function (process, request, should, chai, qs, validator, helper) {
+(function (process, request, should, chai, qs, isEmail, helper) {
     'use strict';
 
     var expect = chai.expect;
@@ -1575,7 +1575,7 @@
                             person.mbox.forEach(function(item){
                                 expect(item).to.be.a('string');
                                 var email = item.substring(MAIL_TO.length);
-                                expect(validator.isEmail(email)).to.be.true;
+                                expect(isEmail(email)).to.be.true;
                             });
                         });
                 });
@@ -1700,4 +1700,4 @@
         var mockObject = helper.createTestObject(converted);
         return mockObject;
     }
-}(process, require('supertest-as-promised'), require('should'), require('chai'), require('qs'), require('validator'), require('./../helper')));
+}(process, require('supertest-as-promised'), require('should'), require('chai'), require('qs'), require('isemail'), require('./../helper')));
