@@ -5,7 +5,7 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
-(function (module, fs, extend, moment, request, requestPromise, qs, chai, validUrl, helper, multipartParser) {
+(function (module, fs, extend, moment, request, requestPromise, qs, chai, Joi, helper, multipartParser) {
     "use strict";
 
     var expect = chai.expect;
@@ -1038,7 +1038,7 @@
                     } else {
                         var result = parse(res.body, done);
                         expect(result).to.have.property('more');
-                        expect(validUrl.isUri(result.more)).to.be.truthy;
+                        Joi.assert(result.more, Joi.string().uri());
                         done();
                     }
                 });
@@ -1076,7 +1076,7 @@
                     } else {
                         var result = parse(res.body, done);
                         expect(result).to.have.property('more');
-                        expect(validUrl.isUri(result.more)).to.be.truthy;
+                        Joi.assert(result.more, Joi.string().uri());
                         done();
                     }
                 });
@@ -3729,5 +3729,5 @@
         return parsed;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('qs'), require('chai'), require('valid-url'), require('./../helper'), require('./../multipartParser')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('qs'), require('chai'), require('joi'), require('./../helper'), require('./../multipartParser')));
 
