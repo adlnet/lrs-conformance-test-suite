@@ -17,6 +17,7 @@
         .option('-u, --authUser <username>', 'sets user name (required when basic authentication enabled)')
         .option('-p, --authPass <password>', 'sets password (required when basic authentication enabled)')
         .option('-R, --reporter <name>', 'specify the reporter to use')
+        .option('-b --bail', 'bail after first test failure')
         .parse(process.argv);
 
     var deferred = Q.defer(),
@@ -31,8 +32,9 @@
         }).unknown(false),
         mocha = new Mocha({
             uii: 'bdd',
+            timeout: '15000',
             reporter: program.reporter,
-            timeout: '15000'
+            bail: program.bail
         });
 
     process.nextTick(function () {
