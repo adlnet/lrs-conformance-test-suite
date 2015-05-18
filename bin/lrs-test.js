@@ -16,6 +16,7 @@
         .option('-a, --basicAuth <true/false>', 'enables basic authentication')
         .option('-u, --authUser <username>', 'sets user name (required when basic authentication enabled)')
         .option('-p, --authPass <password>', 'sets password (required when basic authentication enabled)')
+        .option('-R, --reporter <name>', 'specify the reporter to use')
         .parse(process.argv);
 
     var deferred = Q.defer(),
@@ -25,11 +26,12 @@
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
             basicAuth: Joi.any(true, false),
             authUser: Joi.string().when('basicAuth', { is: 'true', then: Joi.required() }),
-            authPass: Joi.string().when('basicAuth', { is: 'true', then: Joi.required() })
+            authPass: Joi.string().when('basicAuth', { is: 'true', then: Joi.required() }),
+            reporter: Joi.string().regex(/^((dot)|(spec)|(nyan)|(tap)|(List)|(progress)|(min)|(doc))$/).default('nyan')
         }).unknown(false),
         mocha = new Mocha({
             uii: 'bdd',
-            reporter: 'nyan',
+            reporter: program.reporter,
             timeout: '15000'
         });
 
