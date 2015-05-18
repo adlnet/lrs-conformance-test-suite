@@ -24,13 +24,16 @@ Usage: lrs-test [options]
 
 Options:
 
-  -h, --help             output usage information
-  -V, --version          output the lrs-conformance version number
-  -d, --directory        points to test version directory within '/test' (defaults to v1_0_2)
-  -e, --endpoint <path>  the LRS connection string
-  -a, --basicAuth <true / false>  enables basic authentication
-  -u, --authUser <username>  sets user name (required when basic authentication enabled)
-  -p, --authPass <password>  sets password (required when basic authentication enabled)
+  -h, --help                    output usage information
+  -V, --version                 output the version number
+  -d, --directory [path]        test directory, default: v1_0_2
+  -e, --endpoint <path>         the connection string
+  -a, --basicAuth <true/false>  enables basic authentication
+  -u, --authUser <username>     sets user name (required when basic authentication enabled)
+  -p, --authPass <password>     sets password (required when basic authentication enabled)
+  -b, --bail                    bail after first test failure
+  -R, --reporter <name>         specify the reporter to use
+  -g, --grep <pattern>          only run tests matching <pattern>
 ```
 
 ### Running Test Suite
