@@ -18,7 +18,7 @@
         .option('-p, --authPass <password>', 'sets password (required when basic authentication enabled)')
         .option('-R, --reporter <name>', 'specify the reporter to use')
         .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
-        .option('-b --bail', 'bail after first test failure')
+        .option('-b, --bail', 'bail after first test failure')
         .parse(process.argv);
 
     var deferred = Q.defer(),
