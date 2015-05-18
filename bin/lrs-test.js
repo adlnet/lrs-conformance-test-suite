@@ -17,6 +17,7 @@
         .option('-u, --authUser <username>', 'sets user name (required when basic authentication enabled)')
         .option('-p, --authPass <password>', 'sets password (required when basic authentication enabled)')
         .option('-R, --reporter <name>', 'specify the reporter to use')
+        .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
         .option('-b --bail', 'bail after first test failure')
         .parse(process.argv);
 
@@ -28,14 +29,9 @@
             basicAuth: Joi.any(true, false),
             authUser: Joi.string().when('basicAuth', { is: 'true', then: Joi.required() }),
             authPass: Joi.string().when('basicAuth', { is: 'true', then: Joi.required() }),
-            reporter: Joi.string().regex(/^((dot)|(spec)|(nyan)|(tap)|(List)|(progress)|(min)|(doc))$/).default('nyan')
-        }).unknown(false),
-        mocha = new Mocha({
-            uii: 'bdd',
-            timeout: '15000',
-            reporter: program.reporter,
-            bail: program.bail
-        });
+            reporter: Joi.string().regex(/^((dot)|(spec)|(nyan)|(tap)|(List)|(progress)|(min)|(doc))$/).default('nyan'),
+            grep: Joi.string()
+        }).unknown(false);
 
     process.nextTick(function () {
         var options = {
@@ -43,13 +39,23 @@
                 endpoint: program.endpoint,
                 basicAuth: program.basicAuth,
                 authUser: program.authUser,
-                authPass: program.authPass
+                authPass: program.authPass,
+                reporter: program.reporter,
+                grep: program.grep
             },
             validOptions = Joi.validate(options, optionsValidator);
 
         if (validOptions.error) {
             deferred.reject(validOptions.error);
         } else {
+            var mocha = new Mocha({
+                uii: 'bdd',
+                reporter: program.reporter,
+                timeout: '15000',
+                grep: program.grep,
+                bail: program.bail
+            });
+
             process.env.LRS_ENDPOINT = options.endpoint;
             process.env.BASIC_AUTH_ENABLED = options.basicAuth;
             process.env.BASIC_AUTH_USER = options.authUser;
@@ -81,3 +87,4 @@
     });
 
 }(process, require, require('commander'), require('exit'), require('../package.json'), require('q'), require('joi'), require('fs'), require('path'), require('mocha')));
+
