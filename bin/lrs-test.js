@@ -16,6 +16,7 @@
         .option('-a, --basicAuth <true/false>', 'enables basic authentication')
         .option('-u, --authUser <username>', 'sets user name (required when basic authentication enabled)')
         .option('-p, --authPass <password>', 'sets password (required when basic authentication enabled)')
+        .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
         .parse(process.argv);
 
     var deferred = Q.defer(),
@@ -25,12 +26,14 @@
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
             basicAuth: Joi.any(true, false),
             authUser: Joi.string().when('basicAuth', { is: 'true', then: Joi.required() }),
-            authPass: Joi.string().when('basicAuth', { is: 'true', then: Joi.required() })
+            authPass: Joi.string().when('basicAuth', { is: 'true', then: Joi.required() }),
+            grep: Joi.string()
         }).unknown(false),
         mocha = new Mocha({
             uii: 'bdd',
             reporter: 'nyan',
-            timeout: '15000'
+            timeout: '15000',
+            grep: program.grep
         });
 
     process.nextTick(function () {
