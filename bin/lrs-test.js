@@ -16,6 +16,7 @@
         .option('-a, --basicAuth <true/false>', 'enables basic authentication')
         .option('-u, --authUser <username>', 'sets user name (required when basic authentication enabled)')
         .option('-p, --authPass <password>', 'sets password (required when basic authentication enabled)')
+        .option('-b --bail', 'bail after first test failure')
         .parse(process.argv);
 
     var deferred = Q.defer(),
@@ -30,7 +31,8 @@
         mocha = new Mocha({
             uii: 'bdd',
             reporter: 'nyan',
-            timeout: '15000'
+            timeout: '15000',
+            bail: program.bail
         });
 
     process.nextTick(function () {
