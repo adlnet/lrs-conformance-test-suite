@@ -50,6 +50,47 @@
                             {authority: '{{groups.anonymous_two_member}}'}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'should fail statement authority identified group (mbox)',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_two_member}}'},
+                            {"mbox": "mailto:bob@example.com"}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail statement authority identified group (mbox_sha1sum)',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_two_member}}'},
+                            {"mbox_sha1sum": "cd9b00a5611f94eaa7b1661edab976068e364975"}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail statement authority identified group (openid)',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_two_member}}'},
+                            {"openid": "http://openid.example.org/12345"}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail statement authority identified group (account)',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_two_member}}'},
+                            {
+                                "account": {
+                                    "homePage": "http://www.example.com",
+                                    "name": "xAPI account name"
+                                }
+                            }
+                        ],
+                        expect: [400]
                     }
                 ]
             },

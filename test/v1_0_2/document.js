@@ -31,8 +31,10 @@
         if (body) {
             pre.send(body);
         }
-        pre.set('X-Experience-API-Version', headers['X-Experience-API-Version'])
-            .set('Authorization', headers['Authorization']);
+        pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
+        if (process.env.BASIC_AUTH_ENABLED === 'true') {
+            pre.set('Authorization', headers['Authorization']);
+        }
         return pre.expect(expect);
     }
 
@@ -1461,14 +1463,14 @@
         });
 
         describe('An LRS responds to a HEAD request in the same way as a GET request, but without the message-body (7.10.a, 7.10.a.a) **This means run ALL GET tests with HEAD**', function () {
-            it('should succeed GET about with no body', function () {
+            it('should succeed HEAD about with no body', function () {
                 return sendRequest('head', helper.getEndpointAbout(), undefined, undefined, 200)
                     .then(function (res) {
                         expect(Object.keys(res.body)).to.have.length(0);
                     });
             });
 
-            it('should succeed GET activities with no body', function () {
+            it('should succeed HEAD activities with no body', function () {
                 var parameters = {
                     activityId: 'http://www.example.com/activityId/hashset'
                 };
@@ -1478,38 +1480,57 @@
                     });
             });
 
-            it('should succeed GET activities profile with no body', function () {
-                return sendRequest('head', helper.getEndpointActivitiesProfile(), helper.buildActivityProfile(), undefined, 200)
-                    .then(function (res) {
-                        expect(Object.keys(res.body)).to.have.length(0);
+            it('should succeed HEAD activities profile with no body', function () {
+                var parameters = helper.buildActivityProfile(),
+                    document = helper.buildDocument();
+                return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
+                    .then(function () {
+                        return sendRequest('head', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
+                            .then(function (res) {
+                                expect(Object.keys(res.body)).to.have.length(0);
+                            })
                     });
             });
 
-            it('should succeed GET activities state with no body', function () {
-                return sendRequest('head', helper.getEndpointActivitiesState(), helper.buildState(), undefined, 200)
-                    .then(function (res) {
-                        expect(Object.keys(res.body)).to.have.length(0);
+            it('should succeed HEAD activities state with no body', function () {
+                var parameters = helper.buildState(),
+                    document = helper.buildDocument();
+                return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
+                    .then(function () {
+                        return sendRequest('head', helper.getEndpointActivitiesState(), parameters, undefined, 200)
+                            .then(function (res) {
+                                expect(Object.keys(res.body)).to.have.length(0);
+                            })
                     });
             });
 
-            it('should succeed GET agents with no body', function () {
+            it('should succeed HEAD agents with no body', function () {
                 return sendRequest('head', helper.getEndpointAgents(), helper.buildAgent(), undefined, 200)
                     .then(function (res) {
                         expect(Object.keys(res.body)).to.have.length(0);
                     });
             });
 
-            it('should succeed GET agents profile with no body', function () {
-                return sendRequest('head', helper.getEndpointAgentsProfile(), helper.buildAgentProfile(), undefined, 200)
-                    .then(function (res) {
-                        expect(Object.keys(res.body)).to.have.length(0);
+            it('should succeed HEAD agents profile with no body', function () {
+                var parameters = helper.buildAgentProfile(),
+                    document = helper.buildDocument();
+                return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
+                    .then(function () {
+                        return sendRequest('head', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
+                            .then(function (res) {
+                                expect(Object.keys(res.body)).to.have.length(0);
+                            })
                     });
             });
 
-            it('should succeed GET statements with no body', function () {
-                return sendRequest('head', helper.getEndpointStatements(), undefined, undefined, 200)
-                    .then(function (res) {
-                        expect(Object.keys(res.body)).to.have.length(0);
+            it('should succeed HEAD statements with no body', function () {
+                var statement = helper.buildStatement();
+                return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
+                    .then(function () {
+                        return sendRequest('head', helper.getEndpointStatements(), undefined, undefined, 200)
+                            .then(function (res) {
+                                expect(Object.keys(res.body)).to.have.length(0);
+                            })
                     });
             });
         });
