@@ -5,7 +5,7 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
-(function (module, fs, extend, moment, request, requestPromise, qs, chai, Joi, helper, multipartParser) {
+(function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser) {
     "use strict";
 
     var expect = chai.expect;
@@ -463,7 +463,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            var query = qs.stringify({StatementId: data.id});
+            var query = helper.getUrlEncoding({StatementId: data.id});
             request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -472,7 +472,7 @@
         });
 
         it('should fail on GET statement when not using "statementId"', function (done) {
-            var query = qs.stringify({StatementId: helper.generateUUID()});
+            var query = helper.getUrlEncoding({StatementId: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -480,7 +480,7 @@
         });
 
         it('should fail on GET statement when not using "voidedStatementId"', function (done) {
-            var query = qs.stringify({VoidedStatementId: helper.generateUUID()});
+            var query = helper.getUrlEncoding({VoidedStatementId: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -493,7 +493,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -501,7 +501,7 @@
         });
 
         it('should fail on GET statement when not using "verb"', function (done) {
-            var query = qs.stringify({Verb: 'http://adlnet.gov/expapi/verbs/attended'});
+            var query = helper.getUrlEncoding({Verb: 'http://adlnet.gov/expapi/verbs/attended'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -509,7 +509,7 @@
         });
 
         it('should fail on GET statement when not using "activity"', function (done) {
-            var query = qs.stringify({Activity: 'http://www.example.com/meetings/occurances/34534'});
+            var query = helper.getUrlEncoding({Activity: 'http://www.example.com/meetings/occurances/34534'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -517,7 +517,7 @@
         });
 
         it('should fail on GET statement when not using "registration"', function (done) {
-            var query = qs.stringify({Registration: 'ec531277-b57b-4c15-8d91-d292c5b2b8f7'});
+            var query = helper.getUrlEncoding({Registration: 'ec531277-b57b-4c15-8d91-d292c5b2b8f7'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -525,7 +525,7 @@
         });
 
         it('should fail on GET statement when not using "related_activities"', function (done) {
-            var query = qs.stringify({Related_Activities: true});
+            var query = helper.getUrlEncoding({Related_Activities: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -533,7 +533,7 @@
         });
 
         it('should fail on GET statement when not using "related_agents"', function (done) {
-            var query = qs.stringify({Related_Agents: true});
+            var query = helper.getUrlEncoding({Related_Agents: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -541,7 +541,7 @@
         });
 
         it('should fail on GET statement when not using "since"', function (done) {
-            var query = qs.stringify({Since: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({Since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -549,7 +549,7 @@
         });
 
         it('should fail on GET statement when not using "until"', function (done) {
-            var query = qs.stringify({Until: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({Until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -557,7 +557,7 @@
         });
 
         it('should fail on GET statement when not using "limit"', function (done) {
-            var query = qs.stringify({Limit: 10});
+            var query = helper.getUrlEncoding({Limit: 10});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -565,7 +565,7 @@
         });
 
         it('should fail on GET statement when not using "format"', function (done) {
-            var query = qs.stringify({Format: 'ids'});
+            var query = helper.getUrlEncoding({Format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -573,7 +573,7 @@
         });
 
         it('should fail on GET statement when not using "attachments"', function (done) {
-            var query = qs.stringify({Attachments: true});
+            var query = helper.getUrlEncoding({Attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -581,7 +581,7 @@
         });
 
         it('should fail on GET statement when not using "ascending"', function (done) {
-            var query = qs.stringify({Ascending: true});
+            var query = helper.getUrlEncoding({Ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -591,7 +591,7 @@
 
     describe('An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**', function () {
         it('should fail with statement "DELETE"', function (done) {
-            var query = qs.stringify({statementId: helper.generateUUID()});
+            var query = helper.getUrlEncoding({statementId: helper.generateUUID()});
             requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointStatements() + '?' + query)
                 .set('X-Experience-API-Version', '1.0.1')
@@ -599,7 +599,7 @@
         });
 
         it('should fail with activities "DELETE"', function (done) {
-            var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
+            var query = helper.getUrlEncoding({activityId: 'http://www.example.com/meetings/occurances/34534'});
             requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointActivities() + '?' + query)
                 .set('X-Experience-API-Version', '1.0.1')
@@ -607,7 +607,7 @@
         });
 
         it('should fail with activities "POST"', function (done) {
-            var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
+            var query = helper.getUrlEncoding({activityId: 'http://www.example.com/meetings/occurances/34534'});
             request(helper.getEndpoint())
                 .post(helper.getEndpointActivities() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -615,7 +615,7 @@
         });
 
         it('should fail with activities "PUT"', function (done) {
-            var query = qs.stringify({activityId: 'http://www.example.com/meetings/occurances/34534'});
+            var query = helper.getUrlEncoding({activityId: 'http://www.example.com/meetings/occurances/34534'});
             request(helper.getEndpoint())
                 .put(helper.getEndpointActivities() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -628,7 +628,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointAgents() + '?' + query)
                 .set('X-Experience-API-Version', '1.0.1')
@@ -641,7 +641,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .post(helper.getEndpointAgents() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -654,7 +654,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .put(helper.getEndpointAgents() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -719,7 +719,7 @@
         });
 
         it('should allow "/statements" GET', function (done) {
-            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -973,7 +973,7 @@
 
     describe('The LRS will NOT reject a GET request which returns an empty "statements" property (**Implicit**, 4.2.table1.row1.b)', function () {
         it('should return empty array list', function (done) {
-            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1047,7 +1047,7 @@
 
     describe.skip('The "more" property an empty string if the entire results of the original GET request have been returned (4.2.table1.row2.b) (Do we need to be specific about the "type" of empty string?)', function () {
         it('should return empty "more" property when all statements returned', function (done) {
-            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1118,7 +1118,7 @@
         });
 
         it('should return a voided statement when using GET "voidedStatementId"', function (done) {
-            var query = qs.stringify({voidedStatementId: voidedId});
+            var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1170,7 +1170,7 @@
         });
 
         it('should not return a voided statement if using GET "statementId"', function (done) {
-            var query = qs.stringify({statementId: voidedId});
+            var query = helper.getUrlEncoding({statementId: voidedId});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1244,7 +1244,7 @@
         });
 
         it('should process using GET with "voidedStatementId"', function (done) {
-            var query = qs.stringify({voidedStatementId: voidedId});
+            var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1278,7 +1278,7 @@
             var data = createFromTemplate(templates);
             data.statementId = id;
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1291,7 +1291,7 @@
                 verb: 'http://adlnet.gov/expapi/non/existent'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1304,7 +1304,7 @@
                 activity: 'http://www.example.com/meetings/occurances/12345'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1317,7 +1317,7 @@
                 registration: helper.generateUUID()
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1330,7 +1330,7 @@
                 related_activities: true
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1343,7 +1343,7 @@
                 related_agents: true
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1356,7 +1356,7 @@
                 since: '2012-06-01T19:09:13.245Z'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1369,7 +1369,7 @@
                 until: '2012-06-01T19:09:13.245Z'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1382,7 +1382,7 @@
                 limit: 1
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1395,7 +1395,7 @@
                 ascending: true
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1408,7 +1408,7 @@
                 format: 'ids'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1421,7 +1421,7 @@
                 attachments: true
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1436,7 +1436,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1446,7 +1446,7 @@
 
     describe('An LRS\'s Statement API can process a GET request with "verb" as a parameter  **Implicit**', function () {
         it('should process using GET with "verb"', function (done) {
-            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1456,7 +1456,7 @@
 
     describe('An LRS\'s Statement API can process a GET request with "activity" as a parameter  **Implicit**', function () {
         it('should process using GET with "activity"', function (done) {
-            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1466,7 +1466,7 @@
 
     describe('An LRS\'s Statement API can process a GET request with "registration" as a parameter  **Implicit**', function () {
         it('should process using GET with "registration"', function (done) {
-            var query = qs.stringify({registration: helper.generateUUID()});
+            var query = helper.getUrlEncoding({registration: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1499,7 +1499,7 @@
         });
 
         it('should process using GET with "related_activities"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 activity: statement.context.contextActivities.category.id,
                 related_activities: true
             });
@@ -1535,7 +1535,7 @@
         });
 
         it('should process using GET with "related_agents"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 agent: statement.context.instructor,
                 related_agents: true
             });
@@ -1548,7 +1548,7 @@
 
     describe('An LRS\'s Statement API can process a GET request with "since" as a parameter  **Implicit**', function () {
         it('should process using GET with "since"', function (done) {
-            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1558,7 +1558,7 @@
 
     describe('An LRS\'s Statement API can process a GET request with "until" as a parameter  **Implicit**', function () {
         it('should process using GET with "until"', function (done) {
-            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1568,7 +1568,7 @@
 
     describe('An LRS\'s Statement API can process a GET request with "limit" as a parameter  **Implicit**', function () {
         it('should process using GET with "limit"', function (done) {
-            var query = qs.stringify({limit: 1});
+            var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1578,7 +1578,7 @@
 
     describe('An LRS\'s Statement API can process a GET request with "format" as a parameter  **Implicit**', function () {
         it('should process using GET with "format"', function (done) {
-            var query = qs.stringify({format: 'ids'});
+            var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1588,7 +1588,7 @@
 
     describe('An LRS\'s Statement API can process a GET request with "attachments" as a parameter  **Implicit**', function () {
         it('should process using GET with "attachments"', function (done) {
-            var query = qs.stringify({attachments: true});
+            var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1598,7 +1598,7 @@
 
     describe('An LRS\'s Statement API can process a GET request with "ascending" as a parameter  **Implicit**', function () {
         it('should process using GET with "ascending"', function (done) {
-            var query = qs.stringify({ascending: true});
+            var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1646,7 +1646,7 @@
             var data = createFromTemplate(templates);
             data.statementId = voidedId;
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1659,7 +1659,7 @@
                 verb: 'http://adlnet.gov/expapi/non/existent'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1672,7 +1672,7 @@
                 activity: 'http://www.example.com/meetings/occurances/12345'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1685,7 +1685,7 @@
                 registration: helper.generateUUID()
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1698,7 +1698,7 @@
                 related_activities: true
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1711,7 +1711,7 @@
                 related_agents: true
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1724,7 +1724,7 @@
                 since: '2012-06-01T19:09:13.245Z'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1737,7 +1737,7 @@
                 until: '2012-06-01T19:09:13.245Z'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1750,7 +1750,7 @@
                 limit: 1
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1763,7 +1763,7 @@
                 ascending: true
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1776,7 +1776,7 @@
                 format: 'ids'
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1789,7 +1789,7 @@
                 attachments: true
             };
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1867,7 +1867,7 @@
         });
 
         it('should return a voided statement when using GET "voidedStatementId"', function (done) {
-            var query = qs.stringify({voidedStatementId: voidedId});
+            var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1953,7 +1953,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1970,7 +1970,7 @@
         });
 
         it('should return StatementResult using GET with "verb"', function (done) {
-            var query = qs.stringify({verb: statement.verb.id});
+            var query = helper.getUrlEncoding({verb: statement.verb.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1987,7 +1987,7 @@
         });
 
         it('should return StatementResult using GET with "activity"', function (done) {
-            var query = qs.stringify({activity: statement.object.id});
+            var query = helper.getUrlEncoding({activity: statement.object.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2004,7 +2004,7 @@
         });
 
         it('should return StatementResult using GET with "registration"', function (done) {
-            var query = qs.stringify({registration: statement.context.registration});
+            var query = helper.getUrlEncoding({registration: statement.context.registration});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2021,7 +2021,7 @@
         });
 
         it('should return StatementResult using GET with "related_activities"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 activity: statement.context.contextActivities.category.id,
                 related_activities: true
             });
@@ -2041,7 +2041,7 @@
         });
 
         it('should return StatementResult using GET with "related_agents"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 agent: statement.context.instructor,
                 related_agents: true
             });
@@ -2061,7 +2061,7 @@
         });
 
         it('should return StatementResult using GET with "since"', function (done) {
-            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2078,7 +2078,7 @@
         });
 
         it('should return StatementResult using GET with "until"', function (done) {
-            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2095,7 +2095,7 @@
         });
 
         it('should return StatementResult using GET with "limit"', function (done) {
-            var query = qs.stringify({limit: 1});
+            var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2112,7 +2112,7 @@
         });
 
         it('should return StatementResult using GET with "ascending"', function (done) {
-            var query = qs.stringify({ascending: true});
+            var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2129,7 +2129,7 @@
         });
 
         it('should return StatementResult using GET with "format"', function (done) {
-            var query = qs.stringify({format: 'ids'});
+            var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2146,7 +2146,7 @@
         });
 
         it('should return StatementResult using GET with "attachments"', function (done) {
-            var query = qs.stringify({attachments: true});
+            var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2222,7 +2222,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2239,7 +2239,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "verb"', function (done) {
-            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2256,7 +2256,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "activity"', function (done) {
-            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2273,7 +2273,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "registration"', function (done) {
-            var query = qs.stringify({registration: helper.generateUUID()});
+            var query = helper.getUrlEncoding({registration: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2290,7 +2290,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_activities"', function (done) {
-            var query = qs.stringify({related_activities: true});
+            var query = helper.getUrlEncoding({related_activities: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2307,7 +2307,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_agents"', function (done) {
-            var query = qs.stringify({related_agents: true});
+            var query = helper.getUrlEncoding({related_agents: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2324,7 +2324,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
-            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2341,7 +2341,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "until"', function (done) {
-            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2358,7 +2358,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
-            var query = qs.stringify({limit: 1});
+            var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2375,7 +2375,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "ascending"', function (done) {
-            var query = qs.stringify({ascending: true});
+            var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2392,7 +2392,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "format"', function (done) {
-            var query = qs.stringify({format: 'ids'});
+            var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2409,7 +2409,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "attachments"', function (done) {
-            var query = qs.stringify({attachments: true});
+            var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2475,7 +2475,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2495,7 +2495,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "verb"', function (done) {
-            var query = qs.stringify({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2515,7 +2515,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "activity"', function (done) {
-            var query = qs.stringify({activity: 'http://www.example.com/meetings/occurances/12345'});
+            var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2535,7 +2535,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "registration"', function (done) {
-            var query = qs.stringify({registration: helper.generateUUID()});
+            var query = helper.getUrlEncoding({registration: helper.generateUUID()});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2555,7 +2555,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_activities"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 activity: statement.context.contextActivities.category.id,
                 related_activities: true
             });
@@ -2578,7 +2578,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_agents"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 agent: statement.context.instructor,
                 related_agents: true
             });
@@ -2601,7 +2601,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
-            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2621,7 +2621,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "until"', function (done) {
-            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2641,7 +2641,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
-            var query = qs.stringify({limit: 1});
+            var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2661,7 +2661,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "ascending"', function (done) {
-            var query = qs.stringify({ascending: true});
+            var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2681,7 +2681,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "format"', function (done) {
-            var query = qs.stringify({format: 'ids'});
+            var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2701,7 +2701,7 @@
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "attachments"', function (done) {
-            var query = qs.stringify({attachments: true});
+            var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2790,7 +2790,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = qs.stringify(data.agent);
+            var query = helper.getUrlEncoding(data.agent);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2807,7 +2807,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "verb"', function (done) {
-            var query = qs.stringify({verb: statement.verb.id});
+            var query = helper.getUrlEncoding({verb: statement.verb.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2824,7 +2824,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "activity"', function (done) {
-            var query = qs.stringify({activity: statement.object.id});
+            var query = helper.getUrlEncoding({activity: statement.object.id});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2841,7 +2841,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "registration"', function (done) {
-            var query = qs.stringify({registration: statement.context.registration});
+            var query = helper.getUrlEncoding({registration: statement.context.registration});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2858,7 +2858,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "related_activities"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 activity: statement.context.contextActivities.category.id,
                 related_activities: true
             });
@@ -2878,7 +2878,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "related_agents"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 agent: statement.context.instructor,
                 related_agents: true
             });
@@ -2898,7 +2898,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "since"', function (done) {
-            var query = qs.stringify({since: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2915,7 +2915,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "until"', function (done) {
-            var query = qs.stringify({until: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2932,7 +2932,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "limit"', function (done) {
-            var query = qs.stringify({limit: 1});
+            var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2949,7 +2949,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "ascending"', function (done) {
-            var query = qs.stringify({ascending: true});
+            var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2966,7 +2966,7 @@
         });
 
         it('should return StatementResult with statements as array using GET with "format"', function (done) {
-            var query = qs.stringify({format: 'ids'});
+            var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2985,7 +2985,7 @@
         it('should return StatementResult with statements as array using GET with "attachments"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
-            var query = qs.stringify({attachments: true});
+            var query = helper.getUrlEncoding({attachments: true});
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3124,7 +3124,7 @@
         });
 
         it('should only return Object StatementRef when using "since"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 verb: verb,
                 since: '2011-01-01T19:09:13.245Z'
             });
@@ -3146,7 +3146,7 @@
         });
 
         it('should only return Object StatementRef when using "until"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 verb: verb,
                 until: '2014-01-01T19:09:13.245Z'
             });
@@ -3168,7 +3168,7 @@
         });
 
         it('should only return Object StatementRef when using "limit"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 verb: verb,
                 limit: 1
             });
@@ -3190,7 +3190,7 @@
         });
 
         it('should return StatementRef when not using "since", "until", "limit"', function (done) {
-            var query = qs.stringify({
+            var query = helper.getUrlEncoding({
                 verb: verb
             });
             request(helper.getEndpoint())
@@ -3729,5 +3729,5 @@
         return parsed;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('qs'), require('chai'), require('joi'), require('./../helper'), require('./../multipartParser')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('joi'), require('./../helper'), require('./../multipartParser')));
 

@@ -86,7 +86,7 @@
                 name: 'A Voiding Statement is defined as a Statement whose "verb" property\'s "id" property\'s IRI ending with "voided" (4.3)',
                 config: [
                     {
-                        name: 'statement verb voided IRI ends with "voided"',
+                        name: 'statement verb voided IRI ends with "voided" (WARNING: this applies "Upon receiving a Statement that voids another, the LRS SHOULD NOT* reject the request on the grounds of the Object of that voiding Statement not being present")',
                         templates: [
                             {statement: '{{statements.object_statementref}}'},
                             {verb: '{{verbs.voided}}'}

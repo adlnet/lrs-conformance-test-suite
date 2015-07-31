@@ -5,7 +5,7 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
-(function (process, request, should, chai, qs, isEmail, helper) {
+(function (process, request, should, chai, isEmail, helper) {
     'use strict';
 
     var expect = chai.expect;
@@ -24,7 +24,7 @@
      * @returns {*} promise
      */
     function sendRequest(type, url, params, body, expect) {
-        var reqUrl = params ? (url + '?' + qs.stringify(params)) : url;
+        var reqUrl = params ? (url + '?' + helper.getUrlEncoding(params)) : url;
 
         var headers = helper.addAllHeaders({});
         var pre = request[type](reqUrl);
@@ -341,7 +341,7 @@
             return sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
         });
 
-        describe('An LRS\'s State API rejects a PUT request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request(format, 7.4.table1.row1.a)', function () {
+        describe.skip('An LRS\'s State API rejects a PUT request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request(format, 7.4.table1.row1.a)', function () {
             var document = helper.buildDocument(),
                 invalidTypes = [{ key: 'value'}];
             invalidTypes.forEach(function (type) {
@@ -429,7 +429,7 @@
             return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
         });
 
-        describe('An LRS\'s State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+        describe.skip('An LRS\'s State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
             var document = helper.buildDocument(),
                 invalidTypes = [{ key: 'value'}];
             invalidTypes.forEach(function (type) {
@@ -532,7 +532,7 @@
                 });
         });
 
-        describe('An LRS\'s State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+        describe.skip('An LRS\'s State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
             var invalidTypes = [{ key: 'value'}];
             invalidTypes.forEach(function (type) {
                 it('Should reject GET with "stateId" with type ' + type, function () {
@@ -546,7 +546,7 @@
         it('An LRS\'s State API can process a GET request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function () {
             var parameters = helper.buildState(),
                 document = helper.buildDocument();
-            parameters.since = new Date(Date.now() - 60 * 1000); // Date 1 minute ago
+            parameters.since = new Date(Date.now() - 60 * 1000).toISOString(); // Date 1 minute ago
             return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
                 .then(function () {
                     return sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
@@ -599,7 +599,7 @@
                         .then(function () {
                             var parameters = helper.buildState();
                             delete parameters.stateId;
-                            parameters.since = new Date(Date.now() - 1000);
+                            parameters.since = new Date(Date.now() - 1000).toISOString();
                             return sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
                                 .then(function (res) {
                                     var body = res.body;
@@ -683,7 +683,7 @@
                 });
         });
 
-        describe('An LRS\'s State API rejects a DELETE request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+        describe.skip('An LRS\'s State API rejects a DELETE request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
             var invalidTypes = [{ key: 'value'}];
             invalidTypes.forEach(function (type) {
                 it('Should reject DELETE with "stateId" with type ' + type, function () {
@@ -697,7 +697,7 @@
         it('An LRS\'s State API can process a DELETE request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)  **Is this valid??**', function () {
             var parameters = helper.buildState(),
                 document = helper.buildDocument();
-            parameters.since = new Date();
+            parameters.since = new Date().toISOString();
             return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
                 .then(function () {
                     return sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204);
@@ -821,7 +821,7 @@
             return sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 400);
         });
 
-        describe('An LRS\'s Activity Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
+        describe.skip('An LRS\'s Activity Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
             var document = helper.buildDocument(),
                 invalidTypes = [{ key: 'value'}];
             invalidTypes.forEach(function (type) {
@@ -871,7 +871,7 @@
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 400);
         });
 
-        describe('An LRS\'s Activity Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
+        describe.skip('An LRS\'s Activity Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
             var document = helper.buildDocument(),
                 invalidTypes = [{ key: 'value'}];
             invalidTypes.forEach(function (type) {
@@ -917,7 +917,7 @@
             return sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, undefined, 400);
         });
 
-        describe('An LRS\'s Activity Profile API rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
+        describe.skip('An LRS\'s Activity Profile API rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
             var invalidTypes = [{ key: 'value'}];
             invalidTypes.forEach(function (type) {
                 it('Should reject DELETE with "profileId" with type ' + type, function () {
@@ -967,7 +967,7 @@
         it('An LRS\'s Activity Profile API can process a GET request with "since" as a parameter (multiplicity, 7.5.table3.row2.c, 7.5.table3.row2.b)', function () {
             var parameters = helper.buildActivityProfile(),
                 document = helper.buildDocument();
-            parameters.since = new Date(Date.now() - 1000);
+            parameters.since = new Date(Date.now() - 1000).toISOString();
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
                     return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200);
@@ -1019,7 +1019,7 @@
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
                     delete parameters.profileId;
-                    parameters.since = new Date(Date.now() - 1000); // Date 1 second ago
+                    parameters.since = new Date(Date.now() - 1000).toISOString(); // Date 1 second ago
                     return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
                         .then(function (res) {
                             var body = res.body;
@@ -1087,7 +1087,7 @@
             return sendRequest('put', helper.getEndpointAgentsProfile(), parameters, document, 400);
         });
 
-        describe('An LRS\'s Agent Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
+        describe.skip('An LRS\'s Agent Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
             var invalidTypes = [{ key: 'value'}];
             invalidTypes.forEach(function (type) {
                 it('Should reject PUT with "profileId" with type ' + type, function () {
@@ -1136,7 +1136,7 @@
             return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 400);
         });
 
-        describe('An LRS\'s Agent Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
+        describe.skip('An LRS\'s Agent Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
             var document = helper.buildDocument(),
                 invalidTypes = [{ key: 'value'}];
             invalidTypes.forEach(function (type) {
@@ -1235,10 +1235,10 @@
         it('An LRS\'s Agent Profile API can process a GET request with "since" as a parameter (Multiplicity, 7.6.table4.row2.a, 7.5.table4.row2.c)', function () {
             var parameters = helper.buildAgentProfile(),
                 document = helper.buildDocument();
-            parameters.since = new Date();
+            parameters.since = new Date().toISOString();
             return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
                 .then(function () {
-                    parameters.since = new Date(Date.now() - 1000);
+                    parameters.since = new Date(Date.now() - 1000).toISOString();
                     return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200);
                 });
         });
@@ -1287,7 +1287,7 @@
                 document = helper.buildDocument();
             return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
                 .then(function () {
-                    parameters.since = new Date(Date.now() - 1000);
+                    parameters.since = new Date(Date.now() - 1000).toISOString();
                     delete parameters.profileId;
                     return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
                         .then(function (res) {
@@ -1721,4 +1721,4 @@
         var mockObject = helper.createTestObject(converted);
         return mockObject;
     }
-}(process, require('supertest-as-promised'), require('should'), require('chai'), require('qs'), require('isemail'), require('./../helper')));
+}(process, require('supertest-as-promised'), require('should'), require('chai'), require('isemail'), require('./../helper')));

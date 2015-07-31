@@ -9,7 +9,7 @@ var path = require('path');
 if (!process.env.EB_NODE_COMMAND) {
     (require('node-env-file'))(path.join(__dirname, './.env'));
 }
-(function (module, fs, extend, uuid, lodash, qs, FormUrlencode) {
+(function (module, fs, extend, uuid, lodash, FormUrlencode) {
 
     /** Appears to use absolute path */
     var CONFIG_FOLDER = './test/' + process.env.DIRECTORY + '/configs';
@@ -286,6 +286,21 @@ if (!process.env.EB_NODE_COMMAND) {
             return list;
         },
         /**
+         * Returns query string (does not work for Date object which needs toISOString()).
+         * @returns {String}
+         */
+        getUrlEncoding: function (object) {
+            var encoding = '';
+            Object.keys(object).forEach(function (key, index) {
+                if (index !== 0) {
+                    encoding += '&';
+                }
+                var value = object[key];
+                encoding += key + '=' + (typeof value === 'object' ? encodeURIComponent(JSON.stringify(value)) : value);
+            });
+            return encoding;
+        },
+        /**
          * Returns xAPI version.
          * @returns {String}
          */
@@ -440,4 +455,4 @@ if (!process.env.EB_NODE_COMMAND) {
             }
         });
     }
-}(module, require('fs'), require('extend'), require('node-uuid'), require('lodash-node'), require('qs'), require('form-urlencoded')));
+}(module, require('fs'), require('extend'), require('node-uuid'), require('lodash-node'), require('form-urlencoded')));
