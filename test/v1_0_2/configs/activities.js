@@ -9,7 +9,7 @@
     "use strict";
 
     // defines overwriting data
-    var INVALID_IRI = 'abc://should.fail.com';
+    var INVALID_IRI = 'ab=c://should.fail.com';
     var INVALID_NUMERIC = 12345;
     var INVALID_OBJECT = {test: 'value'};
     var INVALID_STRING = 'should error';

@@ -16,7 +16,7 @@
     var INVALID_OBJECTTYPE_NAME_OBJECT = {name: INVALID_OBJECT};
     var INVALID_MAIL_TO_EMAIL = 'mailto:should.fail.com';
     var INVALID_MAIL_TO_IRI = 'http://should.fail.com';
-    var INVALID_URI = 'abc://should.fail.com';
+    var INVALID_URI = 'ab=c://should.fail.com';
     var INVALID_ACCOUNT_HOMEPAGE_IRL = {account: {homePage: INVALID_URI}};
     var INVALID_ACCOUNT_NAME_IRL = {account: {name: INVALID_OBJECT}};
 
