@@ -46,8 +46,18 @@
         });
 
         it('An LRS has an Activities API with endpoint "base IRI" + /activities" (7.5) **Implicit** (in that it is not named this by the spec)', function () {
-            var parameters = helper.buildActivity();
-            return sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 200);
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];          
+            var data = createFromTemplate(templates);
+            var statement = data.statement;
+            var parameters = {
+                activityId: data.statement.object.id
+            }
+            return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
+                .then(function () {
+                    return sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 200);
+                });
         });
 
         it('An LRS has an Activity Profile API with endpoint "base IRI"+"/activities/profile" (7.3.table1.row2.a, 7.3.table1.row2.c)', function () {
@@ -57,8 +67,18 @@
         });
 
         it('An LRS has an Agents API with endpoint "base IRI" + /agents" (7.6) **Implicit** (in that it is not named this by the spec)', function () {
-            var parameters = helper.buildAgentProfile();
-            return sendRequest('get', helper.getEndpointAgents(), parameters, undefined, 200);
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];          
+            var data = createFromTemplate(templates);
+            var statement = data.statement;
+            var parameters = {
+                agent: data.statement.actor
+            }
+            return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
+                .then(function () {
+                    return sendRequest('get', helper.getEndpointAgents(), parameters, undefined, 200);
+                });            
         });
 
         it('An LRS has an Agent Profile API with endpoint "base IRI"+"/agents/profile" (7.3.table1.row3.a, 7.3.table1.row3.c)', function () {
@@ -90,7 +110,7 @@
         });
 
         describe('An LRS cannot reject a POST request to the State API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function () {
-            var documents = [helper.buildDocument(), '1', 'true', undefined];
+            var documents = [helper.buildDocument(), '1', 'true'];
             documents.forEach(function (document) {
                 it('Should accept POST to State with document ' + document, function () {
                     var parameters = helper.buildState();
@@ -100,7 +120,7 @@
         });
 
         describe('An LRS cannot reject a POST request to the Activity Profile API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function () {
-            var documents = [helper.buildDocument(), '1', 'true', undefined];
+            var documents = [helper.buildDocument(), '1', 'true'];
             documents.forEach(function (document) {
                 it('Should accept POST to Activity profile with document ' + document, function () {
                     var parameters = helper.buildActivityProfile();
@@ -110,7 +130,7 @@
         });
 
         describe('An LRS cannot reject a POST request to the Agent Profile API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function () {
-            var documents = [{}, '1', 'true', undefined];
+            var documents = [{}, '1', 'true'];
             documents.forEach(function (document) {
                 it('Should accept POST to Agent profile with document ' + document, function () {
                     var parameters = helper.buildAgentProfile();
@@ -546,9 +566,9 @@
         it('An LRS\'s State API can process a GET request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function () {
             var parameters = helper.buildState(),
                 document = helper.buildDocument();
-            parameters.since = new Date(Date.now() - 60 * 1000).toISOString(); // Date 1 minute ago
             return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
                 .then(function () {
+                    parameters.since = new Date(Date.now() - 60 * 1000).toISOString(); // Date 1 minute ago
                     return sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
                         .then(function (res) {
                             var body = res.body;
@@ -694,16 +714,6 @@
             });
         });
 
-        it('An LRS\'s State API can process a DELETE request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)  **Is this valid??**', function () {
-            var parameters = helper.buildState(),
-                document = helper.buildDocument();
-            parameters.since = new Date().toISOString();
-            return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
-                .then(function () {
-                    return sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204);
-                });
-        });
-
         describe('An LRS\'s State API rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.4.table2.row4.a)  **And this would follow...**', function () {
             var invalidTypes = [1, true];
             invalidTypes.forEach(function (type) {
@@ -747,8 +757,18 @@
         });
 
         it('An LRS\'s Activities API accepts GET requests (7.5)', function () {
-            var parameters = helper.buildActivity();
-            return sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 200);
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];          
+            var data = createFromTemplate(templates);
+            var statement = data.statement;
+            var parameters = {
+                activityId: data.statement.object.id
+            }
+            return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
+                .then(function () {
+                    return sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 200);
+                });
         });
 
         it('An LRS\'s Activities API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, 7.5.table1.row1.b)', function () {
@@ -967,9 +987,9 @@
         it('An LRS\'s Activity Profile API can process a GET request with "since" as a parameter (multiplicity, 7.5.table3.row2.c, 7.5.table3.row2.b)', function () {
             var parameters = helper.buildActivityProfile(),
                 document = helper.buildDocument();
-            parameters.since = new Date(Date.now() - 1000).toISOString();
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
+                    parameters.since = new Date(Date.now() - 1000).toISOString();                    
                     return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200);
                 });
         });
@@ -1235,7 +1255,6 @@
         it('An LRS\'s Agent Profile API can process a GET request with "since" as a parameter (Multiplicity, 7.6.table4.row2.a, 7.5.table4.row2.c)', function () {
             var parameters = helper.buildAgentProfile(),
                 document = helper.buildDocument();
-            parameters.since = new Date().toISOString();
             return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
                 .then(function () {
                     parameters.since = new Date(Date.now() - 1000).toISOString();
@@ -1471,12 +1490,20 @@
             });
 
             it('should succeed HEAD activities with no body', function () {
+                var templates = [
+                    {statement: '{{statements.default}}'}
+                ];          
+                var data = createFromTemplate(templates);
+                var statement = data.statement;
                 var parameters = {
-                    activityId: 'http://www.example.com/activityId/hashset'
-                };
-                return sendRequest('head', helper.getEndpointActivities(), parameters, undefined, 200)
-                    .then(function (res) {
-                        expect(Object.keys(res.body)).to.have.length(0);
+                    activityId: data.statement.object.id
+                }
+                return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
+                    .then(function () {
+                        return sendRequest('head', helper.getEndpointActivities(), parameters, undefined, 200)
+                            .then(function (res) {
+                                expect(Object.keys(res.body)).to.have.length(0);
+                            });
                     });
             });
 
@@ -1625,8 +1652,9 @@
 
         it('A Person Object\'s "mbox_sha1sum" property is an Array of Strings (Multiplicity, 7.6.table1.row4.a)', function () {
             var templates = [
-                {statement: '{{statements.default}}'}
-            ];
+                {statement: '{{statements.no_actor}}'},
+                {actor: '{{agents.mbox_sha1sum}}'}
+            ];          
             var data = createFromTemplate(templates);
             var statement = data.statement;
 
@@ -1645,8 +1673,9 @@
 
         it('A Person Object\'s "openid" property is an Array of Strings (Multiplicity, 7.6.table1.row5.a)', function () {
             var templates = [
-                {statement: '{{statements.default}}'}
-            ];
+                {statement: '{{statements.no_actor}}'},
+                {actor: '{{agents.openid}}'}
+            ];    
             var data = createFromTemplate(templates);
             var statement = data.statement;
 
@@ -1665,8 +1694,9 @@
 
         it('A Person Object\'s "account" property is an Array of Account Objects (Multiplicity, 7.6.table1.row6.a)', function () {
             var templates = [
-                {statement: '{{statements.default}}'}
-            ];
+                {statement: '{{statements.no_actor}}'},
+                {actor: '{{agents.account}}'}
+            ];    
             var data = createFromTemplate(templates);
             var statement = data.statement;
 
