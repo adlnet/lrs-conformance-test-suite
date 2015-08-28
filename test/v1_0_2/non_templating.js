@@ -33,6 +33,7 @@
                     } else {
                         var statement = parse(res.body, done);
                         expect(statement).to.have.property('authority');
+                        done();
                     }
                 });
         });
@@ -319,28 +320,6 @@
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "Content-Transfer-Encoding" with a value of "binary" (4.1.11.b.c, 4.1.11.b.e)', function () {
-        it('should fail when attachments Content-Transfer-Encoding missing', function (done) {
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
-            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_no_content_transfer_encoding.part', {encoding: 'binary'});
-
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders(header))
-                .body(attachment).expect(400, done);
-        });
-
-        it('should fail when attachments Content-Transfer-Encoding not "binary"', function (done) {
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
-            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_content_transfer_encoding.part', {encoding: 'binary'});
-
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders(header))
-                .body(attachment).expect(400, done);
-        });
-    });
-
     describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "X-Experience-API-Hash" with a value of one of those found in a "sha2" property of a Statement in the first part of this document (4.1.11.b.c, 4.1.11.b.d)', function () {
         it('should fail when attachments missing header "X-Experience-API-Hash"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
@@ -401,8 +380,8 @@
         });
     });
 
-    describe('An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to "1.0.1" (4.1.10.b)', function () {
-        it('should respond with header "version" set to "1.0.1"', function (done) {
+    describe('An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to "1.0.2" (4.1.10.b)', function () {
+        it('should respond with header "version" set to "1.0.2"', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -419,7 +398,7 @@
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
-                .expect('x-experience-api-version', '1.0.1', done);
+                .expect('x-experience-api-version', '1.0.2', done);
         });
     });
 
@@ -1038,7 +1017,7 @@
                     } else {
                         var result = parse(res.body, done);
                         expect(result).to.have.property('more');
-                        Joi.assert(result.more, Joi.string().uri());
+                        Joi.assert(result.more, Joi.string().regex(/(\/[\w\.\-]+)+\/?/));
                         done();
                     }
                 });
@@ -1076,7 +1055,7 @@
                     } else {
                         var result = parse(res.body, done);
                         expect(result).to.have.property('more');
-                        Joi.assert(result.more, Joi.string().uri());
+                        Joi.assert(result.more, Joi.string().regex(/(\/[\w\.\-]+)+\/?/));
                         done();
                     }
                 });
@@ -2790,7 +2769,7 @@
             ];
             var data = createFromTemplate(templates);
 
-            var query = helper.getUrlEncoding(data.agent);
+            var query = helper.getUrlEncoding(data);
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -3018,6 +2997,7 @@
         var voidedId = helper.generateUUID();
         var voidingId = helper.generateUUID();
         var statementRefId = helper.generateUUID();
+        var voidingTime;
 
         before('persist voided statement', function (done) {
             var voidedTemplates = [
@@ -3027,7 +3007,6 @@
             voided = voided.statement;
             voided.id = voidedId;
             voided.verb.id = verb;
-            voided.timestamp = '2005-01-01T19:09:13.245Z';
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3045,48 +3024,20 @@
             voiding = voiding.statement;
             voiding.id = voidingId;
             voiding.object.id = voidedId;
-            voiding.timestamp = '2015-01-01T19:09:13.245Z';
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voiding)
-                .expect(200, done);
-        });
-
-        before('persist context with statement reference', function (done) {
-            var contextTemplates = [
-                {statement: '{{statements.context}}'},
-                {context: '{{contexts.default}}'}
-            ];
-            var context = createFromTemplate(contextTemplates);
-            context = context.statement;
-            context.context.statement.id = voidedId;
-            context.timestamp = '2013-01-01T19:09:13.245Z';
-
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(context)
-                .expect(200, done);
-        });
-
-        before('persist substatement context with statement references', function (done) {
-            var substatementContextTemplates = [
-                {statement: '{{statements.object_substatement}}'},
-                {object: '{{substatements.context}}'},
-                {context: '{{contexts.default}}'}
-            ];
-            var substatementContext = createFromTemplate(substatementContextTemplates);
-            substatementContext = substatementContext.statement;
-            substatementContext.object.context.statement.id = voidedId;
-            substatementContext.timestamp = '2013-01-01T19:09:13.245Z';
-
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(substatementContext)
-                .expect(200, done);
+                .expect(200)
+                .end(function (err, res){
+                    if (err){
+                        done(err);
+                    } else {
+                        voidingTime = new Date().toISOString();
+                        done();
+                    }
+                });
         });
 
         before('persist object with statement references', function (done) {
@@ -3097,7 +3048,6 @@
             statementRef = statementRef.statement;
             statementRef.id = statementRefId;
             statementRef.object.id = voidedId;
-            statementRef.timestamp = '2010-01-01T19:09:13.245Z';
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3106,49 +3056,11 @@
                 .expect(200, done);
         });
 
-        before('persist substatement with statement references', function (done) {
-            var subStatementStatementRefTemplates = [
-                {statement: '{{statements.object_substatement}}'},
-                {object: '{{substatements.statementref}}'}
-            ];
-            var subStatementStatementRef = createFromTemplate(subStatementStatementRefTemplates);
-            subStatementStatementRef = subStatementStatementRef.statement;
-            subStatementStatementRef.object.object.id = voidedId;
-            subStatementStatementRef.timestamp = '2013-01-01T19:09:13.245Z';
-
-            request(helper.getEndpoint())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(subStatementStatementRef)
-                .expect(200, done);
-        });
-
         it('should only return Object StatementRef when using "since"', function (done) {
+            // Need to use statementRefId verb b/c initial voided statement comes before voidingTime
             var query = helper.getUrlEncoding({
-                verb: verb,
-                since: '2011-01-01T19:09:13.245Z'
-            });
-            request(helper.getEndpoint())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addAllHeaders({}))
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        var results = parse(res.body, done);
-                        expect(results).to.have.property('statements');
-                        expect(results.statements).to.have.length(1);
-                        expect(results.statements[0]).to.have.property('id').to.equal(voidingId);
-                        done();
-                    }
-                });
-        });
-
-        it('should only return Object StatementRef when using "until"', function (done) {
-            var query = helper.getUrlEncoding({
-                verb: verb,
-                until: '2014-01-01T19:09:13.245Z'
+                verb: "http://adlnet.gov/expapi/verbs/attended",
+                since: voidingTime
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
@@ -3162,6 +3074,28 @@
                         expect(results).to.have.property('statements');
                         expect(results.statements).to.have.length(1);
                         expect(results.statements[0]).to.have.property('id').to.equal(statementRefId);
+                        done();
+                    }
+                });
+        });
+
+        it('should only return voiding statement when using "until"', function (done) {
+            var query = helper.getUrlEncoding({
+                verb: verb,
+                until: voidingTime
+            });
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        var results = parse(res.body, done);
+                        expect(results).to.have.property('statements');
+                        expect(results.statements).to.have.length(1);
+                        expect(results.statements[0]).to.have.property('id').to.equal(voidingId);
                         done();
                     }
                 });
@@ -3189,7 +3123,7 @@
                 });
         });
 
-        it('should return StatementRef when not using "since", "until", "limit"', function (done) {
+        it('should return StatementRef and voiding statement when not using "since", "until", "limit"', function (done) {
             var query = helper.getUrlEncoding({
                 verb: verb
             });
