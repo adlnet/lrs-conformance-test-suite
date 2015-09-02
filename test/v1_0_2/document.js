@@ -130,7 +130,7 @@
         });
 
         describe('An LRS cannot reject a POST request to the Agent Profile API based on the contents of the name/value pairs of the document (7.3.b) **Implicit**', function () {
-            var documents = ['1'];
+            var documents = [{}, '1', 'true'];
             documents.forEach(function (document) {
                 it('Should accept POST to Agent profile with document ' + document, function () {
                     var parameters = helper.buildAgentProfile();
