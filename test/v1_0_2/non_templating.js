@@ -40,7 +40,26 @@
     });
 
     describe('A Voiding Statement cannot Target another Voiding Statement (4.3)', function () {
-        var voidingId;
+        var voidedId;
+
+        before('persist voided statement', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(data).expect(200).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        voidedId = res.body[0];
+                        done();
+                    }
+                });
+        });
 
         before('persist voiding statement', function (done) {
             var templates = [
@@ -49,7 +68,7 @@
             ];
             var data = createFromTemplate(templates);
             data = data.statement;
-
+            data.object.id = voidedId;
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -57,7 +76,6 @@
                     if (err) {
                         done(err);
                     } else {
-                        voidingId = res.body[0];
                         done();
                     }
                 });
@@ -70,12 +88,17 @@
             ];
             var data = createFromTemplate(templates);
             data = data.statement;
-            data.object.id = voidingId;
-
+            data.object.id = voidedId;
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
-                .json(data).expect(400, done);
+                .json(data).expect(400).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
     });
 
