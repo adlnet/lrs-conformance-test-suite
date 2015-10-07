@@ -58,10 +58,16 @@ if (!process.env.EB_NODE_COMMAND) {
          * Adds all headers.
          * @returns {Object}
          */
-        addAllHeaders: function (header) {
+        addAllHeaders: function (header, badAuth) {
+            badAuth = badAuth || false;
             var newHeader = extend(true, {}, header);
             newHeader = module.exports.addHeaderXapiVersion(newHeader);
-            newHeader = module.exports.addBasicAuthenicationHeader(newHeader);
+            if (badAuth){
+                newHeader['Authorization'] = 'Basic ' + new Buffer('foo:bar').toString('base64');
+            }
+            else{
+                newHeader = module.exports.addBasicAuthenicationHeader(newHeader);
+            }
             return newHeader;
         },
         /**
@@ -321,12 +327,16 @@ if (!process.env.EB_NODE_COMMAND) {
          * @param content content to encode
          * @returns {*}
          */
-        buildFormBody: function (content) {
-            return FormUrlencode.encode({
+        buildFormBody: function (content, id) {
+            var body = {
                 'X-Experience-API-Version': '1.0.2',
                 'Content-Type': 'application/json',
-                content: content
-            });
+                'content': JSON.stringify(content)
+            }        
+            if (id) {
+                body.statementId = id;
+            }
+            return FormUrlencode.encode(body);
         },
         /**
          * Returns an example Activity params.
