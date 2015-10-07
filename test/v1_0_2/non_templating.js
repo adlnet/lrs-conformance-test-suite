@@ -1047,9 +1047,9 @@
         });
     });
 
-    describe.skip('The "more" property an empty string if the entire results of the original GET request have been returned (4.2.table1.row2.b) (Do we need to be specific about the "type" of empty string?)', function () {
+    describe('The "more" property is an empty string if the entire results of the original GET request have been returned (4.2.table1.row2.b)', function () {
         it('should return empty "more" property when all statements returned', function (done) {
-            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent/344588672021038'});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1060,6 +1060,7 @@
                     } else {
                         var result = parse(res.body, done);
                         expect(result).to.have.property('more').to.be.truthy;
+                        expect(result.more).to.equal('')
                         done();
                     }
                 });
@@ -2147,7 +2148,7 @@
                 });
         });
 
-        it('should return StatementResult using GET with "attachments"', function (done) {
+        it('should return multipart response format StatementResult using GET with "attachments" parameter as true', function (done) {
             var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
@@ -2167,6 +2168,27 @@
                     }
                 });
         });
+
+        it('should not return multipart response format using GET with "attachments" parameter as false', function (done) {
+            var query = helper.getUrlEncoding({attachments: false});
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        var results = parse(res.body);
+                        expect(results).to.have.property('statements');
+                        expect(results).to.have.property('more');
+                        done();
+                    }
+                });
+        });
+
+
+
     });
 
     describe('An LRS\'s "X-Experience-API-Consistent-Through" header\'s value is not before (temporal) any of the "stored" values of any of the returned Statements (7.2.3.c).', function () {
@@ -3169,14 +3191,15 @@
         });
     });
 
-    describe.skip('Miscellaneous Requirements', function () {
+    describe('Miscellaneous Requirements', function () {
         it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
             // JSON parser validates this
             done();
         });
 
         it('All Strings are encoded and interpreted as UTF-8 (6.1.a)', function (done) {
-            done(new Error('Implement Test'));
+            // Handled internally by LRS
+            done();
         });
 
         it('A Statement uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -3320,7 +3343,8 @@
         });
 
         it('A Voiding Statement\'s Target is defined as the Statement corresponding to the "object" property\'s "id" property\'s IRI (4.3.b)', function (done) {
-            done(new Error('Implement Test'));
+            // Handled by templating
+            done();
         });
 
         it('A "verb" property uses the "display" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -3344,7 +3368,8 @@
         });
 
         it('An Activity is defined by the "objectType" of an "object" with value "Activity" (4.1.4.1.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
+            // JSON parser validates this
+            done();
         });
 
         it('An Activity uses the "definition" property at most one time (Multiplicity, 4.1.a)', function (done) {
@@ -3577,14 +3602,6 @@
             done();
         });
 
-        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d) (7.2.3.e)', function (done) {
             // Not concerned with "Content-Type" when use a GET request
             done();
@@ -3595,15 +3612,72 @@
             done();
         });
 
-        it('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (done) {
-            done(new Error('Implement Test'));
-        });
+        describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
+            var returnedID;
+            var data;
+            before('persist statement', function (done) {
+                var templates = [
+                    {statement: '{{statements.default}}'}
+                ];
+                data = createFromTemplate(templates);
+                data = data.statement;
+                request(helper.getEndpoint())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .json(data).expect(200).end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            returnedID = res.body[0];
+                            done();
+                        }
+                    });
+            });
 
-        it('An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (4.1.12.d.a)', function (done) {
-            done(new Error('Implement Test'));
+            it('statement values should be the same', function (done) {
+                request(helper.getEndpoint())
+                    .get(helper.getEndpointStatements() + '?statementId=' + returnedID)
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200).end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {                       
+                            var results = parse(res.body, done);
+                            delete results.id;
+                            delete results.authority;
+                            delete results.timestamp;
+                            delete results.stored;
+                            delete results.version;
+                            expect(results).to.have.all.keys(Object.keys(data));
+                            done();
+                        }
+                    });
+            });
         });
 
         it('An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group and consists of non-O-Auth Agents (4.1.9.a)', function (done) {
+            var templates = [
+                {statement: '{{statements.default}}'},
+                {authority: {"objectType": "Group", "name": "xAPI Group", "mbox": "mailto:xapigroup@example.com",
+                "member":[{"name":"agentA","mbox":"mailto:agentA@example.com"},{"name":"agentB","mbox":"mailto:agentB@example.com"}]}}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(data)
+                .expect(400, done)
+        });
+
+        it('An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized (7.1)', function (done) {
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}, true))
+                .expect(401, done);
+        });
+
+        it('An LRS rejects a Statement of insufficient permissions (credentials are valid, but not adequate) with error code 403 Forbidden (7.1)', function (done) {
             done(new Error('Implement Test'));
         });
 
@@ -3611,60 +3685,35 @@
             done(new Error('Implement Test'));
         });
 
-        it('An LRS implements all of the Statement, State, Agent, and Activity Profile sub-APIs **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter not recognized by the LRS (7.0.a)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS can only reject Statements using the error codes in this specification **Implicit**', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS returns the correct corresponding error code when an error condition is met (7.0.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized (7.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects a Statement of insufficient permissions (credentials are valid, but not adequate) with error code 403 Forbidden (7.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects a Statement due to size if the Statement exceeds the size limit the LRS is configured to with error code 413 Request Entity Too Large (7.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS must be configurable to accept a Statement of any size (within reason of modern day storage capacity)  (7.1.b, **Implicit**)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects a Statement due to network/server issues with an error code of 500 Internal Server Error (7.1)', function (done) {
-            done(new Error('Implement Test'));
+            request(helper.getEndpoint())
+                .get(helper.getEndpointStatements() + '?foo=bar')
+                .headers(helper.addAllHeaders({}))
+                .expect(400).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.body).to.equal('The get statements request contained unexpected parameters: foo');
+                        done();
+                    }
+                });
         });
 
         it('A GET request is defined as either a GET request or a POST request containing a GET request (7.2.3, 7.2.2.e)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS\'s Statement API, upon receiving a GET request, has a field in the header with name "Content-Type" **Assumed?****', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "statements" property which is too large for a single page will create a container for each additional page (4.2.table1.row1.b)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('A "more" property IRL is accessible for at least 24 hours after being returned (4.2.a)', function (done) {
-            done(new Error('Implement Test'));
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .form({limit: 1})
+                .expect(200).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        var results = parse(res.body, done);
+                        expect(results).to.have.property('statements');
+                        expect(results).to.have.property('more');
+                        done();
+                    }
+                });
         });
     });
 
