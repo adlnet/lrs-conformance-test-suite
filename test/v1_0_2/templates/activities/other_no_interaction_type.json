@@ -1,9 +1,0 @@
-{
-  "objectType": "Activity",
-  "id": "http://www.example.com/meetings/categories/teammeeting",
-  "definition": {
-    "correctResponsesPattern": [
-      "(35.937432,-86.868896)"
-    ]
-  }
-}
