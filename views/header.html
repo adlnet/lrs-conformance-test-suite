@@ -1,0 +1,38 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">LRS Test</a>
+        </div>
+        <div class="collapse navbar-collapse" style = "    overflow-x: hidden;" id="navbar">
+        <ul class="nav navbar-nav">
+            <li class="active {{^pageTitle}}hidden{{/pageTitle}}"><a href="/">{{pageTitle}}</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {{#user}}
+              <li class="nav navbar-nav dropdown navbar-right">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username}} <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/users/logout">Logout</a></li>
+                </ul>
+            </li>
+            {{/user}}
+            {{^user}}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/users/login">Login</a></li>
+                    <li><a href="/users/create">Create Account</a></li>
+                </ul>
+            </li>
+            {{/user}}
+        </ul>
+        </div>
+        
+    </div>
+</nav>
