@@ -22,12 +22,12 @@
             })
             runner.on('pass', function(test)
             {
-                p.postMessage("log", 'Test passed');
+                p.postMessage("test pass", test.title);
                 
             })
             runner.on('fail', function(test, err)
             {
-                p.postMessage("log", 'Test fail');
+                p.postMessage("test fail", test.title +" " + err);
             })
             runner.on('end', function()
             {
@@ -35,7 +35,7 @@
             });
             runner.on('pending', function()
             {
-                //p.postMessage("log", 'All done');
+                p.postMessage("log", 'pending');
             });
             runner.on('start', function()
             {

@@ -7,11 +7,21 @@
     <div class="row">
         <table class="table table-striped table-bordered">
             <tr style ="font-weight: bolder;">
+                <td class='visible-lg ' style="max-width:200px">Type</td>
+            
+            
+                <td class='visible-lg ' style="max-width:200px">Time</td>
+            
+            
                 <td class='visible-lg ' style="max-width:200px">Messages</td>
             </tr>
             {{#messages}}
-            <tr>
-                <td class='visible-lg ' style="max-width:200px;overflow:hidden" >{{.}}</td>
+            <tr style="{{#fail}} background:salmon {{/fail}} {{#pass}}background: lightgreen{{/pass}}">
+                <td class='visible-lg ' style="max-width:200px;overflow:hidden" >{{type}}</td>
+           
+                <td class='visible-lg ' style="max-width:200px;overflow:hidden" >{{time}}</td>
+           
+                <td class='visible-lg ' style="max-width:200px;overflow:hidden" >{{message}}</td>
             </tr>
             <tr>
                 <td colspan="6" ></td>
