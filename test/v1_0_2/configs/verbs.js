@@ -9,7 +9,7 @@
     "use strict";
 
     // defines overwriting data
-    var INVALID_URI = 'abc://should.fail.com';
+    var INVALID_URI = 'ab=c://should.fail.com';
     var INVALID_LANGUAGE_MAP = {'display': { 'a12345': 'attended'}};
 
     // configures tests
