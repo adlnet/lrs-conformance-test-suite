@@ -14,16 +14,15 @@
         {
             runner.on('test', function(test)
             {
-                p.postMessage("log", 'Test started: ' + test.title);
+                p.postMessage("test start", 'Test started: ' + test.title);
             })
             runner.on('test end', function(test)
             {
-                p.postMessage("log", 'Test done: ' + test.title);
+                p.postMessage("test end", 'Test done: ' + test.title);
             })
             runner.on('pass', function(test)
             {
-                p.postMessage("test pass", test.title);
-                
+                p.postMessage("test pass", test.title);   
             })
             runner.on('fail', function(test, err)
             {
@@ -31,11 +30,11 @@
             })
             runner.on('end', function()
             {
-                p.postMessage("log", 'All done');
+                p.postMessage("end", 'All done');
             });
-            runner.on('pending', function()
+            runner.on('pending', function(test)
             {
-                p.postMessage("log", 'pending');
+                p.postMessage("pending", test.title);
             });
             runner.on('start', function()
             {
