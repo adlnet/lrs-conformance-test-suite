@@ -11,6 +11,19 @@ function runnerOutputMessage(type, message)
 		this.fail = true;
 }
 
+function testResult(testTitle)
+{
+	this.title = testTitle;
+	this.pass = null;
+	this.message = null;
+}
+
+function testSuite(title)
+{
+	this.title = title;
+	this.tests = [];
+}
+
 function testRunner()
 {
 	this.uuid = require('uuid').v4();
@@ -19,6 +32,7 @@ function testRunner()
 	var self = this;
 	//currently in progress?
 	this.running = false;
+	this.suites = [];
 	this.start = function(options)
 	{
 		//create the child process
@@ -39,18 +53,29 @@ function testRunner()
 			if (message.action == "test start")
 			{
 				self.messages.push(new runnerOutputMessage("test start", message.payload))
+				self.suites[self.suites.length - 1].tests.push(new testResult(message.payload))
 			}
 			if (message.action == "test pass")
 			{
 				self.messages.push(new runnerOutputMessage("test pass", message.payload))
+				var tests = self.suites[self.suites.length - 1].tests;
+				tests[tests.length-1].pass = true;
+				tests[tests.length-1].message = message.payload;
 			}
 			if (message.action == "test fail")
 			{
 				self.messages.push(new runnerOutputMessage("test fail", message.payload))
+				var tests = self.suites[self.suites.length - 1].tests;
+				tests[tests.length-1].pass = false;
+				tests[tests.length-1].message = message.payload;
 			}
 			if (message.action == "ready")
 			{
 				test_runner_process.postMessage("runTests", options);
+			}
+			if (message.action == "suite")
+			{
+				self.suites.push(new testSuite(message.payload));
 			}
 			self.emit(message.action,message);
 			self.emit("statusMessage",message);

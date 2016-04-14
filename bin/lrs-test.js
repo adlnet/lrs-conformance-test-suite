@@ -14,11 +14,11 @@
         {
             runner.on('test', function(test)
             {
-                p.postMessage("test start", 'Test started: ' + test.title);
+                p.postMessage("test start", test.title);
             })
             runner.on('test end', function(test)
             {
-                p.postMessage("test end", 'Test done: ' + test.title);
+                p.postMessage("test end", test.title);
             })
             runner.on('pass', function(test)
             {
@@ -26,7 +26,7 @@
             })
             runner.on('fail', function(test, err)
             {
-                p.postMessage("test fail", test.title +" " + err);
+                p.postMessage("test fail",  err.toString());
             })
             runner.on('end', function()
             {
