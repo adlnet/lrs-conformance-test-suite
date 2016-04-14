@@ -22,7 +22,7 @@ function testRunner()
 	this.start = function(options)
 	{
 		//create the child process
-		var test_runner_process = child_process.fork("./bin/lrs-test.js");
+		var test_runner_process = child_process.fork(__dirname +"/lrs-test.js");
 		this.running = true;
 		self.test_runner_process = test_runner_process;
 		//hook up the messaging
