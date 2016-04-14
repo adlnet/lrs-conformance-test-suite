@@ -59,15 +59,23 @@ function testRunner()
 			{
 				self.messages.push(new runnerOutputMessage("test pass", message.payload))
 				var tests = self.suites[self.suites.length - 1].tests;
-				tests[tests.length-1].pass = true;
-				tests[tests.length-1].message = message.payload;
+				var test = tests[tests.length-1];
+				if(test)
+				{
+					test.pass = true;
+					tests[tests.length-1].message = message.payload;
+				}
 			}
 			if (message.action == "test fail")
 			{
 				self.messages.push(new runnerOutputMessage("test fail", message.payload))
 				var tests = self.suites[self.suites.length - 1].tests;
-				tests[tests.length-1].pass = false;
-				tests[tests.length-1].message = message.payload;
+				var test = tests[tests.length-1];
+				if(test)
+				{
+					test.pass = false;
+					tests[tests.length-1].message = message.payload;
+				}
 			}
 			if (message.action == "ready")
 			{
