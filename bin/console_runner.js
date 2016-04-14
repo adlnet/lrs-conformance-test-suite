@@ -1,5 +1,5 @@
 var program = require('commander');
-var testRunner = new (require('./testRunner.js').testRunner)();
+var testRunner = new (require(__dirname +'/testRunner.js').testRunner)();
 var jsonSchema = require('jsonschema');
 var validate = jsonSchema.validate;
 
