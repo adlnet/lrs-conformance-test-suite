@@ -98,7 +98,7 @@
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;
         process.env.BASIC_AUTH_USER = options.authUser;
         process.env.BASIC_AUTH_PASSWORD = options.authPass;
-        var testDirectory = 'test/' + options.directory;
+        var testDirectory = __dirname + '/../test/' + options.directory;
         fs.readdirSync(testDirectory).filter(function(file)
         {
             return file.substr(-3) === '.js';
