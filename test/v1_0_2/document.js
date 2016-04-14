@@ -926,9 +926,8 @@
         });
 
         it('An LRS\'s Activity Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content (7.5.b)', function () {
-            var parameters = helper.buildActivityProfile(),
-                document = helper.buildDocument();
-            return sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, document, 204);
+            var parameters = helper.buildActivityProfile();
+            return sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, '', 204);
         });
 
         it('An LRS\'s Activity Profile API accepts GET requests (7.5)', function () {
