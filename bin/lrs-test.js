@@ -38,11 +38,11 @@
             });
             runner.on('start', function()
             {
-                p.postMessage("log", 'Starting');
+                p.postMessage("log", 'Starting tests');
             });
-            runner.on('suite', function()
+            runner.on('suite', function(suite)
             {
-                p.postMessage("log", 'suite');
+                p.postMessage("suite", suite.title);
             });
         }
     }
