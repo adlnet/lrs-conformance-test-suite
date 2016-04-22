@@ -85,6 +85,10 @@ function testRunner()
 			{
 				self.suites.push(new testSuite(message.payload));
 			}
+			if (message.action == "log")
+			{
+				console.log(message.payload);
+			}
 			self.emit(message.action,message);
 			self.emit("statusMessage",message);
 		});

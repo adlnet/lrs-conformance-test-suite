@@ -176,6 +176,16 @@ if (!process.env.EB_NODE_COMMAND) {
         getEndpoint: function () {
             return LRS_ENDPOINT;
         },
+        getEndpointAndAuth: function () {
+            var urlparams =  {url:LRS_ENDPOINT};
+            process.send({action:"log",payload:"gothere asdfsad fasdf asd"});
+            if(global.OAUTH)
+            {
+                console.log(global.OAUTH);
+                urlparams.oauth = global.OAUTH;
+            }
+            return urlparams;
+        },
         /**
          * Returns endpoint to statements.
          * @returns {String}

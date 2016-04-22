@@ -35,7 +35,7 @@
                                 data = test.json;
                             }
 
-                            var promise = request(helper.getEndpoint())
+                            var promise = request(helper.getEndpointAndAuth())
                                 .post(helper.getEndpointStatements())
                                 .headers(helper.addAllHeaders({}))
                                 .json(data);
