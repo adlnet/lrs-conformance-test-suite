@@ -10,10 +10,17 @@ This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](h
 Clone and install
 
 ```bash
-$ git clone https://github.com/TryxAPI/lrs-conformance-tests.git
+$ git clone https://github.com/adlnet/lrs-conformance-test-suite.git
 $ cd lrs-conformance-tests
 $ npm install
 $ npm link
+```
+
+ADL Note
+If `npm link` fails, try the following:
+```bash
+$ sudo npm link
+$ sudo ln -s /usr/bin/nodejs /usr/bin/node
 ```
 
 Verify installation
@@ -41,9 +48,9 @@ Options:
 Example:
 
 ```
-bash $ lrs-test --endpoint http://localhost/lrs --basicAuth true --authUser username --authPass password
+bash $ lrs-test --endpoint http://localhost/xapi --basicAuth true --authUser username --authPass password
 
-bash $ lrs-test -e http://localhost/lrs -a true -u username -p password
+bash $ lrs-test -e http://localhost/xapi -a true -u username -p password
 ```
 
 ### Creating/Extending Test Suite
