@@ -3677,14 +3677,6 @@
                 .expect(401, done);
         });
 
-        it('An LRS rejects a Statement of insufficient permissions (credentials are valid, but not adequate) with error code 403 Forbidden (7.1)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
-        it('An LRS rejects with error code 403 Forbidden a Request whose "authority" is a Agent or Group that is not authorized (4.1.9.b, 6.4.2)', function (done) {
-            done(new Error('Implement Test'));
-        });
-
         it('An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter not recognized by the LRS (7.0.a)', function (done) {
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?foo=bar')

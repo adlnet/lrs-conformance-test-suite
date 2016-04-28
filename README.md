@@ -5,7 +5,14 @@ LRS Conformance Tests
 
 This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec) and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite only supports basic authentication. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
 
-### Installation
+### Installation  
+
+Dependency  
+This requires npm for installation  
+
+```bash
+$ sudo apt-get install npm
+```
 
 Clone and install
 
@@ -14,6 +21,13 @@ $ git clone https://github.com/TryxAPI/lrs-conformance-tests.git
 $ cd lrs-conformance-tests
 $ npm install
 $ npm link
+```
+ADL Note  
+If `npm link` fails, try the following:  
+
+```bash
+$ sudo npm link
+$ sudo ln -s /usr/bin/nodejs /usr/bin/node
 ```
 
 Verify installation
