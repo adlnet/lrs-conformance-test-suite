@@ -992,7 +992,7 @@
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a successful POST request returns code 204 No Content and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
+    describe('An LRS\'s Statement API upon processing a successful POST request returns code 200 No Content and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
         it('should persist statement using "POST" and return array if IDs', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
@@ -3602,7 +3602,7 @@
             done();
         });
 
-        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d) (7.2.3.e)', function (done) {
+        it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d, 7.2.3.e)', function (done) {
             // Not concerned with "Content-Type" when use a GET request
             done();
         });
@@ -3641,7 +3641,7 @@
                     .expect(200).end(function (err, res) {
                         if (err) {
                             done(err);
-                        } else {                       
+                        } else {
                             var results = parse(res.body, done);
                             delete results.id;
                             delete results.authority;
@@ -3736,4 +3736,3 @@
     }
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('joi'), require('./../helper'), require('./../multipartParser')));
-

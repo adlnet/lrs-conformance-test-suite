@@ -1012,7 +1012,7 @@
             //             expect: [400]
             //         },
             //         {
-            //             name: 'statement actor "mbox" cannot be used with "openid',
+            //             name: 'statement actor "mbox" cannot be used with "openid"',
             //             templates: [
             //                 {statement: '{{statements.actor}}'},
             //                 {actor: '{{groups.identified_mbox}}'},
@@ -1254,7 +1254,7 @@
             //             expect: [400]
             //         },
             //         {
-            //             name: 'statement actor "mbox_sha1sum" cannot be used with "openid',
+            //             name: 'statement actor "mbox_sha1sum" cannot be used with "openid"',
             //             templates: [
             //                 {statement: '{{statements.actor}}'},
             //                 {actor: '{{groups.identified_mbox_sha1sum}}'},
@@ -1728,7 +1728,7 @@
             //             expect: [400]
             //         },
             //         {
-            //             name: 'statement actor "account" cannot be used with "openid',
+            //             name: 'statement actor "account" cannot be used with "openid"',
             //             templates: [
             //                 {statement: '{{statements.actor}}'},
             //                 {actor: '{{groups.identified_account}}'},
