@@ -10,6 +10,9 @@
 
     var expect = chai.expect;
 
+    if(global.OAUTH)
+        request = helper.OAuthRequest(request);
+
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
         it('should populate authority', function (done) {
             var templates = [

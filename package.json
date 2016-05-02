@@ -48,6 +48,7 @@
     "should": "^4.0.4",
     "string": "^3.1.0",
     "super-request": "0.0.8",
+    "superagent-oauth": "^0.2.3",
     "supertest": "^0.13.0",
     "supertest-as-promised": "^1.0.0",
     "uuid": "^2.0.1"

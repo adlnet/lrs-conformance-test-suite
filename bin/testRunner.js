@@ -36,7 +36,7 @@ function testRunner()
 	this.start = function(options)
 	{
 		//create the child process
-		var test_runner_process = child_process.fork(__dirname +"/lrs-test.js",[],{cwd:__dirname+"/../"});
+		var test_runner_process = child_process.fork(__dirname +"/lrs-test.js",["--debug"],{execArgv:[/*"--debug-brk=5959"*/],cwd:__dirname+"/../"});
 		this.running = true;
 		self.test_runner_process = test_runner_process;
 		//hook up the messaging
@@ -59,27 +59,44 @@ function testRunner()
 			{
 				self.messages.push(new runnerOutputMessage("test pass", message.payload))
 				var tests = self.suites[self.suites.length - 1].tests;
-				var test = tests[tests.length-1];
+				
+				var test;
+				for(var i = 0; i < tests.length; i++)
+				{
+					if(tests[i].title == message.payload)
+					{
+						test = tests[i];
+					}
+				}
 				if(test)
 				{
 					test.pass = true;
-					tests[tests.length-1].message = message.payload;
+					test.message = message.payload;
 				}
 			}
 			if (message.action == "test fail")
 			{
 				self.messages.push(new runnerOutputMessage("test fail", message.payload))
 				var tests = self.suites[self.suites.length - 1].tests;
-				var test = tests[tests.length-1];
+				
+				var test;
+				for(var i = 0; i < tests.length; i++)
+				{
+					if(tests[i].title == message.payload.title)
+					{
+						test = tests[i];
+					}
+				}
+
 				if(test)
 				{
 					test.pass = false;
-					tests[tests.length-1].message = message.payload;
+					test.message = message.payload.message;
 				}
 			}
 			if (message.action == "ready")
 			{
-				test_runner_process.postMessage("runTests", options);
+				test_runner_process.postMessage("runTests", options);	
 			}
 			if (message.action == "suite")
 			{

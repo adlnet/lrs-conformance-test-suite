@@ -8,7 +8,7 @@ var OAuth = require('oauth').OAuth;
 
 
 function doOAuth1(config, callback) {
-    var consumer = new OAuth(config.endpoint + config.request_token_path,
+    var consumer = new OAuth(config.endpoint + config.request_token_path  + "?scope=all",
         config.endpoint + config.auth_token_path,
         config.consumer_key, config.consumer_secret, '1.0',
         "http://localhost:3000/authback", 'PLAINTEXT');

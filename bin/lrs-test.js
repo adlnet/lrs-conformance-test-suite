@@ -19,7 +19,7 @@
                 p.postMessage("test pass", test.title);
             })
             runner.on('fail', function(test, err) {
-                p.postMessage("test fail", err.toString());
+                p.postMessage("test fail", {title:test.title,message:err.toString()});
             })
             runner.on('end', function() {
                 p.postMessage("end", 'All done');
@@ -111,15 +111,19 @@
         process.env.BASIC_AUTH_PASSWORD = options.authPass;
         process.env.OAUTH1_ENABLED = options.oAuth1;
         
+        if(process.env.OAUTH1_ENABLED)
+        {
+            global.OAUTH = {
 
-        global.OAUTH = {
-
-            consumer_key: _options.oAuthConsumerKey,
-            consumer_secret: _options.oAuthConsumerSecret,
-            token: _options.oAuthToken,
-            token_secret: _options.oAuthTokenSecret,
-            verifier: _options.oAuthVerifier
+                consumer_key: _options.oAuthConsumerKey,
+                consumer_secret: _options.oAuthConsumerSecret,
+                token: _options.oAuthToken,
+                token_secret: _options.oAuthTokenSecret,
+                verifier: _options.oAuthVerifier
+            }
         }
+
+
         process.postMessage("log", (JSON.stringify(global.OAUTH)));
         var testDirectory = __dirname + '/../test/' + options.directory;
         fs.readdirSync(testDirectory).filter(function(file) {
