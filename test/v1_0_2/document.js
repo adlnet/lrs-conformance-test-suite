@@ -1084,7 +1084,7 @@
             return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 400);
         });
 
-        describe('An LRS\'s Agent Profile API rejects a POST request with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, 7.6.table3.row1.a)', function () {
+        it('An LRS\'s Agent Profile API rejects a POST request with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, 7.6.table3.row1.a)', function () {
             var document = helper.buildDocument(),
                 invalidTypes = [1, true, { key: 'value'}];
             invalidTypes.forEach(function (type) {
@@ -1366,7 +1366,7 @@
             return sendRequest('post', helper.getEndpointStatements(), parameters, body, 400);
         });
 
-        describe('An LRS accepts HEAD requests (7.10.a)', function () {
+        it('An LRS accepts HEAD requests (7.10.a)', function () {
             it('should succeed GET about with no body', function () {
                 return sendRequest('head', helper.getEndpointAbout(), undefined, undefined, 200);
             });
