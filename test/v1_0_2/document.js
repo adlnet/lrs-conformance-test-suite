@@ -749,10 +749,11 @@
         //+* NOTE:  **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**
         it('An LRS\'s State API upon processing a successful DELETE request without "stateId" as a parameter deletes documents satisfying the requirements of the DELETE and code 204 No Content (7.4.d)', function () {
             var parameters = helper.buildState();
-            delete parameters.stateId;
+            parameters.activityId = parameters.activityId + helper.generateUUID();
 
-            return sendRequest('post', helper.getEndpointActivitiesState(), helper.buildState(), helper.buildDocument(), 204)
+            return sendRequest('post', helper.getEndpointActivitiesState(), parameters, helper.buildDocument(), 204)
                 .then(function () {
+                    delete parameters.stateId;
                     return sendRequest('post', helper.getEndpointActivitiesState(), helper.buildState(), helper.buildDocument(), 204)
                     .then(function () {
                         return sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204)
@@ -993,6 +994,7 @@
         it('An LRS\'s Activity Profile API upon processing a successful GET request without "profileId" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK (7.5.d)', function () {
             var parameters = helper.buildActivityProfile(),
                 document = helper.buildDocument();
+            parameters.activityId = parameters.activityId + helper.generateUUID();
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
                     delete parameters.profileId;
@@ -1008,6 +1010,8 @@
         it('An LRS\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present (7.5.table3.row2)', function () {
             var parameters = helper.buildActivityProfile(),
                 document = helper.buildDocument();
+            parameters.activityId = parameters.activityId + helper.generateUUID();
+
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
                     delete parameters.profileId;

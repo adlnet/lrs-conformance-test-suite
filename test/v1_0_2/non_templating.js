@@ -3043,6 +3043,8 @@
         var voidingId = helper.generateUUID();
         var statementRefId = helper.generateUUID();
         var voidingTime;
+        var temp_verb = "http://adlnet.gov/expapi/verbs/attended" + helper.generateUUID();
+
 
         before('persist voided statement', function (done) {
             var voidedTemplates = [
@@ -3093,6 +3095,7 @@
             statementRef = statementRef.statement;
             statementRef.id = statementRefId;
             statementRef.object.id = voidedId;
+            statementRef.verb.id = temp_verb;
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
@@ -3104,7 +3107,7 @@
         it('should only return Object StatementRef when using "since"', function (done) {
             // Need to use statementRefId verb b/c initial voided statement comes before voidingTime
             var query = helper.getUrlEncoding({
-                verb: "http://adlnet.gov/expapi/verbs/attended",
+                verb: temp_verb,
                 since: voidingTime
             });
             request(helper.getEndpoint())
