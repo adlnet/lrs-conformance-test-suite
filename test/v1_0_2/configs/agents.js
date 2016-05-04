@@ -290,7 +290,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'statement actor "mbox" cannot be used with "openid',
+                        name: 'statement actor "mbox" cannot be used with "openid"',
                         templates: [
                             {statement: '{{statements.actor}}'},
                             {actor: '{{agents.mbox}}'},
@@ -469,7 +469,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'statement actor "mbox_sha1sum" cannot be used with "openid',
+                        name: 'statement actor "mbox_sha1sum" cannot be used with "openid"',
                         templates: [
                             {statement: '{{statements.actor}}'},
                             {actor: '{{agents.mbox_sha1sum}}'},
@@ -648,7 +648,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'statement actor "account" cannot be used with "openid',
+                        name: 'statement actor "account" cannot be used with "openid"',
                         templates: [
                             {statement: '{{statements.actor}}'},
                             {actor: '{{agents.account}}'},
@@ -809,7 +809,7 @@
                 name: 'An Agent does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)',
                 config: [
                     {
-                        name: 'statement actor "openid" cannot be used with "account',
+                        name: 'statement actor "openid" cannot be used with "account"',
                         templates: [
                             {statement: '{{statements.actor}}'},
                             {actor: '{{agents.openid}}'},

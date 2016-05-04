@@ -438,7 +438,7 @@
                             {authority: '{{groups.anonymous_no_member}}'}
                         ],
                         expect: [400]
-                    } 
+                    }
                 ]
             },
             {
@@ -475,7 +475,7 @@
                             {actor: '{{groups.identified_account}}'}
                         ],
                         expect: [200]
-                    },                   
+                    },
                     {
                         name: 'statement context instructor identified group accepts "mbox"',
                         templates: [
@@ -1430,7 +1430,7 @@
                 ]
             },
             {
-                name: 'An Identified Group does not use the "open_id" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)',
+                name: 'An Identified Group does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)',
                 config: [
                     {
                         name: 'statement actor "openid" cannot be used with "account',
