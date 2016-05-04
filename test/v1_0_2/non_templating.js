@@ -3315,7 +3315,7 @@
             done();
         });
 
-        it('An Identified Group uses the "open_id" property at most one time (Multiplicity, 4.1.a)', function (done) {
+        it('An Identified Group uses the "openid" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
         });
