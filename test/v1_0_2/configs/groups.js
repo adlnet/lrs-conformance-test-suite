@@ -32,7 +32,7 @@
                         name: 'should pass statement authority template',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.default}}'}
+                            {authority: '{{groups.anonymous_two_member}}'}
                         ],
                         expect: [200]
                     },
@@ -413,6 +413,35 @@
                 ]
             },
             {
+                name: 'Statement authority shall only be an anonymous group with two members',
+                config: [
+                    {
+                        name: 'statement authority identified group is rejected',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_openid}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority anonymous group with two members is accepted',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_two_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement authority anonymous group without two members is rejected',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_no_member}}'}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
                 name: 'An Identified Group is defined by "objectType" of an "actor" or "object" with value "Group" and by one of "mbox", "mbox_sha1sum", "openid", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)',
                 config: [
                     {
@@ -444,38 +473,6 @@
                         templates: [
                             {statement: '{{statements.actor}}'},
                             {actor: '{{groups.identified_account}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement authority identified group accepts "mbox"',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_mbox}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement authority identified group accepts "mbox_sha1sum"',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_mbox_sha1sum}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement authority identified group accepts openid"',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_openid}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement authority identified group accepts account"',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_account}}'}
                         ],
                         expect: [200]
                     },
@@ -733,38 +730,6 @@
                         templates: [
                             {statement: '{{statements.actor}}'},
                             {actor: '{{groups.identified_account_no_member}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement authority identified group accepts "mbox"',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_mbox_no_member}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement authority identified group accepts "mbox_sha1sum"',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_mbox_sha1sum_no_member}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement authority identified group accepts openid"',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_openid_no_member}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement authority identified group accepts account"',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_account_no_member}}'}
                         ],
                         expect: [200]
                     },
