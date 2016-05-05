@@ -951,7 +951,7 @@
                 ]
             },
             {
-                name: 'An "open_id" property is a URI (Type, 4.1.2.3.table1.row3.a)',
+                name: 'An "openid" property is a URI (Type, 4.1.2.3.table1.row3.a)',
                 config: [
                     {
                         name: 'statement actor "agent openid" not URI',
