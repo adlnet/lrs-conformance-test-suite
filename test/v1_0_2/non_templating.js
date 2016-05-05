@@ -3042,9 +3042,7 @@
         var voidedId = helper.generateUUID();
         var voidingId = helper.generateUUID();
         var statementRefId = helper.generateUUID();
-        var voidingTime;
-        var temp_verb = "http://adlnet.gov/expapi/verbs/attended" + helper.generateUUID();
-
+        var voidingTime, untilVoidingTime;
 
         before('persist voided statement', function (done) {
             var voidedTemplates = [
@@ -3082,6 +3080,7 @@
                         done(err);
                     } else {
                         voidingTime = new Date().toISOString();
+                        untilVoidingTime = new Date(Date.now() + 300000).toISOString();
                         done();
                     }
                 });
@@ -3095,19 +3094,19 @@
             statementRef = statementRef.statement;
             statementRef.id = statementRefId;
             statementRef.object.id = voidedId;
-            statementRef.verb.id = temp_verb;
+            statementRef.verb.id = verb;
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statementRef)
-                .expect(200, done);
+                .expect(200, done)
         });
 
         it('should only return Object StatementRef when using "since"', function (done) {
             // Need to use statementRefId verb b/c initial voided statement comes before voidingTime
             var query = helper.getUrlEncoding({
-                verb: temp_verb,
+                verb: verb,
                 since: voidingTime
             });
             request(helper.getEndpoint())
@@ -3120,8 +3119,7 @@
                     } else {
                         var results = parse(res.body, done);
                         expect(results).to.have.property('statements');
-                        expect(results.statements).to.have.length(1);
-                        expect(results.statements[0]).to.have.property('id').to.equal(statementRefId);
+                        expect(JSON.stringify(results.statements)).to.contain(statementRefId);
                         done();
                     }
                 });
@@ -3129,8 +3127,8 @@
 
         it('should only return voiding statement when using "until"', function (done) {
             var query = helper.getUrlEncoding({
-                verb: verb,
-                until: voidingTime
+                verb: "http://adlnet.gov/expapi/verbs/voided",
+                until: untilVoidingTime
             });
             request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
@@ -3142,8 +3140,7 @@
                     } else {
                         var results = parse(res.body, done);
                         expect(results).to.have.property('statements');
-                        expect(results.statements).to.have.length(1);
-                        expect(results.statements[0]).to.have.property('id').to.equal(voidingId);
+                        expect(JSON.stringify(results.statements)).to.contain(voidingId);
                         done();
                     }
                 });
