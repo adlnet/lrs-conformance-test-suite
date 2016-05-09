@@ -176,6 +176,17 @@ if (!process.env.EB_NODE_COMMAND) {
         getEndpoint: function () {
             return LRS_ENDPOINT;
         },
+        getEndpointAndAuth: function () {
+            return LRS_ENDPOINT;
+            var urlparams =  {url:LRS_ENDPOINT};
+           
+            if(global.OAUTH)
+            {
+                console.log(global.OAUTH);
+              //  urlparams.oauth = global.OAUTH;
+            }
+            return urlparams;
+        },
         /**
          * Returns endpoint to statements.
          * @returns {String}
@@ -434,7 +445,74 @@ if (!process.env.EB_NODE_COMMAND) {
          */
         clone: function (obj) {
             return JSON.parse(JSON.stringify(obj));
+        },
+
+        //a wrapper for the super-test suite that deals the oauth
+        //the request module deep under the hood can do the signing, but we need to access it.
+        //because of the chaining of methods, this can get a bit tricky.
+        OAuthRequest : function(request)
+        {
+
+            //back up the original
+            var originalRequest = request;
+
+            //a new request constructor
+            function authRequest(e) {
+
+                //call the original constructor
+                var r = originalRequest(e);
+
+                //for every method that returns a Test, wrap all the methods
+                function wrapMethods(r) {
+                    for (var i in r) {
+                        //little closure to keep the i var in scope
+                        (function(i) {
+                            //for all functions in the object
+                            if(typeof r[i] !== "function") return;
+                            //back up the original
+                            r["_preAuth_" + i] = r[i];
+                            //replace it with a function that
+                            r[i] = function() {
+                                //calls the original function
+                                var test = r["_preAuth_" + i].apply(r, arguments);
+                                //then checks that the original function returned a Test with an options structure
+                                //that we had not touched before
+                                //NOTE: some of the functions return the `this`, so we need to prevent infinite
+                                //recursion. Currently, checking to see if we already set the oauth values prevents it.
+                                if(test && test._options && !test._options.oauth)
+                                {
+                                    //since this is a new Test, it has a new Request inside, that needs to be set up
+                                    //set the oauth values so the underlying request library can sign the http
+                                    test._options.oauth = global.OAUTH;
+
+                                    //if this object retuned a new Test that we have not seen before, then we need to
+                                    //wrap all its methods, so that when chainin method calls, each object in the chain sets
+                                    //up the oauth on the next 
+                                    wrapMethods(test);
+                                }
+                                return test;
+                            }
+
+                        })(i) // call the closure with the current i
+
+                    }
+                }
+
+                //wrap all the methods of the test given by the original constructor
+                wrapMethods(r);
+
+                //Ok, now we have a new object that has the auth set, and whos methods return Tests that have the auth set, and whos 
+                //methods return Tests that have the auth set, and whos 
+                //methods return Tests that have the auth set, and whos 
+                //methods return Tests that have the auth set, and whos 
+                //methods return Test.....
+                return r;
+            }
+            //return the new constructor
+            return authRequest;
+
         }
+
     };
 
     function createMapping(mapper, string) {
