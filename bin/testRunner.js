@@ -33,6 +33,11 @@ function testRunner()
 	//currently in progress?
 	this.running = false;
 	this.suites = [];
+	this.cancel = function()
+	{
+		if(self.test_runner_process)
+				test_runner_process.close();		
+	}
 	this.start = function(options)
 	{
 		//create the child process
@@ -115,6 +120,7 @@ function testRunner()
 		test_runner_process.on('close', function()
 		{
 			self.running = false;
+			self.emit('close');
 		})
 	}
 }
