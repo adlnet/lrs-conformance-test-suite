@@ -396,32 +396,6 @@
                         expect: [400]
                     }
                 ]
-            },
-            {
-                name: 'An LRS rejects with error code 400 Bad Request any Statement violating a Statement Requirement. (4.1.12, Varies)',
-                config: [
-                    {
-                        name: 'statement "actor" missing reply 400',
-                        templates: [
-                            {statement: '{{statements.no_actor}}'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "verb" missing reply 400',
-                        templates: [
-                            {statement: '{{statements.no_verb}}'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "object" missing reply 400',
-                        templates: [
-                            {statement: '{{statements.no_object}}'}
-                        ],
-                        expect: [400]
-                    }
-                ]
             }
         ];
     };
