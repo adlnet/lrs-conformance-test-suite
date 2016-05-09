@@ -22,6 +22,7 @@ var options = {
         basicAuth: program.basicAuth,
         oAuth1: program.oAuth1
     }
+   
     /*
 
 var valid = validate(options, {

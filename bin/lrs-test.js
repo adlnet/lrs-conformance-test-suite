@@ -97,7 +97,7 @@
             oAuthVerifier: _options.oAuthVerifier,
             oAuth1: _options.oAuth1
         };
-
+        
         var mocha = new Mocha({
             uii: 'bdd',
             reporter: processMessageReporter(process),
@@ -111,8 +111,10 @@
         process.env.BASIC_AUTH_PASSWORD = options.authPass;
         process.env.OAUTH1_ENABLED = options.oAuth1;
         
-        if(process.env.OAUTH1_ENABLED)
+
+        if(options.oAuth1)
         {
+            console.log("USING OAUTH");
             global.OAUTH = {
 
                 consumer_key: _options.oAuthConsumerKey,
