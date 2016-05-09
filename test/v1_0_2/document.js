@@ -48,7 +48,7 @@
         it('An LRS has an Activities API with endpoint "base IRI" + /activities" (7.5) **Implicit** (in that it is not named this by the spec)', function () {
             var templates = [
                 {statement: '{{statements.default}}'}
-            ];          
+            ];
             var data = createFromTemplate(templates);
             var statement = data.statement;
             var parameters = {
@@ -69,7 +69,7 @@
         it('An LRS has an Agents API with endpoint "base IRI" + /agents" (7.6) **Implicit** (in that it is not named this by the spec)', function () {
             var templates = [
                 {statement: '{{statements.default}}'}
-            ];          
+            ];
             var data = createFromTemplate(templates);
             var statement = data.statement;
             var parameters = {
@@ -78,7 +78,7 @@
             return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
                 .then(function () {
                     return sendRequest('get', helper.getEndpointAgents(), parameters, undefined, 200);
-                });            
+                });
         });
 
         it('An LRS has an Agent Profile API with endpoint "base IRI"+"/agents/profile" (7.3.table1.row3.a, 7.3.table1.row3.c)', function () {
@@ -188,7 +188,7 @@
         it('A Document Merge only performs overwrites at one level deep, although the entire object is replaced. (7.3.d)', function () {
             var parameters = helper.buildState(),
                 document = {
-                    car: { 
+                    car: {
                             make: "Ford",
                             model: "Escape"
                     },
@@ -200,7 +200,7 @@
                     }
                 },
                 anotherDocument = {
-                    car: { 
+                    car: {
                             make: "Dodge",
                             model: "Ram"
                     },
@@ -219,7 +219,7 @@
                                 .then(function (res) {
                                     var body = res.body;
                                     expect(body).to.eql({
-                                        car: { 
+                                        car: {
                                                 make: "Dodge",
                                                 model: "Ram"
                                         },
@@ -480,7 +480,7 @@
             var document = helper.buildDocument(),
                 invalidTypes = [1, true, 'not UUID'];
             invalidTypes.forEach(function (type) {
-                it('Should reject PUT with "registration" with type ' + type, function () {
+                it('Should reject POST with "registration" with type ' + type, function () {
                     var parameters = helper.buildState();
                     parameters.registration = type;
                     return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
@@ -538,7 +538,7 @@
         });
 
         describe('An LRS\'s State API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function () {
-            var invalidTypes = [1, true, 'not JSON bruh', undefined];
+            var invalidTypes = [1, true, 'not JSON', undefined];
             invalidTypes.forEach(function (type) {
                 it('Should reject GET with "agent" with type ' + type, function () {
                     var parameters = helper.buildState();
@@ -563,7 +563,7 @@
         });
 
         describe('An LRS\'s State API rejects a GET request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function () {
-            var invalidTypes = [1, true, 'not UUID bruh'];
+            var invalidTypes = [1, true, 'not UUID'];
             invalidTypes.forEach(function (type) {
                 it('Should reject GET with "registration" with type ' + type, function () {
                     var parameters = helper.buildState();
@@ -686,7 +686,7 @@
         });
 
         describe('An LRS\'s State API rejects a DELETE request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table1.row2.a)', function () {
-            var invalidTypes = [1, true, 'not JSON son', undefined];
+            var invalidTypes = [1, true, 'not JSON', undefined];
             invalidTypes.forEach(function (type) {
                 it('Should reject DELETE with "agent" with type ' + type, function () {
                     var parameters = helper.buildState();
@@ -707,7 +707,7 @@
         });
 
         describe('An LRS\'s State API rejects a DELETE request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, 7.4.table1.row3.a)', function () {
-            var invalidTypes = [1, true, 'not UUID son'];
+            var invalidTypes = [1, true, 'not UUID'];
             invalidTypes.forEach(function (type) {
                 it('Should reject DELETE with "registration" with type ' + type, function () {
                     var parameters = helper.buildState();
@@ -747,12 +747,13 @@
         });
 
         //+* NOTE:  **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**
-        it('An LRS\'s State API upon processing a successful DELETE request without "stateId" as a parameter deletes documents satisfying the requirements of the DELETE and code 200 OK (7.4.d)', function () {
+        it('An LRS\'s State API upon processing a successful DELETE request without "stateId" as a parameter deletes documents satisfying the requirements of the DELETE and code 204 No Content (7.4.d)', function () {
             var parameters = helper.buildState();
-            delete parameters.stateId;
+            parameters.activityId = parameters.activityId + helper.generateUUID();
 
-            return sendRequest('post', helper.getEndpointActivitiesState(), helper.buildState(), helper.buildDocument(), 204)
+            return sendRequest('post', helper.getEndpointActivitiesState(), parameters, helper.buildDocument(), 204)
                 .then(function () {
+                    delete parameters.stateId;
                     return sendRequest('post', helper.getEndpointActivitiesState(), helper.buildState(), helper.buildDocument(), 204)
                     .then(function () {
                         return sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204)
@@ -771,7 +772,7 @@
         it('An LRS\'s Activities API accepts GET requests (7.5)', function () {
             var templates = [
                 {statement: '{{statements.default}}'}
-            ];          
+            ];
             var data = createFromTemplate(templates);
             var statement = data.statement;
             var parameters = {
@@ -926,9 +927,8 @@
         });
 
         it('An LRS\'s Activity Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content (7.5.b)', function () {
-            var parameters = helper.buildActivityProfile(),
-                document = helper.buildDocument();
-            return sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, document, 204);
+            var parameters = helper.buildActivityProfile();
+            return sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, '', 204);
         });
 
         it('An LRS\'s Activity Profile API accepts GET requests (7.5)', function () {
@@ -962,13 +962,13 @@
                 document = helper.buildDocument();
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
-                    parameters.since = new Date(Date.now() - 1000).toISOString();                    
+                    parameters.since = new Date(Date.now() - 1000).toISOString();
                     return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200);
                 });
         });
 
         describe('An LRS\'s Activity Profile API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.5.table3.row2.a)', function () {
-            var invalidTypes = [1, true, 'not Timestamp bruh'];
+            var invalidTypes = [1, true, 'not Timestamp'];
             invalidTypes.forEach(function (type) {
                 it('Should reject GET with "since" with type ' + type, function () {
                     var parameters = helper.buildActivityProfile();
@@ -994,6 +994,7 @@
         it('An LRS\'s Activity Profile API upon processing a successful GET request without "profileId" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK (7.5.d)', function () {
             var parameters = helper.buildActivityProfile(),
                 document = helper.buildDocument();
+            parameters.activityId = parameters.activityId + helper.generateUUID();
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
                     delete parameters.profileId;
@@ -1009,6 +1010,8 @@
         it('An LRS\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present (7.5.table3.row2)', function () {
             var parameters = helper.buildActivityProfile(),
                 document = helper.buildDocument();
+            parameters.activityId = parameters.activityId + helper.generateUUID();
+
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
                     delete parameters.profileId;
@@ -1045,7 +1048,7 @@
 
         describe('An LRS\'s Agent Profile API rejects a PUT request with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, 7.6.table3.row1.a)', function () {
             var document = helper.buildDocument(),
-                invalidTypes = [1, true, 'not Agent bruh', { key: 'value'}];
+                invalidTypes = [1, true, 'not Agent', { key: 'value'}];
             invalidTypes.forEach(function (type) {
                 it('Should reject PUT with "agent" with type ' + type, function () {
                     var parameters = helper.buildAgentProfile();
@@ -1350,7 +1353,7 @@
         it('An LRS will reject a Cross Origin Request which attempts to send attachment data with error code 400 Bad Request (7.8.d)', function () {
             var templates = [
                 {statement: '{{statements.attachment}}'}
-            ];          
+            ];
             var data = createFromTemplate(templates);
             var statement = data.statement;
             var sID = helper.generateUUID();
@@ -1407,7 +1410,7 @@
             it('should succeed HEAD activities with no body', function () {
                 var templates = [
                     {statement: '{{statements.default}}'}
-                ];          
+                ];
                 var data = createFromTemplate(templates);
                 var statement = data.statement;
                 var parameters = {
@@ -1569,7 +1572,7 @@
             var templates = [
                 {statement: '{{statements.no_actor}}'},
                 {actor: '{{agents.mbox_sha1sum}}'}
-            ];          
+            ];
             var data = createFromTemplate(templates);
             var statement = data.statement;
 
@@ -1590,7 +1593,7 @@
             var templates = [
                 {statement: '{{statements.no_actor}}'},
                 {actor: '{{agents.openid}}'}
-            ];    
+            ];
             var data = createFromTemplate(templates);
             var statement = data.statement;
 
@@ -1611,7 +1614,7 @@
             var templates = [
                 {statement: '{{statements.no_actor}}'},
                 {actor: '{{agents.account}}'}
-            ];    
+            ];
             var data = createFromTemplate(templates);
             var statement = data.statement;
 
