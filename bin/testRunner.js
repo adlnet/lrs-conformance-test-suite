@@ -36,7 +36,7 @@ function testRunner()
 	this.cancel = function()
 	{
 		if(self.test_runner_process)
-			self.test_runner_process.close();		
+			self.test_runner_process.kill();		
 	}
 	this.start = function(options)
 	{
@@ -44,6 +44,7 @@ function testRunner()
 		var test_runner_process = child_process.fork(__dirname +"/lrs-test.js",["--debug"],{execArgv:[/*"--debug-brk=5959"*/],cwd:__dirname+"/../"});
 		this.running = true;
 		self.test_runner_process = test_runner_process;
+		
 		//hook up the messaging
 		test_runner_process.postMessage = function(action, payload)
 		{
