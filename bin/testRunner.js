@@ -36,7 +36,7 @@ function testRunner()
 	this.cancel = function()
 	{
 		if(self.test_runner_process)
-				test_runner_process.close();		
+			self.test_runner_process.close();		
 	}
 	this.start = function(options)
 	{
