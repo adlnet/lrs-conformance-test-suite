@@ -8,10 +8,6 @@
 (function (module, process, request, should, helper) {
     "use strict";
 
-    
-    if(global.OAUTH)
-        request = helper.OAuthRequest(request);
-
     describe('Conformance Requirements using Templating', function () {
 
         var configurations = helper.getTestConfiguration();
@@ -39,7 +35,7 @@
                                 data = test.json;
                             }
 
-                            var promise = request(helper.getEndpointAndAuth())
+                            var promise = request(helper.getEndpoint())
                                 .post(helper.getEndpointStatements())
                                 .headers(helper.addAllHeaders({}))
                                 .json(data);

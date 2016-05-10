@@ -13,40 +13,7 @@
     var MAIL_TO = 'mailto:';
 
     var request = request(helper.getEndpoint());
-    var oauth;
-    if (global.OAUTH) {
-        var OAuth = require('oauth');
 
-        oauth = new OAuth.OAuth(
-            "",
-            "",
-            global.OAUTH.consumer_key,
-            global.OAUTH.consumer_secret,
-            '1.0',
-            null,
-            'HMAC-SHA1'
-        );
-    }
-   
-    //extend the super-test-as-promised with a function to write the oauth headers
-    function extendRequestWithOauth(pre)
-    {   
-        //the sign functions
-        pre.sign = function(oa, token, secret) {
-            var additionalData = {}; //TODO: deal with body params that need to be encoded into the hash (when the data is a form....)
-            additionalData = JSON.parse(JSON.stringify(additionalData)); 
-            additionalData['oauth_verifier'] = global.OAUTH.verifier; //Not sure why the lib does not do is, is required. Jam the verifier in
-            var params = oa._prepareParameters(
-                token, secret, pre.method, pre.url, additionalData // XXX: what if there's query and body? merge?
-            );
-
-            //Never is Echo, I think?
-            var header = oa._isEcho ? 'X-Verify-Credentials-Authorization' : 'Authorization';
-            var signature = oa._buildAuthorizationHeaders(params);
-            //Set the auth header
-            pre.set('Authorization', signature);
-        }
-    }   
     /**
      * Sends an HTTP request using supertest
      * @param {string} type ex. GET, POST, PUT, DELETE and HEAD
@@ -59,25 +26,14 @@
     function sendRequest(type, url, params, body, expect) {
         var reqUrl = params ? (url + '?' + helper.getUrlEncoding(params)) : url;
 
-       
         var headers = helper.addAllHeaders({});
         var pre = request[type](reqUrl);
-        //Add the .sign funciton to the request
-        extendRequestWithOauth(pre);
         if (body) {
             pre.send(body);
         }
         pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
         if (process.env.BASIC_AUTH_ENABLED === 'true') {
             pre.set('Authorization', headers['Authorization']);
-        }
-        //If we're doing oauth, set it up!
-        try {
-            if (global.OAUTH) {
-                pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-            }
-        } catch (e) {
-            console.log(e);
         }
         return pre.expect(expect);
     }
