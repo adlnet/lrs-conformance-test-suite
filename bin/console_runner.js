@@ -12,6 +12,8 @@ program
     .option('-p, --authPassword [string]', 'Basic Auth Password')
     .option('-a, --basicAuth', 'Enable Basic Auth')
     .option('-o, --oAuth1', 'Enable oAuth 1')
+    .option('-c, --oAuthConsumerKey [string]', 'oAuth 1 Consumer Key')
+    .option('-s, --oAuthConsumerSecret [string]', 'oAuth 1 Consumer Secert')
     .parse(process.argv);
 
 
@@ -20,7 +22,10 @@ var options = {
         authUser: program.authUser,
         authPass: program.authPassword,
         basicAuth: program.basicAuth,
-        oAuth1: program.oAuth1
+        oAuth1: program.oAuth1,
+        oAuthConsumerKey: program.oAuthConsumerKey,
+        oAuthConsumerSecret: program.oAuthConsumerSecret
+
     }
    
     /*
@@ -79,10 +84,10 @@ if (!program.oAuth1)
     testRunner.start(options);
 else {
 
-    console.log("testing oauth");
+    console.log(options);
     var config = {};
-    config.consumer_key = '489004739a2a44bf8541607e5d87a5e8';
-    config.consumer_secret = 'TPXFKQaElAPLc2TK';
+    config.consumer_key = options.oAuthConsumerKey;
+    config.consumer_secret = options.oAuthConsumerSecret;
     config.request_token_path = '/OAuth/initiate';
     config.auth_token_path = '/OAuth/token';
     config.authorization_path = "/../accounts/login?next=/XAPI/OAuth/authorize";
