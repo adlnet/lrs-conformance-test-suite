@@ -462,36 +462,76 @@ if (!process.env.EB_NODE_COMMAND) {
                 //call the original constructor
                 var r = originalRequest(e);
 
+                //wrap a promise that returns a new test, so that calling .end() does not return a promise to a new request
+                //but a promise to a new wrapped request.
+
+                //The meta-ness here has grown stupidly complex... maybe better just to patch the underlying library instead of 
+                //writing code that changes the basic structure of other code at runtime....
+                function wrapPromise(p)
+                {
+                    if(p.__wrapped === true) return;
+                    p.__wrapped = true;
+                    for (var i in p) {
+                        //little closure to keep the i var in scope
+                        (function(i) {
+                            //for all functions in the object, if they return a test, wrap the test
+                            if(typeof p[i] !== "function") return;
+                            p[i+'_preAuth_']= p[i];
+                            p[i] = function (url) {
+                                var test = p[i+'_preAuth_'].apply(p,arguments);
+                                if(test) wrapMethods(test);
+                                return test;    
+                            };
+                        })(i)
+                    }
+                }
                 //for every method that returns a Test, wrap all the methods
                 function wrapMethods(r) {
+                    if(r.__wrapped === true) return;
+                    r.__wrapped = true;
+                    if(r._options)
+                        r._options.oauth = global.OAUTH
                     for (var i in r) {
                         //little closure to keep the i var in scope
                         (function(i) {
                             //for all functions in the object
                             if(typeof r[i] !== "function") return;
+
                             //back up the original
                             r["_preAuth_" + i] = r[i];
-                            //replace it with a function that
-                            r[i] = function() {
-                                //calls the original function
-                                var test = r["_preAuth_" + i].apply(r, arguments);
-                                //then checks that the original function returned a Test with an options structure
-                                //that we had not touched before
-                                //NOTE: some of the functions return the `this`, so we need to prevent infinite
-                                //recursion. Currently, checking to see if we already set the oauth values prevents it.
-                                if(test && test._options && !test._options.oauth)
-                                {
-                                    //since this is a new Test, it has a new Request inside, that needs to be set up
-                                    //set the oauth values so the underlying request library can sign the http
-                                    test._options.oauth = global.OAUTH;
 
-                                    //if this object retuned a new Test that we have not seen before, then we need to
-                                    //wrap all its methods, so that when chainin method calls, each object in the chain sets
-                                    //up the oauth on the next 
-                                    wrapMethods(test);
-                                }
+                            
+                            r[i] = function() {
+                            //calls the original function
+                            var test = r["_preAuth_" + i].apply(r, arguments);
+                            //then checks that the original function returned a Test with an options structure
+                            //that we had not touched before
+                            //NOTE: some of the functions return the `this`, so we need to prevent infinite
+                            //recursion. Currently, checking to see if we already set the oauth values prevents it.
+                            if(test && test._options && !test._options.oauth)
+                            {
+                                //since this is a new Test, it has a new Request inside, that needs to be set up
+                                //set the oauth values so the underlying request library can sign the http
+                                test._options.oauth = global.OAUTH;
+
+                                //if this object retuned a new Test that we have not seen before, then we need to
+                                //wrap all its methods, so that when chainin method calls, each object in the chain sets
+                                //up the oauth on the next 
+                                wrapMethods(test);
                                 return test;
                             }
+                            //the .end call works differently. The above if block won't catch it because it does not have a 
+                            //_options member. Thats because it does not return a test, but a promise to a new test. The promise
+                            //has the same interface, but queues up and does not fire until the first request finishes. This requires
+                            //different wrapping logic.
+                            if(i == 'end')
+                            {
+                                wrapPromise(test);
+                            }
+                            
+                            return test;
+                        }
+                            
 
                         })(i) // call the closure with the current i
 
@@ -499,7 +539,7 @@ if (!process.env.EB_NODE_COMMAND) {
                 }
 
                 //wrap all the methods of the test given by the original constructor
-                wrapMethods(r);
+                wrapMethods(r,e);
 
                 //Ok, now we have a new object that has the auth set, and whos methods return Tests that have the auth set, and whos 
                 //methods return Tests that have the auth set, and whos 
