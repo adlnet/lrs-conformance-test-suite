@@ -479,7 +479,16 @@ if (!process.env.EB_NODE_COMMAND) {
                             p[i+'_preAuth_']= p[i];
                             p[i] = function (url) {
                                 var test = p[i+'_preAuth_'].apply(p,arguments);
-                                if(test) wrapMethods(test);
+                                if(test)
+                                {
+                                    if(i == "end")
+                                    {
+                                        wrapPromise(test);
+                                    }else
+                                    {
+                                        wrapMethods(test);
+                                    }
+                                } 
                                 return test;    
                             };
                         })(i)
