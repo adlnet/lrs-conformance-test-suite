@@ -108,15 +108,16 @@ function testRunner()
 			{
 				self.suites.push(new testSuite(message.payload));
 			}
+			//let the hosting application handle this
 			if (message.action == "log")
 			{
-				console.log(message.payload);
+				//console.log(message.payload);
 			}
 			self.emit(message.action,message);
 			self.emit("statusMessage",message);
 		});
 		//test communication
-		test_runner_process.postMessage("ping");
+		//test_runner_process.postMessage("ping");
 		//mark on close
 		test_runner_process.on('close', function()
 		{

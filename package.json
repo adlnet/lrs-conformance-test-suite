@@ -2,9 +2,10 @@
   "name": "lrs-conformance-tests",
   "version": "1.2.2",
   "description": "lrs-conformance-tests",
-  "main": "test.js",
+  "main": "./bin/console_runner.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha test/v1_0_2/*.js --reporter nyan"
+    "test": "node_modules/mocha/bin/mocha test/v1_0_2/*.js --reporter nyan",
+    "start": "node ./bin/console_runner.js"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,7 @@
     "url": "https://github.com/TryxAPI/lrs-conformance-tests/issues"
   },
   "bin": {
-    "lrs-test": "./bin/lrs-test.js"
+    "lrs-test": "./bin/console_runner.js"
   },
   "homepage": "https://github.com/TryxAPI/lrs-conformance-tests",
   "dependencies": {

@@ -114,7 +114,7 @@
 
         if(options.oAuth1)
         {
-            console.log("USING OAUTH");
+           // console.log("USING OAUTH");
             global.OAUTH = {
 
                 consumer_key: _options.oAuthConsumerKey,

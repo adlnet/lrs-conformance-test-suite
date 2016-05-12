@@ -14,6 +14,9 @@ program
     .option('-o, --oAuth1', 'Enable oAuth 1')
     .option('-c, --oAuthConsumerKey [string]', 'oAuth 1 Consumer Key')
     .option('-s, --oAuthConsumerSecret [string]', 'oAuth 1 Consumer Secert')
+    .option('-r, --request_token_path [string]', 'Path to OAuth request token endpoint (relative to endpoint)')
+    .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint)')
+    .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
     .parse(process.argv);
 
 
@@ -24,8 +27,10 @@ var options = {
         basicAuth: program.basicAuth,
         oAuth1: program.oAuth1,
         oAuthConsumerKey: program.oAuthConsumerKey,
-        oAuthConsumerSecret: program.oAuthConsumerSecret
-
+        oAuthConsumerSecret: program.oAuthConsumerSecret,
+        request_token_path: program.request_token_path,
+        auth_token_path: program.auth_token_path,
+        authorization_path: program.authorization_path
     }
    
     /*
@@ -84,13 +89,16 @@ if (!program.oAuth1)
     testRunner.start(options);
 else {
 
-    console.log(options);
+    
     var config = {};
     config.consumer_key = options.oAuthConsumerKey;
     config.consumer_secret = options.oAuthConsumerSecret;
-    config.request_token_path = '/OAuth/initiate';
-    config.auth_token_path = '/OAuth/token';
-    config.authorization_path = "/../accounts/login?next=/XAPI/OAuth/authorize";
+
+    //defaults for the ADL LRS
+    config.request_token_path = options.request_token_path || '/OAuth/initiate';
+    config.auth_token_path = options.auth_token_path ||'/OAuth/token';
+    config.authorization_path = options.authorization_path || "/../accounts/login?next=/XAPI/OAuth/authorize";
+
     config.endpoint = options.endpoint;
     require("./OAuth.js").auth(config, function(err, oAuth) {
 
@@ -114,9 +122,6 @@ else {
             verifier: options.oAuthVerifier
         }
         
-        
-
-
         testRunner.start(options);
     });
 }
