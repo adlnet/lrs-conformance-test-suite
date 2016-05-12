@@ -6,7 +6,7 @@
  *
  */
 (function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser) {
-    "use strict";
+    // "use strict";
 
     var expect = chai.expect;
 
@@ -3202,54 +3202,173 @@
             done();
         });
 
+        /*
+        JSON never specifies about duplicate keys and while many parsers
+        automatically remove or merge such can not be relied upon, and the
+        best indication from the xAPI spec is that malformed statements
+        should be rejected
+        */
         it('A Statement uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+            var dupIdNo = " \"id\":\"" + helper.generateUUID() + "\', \"id\":\"" + helper.generateUUID() + "\", "
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}," + dupIdNo + " \"object\":{\"id\":\"http://test.com/Iobject\"}}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
-        it('A Statement uses the "actor" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+        it('A Statement uses the "actor" property exactly one time (Multiplicity, 4.1.a)', function (done) {
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"actor\":{\"mbox\":\"mailto:duplicate@mail.com\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
-        it('A Statement uses the "verb" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+        it('A Statement uses the "verb" property exactly one time (Multiplicity, 4.1.a)', function (done) {
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"verb\":{\"id\":\"http://test.com/duplicate\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
-        it('A Statement uses the "object" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+        it('A Statement uses the "object" property exactly one time (Multiplicity, 4.1.a)', function (done) {
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/dupObj\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
         it('A Statement uses the "result" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"result\":{\"success\":true}, \"result\":{\"success\":false}}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
         it('A Statement uses the "context" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"context\":{\"instructor\":\"drill sergeant\"}, \"context\":{\"revision\":\"three\"}}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
         it('A Statement uses the "timestamp" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"timestamp\":\"2013-05-18T05:32:34.804Z\", \"timestamp\":\"2018-09-44T12:34:56.789Z\"}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
         it('A Statement uses the "stored" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"stored\":\"2013-05-18T05:32:34.804Z\", \"stored\":\"2018-09-44T12:34:56.789Z\"}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
         it('A Statement uses the "authority" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"authority\":{\"objectType\":\"Group\",\"member\":[{\"account\":{\"homePage\":\"http://example.com/xAPI/OAuth/Token\",\"name\":\"oauth_consumer_x75db\"},{\"mbox\":\"mailto:bob@example.com\"}]},\"authority\":{\"objectType\":\"Group\",\"member\":[{\"account\":{\"homePage\":\"http://example.com/xAPI/OAuth/Token\",\"name\":\"oauth_consumer_x75db\"}},{\"mbox\":\"mailto:bob@example.com\"}]}}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
         it('A Statement uses the "version" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"version\":\"9.0.0\",\"version\":\"9.0.0\"}";
+console.log(data);
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .expect(400)
+                .end(function (err, res, req) {
+                    if (err) {
+                        console.log("creighton", req);
+                        done(err);
+                    } else {
+                        console.log("andy");
+                        done();
+                    }
+                });
         });
 
         it('A Statement uses the "attachments" property at most one time (Multiplicity, 4.1.a)', function (done) {
