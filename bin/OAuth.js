@@ -46,9 +46,9 @@ function doOAuth1(config, callback) {
                 console.log("Auth Token Secret", oauth_token_secret);
                 console.log("Verifier", verifier);
                 var token = {
-                    oAuthToken: oauth_token,
-                    oAuthTokenSecret: oauth_token_secret,
-                    oAuthVerifier: verifier
+                    token: oauth_token,
+                    token_secret: oauth_token_secret,
+                    verifier: verifier
                 };
                 process.nextTick(function() {
                     callback(null, token);

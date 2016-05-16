@@ -51,23 +51,23 @@
                 is: 'true',
                 then: Joi.required()
             }),
-            oAuthConsumerKey: Joi.string().when('oAuth1', {
+            consumer_key: Joi.string().when('oAuth1', {
                 is: 'true',
                 then: Joi.required()
             }),
-            oAuthConsumerSecret: Joi.string().when('oAuth1', {
+            consumer_secret: Joi.string().when('oAuth1', {
                 is: 'true',
                 then: Joi.required()
             }),
-            oAuthToken: Joi.string().when('oAuth1', {
+            token: Joi.string().when('oAuth1', {
                 is: 'true',
                 then: Joi.required()
             }),
-            oAuthTokenSecret: Joi.string().when('oAuth1', {
+            token_secret: Joi.string().when('oAuth1', {
                 is: 'true',
                 then: Joi.required()
             }),
-            oAuthVerifier: Joi.string().when('oAuth1', {
+            verifier: Joi.string().when('oAuth1', {
                 is: 'true',
                 then: Joi.required()
             }),
@@ -90,11 +90,11 @@
             authPass: _options.authPass,
             reporter: _options.reporter,
             grep: _options.grep,
-            oAuthConsumerKey: _options.oAuthConsumerKey,
-            oAuthConsumerSecret: _options.oAuthConsumerSecret,
-            oAuthToken: _options.oAuthToken,
-            oAuthTokenSecret: _options.oAuthTokenSecret,
-            oAuthVerifier: _options.oAuthVerifier,
+            consumer_key: _options.consumer_key,
+            consumer_secret: _options.consumer_secret,
+            token: _options.token,
+            token_secret: _options.token_secret,
+            verifier: _options.verifier,
             oAuth1: _options.oAuth1
         };
         
@@ -117,11 +117,11 @@
            // console.log("USING OAUTH");
             global.OAUTH = {
 
-                consumer_key: _options.oAuthConsumerKey,
-                consumer_secret: _options.oAuthConsumerSecret,
-                token: _options.oAuthToken,
-                token_secret: _options.oAuthTokenSecret,
-                verifier: _options.oAuthVerifier
+                consumer_key: _options.consumer_key,
+                consumer_secret: _options.consumer_secret,
+                token: _options.token,
+                token_secret: _options.token_secret,
+                verifier: _options.verifier
             }
         }
 

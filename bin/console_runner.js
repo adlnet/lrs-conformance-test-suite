@@ -12,13 +12,12 @@ program
     .option('-p, --authPassword [string]', 'Basic Auth Password')
     .option('-a, --basicAuth', 'Enable Basic Auth')
     .option('-o, --oAuth1', 'Enable oAuth 1')
-    .option('-c, --oAuthConsumerKey [string]', 'oAuth 1 Consumer Key')
-    .option('-s, --oAuthConsumerSecret [string]', 'oAuth 1 Consumer Secert')
+    .option('-c, --consumer_key [string]', 'oAuth 1 Consumer Key')
+    .option('-s, --consumer_secret [string]', 'oAuth 1 Consumer Secert')
     .option('-r, --request_token_path [string]', 'Path to OAuth request token endpoint (relative to endpoint)')
     .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint)')
     .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
     .parse(process.argv);
-
 
 var options = {
         endpoint: program.endpoint,
@@ -26,8 +25,8 @@ var options = {
         authPass: program.authPassword,
         basicAuth: program.basicAuth,
         oAuth1: program.oAuth1,
-        oAuthConsumerKey: program.oAuthConsumerKey,
-        oAuthConsumerSecret: program.oAuthConsumerSecret,
+        consumer_key: program.consumer_key,
+        consumer_secret: program.consumer_secret,
         request_token_path: program.request_token_path,
         auth_token_path: program.auth_token_path,
         authorization_path: program.authorization_path
@@ -91,8 +90,8 @@ else {
 
     
     var config = {};
-    config.consumer_key = options.oAuthConsumerKey;
-    config.consumer_secret = options.oAuthConsumerSecret;
+    config.consumer_key = options.consumer_key;
+    config.consumer_secret = options.consumer_secret;
 
     //defaults for the ADL LRS
     config.request_token_path = options.request_token_path || '/OAuth/initiate';
@@ -106,20 +105,20 @@ else {
             console.log(err);
             process.exit();
         }
-        options.oAuthConsumerKey = config.consumer_key;
-        options.oAuthConsumerSecret = config.consumer_secret;
-        options.oAuthToken = oAuth.oAuthToken;
-        options.oAuthTokenSecret = oAuth.oAuthTokenSecret;
-        options.oAuthVerifier = oAuth.oAuthVerifier;
+        options.consumer_key = options.consumer_key;
+        options.consumer_secret = options.consumer_secret;
+        options.token = oAuth.token;
+        options.token_secret = oAuth.token_secret;
+        options.verifier = oAuth.verifier;
 
 
         var OAUTH = {
 
-            consumer_key: options.oAuthConsumerKey,
-            consumer_secret: options.oAuthConsumerSecret,
-            token: options.oAuthToken,
-            token_secret: options.oAuthTokenSecret,
-            verifier: options.oAuthVerifier
+            consumer_key: options.consumer_key,
+            consumer_secret: options.consumer_secret,
+            token: options.token,
+            token_secret: options.token_secret,
+            verifier: options.verifier
         }
         
         testRunner.start(options);
