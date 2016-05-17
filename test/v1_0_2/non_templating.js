@@ -3209,12 +3209,12 @@
         should be rejected
         */
         it('A Statement uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            var dupIdNo = " \"id\":\"" + helper.generateUUID() + "\', \"id\":\"" + helper.generateUUID() + "\", "
-            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}," + dupIdNo + " \"object\":{\"id\":\"http://test.com/Iobject\"}}";
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"id\":\"" + helper.generateUUID() + "\", \"id\":\"" + helper.generateUUID() + "\", \"object\":{\"id\":\"http://test.com/Iobject\"}}";
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res) {
                     if (err) {
@@ -3226,11 +3226,12 @@
         });
 
         it('A Statement uses the "actor" property exactly one time (Multiplicity, 4.1.a)', function (done) {
-            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"actor\":{\"mbox\":\"mailto:duplicate@mail.com\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}}";
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"actor\":{\"mbox\":\"mailto:ang@example.com\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}}";
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res) {
                     if (err) {
@@ -3247,6 +3248,7 @@
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res) {
                     if (err) {
@@ -3263,6 +3265,7 @@
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res) {
                     if (err) {
@@ -3279,6 +3282,7 @@
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res) {
                     if (err) {
@@ -3295,6 +3299,7 @@
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res) {
                     if (err) {
@@ -3306,11 +3311,12 @@
         });
 
         it('A Statement uses the "timestamp" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"timestamp\":\"2013-05-18T05:32:34.804Z\", \"timestamp\":\"2018-09-44T12:34:56.789Z\"}";
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"timestamp\":\"2013-05-44T05:32:34.804Z\", \"timestamp\":\"2018-09-18T12:34:56.789Z\"}";
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res) {
                     if (err) {
@@ -3321,12 +3327,16 @@
                 });
         });
 
+        /*
+        An lrs does not accept statements with a stored property, duplicates or no.  An lrs is to assign the stored statement.
+        */
         it('A Statement uses the "stored" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"stored\":\"2013-05-18T05:32:34.804Z\", \"stored\":\"2018-09-44T12:34:56.789Z\"}";
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"stored\":\"2013-05-04T05:32:34.804Z\", \"stored\":\"2018-09-18T12:34:56.789Z\"}";
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res) {
                     if (err) {
@@ -3337,12 +3347,16 @@
                 });
         });
 
+        /*
+        LRS is accepting and putting its own stamp of approval on the statement, throwing out the authority that it was given, if it doesn't not trust the given authority.  There seems to be no rejection of a statement based on wrong/invalid/untrusted authority.
+        */
         it('A Statement uses the "authority" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"authority\":{\"objectType\":\"Group\",\"member\":[{\"account\":{\"homePage\":\"http://example.com/xAPI/OAuth/Token\",\"name\":\"oauth_consumer_x75db\"},{\"mbox\":\"mailto:bob@example.com\"}]},\"authority\":{\"objectType\":\"Group\",\"member\":[{\"account\":{\"homePage\":\"http://example.com/xAPI/OAuth/Token\",\"name\":\"oauth_consumer_x75db\"}},{\"mbox\":\"mailto:bob@example.com\"}]}}";
+            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"authority\": {\"account\": {\"homePage\": \"http://cloud.scorm.com/\", \"name\": \"William\"}, \"objectType\": \"Agent\"}, \"authority\": {\"account\": {\"homePage\": \"http://cloud.scorm.com/\", \"name\": \"anonymous\"}, \"objectType\": \"Agent\"}}";
 
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res) {
                     if (err) {
@@ -3354,31 +3368,82 @@
         });
 
         it('A Statement uses the "version" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            var data = "{\"actor\":{\"mbox\":\"mailto:joe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"version\":\"9.0.0\",\"version\":\"9.0.0\"}";
-console.log(data);
+            var data = "{\"actor\":{\"mbox\":\"mailto:gijoe@example.com\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"object\":{\"id\":\"http://test.com/Iobject\"}, \"version\":\"1.0.1\", \"version\":\"1.0.99\"}";
             request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
+                .body(data)
                 .expect(400)
                 .end(function (err, res, req) {
                     if (err) {
-                        console.log("creighton", req);
                         done(err);
                     } else {
-                        console.log("andy");
                         done();
                     }
                 });
         });
 
+/* yeah, i'm stuck on this, I can not get the lrs to accept.  I need help */
         it('A Statement uses the "attachments" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+//set up
+            var templates = [
+                {statement: '{{statements.attachment}}'},
+                {
+                    attachments: [
+                        {
+                            "usageType": "http://example.com/attachment-usage/test",
+                            "display": {"en-US": "A test attachment"},
+                            "description": {"en-US": "A test attachment (description)"},
+                            "contentType": "text/plain; charset=ascii",
+                            "length": 27,
+                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
+                            "fileUrl": "http://over.there.com/file.txt"
+                        }
+                    ]
+                }
+            ];
+            data = createFromTemplate(templates);
+            data = data.statement;
+
+            attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+            attachment2 = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
+
+/*  Attempt at stringing an attachment statement.  Get error Invalid Content-Type text/plain when sending statements with attachments */
+// var data = "{\"actor\": {\"mbox\": \"mailto:joe@email.com\", \"name\": \"Joe\", \"objectType\": \"Agent\"}, \"verb\": {\"id\": \"http://adlnet.gov/expapi/verbs/answered\", \"display\": {\"en-US\": \"answered\"}}, \"object\": {\"definition\": {\"name\": {\"en-US\": \"Multi Part Activity\"}, \"description\": {\"en-US\": \"Multi Part Activity Description\"}}, \"id\": \"http://www.example.com/xapi/activities/multipart\", \"objectType\": \"Activity\"}, \"timestamp\": \"2016-05-17T03:33:33.333Z\", \"attachments\": [{\"sha2\": \"456258e999cd321da142df1478d09c0fd4bb2f8d8194637cd53a56a3bfdcd515a\", \"contentType\":\"text/plain\", \"description\": {\"en-US\": \"A test attachment description\"}, \"usageType\": \"http://example.com/attachment-usage/test\", \"length\": 27, \"display\": {\"en-US\":\"A test attachemnt\"}}]}";
+
+
+//proof it works one way
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .body(data).expect(200, done);
+                // .json(data).expect(200);
+
+//proof it works the other way
+        //     var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+        //
+        //     request(helper.getEndpoint())
+        //         .post(helper.getEndpointStatements())
+        //         .headers(helper.addAllHeaders(header))
+        //         .body(attachment2).expect(200, done);
+        //
         });
 
         it('A Group uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
+            var data = "{\"actor\":{\"objectType\": \"Group\", \"name\":\"Joe\", \"mbox\":\"mailto:joe@example.com\", \"name\":\"Mike\"}, \"verb\":{\"id\":\"http://test.com/test\"}, \"id\":\"" + helper.generateUUID() + "\", \"object\":{\"id\":\"http://test.com/Iobject\"}}";
+
+            request(helper.getEndpoint())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .body(data)
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();
+                    }
+                });
         });
 
         it('A Group uses the "member" property at most one time (Multiplicity, 4.1.a)', function (done) {

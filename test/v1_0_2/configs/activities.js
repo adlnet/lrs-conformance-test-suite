@@ -199,19 +199,6 @@
                         expect: [400]
                     },
                     {
-                        name: 'my name is inigo montoya',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            // {object: '{{activities.no_id}}'},
-                            // {object: '{"id":"http://welcome.home/xapi"}'}
-                            // {object: '{"id":"http://this.is/fake", "id":"http://this.is/fake/2"}'}
-                            {object: '{{activities.duplicate_id}}'}
-                            // {object: '{{activities.likert}}'}
-                            // {object: '{"id":"http://hello.world"}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
                         name: 'statement substatement activity "id" not provided',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},

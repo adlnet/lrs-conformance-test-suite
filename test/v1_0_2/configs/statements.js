@@ -158,7 +158,7 @@
                 ]
             },
             {
-                name: 'A "stored" property is a TimeStamp (Type, 4.1.2.1.table1.row8.a, 4.1.2.1.table1.row8.b)',
+                name: 'A "stored" property is a TimeStamp (Type, 4.1.2.1.table1.row8.a, 4.1.2.1.table1.row8.b) **Caution: these tests need reworked. They do not test what they are trying to test.**',
                 config: [
                     {
                         name: 'statement "stored" invalid string',
@@ -175,6 +175,14 @@
                             {stored: INVALID_DATE}
                         ],
                         expect: [400]
+                    },
+                    {
+                        name: 'test good timestamp data (predict will still be rejected because of "stored" property)',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {stored: '2013-05-18T05:32:34.804Z'}
+                        ],
+                        expect: [200]
                     }
                 ]
             },
