@@ -158,7 +158,7 @@
                 ]
             },
             {
-                name: 'A "stored" property is a TimeStamp (Type, 4.1.2.1.table1.row8.a, 4.1.2.1.table1.row8.b)',
+                name: 'A "stored" property is a TimeStamp (Type, 4.1.2.1.table1.row8.a, 4.1.2.1.table1.row8.b) **Caution: these tests need reworked. They do not test what they are trying to test.**',
                 config: [
                     {
                         name: 'statement "stored" invalid string',
@@ -175,6 +175,14 @@
                             {stored: INVALID_DATE}
                         ],
                         expect: [400]
+                    },
+                    {
+                        name: 'test good timestamp data (predict will still be rejected because of "stored" property)',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {stored: '2013-05-18T05:32:34.804Z'}
+                        ],
+                        expect: [200]
                     }
                 ]
             },
@@ -366,32 +374,6 @@
                         templates: [
                             {statement: '{{statements.default}}'},
                             {version: INVALID_VERSION_1_1_0}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
-                name: 'An LRS rejects with error code 400 Bad Request any Statement violating a Statement Requirement. (4.1.12, Varies)',
-                config: [
-                    {
-                        name: 'statement "actor" missing reply 400',
-                        templates: [
-                            {statement: '{{statements.no_actor}}'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "verb" missing reply 400',
-                        templates: [
-                            {statement: '{{statements.no_verb}}'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "object" missing reply 400',
-                        templates: [
-                            {statement: '{{statements.no_object}}'}
                         ],
                         expect: [400]
                     }
