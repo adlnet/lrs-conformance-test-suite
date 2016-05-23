@@ -3337,11 +3337,6 @@
             done();
         });
 
-        it('An Identified Group uses the "openid" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
         it('An Account Object uses the "homePage" property at most one time (Multiplicity, 4.1.a)', function (done) {
             // JSON parser validates this
             done();
