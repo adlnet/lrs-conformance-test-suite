@@ -3679,13 +3679,16 @@
                 .json(data)
                 .expect(400, done)
         });
-
-        it('An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized (7.1)', function (done) {
-            request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}, true))
-                .expect(401, done);
-        });
+        if(!global.OAUTH)
+        {
+            //This test appears to only make sense in the case of http basic Auth. Should we have additional tests for bad OAUTH, which is more complicated?
+            it('An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized (7.1)', function (done) {
+                request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}, true))
+                    .expect(401, done);
+            });
+        }
 
         it('An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter not recognized by the LRS (7.0.a)', function (done) {
             request(helper.getEndpointAndAuth())
