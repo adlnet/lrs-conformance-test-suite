@@ -182,7 +182,7 @@
                             {statement: '{{statements.default}}'},
                             {stored: '2013-05-18T05:32:34.804Z'}
                         ],
-                        expect: [200]
+                        expect: [400]
                     }
                 ]
             },
