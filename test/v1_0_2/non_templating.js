@@ -9,6 +9,22 @@
     // "use strict";
 
     var expect = chai.expect;
+	/*var fs = require('fs');
+	var logFile = fs.createWriteStream('non_templated_tests.log');
+
+    // wrap mocha methods in test enumeration code
+	function describe(title, body)
+	{
+		logFile.write(title+'\n');
+		context(title, body);
+	}
+
+	function it(title, body)
+	{
+		logFile.write('\t'+title+'\n');
+		specify(title, body);
+	}
+	*/
 
     if(global.OAUTH)
         request = helper.OAuthRequest(request);

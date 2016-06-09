@@ -28,10 +28,13 @@
                 p.postMessage("pending", test.title);
             });
             runner.on('start', function() {
-                p.postMessage("log", 'Starting tests');
+                p.postMessage("start", runner.total);
             });
             runner.on('suite', function(suite) {
-                p.postMessage("suite", suite.title);
+                p.postMessage("suite start", suite.title);
+            });
+            runner.on('suite end', function(suite) {
+                p.postMessage('suite end', suite.title);
             });
         }
     }
