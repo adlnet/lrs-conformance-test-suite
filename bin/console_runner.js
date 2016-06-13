@@ -1,5 +1,5 @@
 var program = require('commander');
-var testRunner = new(require(__dirname + '/testRunner.js').testRunner)();
+var testRunner = new(require(__dirname + '/testRunnerImproved.js').testRunner)();
 var jsonSchema = require('jsonschema');
 var validate = jsonSchema.validate;
 
@@ -56,7 +56,7 @@ if (valid.errors.length) {
     program.help();
 }*/
 
-testRunner.on("statusMessage", function(message) {
+/*testRunner.on("statusMessage", function(message) {
     if (message.action == 'log')
         console.log(colors.white.bold(message.action) + ": " + message.payload);
     if (message.action == 'test fail')
@@ -68,7 +68,7 @@ testRunner.on("statusMessage", function(message) {
         console.log(colors.green.bold(message.action) + ": " + message.payload);
     if (message.action == 'suite')
         console.log("\n" + colors.white.bold(message.action) + ": ", colors.white.bold(message.payload) + "\n");
-});
+});*/
 
 
 //catches ctrl+c event
@@ -124,3 +124,5 @@ else {
         testRunner.start(options);
     });
 }
+
+
