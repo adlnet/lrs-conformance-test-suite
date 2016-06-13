@@ -2,12 +2,13 @@
 
 const child_process = require('child_process'),
 	libpath = require('path'),
+	fs = require('fs'),
 	EventEmitter = require('events').EventEmitter;
 
 class Test {
 	constructor(name){
 		this.name = name;
-		this.status = ''; // in ['pending', 'passed', 'failed']
+		this.status = 'pending'; // in ['pending', 'passed', 'failed']
 		this.parent = null;
 	}
 }
@@ -30,18 +31,18 @@ class TestRunner extends EventEmitter
 		super();
 
 		this.proc = null;
-		this.running = false;
 		this.uuid = require('uuid').v4();
+		this.startTime = null;
+		this.endTime = null;
+		this.duration = null;
 
-		this.stats = {
+		this.summary = {
 			total: null,
 			passed: null,
-			failed: null,
-			pending: null
+			failed: null
 		};
 
-		this.log = {'tests': []};
-		this.log.stats = this.stats;
+		this.log = [];
 
 		this.activeTest = null;
 	}
@@ -60,24 +61,39 @@ class TestRunner extends EventEmitter
 		// hook up listeners
 		this._registerStatusUpdates();
 
-		var interval = setInterval(function(){
-			console.log(JSON.stringify(this.stats));
+		var interval = setInterval(function()
+		{
+			console.log(JSON.stringify(this.summary));
+
 		}.bind(this), 2000);
 
 		// kick off tests when ready
-		this.proc.on('message', function(msg){
+		this.proc.on('message', function(msg)
+		{
 			if(msg.action === 'ready')
-				this.send({action: 'runTests', payload: options});
+			{
+				this.proc.send({action: 'runTests', payload: options});
+				this.startTime = Date.now();
+			}
 			else if(msg.action === 'log'){
 				console.log(msg.payload);
 			}
-		});
+		}.bind(this));
 
-		this.proc.on('close', function(){
+		this.proc.on('close', function()
+		{
 			clearInterval(interval);
-			console.log(JSON.stringify(this.stats));
+			console.log(JSON.stringify(this.summary));
+			this.endTime = Date.now();
+			this.duration = this.endTime - this.startTime;
 
-			//this.emit('close');
+			// write log to file
+			var cleanLog = this.getCleanRecord();
+			var output = JSON.stringify(cleanLog, null, '    ');
+			var outPath = libpath.join(__dirname, '..', this.uuid+'.log');
+			fs.writeFile(outPath, output);
+			console.log('Full run log written to', outPath);
+
 		}.bind(this));
 	}
 
@@ -94,9 +110,9 @@ class TestRunner extends EventEmitter
 			case 'start':
 
 				// initialize counters
-				this.stats.total = payload;
-				this.stats.passed = 0;
-				this.stats.failed = 0;
+				this.summary.total = payload;
+				this.summary.passed = 0;
+				this.summary.failed = 0;
 				break;
 
 			case 'end':
@@ -113,7 +129,7 @@ class TestRunner extends EventEmitter
 				if(this.activeTest)
 					this.activeTest.addTest(newSuite);
 				else
-					this.log.tests.push(this.activeTest);
+					this.log.push(newSuite);
 
 				this.activeTest = newSuite;
 				break;
@@ -122,7 +138,17 @@ class TestRunner extends EventEmitter
 
 				// finish the suite
 				if(this.activeTest instanceof Suite && this.activeTest.name === payload)
+				{
+					// roll up test status
+					this.activeTest.status = 'passed';
+					for(var i=0; i<this.activeTest.tests.length; i++){
+						if(this.activeTest.tests[i].status === 'failed')
+							this.activeTest.status = 'failed';
+					}
+
+					// move test cursor
 					this.activeTest = this.activeTest.parent;
+				}
 				else
 					console.error('Dangling suite end!', this.activeTest.name);
 				break;
@@ -136,7 +162,7 @@ class TestRunner extends EventEmitter
 				if(this.activeTest)
 					this.activeTest.addTest(newTest);
 				else
-					this.log.tests.push(newTest);
+					this.log.push(newTest);
 
 				this.activeTest = newTest;
 				break;
@@ -151,12 +177,13 @@ class TestRunner extends EventEmitter
 
 			case 'test pass':
 				this.activeTest.status = 'passed';
-				this.stats.passed++;
+				this.summary.passed++;
 				break;
 
 			case 'test fail':
 				this.activeTest.status = 'failed';
-				this.stats.failed++;
+				this.activeTest.error = payload.message;
+				this.summary.failed++;
 				break;
 			};
 
@@ -169,9 +196,38 @@ class TestRunner extends EventEmitter
 			this.proc.kill();
 	}
 
-	getCleanLog()
+	getCleanRecord()
 	{
-	
+		var runRecord = {
+			uuid: this.uuid,
+			startTime: this.startTime,
+			endTime: this.endTime,
+			duration: this.duration,
+			summary: {
+				total: this.summary.total,
+				passed: this.summary.passed,
+				failed: this.summary.failed
+			}
+		};
+
+		function cleanLog(log)
+		{
+			var clean = {
+				name: log.name,
+				status: log.status,
+				error: log.error
+			};
+
+			if(log.tests){
+				clean.tests = log.tests.map(cleanLog);
+			}
+
+			return clean;
+		}
+
+		runRecord.log = this.log.map(cleanLog);
+
+		return runRecord;
 	}
 }
 
