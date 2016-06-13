@@ -61,39 +61,12 @@ class TestRunner extends EventEmitter
 		// hook up listeners
 		this._registerStatusUpdates();
 
-		var interval = setInterval(function()
-		{
-			console.log(JSON.stringify(this.summary));
-
-		}.bind(this), 2000);
-
 		// kick off tests when ready
 		this.proc.on('message', function(msg)
 		{
-			if(msg.action === 'ready')
-			{
+			if(msg.action === 'ready'){
 				this.proc.send({action: 'runTests', payload: options});
-				this.startTime = Date.now();
 			}
-			else if(msg.action === 'log'){
-				console.log(msg.payload);
-			}
-		}.bind(this));
-
-		this.proc.on('close', function()
-		{
-			clearInterval(interval);
-			console.log(JSON.stringify(this.summary));
-			this.endTime = Date.now();
-			this.duration = this.endTime - this.startTime;
-
-			// write log to file
-			var cleanLog = this.getCleanRecord();
-			var output = JSON.stringify(cleanLog, null, '    ');
-			var outPath = libpath.join(__dirname, '..', this.uuid+'.log');
-			fs.writeFile(outPath, output);
-			console.log('Full run log written to', outPath);
-
 		}.bind(this));
 	}
 
@@ -101,9 +74,6 @@ class TestRunner extends EventEmitter
 	{
 		this.proc.on('message', function(msg)
 		{
-			// pass along the event
-			this.emit('message', msg);
-
 			var action = msg.action, payload = msg.payload;
 			switch(action)
 			{
@@ -113,11 +83,13 @@ class TestRunner extends EventEmitter
 				this.summary.total = payload;
 				this.summary.passed = 0;
 				this.summary.failed = 0;
+				this.startTime = Date.now();
 				break;
 
 			case 'end':
 
-				// do nothing
+				this.endTime = Date.now();
+				this.duration = this.endTime - this.startTime;
 				break;
 
 			case 'suite start':
@@ -187,13 +159,18 @@ class TestRunner extends EventEmitter
 				break;
 			};
 
+			// pass along the event
+			this.emit('message', msg);
+
 		}.bind(this));
 	}
 
 	cancel()
 	{
-		if(this.proc)
+		if(this.proc){
 			this.proc.kill();
+			this.emit('close');
+		}
 	}
 
 	getCleanRecord()

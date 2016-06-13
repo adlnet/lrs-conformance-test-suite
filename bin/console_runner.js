@@ -2,9 +2,12 @@ var program = require('commander');
 var testRunner = new(require(__dirname + '/testRunnerImproved.js').testRunner)();
 var jsonSchema = require('jsonschema');
 var validate = jsonSchema.validate;
-
 var colors = require('colors');
+var libpath = require('path'),
+	fs = require('fs');
+
 require('pretty-error').start();
+
 program
     .version('0.0.1')
     .option('-e, --endpoint [url]', 'xAPI endpoint')
@@ -74,6 +77,7 @@ if (valid.errors.length) {
 //catches ctrl+c event
 process.on('SIGINT', function() {
     console.log(colors.white('Closeing'));
+	testRunner.cancel();
     process.exit();
 });
 
@@ -82,10 +86,36 @@ process.on('exit', function() {
     console.log(colors.white('Closed'));
 })
 
+function start(options)
+{
+    testRunner.start(options);
+	
+	var interval = setInterval(function(){
+		console.log(JSON.stringify(testRunner.summary));
+	}.bind(this), 2000);
 
+	testRunner.on('message', function(msg)
+	{
+		if(msg.action === 'log'){
+			console.log(msg.payload);
+		}
+		else if(msg.action === 'end')
+		{
+			clearInterval(interval);
+			console.log(JSON.stringify(testRunner.summary));
+			
+			// write log to file
+			var cleanLog = testRunner.getCleanRecord();
+			var output = JSON.stringify(cleanLog, null, '    ');
+			var outPath = libpath.join(__dirname, '..', testRunner.uuid+'.log');
+			fs.writeFile(outPath, output);
+			console.log('Full run log written to', outPath);
+		}
+	});
+}
 
 if (!program.oAuth1)
-    testRunner.start(options);
+	start(options);
 else {
 
     
@@ -121,7 +151,7 @@ else {
             verifier: options.verifier
         }
         
-        testRunner.start(options);
+		start(options);
     });
 }
 
