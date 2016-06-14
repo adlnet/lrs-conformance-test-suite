@@ -5,6 +5,15 @@ var validate = jsonSchema.validate;
 
 var colors = require('colors');
 require('pretty-error').start();
+
+function clean_dir(val, dir) {
+    v = val.split(/\s*,\s*/)
+    .forEach(function(d){
+        dir.push(d);
+    });
+    return dir;
+}
+
 program
     .version('0.0.1')
     .option('-e, --endpoint [url]', 'xAPI endpoint')
@@ -19,8 +28,9 @@ program
     .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
     .option('-g, --grep [string]', 'Only run tests that match the given pattern')
     .option('-b, --bail', 'Abort the battery if one test fails')
+    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, [])
     .parse(process.argv);
-
+console.log(program.directory);
 var options = {
         endpoint: program.endpoint,
         authUser: program.authUser,
@@ -33,9 +43,10 @@ var options = {
         auth_token_path: program.auth_token_path,
         authorization_path: program.authorization_path,
         grep: program.grep,
-        bail: program.bail
+        bail: program.bail,
+        directory: program.directory
     }
-   
+
     /*
 
 var valid = validate(options, {
@@ -92,7 +103,7 @@ if (!program.oAuth1)
     testRunner.start(options);
 else {
 
-    
+
     var config = {};
     config.consumer_key = options.consumer_key;
     config.consumer_secret = options.consumer_secret;
@@ -124,7 +135,7 @@ else {
             token_secret: options.token_secret,
             verifier: options.verifier
         }
-        
+
         testRunner.start(options);
     });
 }

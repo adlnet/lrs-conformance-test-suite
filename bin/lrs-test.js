@@ -38,7 +38,8 @@
 
     function runTests(_options) {
         var optionsValidator = Joi.object({
-            directory: Joi.string(),
+            // directory: Joi.string(),
+            directory: Joi.array().items(Joi.string().required()),
             /* See [RFC-3986](http://tools.ietf.org/html/rfc3986#page-17) */
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
             basicAuth: Joi.any(true, false),
