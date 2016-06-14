@@ -82,7 +82,8 @@
             process.exit();
         }
 
-        var DIRECTORY = 'v1_0_2';
+        // var DIRECTORY = ['v1_0_2'];
+        var DIRECTORY = ['OptionB', 'OptionA', 'OptionD'];
         var options = {
             directory: _options.directory || DIRECTORY,
             endpoint: _options.endpoint,
@@ -99,7 +100,7 @@
             verifier: _options.verifier,
             oAuth1: _options.oAuth1,
         };
-        
+console.log(options.directory, typeof options.directory);
         var mocha = new Mocha({
             uii: 'bdd',
             reporter: processMessageReporter(process),
@@ -112,7 +113,7 @@
         process.env.BASIC_AUTH_USER = options.authUser;
         process.env.BASIC_AUTH_PASSWORD = options.authPass;
         process.env.OAUTH1_ENABLED = options.oAuth1;
-        
+
 
         if(options.oAuth1)
         {
@@ -127,15 +128,16 @@
             }
         }
 
-
-        process.postMessage("log", (JSON.stringify(global.OAUTH)));
-        var testDirectory = __dirname + '/../test/' + options.directory;
-        fs.readdirSync(testDirectory).filter(function(file) {
-            return file.substr(-3) === '.js';
-        }).forEach(function(file) {
-            mocha.addFile(
-                path.join(testDirectory, file)
-            );
+        options.directory.forEach(function(dir) {
+            process.postMessage("log", (JSON.stringify(global.OAUTH)));
+            var testDirectory = __dirname + '/../test/' + dir;
+            fs.readdirSync(testDirectory).filter(function(file) {
+                return file.substr(-3) === '.js';
+            }).forEach(function(file) {
+                mocha.addFile(
+                    path.join(testDirectory, file)
+                );
+            });
         });
         mocha.run(function(failures) {
             if (failures) {} else {}
