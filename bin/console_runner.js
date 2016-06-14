@@ -7,7 +7,8 @@ var colors = require('colors');
 require('pretty-error').start();
 
 function clean_dir(val, dir) {
-    v = val.split(/\s*,\s*/)
+    v = val.split(',')
+    // v = val.split(/\s*,\s*/)
     .forEach(function(d){
         dir.push(d);
     });
