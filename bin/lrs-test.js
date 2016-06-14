@@ -72,7 +72,8 @@
                 then: Joi.required()
             }),
             reporter: Joi.string().regex(/^((dot)|(spec)|(nyan)|(tap)|(List)|(progress)|(min)|(doc))$/).default('nyan'),
-            grep: Joi.string()
+            grep: Joi.string(),
+            bail: Joi.boolean()
         }).unknown(false);
 
         var validOptions = Joi.validate(_options, optionsValidator);
@@ -90,20 +91,21 @@
             authPass: _options.authPass,
             reporter: _options.reporter,
             grep: _options.grep,
+            bail: _options.bail,
             consumer_key: _options.consumer_key,
             consumer_secret: _options.consumer_secret,
             token: _options.token,
             token_secret: _options.token_secret,
             verifier: _options.verifier,
-            oAuth1: _options.oAuth1
+            oAuth1: _options.oAuth1,
         };
         
         var mocha = new Mocha({
             uii: 'bdd',
             reporter: processMessageReporter(process),
             timeout: '15000',
-            grep: program.grep,
-            bail: program.bail
+            grep: options.grep,
+            bail: options.bail
         });
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;

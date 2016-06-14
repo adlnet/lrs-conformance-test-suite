@@ -17,6 +17,8 @@ program
     .option('-r, --request_token_path [string]', 'Path to OAuth request token endpoint (relative to endpoint)')
     .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint)')
     .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
+    .option('-g, --grep [string]', 'Only run tests that match the given pattern')
+    .option('-b, --bail', 'Abort the battery if one test fails')
     .parse(process.argv);
 
 var options = {
@@ -29,7 +31,9 @@ var options = {
         consumer_secret: program.consumer_secret,
         request_token_path: program.request_token_path,
         auth_token_path: program.auth_token_path,
-        authorization_path: program.authorization_path
+        authorization_path: program.authorization_path,
+        grep: program.grep,
+        bail: program.bail
     }
    
     /*
