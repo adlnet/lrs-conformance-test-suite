@@ -8,7 +8,6 @@ require('pretty-error').start();
 
 function clean_dir(val, dir) {
     v = val.split(',')
-    // v = val.split(/\s*,\s*/)
     .forEach(function(d){
         dir.push(d);
     });
@@ -29,9 +28,9 @@ program
     .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
     .option('-g, --grep [string]', 'Only run tests that match the given pattern')
     .option('-b, --bail', 'Abort the battery if one test fails')
-    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, [])
+    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, ['v1_0_2'])
     .parse(process.argv);
-console.log(program.directory);
+
 var options = {
         endpoint: program.endpoint,
         authUser: program.authUser,
@@ -89,7 +88,7 @@ testRunner.on("statusMessage", function(message) {
 
 //catches ctrl+c event
 process.on('SIGINT', function() {
-    console.log(colors.white('Closeing'));
+    console.log(colors.white('Closing'));
     process.exit();
 });
 
