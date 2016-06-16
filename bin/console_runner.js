@@ -107,9 +107,12 @@ function start(options)
 			// write log to file
 			var cleanLog = testRunner.getCleanRecord();
 			var output = JSON.stringify(cleanLog, null, '    ');
-			var outPath = libpath.join(__dirname, '..', testRunner.uuid+'.log');
-			fs.writeFile(outPath, output);
-			console.log('Full run log written to', outPath);
+			var outDir = libpath.join(__dirname, '../logs');
+			fs.mkdir(outDir, 0o775, function(){
+				var outPath = libpath.join(outDir, testRunner.uuid+'.log');
+				fs.writeFile(outPath, output);
+				console.log('Full run log written to', outPath);
+			});
 		}
 	});
 }
