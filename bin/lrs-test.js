@@ -157,7 +157,7 @@
             if (message.action == "ping") {
                 process.postMessage("log", "pong");
             }
-            if (message.action == "runTests") {
+            else if (message.action == "runTests") {
                 process.postMessage("log", "runTests starting");
                 runTests(message.payload);
             }

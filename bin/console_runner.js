@@ -76,9 +76,9 @@ if (valid.errors.length) {
 
 //catches ctrl+c event
 process.on('SIGINT', function() {
-    console.log(colors.white('Closeing'));
+    console.log(colors.white('Aborting tests'));
 	testRunner.cancel();
-    process.exit();
+    //process.exit();
 });
 
 

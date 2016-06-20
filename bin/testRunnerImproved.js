@@ -8,7 +8,7 @@ const child_process = require('child_process'),
 class Test {
 	constructor(name){
 		this.name = name;
-		this.status = 'pending'; // in ['pending', 'passed', 'failed']
+		this.status = 'cancelled'; // in ['cancelled', 'passed', 'failed']
 		this.parent = null;
 	}
 }
@@ -169,6 +169,7 @@ class TestRunner extends EventEmitter
 	{
 		if(this.proc){
 			this.proc.kill();
+			this.emit('message', {action: 'end'});
 			this.emit('close');
 		}
 	}
