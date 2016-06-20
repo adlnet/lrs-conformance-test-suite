@@ -8,7 +8,7 @@ const child_process = require('child_process'),
 class Test {
 	constructor(name){
 		this.name = name;
-		this.status = 'cancelled'; // in ['cancelled', 'passed', 'failed']
+		this.status = 'running'; // in ['running', 'cancelled', 'passed', 'failed']
 		this.parent = null;
 	}
 }
@@ -56,6 +56,9 @@ class TestRunner extends EventEmitter
 
 	start()
 	{
+		if(this.state !== 'notStarted') return;
+		this.state = 'started';
+
 		// spin up the child process
 		this.proc = child_process.fork( libpath.join(__dirname, "lrs-test.js"),
 			["--debug"],
@@ -91,7 +94,6 @@ class TestRunner extends EventEmitter
 				this.summary.passed = 0;
 				this.summary.failed = 0;
 				this.startTime = Date.now();
-				this.state = 'started';
 				break;
 
 			case 'end':
@@ -176,11 +178,17 @@ class TestRunner extends EventEmitter
 
 	cancel()
 	{
-		if(this.proc){
+		if(this.proc)
+		{
 			this.proc.kill();
 			this.endTime = Date.now();
 			this.duration = this.endTime - this.startTime;
-			this.state = 'cancelled';
+
+			while(this.activeTest){
+				this.activeTest.state = 'cancelled';
+				this.activeTest = this.activeTest.parent;
+			}
+
 			this.emit('message', {action: 'end'});
 			this.emit('close');
 		}
@@ -214,6 +222,8 @@ class TestRunner extends EventEmitter
 
 		function cleanLog(log)
 		{
+			if(!log) return null;
+
 			var clean = {
 				name: log.name,
 				status: log.status,
