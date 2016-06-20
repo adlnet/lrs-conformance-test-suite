@@ -169,6 +169,8 @@ class TestRunner extends EventEmitter
 	{
 		if(this.proc){
 			this.proc.kill();
+			this.endTime = Date.now();
+			this.duration = this.endTime - this.startTime;
 			this.emit('message', {action: 'end'});
 			this.emit('close');
 		}

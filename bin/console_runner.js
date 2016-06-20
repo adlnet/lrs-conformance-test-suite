@@ -103,6 +103,7 @@ function start(options)
 		{
 			clearInterval(interval);
 			console.log(JSON.stringify(testRunner.summary));
+			console.log(`Tests completed in ${testRunner.duration/1000} seconds`);
 			
 			// write log to file
 			var cleanLog = testRunner.getCleanRecord();

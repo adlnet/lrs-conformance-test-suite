@@ -129,7 +129,7 @@
         }
 
 
-        process.postMessage("log", (JSON.stringify(global.OAUTH)));
+        //process.postMessage("log", (JSON.stringify(global.OAUTH)));
         var testDirectory = __dirname + '/../test/' + options.directory;
         fs.readdirSync(testDirectory).filter(function(file) {
             return file.substr(-3) === '.js';
