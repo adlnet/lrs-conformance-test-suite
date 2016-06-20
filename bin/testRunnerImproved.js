@@ -26,15 +26,22 @@ class Suite extends Test {
 
 class TestRunner extends EventEmitter
 {
-	constructor()
+	constructor(name, owner, config, configId)
 	{
 		super();
 
 		this.proc = null;
+
+		this.name = name;
+		this.owner = owner;
+		this.config = config;
+		this.configId = configId;
+
 		this.uuid = require('uuid').v4();
 		this.startTime = null;
 		this.endTime = null;
 		this.duration = null;
+		this.state = 'notStarted'; // in ["notStarted", "started", "finished", "cancelled"]
 
 		this.summary = {
 			total: null,
@@ -42,12 +49,12 @@ class TestRunner extends EventEmitter
 			failed: null
 		};
 
-		this.log = [];
+		this.log = null;
 
 		this.activeTest = null;
 	}
 
-	start(options)
+	start()
 	{
 		// spin up the child process
 		this.proc = child_process.fork( libpath.join(__dirname, "lrs-test.js"),
@@ -65,7 +72,7 @@ class TestRunner extends EventEmitter
 		this.proc.on('message', function(msg)
 		{
 			if(msg.action === 'ready'){
-				this.proc.send({action: 'runTests', payload: options});
+				this.proc.send({action: 'runTests', payload: this.config});
 			}
 		}.bind(this));
 	}
@@ -84,12 +91,14 @@ class TestRunner extends EventEmitter
 				this.summary.passed = 0;
 				this.summary.failed = 0;
 				this.startTime = Date.now();
+				this.state = 'started';
 				break;
 
 			case 'end':
 
 				this.endTime = Date.now();
 				this.duration = this.endTime - this.startTime;
+				this.state = 'finished';
 				break;
 
 			case 'suite start':
@@ -101,7 +110,7 @@ class TestRunner extends EventEmitter
 				if(this.activeTest)
 					this.activeTest.addTest(newSuite);
 				else
-					this.log.push(newSuite);
+					this.log = newSuite;
 
 				this.activeTest = newSuite;
 				break;
@@ -171,6 +180,7 @@ class TestRunner extends EventEmitter
 			this.proc.kill();
 			this.endTime = Date.now();
 			this.duration = this.endTime - this.startTime;
+			this.state = 'cancelled';
 			this.emit('message', {action: 'end'});
 			this.emit('close');
 		}
@@ -179,10 +189,22 @@ class TestRunner extends EventEmitter
 	getCleanRecord()
 	{
 		var runRecord = {
+			name: this.name || null,
+			owner: this.owner || null,
+			config: {
+				endpoint: this.config.endpoint,
+				basicAuth: this.config.basicAuth,
+				authUser: this.config.authUser,
+				oAuth1: this.config.oAuth1,
+				consumer_key: this.config.consumer_key
+			},
+			configUUID: this.configId,
+
 			uuid: this.uuid,
 			startTime: this.startTime,
 			endTime: this.endTime,
 			duration: this.duration,
+			state: this.state,
 			summary: {
 				total: this.summary.total,
 				passed: this.summary.passed,
@@ -205,7 +227,7 @@ class TestRunner extends EventEmitter
 			return clean;
 		}
 
-		runRecord.log = this.log.map(cleanLog);
+		runRecord.log = cleanLog(this.log);
 
 		return runRecord;
 	}

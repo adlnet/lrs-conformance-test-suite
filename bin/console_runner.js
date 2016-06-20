@@ -1,5 +1,5 @@
 var program = require('commander');
-var testRunner = new(require(__dirname + '/testRunnerImproved.js').testRunner)();
+var TestRunner = require('./testRunnerImproved.js').testRunner;
 var jsonSchema = require('jsonschema');
 var validate = jsonSchema.validate;
 var colors = require('colors');
@@ -73,6 +73,7 @@ if (valid.errors.length) {
         console.log("\n" + colors.white.bold(message.action) + ": ", colors.white.bold(message.payload) + "\n");
 });*/
 
+var testRunner = null;
 
 //catches ctrl+c event
 process.on('SIGINT', function() {
@@ -88,7 +89,8 @@ process.on('exit', function() {
 
 function start(options)
 {
-    testRunner.start(options);
+	testRunner = new TestRunner('console', null, options, null);
+    testRunner.start();
 	
 	var interval = setInterval(function(){
 		console.log(JSON.stringify(testRunner.summary));
