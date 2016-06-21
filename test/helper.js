@@ -30,7 +30,7 @@ if (!process.env.EB_NODE_COMMAND) {
     var TEMPLATE_FOLDER_RELATIVE = './' + process.env.DIRECTORY + '/templates';
 
 /* Creating a global variable to calculate the time difference between the test suite and the curent lrs endpoint for use with since and until */
-    var TIME_MARGIN;
+    var TIME_MARGIN;// = new Date();
 /* End global time variable */
 
     /** Endpoint About */
@@ -308,12 +308,16 @@ if (!process.env.EB_NODE_COMMAND) {
         },
 
 /* Make the TIME_MARGIN available to tests */
-        getTimeMargin: function () {
+        getTimeMargin: function (done) {
+console.log('Welcome to the Time Margin function', TIME_MARGIN);
             if (!TIME_MARGIN) {
-                setTimeMargin();
+console.log("there was no Time Margin, but now there will be");
+                setTimeMargin(done);
+            } else {
+console.log('type something', TIME_MARGIN);
+            return TIME_MARGIN || 99;
             }
-console.log('type something');
-            return TIME_MARGIN;
+// console.log('This message is a warning - you should never see this message; however I think you are going to see this every time');
         },
 /* End get time margin */
 
@@ -597,27 +601,77 @@ console.log('type something');
         return object;
     }
 
-    function setTimeMargin() {
+/*
+Calculates the difference between the lrs time and the suite time and sets a variable for use with since and until requests.
+*/
+    function dolog(message, message2) {
+        console.log(message, message2);
+    }
+
+    function setTimeMargin(done) {
         var request = require('super-request'),
+            // module = require('module'),
+            fs = require('fs'),
+            extend = require('extend'),
+            moment = require('moment'),
+            requestPromise = require('supertest-as-promised'),
+            chai = require('chai'),
+            Joi = require('joi'),
+            multipartParser = require('./multipartParser'),
+            // request = require(''),
+            // request = require(''),
+            // request = require(''),
+            temp = [{statement: '{{statements.default}}'}],
+            stmt,
+            id = module.exports.generateUUID(),
+            query = module.exports.getUrlEncoding({
+                StatementId: id
+            }),
             lrsTime,
             suiteTime;
-
-        request(helper.getEndpoint())
-            .get(helper.getEndpointAbout())
-            .headers(helper.addAllHeaders({}))
+        stmt = module.exports.createTestObject(module.exports.convertTemplate(temp)).statement;
+        stmt.id = id;
+        suiteTime = new Date();
+debugger;
+console.log("Pineapple", stmt);
+        request(module.exports.getEndpointAndAuth())
+            .post(module.exports.getEndpointStatements())
+            // .post(module.exports.getEndpointAbout())
+            .headers(module.exports.addAllHeaders({}))
+            .json(stmt)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
+console.log("there has been a mistake", err);
+                    // dolog('there has been a mistake', err);
+                    // return err;
                     done(err);
                 } else {
-                    lrsTime = parse(res.body, done);
-                    suiteTime = new Date();
-                    return lrsTime - suiteTime;
+console.log("we have passed the post with flying colors", res.body, 'id', stmt.id);
+                    // dolog("Yay, we passed", res.body);
+console.log("and take a quick look at the query before we use it", query);
+                    request(module.exports.getEndpointAndAuth())
+                        .get(module.exports.getEndpointStatements() + '?' + query)
+                        .headers(module.exports.addAllHeaders({}))
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err) {
+                                // return err;
+console.log('Almost there', err);
+                                done(err);
+                            } else {
+console.log("This is a string", res.body);
+                                lrsTime = new Date(res.headers.date);
+console.log("how bout this!!", lrsTime, suiteTime, lrsTime - suiteTime);
+                                TIME_MARGIN = lrsTime - suiteTime;
+                                // return;
+                                done(lrsTime - suiteTime);
+                            }
+                        });
                 }
-            })
-
-        return lrsTime - suiteTime;
+            });
     }
+/* End set time margin function */
 
     function validateConfiguration(configurations, location) {
         configurations.forEach(function (configuration) {

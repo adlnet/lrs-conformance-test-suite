@@ -3108,18 +3108,23 @@
 
         it('should only return Object StatementRef when using "since"', function (done) {
             // Need to use statementRefId verb b/c initial voided statement comes before voidingTime
+console.log("what's up?");
+            var timeM = helper.getTimeMargin(done);
             var query = helper.getUrlEncoding({
                 verb: verb,
-                since: voidingTime
+                since: timeM || voidingTime
             });
+console.log("time margin in test", timeM);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
+console.log("error in the test:", query);
                         done(err);
                     } else {
+console.log("in the test:", query);
                         var results = parse(res.body, done);
                         expect(results).to.have.property('statements');
                         expect(JSON.stringify(results.statements)).to.contain(statementRefId);
