@@ -5,17 +5,11 @@ const child_process = require('child_process'),
 	fs = require('fs'),
 	EventEmitter = require('events').EventEmitter;
 
-class Test {
+class Suite {
 	constructor(name){
 		this.name = name;
 		this.status = 'running'; // in ['running', 'cancelled', 'passed', 'failed']
 		this.parent = null;
-	}
-}
-
-class Suite extends Test {
-	constructor(name){
-		super(name);
 		this.tests = [];
 	}
 	addTest(test){
@@ -120,13 +114,15 @@ class TestRunner extends EventEmitter
 			case 'suite end':
 
 				// finish the suite
-				if(this.activeTest instanceof Suite && this.activeTest.name === payload)
+				if(this.activeTest.name === payload)
 				{
 					// roll up test status
 					this.activeTest.status = 'passed';
 					for(var i=0; i<this.activeTest.tests.length; i++){
-						if(this.activeTest.tests[i].status === 'failed')
+						if(this.activeTest.tests[i].status === 'failed'){
 							this.activeTest.status = 'failed';
+							break;
+						}
 					}
 
 					// move test cursor
@@ -139,20 +135,20 @@ class TestRunner extends EventEmitter
 			case 'test start':
 
 				// start a new test
-				var newTest = new Test(payload);
+				var newTest = new Suite(payload);
 
 				// add to log
 				if(this.activeTest)
 					this.activeTest.addTest(newTest);
 				else
-					this.log.push(newTest);
+					this.log = newTest;
 
 				this.activeTest = newTest;
 				break;
 
 			case 'test end':
 
-				if(this.activeTest instanceof Test && this.activeTest.name === payload)
+				if(this.activeTest.name === payload)
 					this.activeTest = this.activeTest.parent;
 				else
 					console.error('Dangling test end!', this.activeTest.name);
@@ -184,8 +180,9 @@ class TestRunner extends EventEmitter
 			this.endTime = Date.now();
 			this.duration = this.endTime - this.startTime;
 
+			// evaluate all in-progress suites to "cancelled"
 			while(this.activeTest){
-				this.activeTest.state = 'cancelled';
+				this.activeTest.status = 'cancelled';
 				this.activeTest = this.activeTest.parent;
 			}
 
@@ -224,21 +221,15 @@ class TestRunner extends EventEmitter
 		{
 			if(!log) return null;
 
-			var clean = {
+			return {
 				name: log.name,
 				status: log.status,
-				error: log.error
+				error: log.error,
+				tests: log.tests.map(cleanLog)
 			};
-
-			if(log.tests){
-				clean.tests = log.tests.map(cleanLog);
-			}
-
-			return clean;
 		}
 
 		runRecord.log = cleanLog(this.log);
-
 		return runRecord;
 	}
 }
