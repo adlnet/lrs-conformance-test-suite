@@ -1,0 +1,25 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "definition": {
+    "name": {
+      "en": "Fill-In"
+    },
+    "description": {
+      "en": "Ben is often heard saying:"
+    },
+    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+    "moreInfo": "http://virtualmeeting.example.com/345256",
+    "interactionType": "fill-in",
+    "correctResponsesPattern": [
+      "Bob's your uncle"
+    ],
+    "extensions": {
+      "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+      "http://example.com/profiles/meetings/extension/reporter": {
+        "name": "Thomas",
+        "id": "http://openid.com/342"
+      }
+    }
+  }
+}

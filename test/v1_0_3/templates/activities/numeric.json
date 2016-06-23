@@ -1,0 +1,25 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "definition": {
+    "name": {
+      "en": "Numeric"
+    },
+    "description": {
+      "en": "How many jokes is Chris the butt of each day?"
+    },
+    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+    "moreInfo": "http://virtualmeeting.example.com/345256",
+    "interactionType": "numeric",
+    "correctResponsesPattern": [
+      "4:"
+    ],
+    "extensions": {
+      "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+      "http://example.com/profiles/meetings/extension/reporter": {
+        "name": "Thomas",
+        "id": "http://openid.com/342"
+      }
+    }
+  }
+}

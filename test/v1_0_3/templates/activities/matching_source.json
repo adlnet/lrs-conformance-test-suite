@@ -1,0 +1,51 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "definition": {
+    "name": {
+      "en": "Matching"
+    },
+    "description": {
+      "en": "Match these people to their kickball team:"
+    },
+    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+    "moreInfo": "http://virtualmeeting.example.com/345256",
+    "interactionType": "matching",
+    "correctResponsesPattern": [
+      "ben[.]3[,]chris[.]2[,]troy[.]4[,]freddie[.]1"
+    ],
+    "source": [
+      {
+        "id": "ben",
+        "description": {
+          "en-US": "Ben"
+        }
+      },
+      {
+        "id": "chris",
+        "description": {
+          "en-US": "Chris"
+        }
+      },
+      {
+        "id": "troy",
+        "description": {
+          "en-US": "Troy"
+        }
+      },
+      {
+        "id": "freddie",
+        "description": {
+          "en-US": "Freddie"
+        }
+      }
+    ],
+    "extensions": {
+      "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+      "http://example.com/profiles/meetings/extension/reporter": {
+        "name": "Thomas",
+        "id": "http://openid.com/342"
+      }
+    }
+  }
+}

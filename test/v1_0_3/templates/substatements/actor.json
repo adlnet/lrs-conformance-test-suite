@@ -1,0 +1,17 @@
+{
+  "objectType": "SubStatement",
+  "actor": {
+    "objectType": "Agent"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/reported",
+    "display": {
+      "en-GB": "reported",
+      "en-US": "reported"
+    }
+  },
+  "object": {
+    "objectType": "Activity",
+    "id": "http://www.example.com/meetings/occurances/34534"
+  }
+}
