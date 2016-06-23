@@ -3,7 +3,8 @@
 const child_process = require('child_process'),
 	libpath = require('path'),
 	fs = require('fs'),
-	EventEmitter = require('events').EventEmitter;
+	EventEmitter = require('events').EventEmitter,
+	rollup = require('./rollupRules.js');
 
 class Suite {
 	constructor(name){
@@ -20,7 +21,7 @@ class Suite {
 
 class TestRunner extends EventEmitter
 {
-	constructor(name, owner, config, configUUID)
+	constructor(name, owner, config, configUUID, rollupRule)
 	{
 		super();
 
@@ -30,6 +31,7 @@ class TestRunner extends EventEmitter
 		this.owner = owner;
 		this.config = config;
 		this.configUUID = configUUID;
+		this.rollupRule = rollup[rollupRule] ? rollupRule : 'mustPassAll';
 
 		this.uuid = require('uuid').v4();
 		this.startTime = null;
@@ -117,13 +119,7 @@ class TestRunner extends EventEmitter
 				if(this.activeTest.name === payload)
 				{
 					// roll up test status
-					this.activeTest.status = 'passed';
-					for(var i=0; i<this.activeTest.tests.length; i++){
-						if(this.activeTest.tests[i].status === 'failed'){
-							this.activeTest.status = 'failed';
-							break;
-						}
-					}
+					this.activeTest.status = rollup[this.rollupRule](this.activeTest);
 
 					// move test cursor
 					this.activeTest = this.activeTest.parent;
@@ -181,8 +177,12 @@ class TestRunner extends EventEmitter
 			this.duration = this.endTime - this.startTime;
 
 			// evaluate all in-progress suites to "cancelled"
+			this.state = 'cancelled';
+			this.activeTest.status = 'cancelled';
+			this.activeTest = this.activeTest.parent;
 			while(this.activeTest){
-				this.activeTest.status = 'cancelled';
+				this.activeTest.status = rollup[this.rollupRule](this.activeTest);
+				this.emit('message', {action: 'suite end', payload: this.activeTest.name});
 				this.activeTest = this.activeTest.parent;
 			}
 
@@ -204,6 +204,7 @@ class TestRunner extends EventEmitter
 				consumer_key: this.config.consumer_key
 			},
 			configUUID: this.configUUID,
+			rollupRule: this.rollupRule,
 
 			uuid: this.uuid,
 			startTime: this.startTime,
