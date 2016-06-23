@@ -28,10 +28,13 @@
                 p.postMessage("pending", test.title);
             });
             runner.on('start', function() {
-                p.postMessage("log", 'Starting tests');
+                p.postMessage("start", runner.total);
             });
             runner.on('suite', function(suite) {
-                p.postMessage("suite", suite.title);
+                p.postMessage("suite start", suite.title);
+            });
+            runner.on('suite end', function(suite) {
+                p.postMessage('suite end', suite.title);
             });
         }
     }
@@ -127,7 +130,7 @@
         }
 
         options.directory.forEach(function(dir) {
-            process.postMessage("log", (JSON.stringify(global.OAUTH)));
+            //process.postMessage("log", (JSON.stringify(global.OAUTH)));
             var testDirectory = __dirname + '/../test/' + dir;
             fs.readdirSync(testDirectory).filter(function(file) {
                 return file.substr(-3) === '.js';
@@ -156,7 +159,7 @@
             if (message.action == "ping") {
                 process.postMessage("log", "pong");
             }
-            if (message.action == "runTests") {
+            else if (message.action == "runTests") {
                 process.postMessage("log", "runTests starting");
                 runTests(message.payload);
             }

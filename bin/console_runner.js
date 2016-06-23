@@ -1,9 +1,11 @@
 var program = require('commander');
-var testRunner = new(require(__dirname + '/testRunner.js').testRunner)();
+var TestRunner = require('./testRunner.js').testRunner;
 var jsonSchema = require('jsonschema');
 var validate = jsonSchema.validate;
-
 var colors = require('colors');
+var libpath = require('path'),
+	fs = require('fs');
+
 require('pretty-error').start();
 
 function clean_dir(val, dir) {
@@ -71,7 +73,7 @@ if (valid.errors.length) {
     program.help();
 }*/
 
-testRunner.on("statusMessage", function(message) {
+/*testRunner.on("statusMessage", function(message) {
     if (message.action == 'log')
         console.log(colors.white.bold(message.action) + ": " + message.payload);
     if (message.action == 'test fail')
@@ -83,13 +85,14 @@ testRunner.on("statusMessage", function(message) {
         console.log(colors.green.bold(message.action) + ": " + message.payload);
     if (message.action == 'suite')
         console.log("\n" + colors.white.bold(message.action) + ": ", colors.white.bold(message.payload) + "\n");
-});
+});*/
 
+var testRunner = null;
 
 //catches ctrl+c event
 process.on('SIGINT', function() {
-    console.log(colors.white('Closing'));
-    process.exit();
+    console.log(colors.white('Aborting tests'));
+	testRunner.cancel();
 });
 
 
@@ -97,10 +100,41 @@ process.on('exit', function() {
     console.log(colors.white('Closed'));
 })
 
+function start(options)
+{
+	testRunner = new TestRunner('console', null, options, null);
+    testRunner.start();
+	
+	var interval = setInterval(function(){
+		console.log(JSON.stringify(testRunner.summary));
+	}.bind(this), 2000);
 
+	testRunner.on('message', function(msg)
+	{
+		if(msg.action === 'log'){
+			console.log(msg.payload);
+		}
+		else if(msg.action === 'end')
+		{
+			clearInterval(interval);
+			console.log(JSON.stringify(testRunner.summary));
+			console.log(`Tests completed in ${testRunner.duration/1000} seconds`);
+			
+			// write log to file
+			var cleanLog = testRunner.getCleanRecord();
+			var output = JSON.stringify(cleanLog, null, '    ');
+			var outDir = libpath.join(__dirname, '../logs');
+			fs.mkdir(outDir, 0o775, function(){
+				var outPath = libpath.join(outDir, testRunner.uuid+'.log');
+				fs.writeFile(outPath, output);
+				console.log('Full run log written to', outPath);
+			});
+		}
+	});
+}
 
 if (!program.oAuth1)
-    testRunner.start(options);
+	start(options);
 else {
 
 
@@ -135,7 +169,8 @@ else {
             token_secret: options.token_secret,
             verifier: options.verifier
         }
-
-        testRunner.start(options);
+        
+		start(options);
     });
 }
+
