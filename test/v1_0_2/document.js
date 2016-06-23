@@ -27,14 +27,14 @@
             'HMAC-SHA1'
         );
     }
-   
+
     //extend the super-test-as-promised with a function to write the oauth headers
     function extendRequestWithOauth(pre)
-    {   
+    {
         //the sign functions
         pre.sign = function(oa, token, secret) {
             var additionalData = {}; //TODO: deal with body params that need to be encoded into the hash (when the data is a form....)
-            additionalData = JSON.parse(JSON.stringify(additionalData)); 
+            additionalData = JSON.parse(JSON.stringify(additionalData));
             additionalData['oauth_verifier'] = global.OAUTH.verifier; //Not sure why the lib does not do is, is required. Jam the verifier in
             var params = oa._prepareParameters(
                 token, secret, pre.method, pre.url, additionalData // XXX: what if there's query and body? merge?
@@ -46,7 +46,7 @@
             //Set the auth header
             pre.set('Authorization', signature);
         }
-    }   
+    }
     /**
      * Sends an HTTP request using supertest
      * @param {string} type ex. GET, POST, PUT, DELETE and HEAD
@@ -59,7 +59,7 @@
     function sendRequest(type, url, params, body, expect) {
         var reqUrl = params ? (url + '?' + helper.getUrlEncoding(params)) : url;
 
-       
+
         var headers = helper.addAllHeaders({});
         var pre = request[type](reqUrl);
         //Add the .sign funciton to the request
@@ -81,6 +81,11 @@
         }
         return pre.expect(expect);
     }
+
+    before("Before all tests are run", function (done) {
+        console.log("Setting up\naccounting for any time differential between test suite and lrs");
+        helper.setTimeMargin(done);
+    });
 
     describe('Document API Requirements', function () {
         it('An LRS has a State API with endpoint "base IRI"+"/activities/state" (7.3.table1.row1.a ,7.3.table1.row1.c)', function () {
@@ -635,7 +640,7 @@
                 document = helper.buildDocument();
             return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
                 .then(function () {
-                    parameters.since = new Date(Date.now() - 60 * 1000).toISOString(); // Date 1 minute ago
+                    parameters.since = new Date(Date.now() - 60 * 1000 - helper.getTimeMargin()).toISOString(); // Date 1 minute ago
                     return sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
                         .then(function (res) {
                             var body = res.body;
@@ -646,7 +651,7 @@
 
         it('An LRS\'s State API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.4.table2.row4.a)', function () {
             var parameters = helper.buildState();
-            parameters.since = 'not a timestamp dog';
+            parameters.since = 'not a timestamp';
             return sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
         });
 
@@ -686,7 +691,7 @@
                         .then(function () {
                             var parameters = helper.buildState();
                             delete parameters.stateId;
-                            parameters.since = new Date(Date.now() - 1000).toISOString();
+                            parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString();
                             return sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
                                 .then(function (res) {
                                     var body = res.body;
@@ -1006,7 +1011,7 @@
                 document = helper.buildDocument();
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
-                    parameters.since = new Date(Date.now() - 1000).toISOString();
+                    parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString();
                     return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200);
                 });
         });
@@ -1059,7 +1064,7 @@
             return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
                 .then(function () {
                     delete parameters.profileId;
-                    parameters.since = new Date(Date.now() - 1000).toISOString(); // Date 1 second ago
+                    parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString(); // Date 1 second ago
                     return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
                         .then(function (res) {
                             var body = res.body;
@@ -1236,7 +1241,7 @@
                 document = helper.buildDocument();
             return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
                 .then(function () {
-                    parameters.since = new Date(Date.now() - 1000).toISOString();
+                    parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString();
                     return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200);
                 });
         });
@@ -1285,7 +1290,7 @@
                 document = helper.buildDocument();
             return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
                 .then(function () {
-                    parameters.since = new Date(Date.now() - 1000).toISOString();
+                    parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString();
                     delete parameters.profileId;
                     return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
                         .then(function (res) {
