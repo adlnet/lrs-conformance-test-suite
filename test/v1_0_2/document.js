@@ -82,8 +82,8 @@
         return pre.expect(expect);
     }
 
-    before("Hey let's make sure the time margin is set", function () {
-        console.log("Before Document.js tests are run", helper.getTimeMargin());
+    before("Hey let's make sure the time margin is set", function (done) {
+        console.log("Before Document.js tests are run", helper.setTimeMargin(done));
     });
 
     describe('Document API Requirements', function () {

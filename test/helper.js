@@ -310,15 +310,7 @@ if (!process.env.EB_NODE_COMMAND) {
 
 /* Make the TIME_MARGIN available to tests */
         getTimeMargin: function () {
-console.log('Welcome to the Time Margin function', TIME_MARGIN);
-            if (!TIME_MARGIN) {
-console.log("there was no Time Margin, but now there will be");
-                module.exports.setTimeMargin();
-            } else {
-console.log('type something', TIME_MARGIN);
                 return TIME_MARGIN;
-            }
-// console.log('This message is a warning - you should never see this message; however I think you are going to see this every time');
         },
 /* End get time margin */
 
@@ -374,14 +366,14 @@ Calculates the difference between the lrs time and the suite time and sets a var
                         if (err) {
                             return err;
                             console.log('Almost there', err);
-                            // done(err);
+                            done(err);
                         } else {
                             console.log("This is a string", res.body);
                             lrsTime = new Date(res.headers.date);
                             TIME_MARGIN = suiteTime - lrsTime;
                             console.log("how bout this!!", lrsTime, suiteTime, TIME_MARGIN);
-                            return TIME_MARGIN;
-                            // done(err, lrsTime - suiteTime);
+                            // return TIME_MARGIN;
+                            done(err, TIME_MARGIN);
                         }
                     });
                 }
