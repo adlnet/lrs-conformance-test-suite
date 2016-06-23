@@ -1,5 +1,5 @@
 var program = require('commander');
-var TestRunner = require('./testRunnerImproved.js').testRunner;
+var TestRunner = require('./testRunner.js').testRunner;
 var jsonSchema = require('jsonschema');
 var validate = jsonSchema.validate;
 var colors = require('colors');
