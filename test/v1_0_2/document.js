@@ -82,8 +82,9 @@
         return pre.expect(expect);
     }
 
-    before("Hey let's make sure the time margin is set", function (done) {
-        console.log("Before Document.js tests are run", helper.setTimeMargin(done));
+    before("Before all tests are run", function (done) {
+        console.log("Setting up\naccounting for any time differential between test suite and lrs");
+        helper.setTimeMargin(done);
     });
 
     describe('Document API Requirements', function () {

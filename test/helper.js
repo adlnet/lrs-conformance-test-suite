@@ -29,9 +29,8 @@ if (!process.env.EB_NODE_COMMAND) {
     /** Appears to use relative path */
     var TEMPLATE_FOLDER_RELATIVE = './' + process.env.DIRECTORY + '/templates';
 
-/* Creating a global variable to calculate the time difference between the test suite and the curent lrs endpoint for use with since and until */
-    var TIME_MARGIN;// = new Date();
-/* End global time variable */
+    /* Creating a global variable to calculate the time difference between the test suite and the curent lrs endpoint for use with since and until */
+    var TIME_MARGIN;
 
     /** Endpoint About */
     var URL_ABOUT = '/about';
@@ -308,78 +307,58 @@ if (!process.env.EB_NODE_COMMAND) {
         },
 
 
-/* Make the TIME_MARGIN available to tests */
+        /**
+         * Make the TIME_MARGIN available to tests
+         * @returns {integer}
+        */
         getTimeMargin: function () {
                 return TIME_MARGIN;
         },
-/* End get time margin */
 
-/*
-Calculates the difference between the lrs time and the suite time and sets a variable for use with since and until requests.
-*/
-
+        /*
+         * Calculates the difference between the lrs time and the suite time and sets a variable for use with since and until requests.
+        */
         setTimeMargin: function (done) {
             var request = require('super-request'),
-            // module = require('module'),
-            fs = require('fs'),
-            extend = require('extend'),
-            moment = require('moment'),
-            requestPromise = require('supertest-as-promised'),
-            chai = require('chai'),
-            Joi = require('joi'),
-            multipartParser = require('./multipartParser'),
-            temp = [{statement: '{{statements.default}}'}],
-            stmt,
-            id = module.exports.generateUUID(),
-            query = module.exports.getUrlEncoding({
-                statementId: id
-            }),
-            lrsTime,
-            suiteTime;
-            stmt = module.exports.createTestObject(module.exports.convertTemplate(temp)).statement;
+                temp = [{statement: '{{statements.default}}'}],
+                stmt,
+                id = module.exports.generateUUID(),
+                query = module.exports.getUrlEncoding({
+                    statementId: id
+                }),
+                lrsTime,
+                suiteTime;
+                stmt = module.exports.createTestObject(module.exports.convertTemplate(temp)).statement;
+
             stmt.id = id;
             suiteTime = new Date();
 
-            console.log("Pineapple", stmt);
             request(module.exports.getEndpointAndAuth())
-            .post(module.exports.getEndpointStatements())
-            // .post(module.exports.getEndpointAbout())
-            .headers(module.exports.addAllHeaders({}))
-            .json(stmt)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    console.log("there has been a mistake", err);
-                    // dolog('there has been a mistake', err);
-                    return err;
-                    // done(err);
-                } else {
-                    console.log("we have passed the post with flying colors", res.body, 'id', stmt.id);
-                    // dolog("Yay, we passed", res.body);
-                    console.log("and take a quick look at the query before we use it", query);
-                    request(module.exports.getEndpointAndAuth())
-                    .get(module.exports.getEndpointStatements() + '?' + query)
-                    // .get(module.exports.getEndpointStatements())
-                    .headers(module.exports.addAllHeaders({}))
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return err;
-                            console.log('Almost there', err);
-                            done(err);
-                        } else {
-                            console.log("This is a string", res.body);
-                            lrsTime = new Date(res.headers.date);
-                            TIME_MARGIN = suiteTime - lrsTime;
-                            console.log("how bout this!!", lrsTime, suiteTime, TIME_MARGIN);
-                            // return TIME_MARGIN;
-                            done(err, TIME_MARGIN);
-                        }
-                    });
-                }
-            });
+                .post(module.exports.getEndpointStatements())
+                .headers(module.exports.addAllHeaders({}))
+                .json(stmt)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        request(module.exports.getEndpointAndAuth())
+                        .get(module.exports.getEndpointStatements() + '?' + query)
+                        .headers(module.exports.addAllHeaders({}))
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err) {
+                                return err;
+                                done(err);
+                            } else {
+                                lrsTime = new Date(res.headers.date);
+                                TIME_MARGIN = suiteTime - lrsTime;
+                                done(err, TIME_MARGIN);
+                            }
+                        });
+                    }
+                });
         },
-/* End set time margin function */
 
         /**
          * Returns query string (does not work for Date object which needs toISOString()).
@@ -660,7 +639,6 @@ Calculates the difference between the lrs time and the suite time and sets a var
         });
         return object;
     }
-
 
     function validateConfiguration(configurations, location) {
         configurations.forEach(function (configuration) {

@@ -125,10 +125,7 @@
                 verifier: _options.verifier
             }
         }
-// console.log("this couldn't be a bad idea");
-// var helper = require('../test/helper.js');
-// console.log('Time Margin:', helper.getTimeMargin());
-// setTimeout(helper.getTimeMargin(), 100000);
+
         options.directory.forEach(function(dir) {
             process.postMessage("log", (JSON.stringify(global.OAUTH)));
             var testDirectory = __dirname + '/../test/' + dir;
