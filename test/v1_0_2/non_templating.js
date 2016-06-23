@@ -547,6 +547,7 @@
 
         it('should fail on GET statement when not using "since"', function (done) {
             var query = helper.getUrlEncoding({Since: '2012-06-01T19:09:13.245Z'});
+
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1555,6 +1556,7 @@
     describe('An LRS\'s Statement API can process a GET request with "since" as a parameter  **Implicit**', function () {
         it('should process using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
+
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2068,6 +2070,7 @@
 
         it('should return StatementResult using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
+
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2352,6 +2355,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
+
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2629,6 +2633,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
+
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2926,6 +2931,7 @@
 
         it('should return StatementResult with statements as array using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
+
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -3082,8 +3088,9 @@
                     if (err){
                         done(err);
                     } else {
-                        voidingTime = new Date().toISOString();
-                        untilVoidingTime = new Date(Date.now() + 300000).toISOString();
+// console.log("HI Andy", helper.getTimeMargin());
+                        voidingTime = new Date(Date.now() - helper.getTimeMargin() - 10000).toISOString();
+                        untilVoidingTime = new Date(Date.now() + helper.getTimeMargin()).toISOString();
                         done();
                     }
                 });
@@ -3108,23 +3115,19 @@
 
         it('should only return Object StatementRef when using "since"', function (done) {
             // Need to use statementRefId verb b/c initial voided statement comes before voidingTime
-console.log("what's up?");
-            var timeM = helper.getTimeMargin(done);
             var query = helper.getUrlEncoding({
                 verb: verb,
-                since: timeM || voidingTime
+                since: voidingTime
             });
-console.log("time margin in test", timeM);
+
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
-console.log("error in the test:", query);
                         done(err);
                     } else {
-console.log("in the test:", query);
                         var results = parse(res.body, done);
                         expect(results).to.have.property('statements');
                         expect(JSON.stringify(results.statements)).to.contain(statementRefId);
@@ -3180,6 +3183,7 @@ console.log("in the test:", query);
             var query = helper.getUrlEncoding({
                 verb: verb
             });
+
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
