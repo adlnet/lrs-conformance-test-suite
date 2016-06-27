@@ -7,16 +7,16 @@
  */
 exports.mustPassAll = function(suite)
 {
-	var status = 'passed';
+	var childStatus = 'passed';
 	for(var i=0; i<suite.tests.length; i++){
 		if(suite.tests[i].status === 'failed'){
-			status = 'failed';
+			childStatus = 'failed';
 			break;
 		}
 		else if(suite.tests[i].status === 'cancelled'){
-			status = 'cancelled';
+			childStatus = 'cancelled';
 		}
 	}
 
-	return status;
+	return suite.status || childStatus;
 };
