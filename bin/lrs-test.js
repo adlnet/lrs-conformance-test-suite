@@ -41,7 +41,7 @@
 
     function runTests(_options) {
         var optionsValidator = Joi.object({
-            directory: Joi.string(),
+            directory: Joi.array().items(Joi.string().required()),
             /* See [RFC-3986](http://tools.ietf.org/html/rfc3986#page-17) */
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
             basicAuth: Joi.any(true, false),
@@ -75,7 +75,8 @@
                 then: Joi.required()
             }),
             reporter: Joi.string().regex(/^((dot)|(spec)|(nyan)|(tap)|(List)|(progress)|(min)|(doc))$/).default('nyan'),
-            grep: Joi.string()
+            grep: Joi.string(),
+            bail: Joi.boolean()
         }).unknown(false);
 
         var validOptions = Joi.validate(_options, optionsValidator);
@@ -84,7 +85,7 @@
             process.exit();
         }
 
-        var DIRECTORY = 'v1_0_2';
+        var DIRECTORY = ['v1_0_2'];
         var options = {
             directory: _options.directory || DIRECTORY,
             endpoint: _options.endpoint,
@@ -93,27 +94,27 @@
             authPass: _options.authPass,
             reporter: _options.reporter,
             grep: _options.grep,
+            bail: _options.bail,
             consumer_key: _options.consumer_key,
             consumer_secret: _options.consumer_secret,
             token: _options.token,
             token_secret: _options.token_secret,
             verifier: _options.verifier,
-            oAuth1: _options.oAuth1
+            oAuth1: _options.oAuth1,
         };
-        
         var mocha = new Mocha({
             uii: 'bdd',
             reporter: processMessageReporter(process),
             timeout: '15000',
-            grep: program.grep,
-            bail: program.bail
+            grep: options.grep,
+            bail: options.bail
         });
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;
         process.env.BASIC_AUTH_USER = options.authUser;
         process.env.BASIC_AUTH_PASSWORD = options.authPass;
         process.env.OAUTH1_ENABLED = options.oAuth1;
-        
+
 
         if(options.oAuth1)
         {
@@ -128,15 +129,16 @@
             }
         }
 
-
-        //process.postMessage("log", (JSON.stringify(global.OAUTH)));
-        var testDirectory = __dirname + '/../test/' + options.directory;
-        fs.readdirSync(testDirectory).filter(function(file) {
-            return file.substr(-3) === '.js';
-        }).forEach(function(file) {
-            mocha.addFile(
-                path.join(testDirectory, file)
-            );
+        options.directory.forEach(function(dir) {
+            //process.postMessage("log", (JSON.stringify(global.OAUTH)));
+            var testDirectory = __dirname + '/../test/' + dir;
+            fs.readdirSync(testDirectory).filter(function(file) {
+                return file.substr(-3) === '.js';
+            }).forEach(function(file) {
+                mocha.addFile(
+                    path.join(testDirectory, file)
+                );
+            });
         });
         mocha.run(function(failures) {
             if (failures) {} else {}

@@ -9,7 +9,7 @@ const child_process = require('child_process'),
 class Suite {
 	constructor(name){
 		this.name = name;
-		this.status = 'running'; // in ['running', 'cancelled', 'passed', 'failed']
+		this.status = ''; // in ['cancelled', 'passed', 'failed']
 		this.parent = null;
 		this.tests = [];
 	}
@@ -81,6 +81,7 @@ class TestRunner extends EventEmitter
 	{
 		this.proc.on('message', function(msg)
 		{
+			console.log(msg);
 			var action = msg.action, payload = msg.payload;
 			switch(action)
 			{

@@ -8,6 +8,14 @@ var libpath = require('path'),
 
 require('pretty-error').start();
 
+function clean_dir(val, dir) {
+    v = val.split(',')
+    .forEach(function(d){
+        dir.push(d);
+    });
+    return dir;
+}
+
 program
     .version('0.0.1')
     .option('-e, --endpoint [url]', 'xAPI endpoint')
@@ -20,6 +28,9 @@ program
     .option('-r, --request_token_path [string]', 'Path to OAuth request token endpoint (relative to endpoint)')
     .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint)')
     .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
+    .option('-g, --grep [string]', 'Only run tests that match the given pattern')
+    .option('-b, --bail', 'Abort the battery if one test fails')
+    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, ['v1_0_2'])
     .parse(process.argv);
 
 var options = {
@@ -32,9 +43,12 @@ var options = {
         consumer_secret: program.consumer_secret,
         request_token_path: program.request_token_path,
         auth_token_path: program.auth_token_path,
-        authorization_path: program.authorization_path
+        authorization_path: program.authorization_path,
+        grep: program.grep,
+        bail: program.bail,
+        directory: program.directory
     }
-   
+
     /*
 
 var valid = validate(options, {
@@ -79,7 +93,6 @@ var testRunner = null;
 process.on('SIGINT', function() {
     console.log(colors.white('Aborting tests'));
 	testRunner.cancel();
-    //process.exit();
 });
 
 
@@ -124,7 +137,7 @@ if (!program.oAuth1)
 	start(options);
 else {
 
-    
+
     var config = {};
     config.consumer_key = options.consumer_key;
     config.consumer_secret = options.consumer_secret;
@@ -160,5 +173,4 @@ else {
 		start(options);
     });
 }
-
 
