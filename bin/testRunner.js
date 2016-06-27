@@ -21,7 +21,7 @@ class Suite {
 
 class TestRunner extends EventEmitter
 {
-	constructor(name, owner, config, configUUID, rollupRule)
+	constructor(name, owner, flags, lrsSettingsUUID,options, rollupRule)
 	{
 		super();
 
@@ -29,8 +29,9 @@ class TestRunner extends EventEmitter
 
 		this.name = name;
 		this.owner = owner;
-		this.config = config;
-		this.configUUID = configUUID;
+		this.flags = flags;
+		this.options = options;
+		this.lrsSettingsUUID = lrsSettingsUUID;
 		this.rollupRule = rollup[rollupRule] ? rollupRule : 'mustPassAll';
 
 		this.uuid = require('uuid').v4();
@@ -71,7 +72,7 @@ class TestRunner extends EventEmitter
 		this.proc.on('message', function(msg)
 		{
 			if(msg.action === 'ready'){
-				this.proc.send({action: 'runTests', payload: this.config});
+				this.proc.send({action: 'runTests', payload: this.flags});
 			}
 		}.bind(this));
 	}
@@ -196,14 +197,15 @@ class TestRunner extends EventEmitter
 		var runRecord = {
 			name: this.name || null,
 			owner: this.owner || null,
-			config: {
-				endpoint: this.config.endpoint,
-				basicAuth: this.config.basicAuth,
-				authUser: this.config.authUser,
-				oAuth1: this.config.oAuth1,
-				consumer_key: this.config.consumer_key
+			flags: {
+				endpoint: this.flags.endpoint,
+				basicAuth: this.flags.basicAuth,
+				authUser: this.flags.authUser,
+				oAuth1: this.flags.oAuth1,
+				consumer_key: this.flags.consumer_key
 			},
-			configUUID: this.configUUID,
+			options:this.options,
+			lrsSettingsUUID: this.lrsSettingsUUID,
 			rollupRule: this.rollupRule,
 
 			uuid: this.uuid,
