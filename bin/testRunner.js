@@ -81,7 +81,7 @@ class TestRunner extends EventEmitter
 	{
 		this.proc.on('message', function(msg)
 		{
-			console.log(msg);
+			
 			var action = msg.action, payload = msg.payload;
 			switch(action)
 			{
@@ -117,17 +117,20 @@ class TestRunner extends EventEmitter
 
 			case 'suite end':
 
-				// finish the suite
-				if(this.activeTest.name === payload)
+				if(this.activeTest)
 				{
-					// roll up test status
-					this.activeTest.status = rollup[this.rollupRule](this.activeTest);
+					// finish the suite
+					if(this.activeTest.name === payload)
+					{
+						// roll up test status
+						this.activeTest.status = rollup[this.rollupRule](this.activeTest);
 
-					// move test cursor
-					this.activeTest = this.activeTest.parent;
+						// move test cursor
+						this.activeTest = this.activeTest.parent;
+					}
+					else
+						console.error('Dangling suite end!', this.activeTest.name);
 				}
-				else
-					console.error('Dangling suite end!', this.activeTest.name);
 				break;
 				
 			case 'test start':
@@ -146,21 +149,29 @@ class TestRunner extends EventEmitter
 
 			case 'test end':
 
-				if(this.activeTest.name === payload)
-					this.activeTest = this.activeTest.parent;
-				else
-					console.error('Dangling test end!', this.activeTest.name);
-				break;
+				if(this.activeTest)
+				{
+					if(this.activeTest.name === payload)
+						this.activeTest = this.activeTest.parent;
+					else
+						console.error('Dangling test end!', this.activeTest.name);
+					break;
+				}
 
 			case 'test pass':
-				this.activeTest.status = 'passed';
-				this.summary.passed++;
+				if(this.activeTest)
+				{
+					this.activeTest.status = 'passed';
+					this.summary.passed++;
+				}
 				break;
 
 			case 'test fail':
-				this.activeTest.status = 'failed';
-				this.activeTest.error = payload.message;
-				this.summary.failed++;
+				if(this.activeTest){ //careful - cancel can blank this, then the message comes in
+					this.activeTest.status = 'failed';
+					this.activeTest.error = payload.message;
+					this.summary.failed++;
+				}
 				break;
 			};
 
