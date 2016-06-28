@@ -44,6 +44,7 @@
             directory: Joi.array().items(Joi.string().required()),
             /* See [RFC-3986](http://tools.ietf.org/html/rfc3986#page-17) */
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
+            grep: Joi.string(),
             basicAuth: Joi.any(true, false),
             oAuth1: Joi.any(true, false),
             authUser: Joi.string().when('basicAuth', {
@@ -102,13 +103,25 @@
             verifier: _options.verifier,
             oAuth1: _options.oAuth1,
         };
+
+        RegExp.escape = function(string) {
+            return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+        };
+
+        var grep;
+        if (options.grep)
+            grep = new RegExp(RegExp.escape(options.grep));
+
         var mocha = new Mocha({
             uii: 'bdd',
             reporter: processMessageReporter(process),
             timeout: '15000',
-            grep: options.grep,
+            grep: grep,
             bail: options.bail
         });
+
+        console.log("Grep is " + options.grep);
+
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;
         process.env.BASIC_AUTH_USER = options.authUser;

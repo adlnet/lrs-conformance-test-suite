@@ -72,7 +72,13 @@ class TestRunner extends EventEmitter
 		this.proc.on('message', function(msg)
 		{
 			if(msg.action === 'ready'){
-				this.proc.send({action: 'runTests', payload: this.flags});
+
+			//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options	
+			var flags = JSON.parse(JSON.stringify(this.flags));
+			if(this.options.grep)
+				flags.grep = this.options.grep;
+
+				this.proc.send({action: 'runTests', payload: flags});
 			}
 		}.bind(this));
 	}
@@ -214,7 +220,8 @@ class TestRunner extends EventEmitter
 				basicAuth: this.flags.basicAuth,
 				authUser: this.flags.authUser,
 				oAuth1: this.flags.oAuth1,
-				consumer_key: this.flags.consumer_key
+				consumer_key: this.flags.consumer_key,
+				grep:this.flags.grep
 			},
 			options:this.options,
 			lrsSettingsUUID: this.lrsSettingsUUID,
