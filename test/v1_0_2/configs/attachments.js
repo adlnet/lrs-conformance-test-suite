@@ -68,6 +68,19 @@
                 name: 'A Statement\'s "attachments" property is an array of Attachments (4.1.2.1.table1.row11.a)',
                 config: [
                     {
+                        name: 'statement "attachments" is an array',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [VALID_ATTACHMENT]}
+                        ],
+                        expect: [200]
+                    }
+                ]
+            },
+            {
+                name: 'A Statement\'s "attachments" property is an array of Attachments (4.1.2.1.table1.row11.a)',
+                config: [
+                    {
                         name: 'statement "attachments" not an array',
                         templates: [
                             {statement: '{{statements.attachment}}'},
