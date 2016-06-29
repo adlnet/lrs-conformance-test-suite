@@ -333,6 +333,9 @@ if (!process.env.EB_NODE_COMMAND) {
             stmt.id = id;
             suiteTime = new Date();
 
+            if(global.OAUTH)
+                request = module.exports.OAuthRequest(request);
+
             request(module.exports.getEndpointAndAuth())
                 .post(module.exports.getEndpointStatements())
                 .headers(module.exports.addAllHeaders({}))
