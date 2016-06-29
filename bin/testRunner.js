@@ -72,7 +72,13 @@ class TestRunner extends EventEmitter
 		this.proc.on('message', function(msg)
 		{
 			if(msg.action === 'ready'){
-				this.proc.send({action: 'runTests', payload: this.flags});
+
+			//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options	
+			var flags = JSON.parse(JSON.stringify(this.flags));
+			if(this.options.grep)
+				flags.grep = this.options.grep;
+
+				this.proc.send({action: 'runTests', payload: flags});
 			}
 		}.bind(this));
 	}
@@ -81,7 +87,7 @@ class TestRunner extends EventEmitter
 	{
 		this.proc.on('message', function(msg)
 		{
-			console.log(msg);
+			
 			var action = msg.action, payload = msg.payload;
 			switch(action)
 			{
@@ -117,17 +123,20 @@ class TestRunner extends EventEmitter
 
 			case 'suite end':
 
-				// finish the suite
-				if(this.activeTest.name === payload)
+				if(this.activeTest)
 				{
-					// roll up test status
-					this.activeTest.status = rollup[this.rollupRule](this.activeTest);
+					// finish the suite
+					if(this.activeTest.name === payload)
+					{
+						// roll up test status
+						this.activeTest.status = rollup[this.rollupRule](this.activeTest);
 
-					// move test cursor
-					this.activeTest = this.activeTest.parent;
+						// move test cursor
+						this.activeTest = this.activeTest.parent;
+					}
+					else
+						console.error('Dangling suite end!', this.activeTest.name);
 				}
-				else
-					console.error('Dangling suite end!', this.activeTest.name);
 				break;
 				
 			case 'test start':
@@ -146,21 +155,29 @@ class TestRunner extends EventEmitter
 
 			case 'test end':
 
-				if(this.activeTest.name === payload)
-					this.activeTest = this.activeTest.parent;
-				else
-					console.error('Dangling test end!', this.activeTest.name);
-				break;
+				if(this.activeTest)
+				{
+					if(this.activeTest.name === payload)
+						this.activeTest = this.activeTest.parent;
+					else
+						console.error('Dangling test end!', this.activeTest.name);
+					break;
+				}
 
 			case 'test pass':
-				this.activeTest.status = 'passed';
-				this.summary.passed++;
+				if(this.activeTest)
+				{
+					this.activeTest.status = 'passed';
+					this.summary.passed++;
+				}
 				break;
 
 			case 'test fail':
-				this.activeTest.status = 'failed';
-				this.activeTest.error = payload.message;
-				this.summary.failed++;
+				if(this.activeTest){ //careful - cancel can blank this, then the message comes in
+					this.activeTest.status = 'failed';
+					this.activeTest.error = payload.message;
+					this.summary.failed++;
+				}
 				break;
 			};
 
@@ -203,7 +220,8 @@ class TestRunner extends EventEmitter
 				basicAuth: this.flags.basicAuth,
 				authUser: this.flags.authUser,
 				oAuth1: this.flags.oAuth1,
-				consumer_key: this.flags.consumer_key
+				consumer_key: this.flags.consumer_key,
+				grep:this.flags.grep
 			},
 			options:this.options,
 			lrsSettingsUUID: this.lrsSettingsUUID,
