@@ -7,7 +7,17 @@
  */
 (function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser) {
     // "use strict";
-
+    var delay = function(val)
+    {
+        var time = val._headers['x-experience-api-consistent-through'] || 0;
+        var p = new comb.Promise();
+        setTimeout(function()
+        {
+            p.resolve();
+        }, time);
+        return p;
+    }
+    var comb = require('comb');
     var expect = chai.expect;
 	/*var fs = require('fs');
 	var logFile = fs.createWriteStream('non_templated_tests.log');
@@ -29,6 +39,8 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
+
+
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
         it('should populate authority', function (done) {
             var templates = [
@@ -44,6 +56,7 @@
                 .json(data)
                 .expect(200)
                 .end()
+                .then(delay)
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .expect(200).end(function (err, res) {
