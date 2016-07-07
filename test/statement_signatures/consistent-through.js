@@ -1,4 +1,4 @@
-/* Testing if I can make a quick set of dummy tests to explore the possibility o fadding test profiles.  This is copied and pasted from the non_templating file. */
+/* Testing using the value from the consistent through header */
 
 (function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser) {
     "use strict";
@@ -6,19 +6,10 @@
     var expect = chai.expect;
 
 //so starting here we are making a statement with asignature and sending it
-    describe('Altoona A new set of tests which will now include statement signatures - Hip hip hooray!!! (Data.md#2.6)', function () {
+    describe('Johnstown A new set of tests which will now include statement signatures - Hip hip hooray!!! (Data.md#2.6)', function () {
 
         var templates = [
-            {statement: '{{statements.default}}'},
-            {attachments: [
-                {"usageType": "http://example.com/attachment-usage/test",
-                "display": {"en-US": "A test attachment"},
-                "description": {"en-US": "A test attachment (description)"},
-                "contentType": "text/plain; charset=ascii",
-                "length": 27,
-                "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
-                "fileUrl": "http://over.there.com/file.txt"}
-            ]}
+            {statement: '{{statements.default}}'}
         ];
         var data = createFromTemplate(templates);
         data = data.statement;
@@ -47,12 +38,6 @@
         var hash = require("crypto").createHash('sha256')
             .update(token).digest();
         hash = hash.toString('hex');
-        var hash384 = require("crypto").createHash('sha384')
-            .update(token).digest();
-        hash384 = hash384.toString('hex');
-        var hash512 = require("crypto").createHash('sha512')
-            .update(token).digest();
-        hash512 = hash512.toString('hex');
         if (!data.attachments)
             data.attachments = [];
         var attachmentMetadata = {
@@ -84,73 +69,92 @@
         form.append('statement', JSON.stringify(data), options);
         form.append('signature', sigs[0].val, sigs[0].options);
 
-console.log('Here we are:', data, '\nAnd then:', form, "token:", token, '\n256: ', hash, '\n384: ', hash384, '\n512: ', hash512, '\nattaching', data.attachments[0].sha2);
+// console.log('Here we are:', data, '\nAnd then:', form, "token:", token);
 
-        it("Signed statement with \"RS256\" (Data.md#2.6.s4.b1)", function (done) {
+for (var i = 0; i < 20; i++) {
+    it("HEAD Signed statement with \"RS512\" (Data.md#2.6.s4.b4)", function (done) {
+        data.id = helper.generateUUID();
+        data.attachments[0].contentType = 'text/plain; charset=ascii';
+
+        request(helper.getEndpointAndAuth())
+        .head(helper.getEndpointStatements())
+        .headers(helper.addAllHeaders({}))
+        .json(data)
+        .expect(200)
+        .end(function (err, res) {
+            if (err) {
+                console.log('Oops', err);
+                done(err);
+            } else {
+                console.log('Ta Da HEAD', res.headers, new Date().toISOString(), res.body, res.statusCode, res.statusMessage);
+                done();
+            }
+        });
+    });
+}
+        it("POST Signed statement with \"RS256\" (Data.md#2.6.s4.b1)", function (done) {
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
+                // .body(form)
+                // .form(form)
                 .expect(200)
                 .end(function (err, res) {
-console.log('send this', data);
                     if (err) {
 console.log('Oops', err);
                         done(err);
                     } else {
-console.log('Ta Da', res.headers, res.body, res.statusCode, res.statusMessage);
+console.log('Ta Da POST - no consistent-through', res.headers, new Date(res.headers.date), helper.getTimeMargin(), res.body, res.statusCode, res.statusMessage, new Date().toISOString());
                         done();
                     }
                 });
 
         }); //end it good sig with "RS256"
 
-        it("Signed statement with \"RS384\" (Data.md#2.6.s4.b4)", function (done) {
+//         it("GET Signed statement with \"RS384\" (Data.md#2.6.s4.b4)", function (done) {
+//             data.id = helper.generateUUID();
+//             data.attachments[0].contentType = 'text/plain; charset=ascii';
+//
+//             request(helper.getEndpointAndAuth())
+//                 .get(helper.getEndpointStatements())
+//                 .headers(helper.addAllHeaders({}))
+//                 .json(data)
+//                 .expect(200)
+//                 .end(function (err, res) {
+//                     if (err) {
+// console.log('Oops', err);
+//                         done(err);
+//                     } else {
+// console.log('Ta Da a good GET', res.headers, res.body, res.statusCode, res.statusMessage);
+//                         done();
+//                     }
+//                 });
+//
+//         });
+for (var i = 0; i < 20; i++) {
+        it("HEAD Signed statement with \"RS512\" (Data.md#2.6.s4.b4)", function (done) {
             data.id = helper.generateUUID();
             data.attachments[0].contentType = 'text/plain; charset=ascii';
-            data.attachments[0].sha2 = hash384;
 
             request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
+                .head(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end(function (err, res) {
-console.log('test2(384)', data.attachments);
                     if (err) {
 console.log('Oops', err);
                         done(err);
                     } else {
-console.log('Ta Da', res.headers, res.body, res.statusCode, res.statusMessage);
-                        done();
-                    }
-                });
-
-        }); //end it good sig with "RS384"
-
-        it("Signed statement with \"RS512\" (Data.md#2.6.s4.b4)", function (done) {
-            data.id = helper.generateUUID();
-            data.attachments[0].contentType = 'text/plain; charset=ascii';
-            data.attachments[0].sha2 = hash512;
-
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(200)
-                .end(function (err, res) {
-console.log('test3(512)', data.attachments);
-                    if (err) {
-console.log('Oops', err);
-                        done(err);
-                    } else {
-console.log('Ta Da', res.headers, res.body, res.statusCode, res.statusMessage);
+console.log('Ta Da HEAD', res.headers, new Date().toISOString(), res.statusCode, res.statusMessage);
                         done();
                     }
                 });
         });
-
+}
+//
 //         it("LRS must reject with 400 a signed statement with malformed signature - bad usageType (Data.md#2.6.s5.b1)", function (done) {
 //             data.id = helper.generateUUID();
 //             data.attachments[0].contentType = 'text/plain; charset=ascii';
