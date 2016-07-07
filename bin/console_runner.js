@@ -102,7 +102,7 @@ process.on('exit', function() {
 
 function start(options)
 {
-	testRunner = new TestRunner('console', null, options, null);
+	testRunner = new TestRunner('console', null, options);
     testRunner.start();
 	
 	var interval = setInterval(function(){

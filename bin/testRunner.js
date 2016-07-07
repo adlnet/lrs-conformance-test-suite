@@ -30,7 +30,7 @@ class TestRunner extends EventEmitter
 		this.name = name;
 		this.owner = owner;
 		this.flags = flags;
-		this.options = options;
+		this.options = options || {};
 		this.lrsSettingsUUID = lrsSettingsUUID;
 		this.rollupRule = rollup[rollupRule] ? rollupRule : 'mustPassAll';
 
@@ -73,12 +73,12 @@ class TestRunner extends EventEmitter
 		{
 			if(msg.action === 'ready'){
 
-			//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options
-			var flags = JSON.parse(JSON.stringify(this.flags));
-			if(this.options.grep)
-				flags.grep = this.options.grep;
-			if(this.options.optional)
-				flags.optional = this.options.optional;
+				//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options
+				var flags = JSON.parse(JSON.stringify(this.flags));
+				if(this.options && this.options.grep)
+					flags.grep = this.options.grep;
+				if(this.options && this.options.optional)
+					flags.optional = this.options.optional;
 
 				this.proc.send({action: 'runTests', payload: flags});
 			}
