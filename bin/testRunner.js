@@ -64,7 +64,7 @@ class TestRunner extends EventEmitter
 				cwd: libpath.join(__dirname,"/../")
 			}
 		);
-	
+
 		// hook up listeners
 		this._registerStatusUpdates();
 
@@ -73,11 +73,12 @@ class TestRunner extends EventEmitter
 		{
 			if(msg.action === 'ready'){
 
-				//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options	
+				//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options
 				var flags = JSON.parse(JSON.stringify(this.flags));
 				if(this.options && this.options.grep)
 					flags.grep = this.options.grep;
-
+				if(this.options && this.options.optional)
+					flags.optional = this.options.optional;
 				this.proc.send({action: 'runTests', payload: flags});
 			}
 		}.bind(this));
@@ -87,7 +88,7 @@ class TestRunner extends EventEmitter
 	{
 		this.proc.on('message', function(msg)
 		{
-			
+
 			var action = msg.action, payload = msg.payload;
 			switch(action)
 			{
@@ -138,7 +139,7 @@ class TestRunner extends EventEmitter
 						console.error('Dangling suite end!', this.activeTest.name);
 				}
 				break;
-				
+
 			case 'test start':
 
 				// start a new test
