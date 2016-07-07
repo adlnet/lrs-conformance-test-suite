@@ -1,7 +1,4 @@
 {
-    "400": {
-        "name": "400"
-    },
     "Activities Verify Templates": {
         "name": "Activities Verify Templates"
     },
@@ -56,8 +53,8 @@
     "statement substatement activity \"id\" not provided": {
         "name": "statement substatement activity \"id\" not provided"
     },
-    "An \"object\" property\\'s \"id\" property is an IRI": {
-        "name": "An \"object\" property\\'s \"id\" property is an IRI",
+    "An \"object\" property's \"id\" property is an IRI": {
+        "name": "An \"object\" property's \"id\" property is an IRI",
         "1.0.2_ref_text": "Type, 4.1.4.1.table1.row2.a",
         "1.0.2_ref": "4.1.4.1.table1.row2.a",
         "1.0.3_ref": "part2.2.4.4.1.table1.row2.a",
@@ -92,8 +89,8 @@
     "statement substatement activity \"definition\" not object": {
         "name": "statement substatement activity \"definition\" not object"
     },
-    "An Activity\\'s \"definition\" property is an Object": {
-        "name": "An Activity\\'s \"definition\" property is an Object",
+    "An Activity's \"definition\" property is an Object": {
+        "name": "An Activity's \"definition\" property is an Object",
         "1.0.2_ref_text": "Type, 4.1.4.1.table1.row3.a",
         "1.0.2_ref": "4.1.4.1.table1.row3.a",
         "1.0.3_ref": "part2.2.4.4.1.table1.row3.a",
@@ -152,8 +149,8 @@
     "statement substatement activity \"definition\" contains \"interactionType\"": {
         "name": "statement substatement activity \"definition\" contains \"interactionType\""
     },
-    "An Activity Definition\\'s \"name\" property is a Language Map": {
-        "name": "An Activity Definition\\'s \"name\" property is a Language Map",
+    "An Activity Definition's \"name\" property is a Language Map": {
+        "name": "An Activity Definition's \"name\" property is a Language Map",
         "1.0.2_ref_text": "Type, 4.1.4.1.table2.row1.a",
         "1.0.2_ref": "4.1.4.1.table2.row1.a",
         "1.0.3_ref": "part2.2.4.4.1.table2.row1.a",
@@ -173,8 +170,8 @@
     "statement substatement activity \"name\" language map is string": {
         "name": "statement substatement activity \"name\" language map is string"
     },
-    "An Activity Definition\\'s \"description\" property is a Language Map": {
-        "name": "An Activity Definition\\'s \"description\" property is a Language Map",
+    "An Activity Definition's \"description\" property is a Language Map": {
+        "name": "An Activity Definition's \"description\" property is a Language Map",
         "1.0.2_ref_text": "Type, 4.1.4.1.table2.row2.a",
         "1.0.2_ref": "4.1.4.1.table2.row2.a",
         "1.0.3_ref": "part2.2.4.4.1.table2.row2.a",
@@ -194,8 +191,8 @@
     "statement substatement activity \"description\" language map is string": {
         "name": "statement substatement activity \"description\" language map is string"
     },
-    "An Activity Definition\\'s \"type\" property is an IRI": {
-        "name": "An Activity Definition\\'s \"type\" property is an IRI",
+    "An Activity Definition's \"type\" property is an IRI": {
+        "name": "An Activity Definition's \"type\" property is an IRI",
         "1.0.2_ref_text": "Type, 4.1.4.1.table2.row3.a",
         "1.0.2_ref": "4.1.4.1.table2.row3.a",
         "1.0.3_ref": "part2.4.4.1.table2.row3.a",
@@ -209,8 +206,8 @@
     "statement substatement activity \"type\" not IRI": {
         "name": "statement substatement activity \"type\" not IRI"
     },
-    "An Activity Definition\\'s \"moreinfo\" property is an IRL": {
-        "name": "An Activity Definition\\'s \"moreinfo\" property is an IRL",
+    "An Activity Definition's \"moreinfo\" property is an IRL": {
+        "name": "An Activity Definition's \"moreinfo\" property is an IRL",
         "1.0.2_ref_text": "Type, 4.1.4.1.table2.row4.a",
         "1.0.2_ref": "4.1.4.1.table2.row4.a",
         "1.0.3_ref": "part2.2.4.4.1.table2.row4.a",
@@ -224,8 +221,8 @@
     "statement substatement activity \"moreInfo\" not IRI": {
         "name": "statement substatement activity \"moreInfo\" not IRI"
     },
-    "An Activity Definition\\'s \"interactionType\" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other”": {
-        "name": "An Activity Definition\\'s \"interactionType\" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other”",
+    "An Activity Definition's \"interactionType\" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other”": {
+        "name": "An Activity Definition's \"interactionType\" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other”",
         "1.0.2_ref_text": "4.1.4.1.table3.row1.a, SCORM 2004 4th Edition RTE Book",
         "1.0.2_ref": "4.1.4.1.table3.row1.a, SCORM 2004 4th Edition RTE Book",
         "1.0.3_ref": "part2.2.4.4.1.table3.row1.a",
@@ -293,8 +290,8 @@
     "statement substatement activity \"interactionType\" can be used with \"other\"": {
         "name": "statement substatement activity \"interactionType\" can be used with \"other\""
     },
-    "An Activity Definition\\'s \"correctResponsesPattern\" property is an array of Strings": {
-        "name": "An Activity Definition\\'s \"correctResponsesPattern\" property is an array of Strings",
+    "An Activity Definition's \"correctResponsesPattern\" property is an array of Strings": {
+        "name": "An Activity Definition's \"correctResponsesPattern\" property is an array of Strings",
         "1.0.2_ref_text": "4.1.4.1.table3.row2.a",
         "1.0.2_ref": "4.1.4.1.table3.row2.a",
         "1.0.3_ref": "part2.2.4.4.1.table3.row2.a",
@@ -326,8 +323,8 @@
     "statement substatement activity \"correctResponsesPattern\" is an array of number": {
         "name": "statement substatement activity \"correctResponsesPattern\" is an array of number"
     },
-    "An Activity Definition\\'s \"choices\" property is an array of Interaction Components": {
-        "name": "An Activity Definition\\'s \"choices\" property is an array of Interaction Components",
+    "An Activity Definition's \"choices\" property is an array of Interaction Components": {
+        "name": "An Activity Definition's \"choices\" property is an array of Interaction Components",
         "1.0.2_ref_text": "4.1.4.1.table3.row3.a",
         "1.0.2_ref": "4.1.4.1.table3.row3.a",
         "1.0.3_ref": "part2.2.4.4.1.table3.row3.a",
@@ -395,8 +392,8 @@
     "statement substatement activity \"choices\" uses sequencing is an array of non description language": {
         "name": "statement substatement activity \"choices\" uses sequencing is an array of non description language"
     },
-    "An Activity Definition\\'s \"scale\" property is an array of Interaction Components": {
-        "name": "An Activity Definition\\'s \"scale\" property is an array of Interaction Components",
+    "An Activity Definition's \"scale\" property is an array of Interaction Components": {
+        "name": "An Activity Definition's \"scale\" property is an array of Interaction Components",
         "1.0.2_ref_text": "4.1.4.1.table3.row3.a",
         "1.0.2_ref": "4.1.4.1.table3.row3.a",
         "1.0.3_ref": "part2.2.4.4.1.table3.row3.a",
@@ -434,8 +431,8 @@
     "statement substatement activity \"scale\" uses likert is an array of non description language": {
         "name": "statement substatement activity \"scale\" uses likert is an array of non description language"
     },
-    "An Activity Definition\\'s \"source\" property is an array of Interaction Components": {
-        "name": "An Activity Definition\\'s \"source\" property is an array of Interaction Components",
+    "An Activity Definition's \"source\" property is an array of Interaction Components": {
+        "name": "An Activity Definition's \"source\" property is an array of Interaction Components",
         "1.0.2_ref_text": "4.1.4.1.table3.row3.a",
         "1.0.2_ref": "4.1.4.1.table3.row3.a",
         "1.0.3_ref": "part2.2.4.4.1.table3.row3.a",
@@ -473,8 +470,8 @@
     "statement substatement activity \"source\" uses matching is an array of non description language": {
         "name": "statement substatement activity \"source\" uses matching is an array of non description language"
     },
-    "An Activity Definition\\'s \"target\" property is an array of Interaction Components": {
-        "name": "An Activity Definition\\'s \"target\" property is an array of Interaction Components",
+    "An Activity Definition's \"target\" property is an array of Interaction Components": {
+        "name": "An Activity Definition's \"target\" property is an array of Interaction Components",
         "1.0.2_ref_text": "4.1.4.1.table3.row3.a",
         "1.0.2_ref": "4.1.4.1.table3.row3.a",
         "1.0.3_ref": "part2.2.4.4.1.table3.row3.a",
@@ -512,8 +509,8 @@
     "statement substatement activity \"target\" uses matching is an array of non description language": {
         "name": "statement substatement activity \"target\" uses matching is an array of non description language"
     },
-    "An Activity Definition\\'s \"steps\" property is an array of Interaction Components": {
-        "name": "An Activity Definition\\'s \"steps\" property is an array of Interaction Components",
+    "An Activity Definition's \"steps\" property is an array of Interaction Components": {
+        "name": "An Activity Definition's \"steps\" property is an array of Interaction Components",
         "1.0.2_ref_text": "4.1.4.1.table3.row3.a",
         "1.0.2_ref": "4.1.4.1.table3.row3.a",
         "1.0.3_ref": "part2.2.4.4.1.table3.row3.a",
@@ -641,8 +638,8 @@
     "statement substatement activity \"sequencing choices\" missing \"id\"": {
         "name": "statement substatement activity \"sequencing choices\" missing \"id\""
     },
-    "An Interaction Component\\'s \"id\" property is a String": {
-        "name": "An Interaction Component\\'s \"id\" property is a String",
+    "An Interaction Component's \"id\" property is a String": {
+        "name": "An Interaction Component's \"id\" property is a String",
         "1.0.2_ref_text": "Type, 4.1.4.1.table4.row1.a",
         "1.0.2_ref": "4.1.4.1.table4.row1.a",
         "1.0.3_ref": "part2.2.4.4.1.table8.row1.a",
@@ -731,8 +728,8 @@
     "statement substatement activity sequencing \"choices\" cannot use same \"id\"": {
         "name": "statement substatement activity sequencing \"choices\" cannot use same \"id\""
     },
-    "An Activity Definition\\'s \"extension\" property is an Object": {
-        "name": "An Activity Definition\\'s \"extension\" property is an Object",
+    "An Activity Definition's \"extension\" property is an Object": {
+        "name": "An Activity Definition's \"extension\" property is an Object",
         "1.0.2_ref_text": "Type, 4.1.4.1.table2.row1.a",
         "1.0.2_ref": "4.1.4.1.table2.row1.a",
         "1.0.3_ref": "part2.2.4.4.1.table2.row1.a",
@@ -1256,8 +1253,8 @@
     "statement substatement\"s context team \"group\" account \"homePage\" property exists": {
         "name": "statement substatement\"s context team \"group\" account \"homePage\" property exists"
     },
-    "An Account Object\\'s \"homePage\" property is an IRL": {
-        "name": "An Account Object\\'s \"homePage\" property is an IRL",
+    "An Account Object's \"homePage\" property is an IRL": {
+        "name": "An Account Object's \"homePage\" property is an IRL",
         "1.0.2_ref_text": "Type, 4.1.2.4.table1.row1.a",
         "1.0.2_ref": "4.1.2.4.table1.row1.a",
         "1.0.3_ref": "part2.2.4.2.4.table1.row1.a",
@@ -1430,8 +1427,8 @@
     "should pass statement substatement\"s context instructor template": {
         "name": "should pass statement substatement\"s context instructor template"
     },
-    "An \"actor\" property\\'s \"objectType\" property is either \"Agent\" or \"Group\"": {
-        "name": "An \"actor\" property\\'s \"objectType\" property is either \"Agent\" or \"Group\"",
+    "An \"actor\" property's \"objectType\" property is either \"Agent\" or \"Group\"": {
+        "name": "An \"actor\" property's \"objectType\" property is either \"Agent\" or \"Group\"",
         "1.0.2_ref_text": "Vocabulary, 4.1.2.1.table1.row1.b, 4.1.2.1.table1.row1.b",
         "1.0.2_ref": "4.1.2.1.table1.row1.b, 4.1.2.2.table1.row1.b, 4.1.2.2.table2.row1.b",
         "1.0.3_ref": "part2.2.4.2.1.table1.row1.b, part2.2.4.2.2.table1.row1.b, part2.2.4.2.2.table2.row1.b",
@@ -1758,8 +1755,8 @@
     "statement substatement\"s context instructor \"openid\" cannot be used with \"mbox_sha1sum\"": {
         "name": "statement substatement\"s context instructor \"openid\" cannot be used with \"mbox_sha1sum\""
     },
-    "A Statement\\'s \"attachments\" property is an array of Attachments": {
-        "name": "A Statement\\'s \"attachments\" property is an array of Attachments",
+    "A Statement's \"attachments\" property is an array of Attachments": {
+        "name": "A Statement's \"attachments\" property is an array of Attachments",
         "1.0.2_ref_text": "4.1.2.1.table1.row11.a",
         "1.0.2_ref": "4.1.table1.row11.a",
         "1.0.3_ref": "part2.2.4.table1.row11.a",
@@ -2017,8 +2014,8 @@
     "statement substatement context \"contextActivities\" is empty": {
         "name": "statement substatement context \"contextActivities\" is empty"
     },
-    "A \"contextActivities\" property\\'s \"key\" has a value of \"parent\", \"grouping\", \"category\", or \"other\"": {
-        "name": "A \"contextActivities\" property\\'s \"key\" has a value of \"parent\", \"grouping\", \"category\", or \"other\"",
+    "A \"contextActivities\" property's \"key\" has a value of \"parent\", \"grouping\", \"category\", or \"other\"": {
+        "name": "A \"contextActivities\" property's \"key\" has a value of \"parent\", \"grouping\", \"category\", or \"other\"",
         "1.0.2_ref_text": "Format, 4.1.6.2.a",
         "1.0.2_ref": "4.1.6.2.a",
         "1.0.3_ref": "part2.2.4.6.2.a",
@@ -2050,8 +2047,8 @@
     "statement substatement context \"contextActivities\" is \"other\"": {
         "name": "statement substatement context \"contextActivities\" is \"other\""
     },
-    "A \"contextActivities\" property\\'s \"value\" is an Activity": {
-        "name": "A \"contextActivities\" property\\'s \"value\" is an Activity",
+    "A \"contextActivities\" property's \"value\" is an Activity": {
+        "name": "A \"contextActivities\" property's \"value\" is an Activity",
         "1.0.2_ref_text": "Format, 4.1.6.2.a",
         "1.0.2_ref": "4.1.6.2.a",
         "1.0.3_ref": "part2.2.4.6.2.a",
@@ -2136,8 +2133,8 @@
     "statement substatement context \"revision\" is object": {
         "name": "statement substatement context \"revision\" is object"
     },
-    "A Statement cannot contain both a \"revision\" property in its \"context\" property and have the value of the \"object\" property\\'s \"objectType\" be anything but \"Activity\"": {
-        "name": "A Statement cannot contain both a \"revision\" property in its \"context\" property and have the value of the \"object\" property\\'s \"objectType\" be anything but \"Activity\"",
+    "A Statement cannot contain both a \"revision\" property in its \"context\" property and have the value of the \"object\" property's \"objectType\" be anything but \"Activity\"": {
+        "name": "A Statement cannot contain both a \"revision\" property in its \"context\" property and have the value of the \"object\" property's \"objectType\" be anything but \"Activity\"",
         "1.0.2_ref_text": "4.1.6.a",
         "1.0.2_ref": "4.1.6.a",
         "1.0.3_ref": "part2.2.4.6.a",
@@ -2187,8 +2184,8 @@
     "statement substatement context \"platform\" is object": {
         "name": "statement substatement context \"platform\" is object"
     },
-    "A Statement cannot contain both a \"platform\" property in its \"context\" property and have the value of the \"object\" property\\'s \"objectType\" be anything but \"Activity\"": {
-        "name": "A Statement cannot contain both a \"platform\" property in its \"context\" property and have the value of the \"object\" property\\'s \"objectType\" be anything but \"Activity\"",
+    "A Statement cannot contain both a \"platform\" property in its \"context\" property and have the value of the \"object\" property's \"objectType\" be anything but \"Activity\"": {
+        "name": "A Statement cannot contain both a \"platform\" property in its \"context\" property and have the value of the \"object\" property's \"objectType\" be anything but \"Activity\"",
         "1.0.2_ref_text": "4.1.6.b",
         "1.0.2_ref": "4.1.6.b",
         "1.0.3_ref": "part2.2.4.6.b",
@@ -2960,8 +2957,8 @@
     "should pass statement SubStatement template": {
         "name": "should pass statement SubStatement template"
     },
-    "An \"object\" property\\'s \"objectType\" property is either \"Activity\", \"Agent\", \"Group\", \"SubStatement\", or \"StatementRef\"": {
-        "name": "An \"object\" property\\'s \"objectType\" property is either \"Activity\", \"Agent\", \"Group\", \"SubStatement\", or \"StatementRef\"",
+    "An \"object\" property's \"objectType\" property is either \"Activity\", \"Agent\", \"Group\", \"SubStatement\", or \"StatementRef\"": {
+        "name": "An \"object\" property's \"objectType\" property is either \"Activity\", \"Agent\", \"Group\", \"SubStatement\", or \"StatementRef\"",
         "1.0.2_ref_text": "Vocabulary, 4.1.4.b",
         "1.0.2_ref": "4.1.4.b",
         "1.0.3_ref": "part2.2.4.4.b",
@@ -3026,8 +3023,8 @@
     "statement substatement result score string": {
         "name": "statement substatement result score string"
     },
-    "A \"score\" Object\\'s \"scaled\" property is a Decimal accurate to seven significant decimal figures": {
-        "name": "A \"score\" Object\\'s \"scaled\" property is a Decimal accurate to seven significant decimal figures",
+    "A \"score\" Object's \"scaled\" property is a Decimal accurate to seven significant decimal figures": {
+        "name": "A \"score\" Object's \"scaled\" property is a Decimal accurate to seven significant decimal figures",
         "1.0.2_ref_text": "Type, 4.1.5.1.table1.row1.a, SCORM 2004 4Ed",
         "1.0.2_ref": "4.1.5.1.table1.row1.a, SCORM 2004 4Ed",
         "1.0.3_ref": "part2.2.4.5.1.table1.row1.a",
@@ -3041,8 +3038,8 @@
     "statement substatement result \"scaled\" accepts seven significant decimal": {
         "name": "statement substatement result \"scaled\" accepts seven significant decimal"
     },
-    "A \"score\" Object\\'s \"raw\" property is a Decimal accurate to seven significant decimal figures": {
-        "name": "A \"score\" Object\\'s \"raw\" property is a Decimal accurate to seven significant decimal figures",
+    "A \"score\" Object's \"raw\" property is a Decimal accurate to seven significant decimal figures": {
+        "name": "A \"score\" Object's \"raw\" property is a Decimal accurate to seven significant decimal figures",
         "1.0.2_ref_text": "Type, 4.1.5.1.table1.row2.a, SCORM 2004 4Ed",
         "1.0.2_ref": "4.1.5.1.table1.row2.a, SCORM 2004 4Ed",
         "1.0.3_ref": "part2.2.4.5.1.table1.row2.a",
@@ -3056,8 +3053,8 @@
     "statement substatement result \"raw\" accepts seven significant decimal": {
         "name": "statement substatement result \"raw\" accepts seven significant decimal"
     },
-    "A \"score\" Object\\'s \"min\" property is a Decimal accurate to seven significant decimal figures": {
-        "name": "A \"score\" Object\\'s \"min\" property is a Decimal accurate to seven significant decimal figures",
+    "A \"score\" Object's \"min\" property is a Decimal accurate to seven significant decimal figures": {
+        "name": "A \"score\" Object's \"min\" property is a Decimal accurate to seven significant decimal figures",
         "1.0.2_ref_text": "Type, 4.1.5.1.table1.row3.a, SCORM 2004 4Ed",
         "1.0.2_ref": "4.1.5.1.table1.row3.a, SCORM 2004 4Ed",
         "1.0.3_ref": "part2.2.4.5.1.table1.row3.a",
@@ -3071,8 +3068,8 @@
     "statement substatement result \"min\" accepts seven significant decimal": {
         "name": "statement substatement result \"min\" accepts seven significant decimal"
     },
-    "A \"score\" Object\\'s \"max\" property is a Decimal accurate to seven significant decimal figures": {
-        "name": "A \"score\" Object\\'s \"max\" property is a Decimal accurate to seven significant decimal figures",
+    "A \"score\" Object's \"max\" property is a Decimal accurate to seven significant decimal figures": {
+        "name": "A \"score\" Object's \"max\" property is a Decimal accurate to seven significant decimal figures",
         "1.0.2_ref_text": "Type, 4.1.5.1.table1.row4.a, SCORM 2004 4Ed",
         "1.0.2_ref": "4.1.5.1.table1.row4.a, SCORM 2004 4Ed",
         "1.0.3_ref": "part2.2.4.5.1.table1.row4.a",
@@ -3233,8 +3230,8 @@
     "substatement statementref invalid when missing \"id\"": {
         "name": "substatement statementref invalid when missing \"id\""
     },
-    "A Statement Reference\\'s \"id\" property is a UUID": {
-        "name": "A Statement Reference\\'s \"id\" property is a UUID",
+    "A Statement Reference's \"id\" property is a UUID": {
+        "name": "A Statement Reference's \"id\" property is a UUID",
         "1.0.2_ref_text": "Type, 4.1.4.3.table1.row2.a",
         "1.0.2_ref": "4.1.4.3.table1.row2.a",
         "1.0.3_ref": "part2.2.4.4.3.table1.row2.a"
@@ -3278,8 +3275,8 @@
     "statement \"object\" missing": {
         "name": "statement \"object\" missing"
     },
-    "A Statement\\'s \"id\" property is a String": {
-        "name": "A Statement\\'s \"id\" property is a String",
+    "A Statement's \"id\" property is a String": {
+        "name": "A Statement's \"id\" property is a String",
         "1.0.2_ref_text": "Type, 4.1.1.description.a",
         "1.0.2_ref": "4.1.1.description",
         "1.0.3_ref": "part2.2.4.1.description"
@@ -3290,8 +3287,8 @@
     "statement \"id\" invalid object": {
         "name": "statement \"id\" invalid object"
     },
-    "A Statement\\'s \"id\" property is a UUID following RFC 4122": {
-        "name": "A Statement\\'s \"id\" property is a UUID following RFC 4122",
+    "A Statement's \"id\" property is a UUID following RFC 4122": {
+        "name": "A Statement's \"id\" property is a UUID following RFC 4122",
         "1.0.2_ref_text": "Syntax, RFC 4122",
         "1.0.2_ref": "4.1.1.description, RFC 4122",
         "1.0.3_ref": "part2.2.4.1.description, RFC 4122"
@@ -3380,8 +3377,8 @@
     "statement \"version\" invalid 1.1.0": {
         "name": "statement \"version\" invalid 1.1.0"
     },
-    "An LRS rejects with error code 400 Bad Request, a Request which the \"X-Experience-API-Version\" header\\'s value is anything but \"1.0\" or \"1.0.x\", where x is the semantic versioning number to any API except the About API": {
-        "name": "An LRS rejects with error code 400 Bad Request, a Request which the \"X-Experience-API-Version\" header\\'s value is anything but \"1.0\" or \"1.0.x\", where x is the semantic versioning number to any API except the About API",
+    "An LRS rejects with error code 400 Bad Request, a Request which the \"X-Experience-API-Version\" header's value is anything but \"1.0\" or \"1.0.x\", where x is the semantic versioning number to any API except the About API": {
+        "name": "An LRS rejects with error code 400 Bad Request, a Request which the \"X-Experience-API-Version\" header's value is anything but \"1.0\" or \"1.0.x\", where x is the semantic versioning number to any API except the About API",
         "1.0.2_ref_text": "Format, 6.2.d, 6.2.e, 6.2.f, 7.7.f",
         "1.0.2_ref": "6.2.d, 6.2.e, 6.2.f, 7.7.c",
         "1.0.3_ref": "part3.3.3.d, part3.3.3.f, part3.3.3.g, part3.2.8.d"
@@ -3554,8 +3551,8 @@
     "statement substatement verb missing \"id\"": {
         "name": "statement substatement verb missing \"id\""
     },
-    "A \"verb\" property\\'s \"id\" property is an IRI": {
-        "name": "A \"verb\" property\\'s \"id\" property is an IRI",
+    "A \"verb\" property's \"id\" property is an IRI": {
+        "name": "A \"verb\" property's \"id\" property is an IRI",
         "1.0.2_ref_text": "Type, 4.1.3.table1.row1.a",
         "1.0.2_ref": "4.1.3.table1.row1.a",
         "1.0.3_ref": "part2.2.4.3.table1.row1.a"
@@ -3566,8 +3563,8 @@
     "statement substatement verb \"id\" not IRI": {
         "name": "statement substatement verb \"id\" not IRI"
     },
-    "A Voiding Statement is defined as a Statement whose \"verb\" property\\'s \"id\" property\\'s IRI ending with \"voided\"": {
-        "name": "A Voiding Statement is defined as a Statement whose \"verb\" property\\'s \"id\" property\\'s IRI ending with \"voided\"",
+    "A Voiding Statement is defined as a Statement whose \"verb\" property's \"id\" property's IRI ending with \"voided\"": {
+        "name": "A Voiding Statement is defined as a Statement whose \"verb\" property's \"id\" property's IRI ending with \"voided\"",
         "1.0.2_ref_text": "4.3",
         "1.0.2_ref": "4.3",
         "1.0.3_ref": "part2.2.3.2"
@@ -3575,8 +3572,8 @@
     "statement verb voided IRI ends with \"voided\" (WARNING: this applies \"Upon receiving a Statement that voids another, the LRS SHOULD NOT* reject the request on the grounds of the Object of that voiding Statement not being present\")": {
         "name": "statement verb voided IRI ends with \"voided\" (WARNING: this applies \"Upon receiving a Statement that voids another, the LRS SHOULD NOT* reject the request on the grounds of the Object of that voiding Statement not being present\")"
     },
-    "A Voiding Statement\\'s \"objectType\" field has a value of \"StatementRef\"": {
-        "name": "A Voiding Statement\\'s \"objectType\" field has a value of \"StatementRef\"",
+    "A Voiding Statement's \"objectType\" field has a value of \"StatementRef\"": {
+        "name": "A Voiding Statement's \"objectType\" field has a value of \"StatementRef\"",
         "1.0.2_ref_text": "Format, 4.3.a",
         "1.0.2_ref": "4.3.a",
         "1.0.3_ref": "part2.2.3.2.a"
@@ -3587,8 +3584,8 @@
     "statement verb voided does not use object \"StatementRef\"": {
         "name": "statement verb voided does not use object \"StatementRef\""
     },
-    "A \"verb\" property\\'s \"display\" property is a Language Map": {
-        "name": "A \"verb\" property\\'s \"display\" property is a Language Map",
+    "A \"verb\" property's \"display\" property is a Language Map": {
+        "name": "A \"verb\" property's \"display\" property is a Language Map",
         "1.0.2_ref_text": "Type, 4.1.3.table1.row2.a",
         "1.0.2_ref": "4.1.3.table1.row2.a",
         "1.0.3_ref": "part2.2.4.3.table1.row2.a"
@@ -3701,14 +3698,14 @@
     "Should accept POST to Agent profile with document true": {
         "name": "Should accept POST to Agent profile with document true"
     },
-    "An LRS\\'s State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document": {
-        "name": "An LRS\\'s State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
+    "An LRS's State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document": {
+        "name": "An LRS's State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
         "1.0.2_ref_text": "7.3.f",
         "1.0.2_ref": "7.3.f",
         "1.0.3_ref": "Implicit"
     },
-    "An LRS\\'s State API, rejects a POST request if the document is found and either document\\'s type is not \"application/json\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API, rejects a POST request if the document is found and either document\\'s type is not \"application/json\" with error code 400 Bad Request",
+    "An LRS's State API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request": {
+        "name": "An LRS's State API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
         "1.0.2_ref_text": "7.3.e",
         "1.0.2_ref": "7.3.e",
         "1.0.3_ref": "part3.2.2.h"
@@ -3725,62 +3722,62 @@
         "1.0.2_ref": "7.3.d",
         "1.0.3_ref": "part3.2.2.e, part3.2.2.f, part3.2.2.g"
     },
-    "An LRS\\'s State API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"": {
-        "name": "An LRS\\'s State API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
+    "An LRS's State API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"": {
+        "name": "An LRS's State API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
         "1.0.2_ref_text": "7.3.d",
         "1.0.2_ref": "7.3.d",
         "1.0.3_ref": "part3.2.2.e, part3.2.2.f, part3.2.2.g"
     },
-    "An LRS\\'s Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document": {
-        "name": "An LRS\\'s Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
+    "An LRS's Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document": {
+        "name": "An LRS's Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
         "1.0.2_ref_text": "7.3.f",
         "1.0.2_ref": "7.3.f",
         "1.0.3_ref": "Implicit"
     },
-    "An LRS\\'s Activity Profile API, rejects a POST request if the document is found and either document\\'s type is not \"application/json\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API, rejects a POST request if the document is found and either document\\'s type is not \"application/json\" with error code 400 Bad Request",
+    "An LRS's Activity Profile API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
         "1.0.2_ref_text": "7.3.e",
         "1.0.2_ref": "7.3.e",
         "1.0.3_ref": "part3.2.2.h"
     },
-    "An LRS\\'s Activity Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"": {
-        "name": "An LRS\\'s Activity Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
+    "An LRS's Activity Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"": {
+        "name": "An LRS's Activity Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
         "1.0.2_ref_text": "7.3.d",
         "1.0.2_ref": "7.3.d",
         "1.0.3_ref": "part3.2.2.e, part3.2.2.f, part3.2.2.g"
     },
-    "An LRS\\'s Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document": {
-        "name": "An LRS\\'s Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
+    "An LRS's Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document": {
+        "name": "An LRS's Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
         "1.0.2_ref_text": "7.3.f",
         "1.0.2_ref": "7.3.f",
         "1.0.3_ref": "Implicit"
     },
-    "An LRS\\'s Agent Profile API, rejects a POST request if the document is found and either document\\'s type is not \"application/json\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API, rejects a POST request if the document is found and either document\\'s type is not \"application/json\" with error code 400 Bad Request",
+    "An LRS's Agent Profile API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
         "1.0.2_ref_text": "7.3.e",
         "1.0.2_ref": "7.3.e",
         "1.0.3_ref": "part3.2.2.h"
     },
-    "An LRS\\'s Agent Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"": {
-        "name": "An LRS\\'s Agent Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
+    "An LRS's Agent Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"": {
+        "name": "An LRS's Agent Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
         "1.0.2_ref_text": "7.3.d",
         "1.0.2_ref": "7.3.d",
         "1.0.3_ref": "part3.2.2.e, part3.2.2.f, part3.2.2.g"
     },
-    "An LRS\\'s State API accepts PUT requests": {
-        "name": "An LRS\\'s State API accepts PUT requests",
+    "An LRS's State API accepts PUT requests": {
+        "name": "An LRS's State API accepts PUT requests",
         "1.0.2_ref_text": "7.4",
         "1.0.2_ref": "7.4",
         "1.0.3_ref": "part3.2.3"
     },
-    "An LRS\\'s State API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row1.b",
         "1.0.3_ref": "part3.2.3.table1.row1.b"
     },
-    "An LRS\\'s State API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's State API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row1.a",
         "1.0.2_ref": "7.4.table1.row1.a",
         "1.0.3_ref": "part3.2.3.table1.row1.a"
@@ -3797,26 +3794,26 @@
     "Should State API reject a PUT request with activityId type undefined": {
         "name": "Should State API reject a PUT request with activityId type undefined"
     },
-    "An LRS\\'s State API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row2.b",
         "1.0.2_ref": "7.4.table1.row2.b",
         "1.0.3_ref": "part3.2.3.table1.row2.b"
     },
-    "An LRS\\'s State API rejects a PUT request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a PUT request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
+    "An LRS's State API rejects a PUT request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a PUT request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row2.a",
         "1.0.2_ref": "7.4.table1.row2.a",
         "1.0.3_ref": "part3.2.3.table1.row2.a"
     },
-    "An LRS\\'s State API can process a PUT request with \"registration\" as a parameter": {
-        "name": "An LRS\\'s State API can process a PUT request with \"registration\" as a parameter",
+    "An LRS's State API can process a PUT request with \"registration\" as a parameter": {
+        "name": "An LRS's State API can process a PUT request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
         "1.0.3_ref": "part3.2.3.table1.row3.b"
     },
-    "An LRS\\'s State API rejects a PUT request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a PUT request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
+    "An LRS's State API rejects a PUT request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a PUT request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
         "1.0.3_ref": "part3.2.3.table1.row3.a"
@@ -3830,32 +3827,32 @@
     "Should reject PUT with \"registration\" with type not UUID": {
         "name": "Should reject PUT with \"registration\" with type not UUID"
     },
-    "An LRS\\'s State API rejects a PUT request without \"stateId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a PUT request without \"stateId\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a PUT request without \"stateId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a PUT request without \"stateId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row4.b",
         "1.0.3_ref": "part3.2.3.table1.row4.b"
     },
-    "An LRS\\'s State API upon processing a successful PUT request returns code 204 No Content": {
-        "name": "An LRS\\'s State API upon processing a successful PUT request returns code 204 No Content",
+    "An LRS's State API upon processing a successful PUT request returns code 204 No Content": {
+        "name": "An LRS's State API upon processing a successful PUT request returns code 204 No Content",
         "1.0.2_ref_text": "7.4.a",
         "1.0.2_ref": "7.4.a",
         "1.0.3_ref": "part3.2.3.a"
     },
-    "An LRS\\'s State API accepts POST requests": {
-        "name": "An LRS\\'s State API accepts POST requests",
+    "An LRS's State API accepts POST requests": {
+        "name": "An LRS's State API accepts POST requests",
         "1.0.2_ref_text": "7.4",
         "1.0.2_ref": "7.4",
         "1.0.3_ref": "part3.2.3"
     },
-    "An LRS\\'s State API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row1.b",
         "1.0.3_ref": "part3.2.3.table1.row1.b"
     },
-    "An LRS\\'s State API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's State API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row1.a",
         "1.0.2_ref": "7.4.table1.row1.a",
         "1.0.3_ref": "part3.2.3.table1.row1.a"
@@ -3872,14 +3869,14 @@
     "Should reject PUT State with stateId type : undefined": {
         "name": "Should reject PUT State with stateId type : undefined"
     },
-    "An LRS\\'s State API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row2.b",
         "1.0.2_ref": "7.4.table1.row2.b",
         "1.0.3_ref": "part3.2.3.table1.row2.b"
     },
-    "An LRS\\'s State API rejects a POST request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a POST request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
+    "An LRS's State API rejects a POST request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a POST request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row2.a",
         "1.0.2_ref": "7.4.table1.row2.a",
         "1.0.3_ref": "part3.2.3.table1.row2.a"
@@ -3896,14 +3893,14 @@
     "Should reject POST State with agent type : undefined": {
         "name": "Should reject POST State with agent type : undefined"
     },
-    "An LRS\\'s State API can process a POST request with \"registration\" as a parameter": {
-        "name": "An LRS\\'s State API can process a POST request with \"registration\" as a parameter",
+    "An LRS's State API can process a POST request with \"registration\" as a parameter": {
+        "name": "An LRS's State API can process a POST request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
         "1.0.3_ref": "part3.2.3.table1.row3.b"
     },
-    "An LRS\\'s State API rejects a POST request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a POST request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
+    "An LRS's State API rejects a POST request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a POST request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
         "1.0.3_ref": "part3.2.3.table1.row3.a"
@@ -3917,32 +3914,32 @@
     "Should reject POST with \"registration\" with type not UUID": {
         "name": "Should reject POST with \"registration\" with type not UUID"
     },
-    "An LRS\\'s State API rejects a POST request without \"stateId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a POST request without \"stateId\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a POST request without \"stateId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a POST request without \"stateId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row4.b",
         "1.0.3_ref": "part3.2.3.table1.row4.b"
     },
-    "An LRS\\'s State API upon processing a successful POST request returns code 204 No Content": {
-        "name": "An LRS\\'s State API upon processing a successful POST request returns code 204 No Content",
+    "An LRS's State API upon processing a successful POST request returns code 204 No Content": {
+        "name": "An LRS's State API upon processing a successful POST request returns code 204 No Content",
         "1.0.2_ref_text": "7.4.a",
         "1.0.2_ref": "7.4.a",
         "1.0.3_ref": "part3.2.3.a"
     },
-    "An LRS\\'s State API accepts GET requests": {
-        "name": "An LRS\\'s State API accepts GET requests",
+    "An LRS's State API accepts GET requests": {
+        "name": "An LRS's State API accepts GET requests",
         "1.0.2_ref_text": "7.4",
         "1.0.2_ref": "7.4",
         "1.0.3_ref": "part3.2.3"
     },
-    "An LRS\\'s State API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row1.b",
         "1.0.3_ref": "part3.2.3.table1.row1.b"
     },
-    "An LRS\\'s State API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's State API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row1.a",
         "1.0.2_ref": "7.4.table1.row1.a",
         "1.0.3_ref": "part3.2.3.table1.row1.a"
@@ -3959,14 +3956,14 @@
     "Should reject GET with \"activityId\" with type undefined": {
         "name": "Should reject GET with \"activityId\" with type undefined"
     },
-    "An LRS\\'s State API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row2.b",
         "1.0.2_ref": "7.4.table1.row2.b",
         "1.0.3_ref": "part3.2.3.table1.row3.b"
     },
-    "An LRS\\'s State API rejects a GET request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a GET request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
+    "An LRS's State API rejects a GET request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a GET request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row2.a",
         "1.0.2_ref": "7.4.table1.row2.a",
         "1.0.3_ref": "part3.2.3.table1.row3.a"
@@ -3983,14 +3980,14 @@
     "Should reject GET with \"agent\" with type undefined": {
         "name": "Should reject GET with \"agent\" with type undefined"
     },
-    "An LRS\\'s State API can process a GET request with \"registration\" as a parameter": {
-        "name": "An LRS\\'s State API can process a GET request with \"registration\" as a parameter",
+    "An LRS's State API can process a GET request with \"registration\" as a parameter": {
+        "name": "An LRS's State API can process a GET request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
         "1.0.3_ref": "part3.2.3.table1.row3.b"
     },
-    "An LRS\\'s State API rejects a GET request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a GET request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
+    "An LRS's State API rejects a GET request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a GET request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
         "1.0.3_ref": "part3.2.3.table1.row3.a"
@@ -4004,56 +4001,56 @@
     "Should reject GET with \"registration\" with type not UUID": {
         "name": "Should reject GET with \"registration\" with type not UUID"
     },
-    "An LRS\\'s State API can process a GET request with \"stateId\" as a parameter": {
-        "name": "An LRS\\'s State API can process a GET request with \"stateId\" as a parameter",
+    "An LRS's State API can process a GET request with \"stateId\" as a parameter": {
+        "name": "An LRS's State API can process a GET request with \"stateId\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row3.b, 7.4.table2.row3.b, 7.4.table1.row1.b",
         "1.0.3_ref": "part3.2.3.table1.row4.b"
     },
-    "An LRS\\'s State API can process a GET request with \"since\" as a parameter": {
-        "name": "An LRS\\'s State API can process a GET request with \"since\" as a parameter",
+    "An LRS's State API can process a GET request with \"since\" as a parameter": {
+        "name": "An LRS's State API can process a GET request with \"since\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b",
         "1.0.2_ref": "7.4.table2.row4.b, 7.4.table2.row3.b",
         "1.0.3_ref": "part3.2.3table2.row4.b"
     },
-    "An LRS\\'s State API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
+    "An LRS's State API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table2.row4.a",
         "1.0.2_ref": "7.4.table2.row4.a",
         "1.0.3_ref": "part3.2.3.table2.row4.a"
     },
-    "An LRS\\'s State API upon processing a successful GET request with a valid \"stateId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK": {
-        "name": "An LRS\\'s State API upon processing a successful GET request with a valid \"stateId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
+    "An LRS's State API upon processing a successful GET request with a valid \"stateId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK": {
+        "name": "An LRS's State API upon processing a successful GET request with a valid \"stateId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.4.b",
         "1.0.2_ref": "7.4.b",
         "1.0.3_ref": "part3.2.3.b"
     },
-    "An LRS\\'s State API upon processing a successful GET request without \"stateId\" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK": {
-        "name": "An LRS\\'s State API upon processing a successful GET request without \"stateId\" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK",
+    "An LRS's State API upon processing a successful GET request without \"stateId\" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK": {
+        "name": "An LRS's State API upon processing a successful GET request without \"stateId\" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.4.c",
         "1.0.2_ref": "7.4.c",
         "1.0.3_ref": "part3.2.3.c"
     },
-    "An LRS\\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request": {
-        "name": "An LRS\\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request",
+    "An LRS's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request": {
+        "name": "An LRS's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request",
         "1.0.2_ref_text": "7.4.table2.row4",
         "1.0.2_ref": "7.4.table2.row4",
         "1.0.3_ref": "part3.2.3.table2.row4"
     },
-    "An LRS\\'s State API accepts DELETE requests": {
-        "name": "An LRS\\'s State API accepts DELETE requests",
+    "An LRS's State API accepts DELETE requests": {
+        "name": "An LRS's State API accepts DELETE requests",
         "1.0.2_ref_text": "7.4",
         "1.0.2_ref": "7.4",
         "1.0.3_ref": "part3.2.3"
     },
-    "An LRS\\'s State API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row1.b",
         "1.0.3_ref": "part3.2.3.table1.row1.b"
     },
-    "An LRS\\'s State API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's State API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row1.a",
         "1.0.2_ref": "7.4.table1.row1.a",
         "1.0.3_ref": "part3.2.3.table1.row1.a"
@@ -4070,14 +4067,14 @@
     "Should reject DELETE with \"activityId\" with type undefined": {
         "name": "Should reject DELETE with \"activityId\" with type undefined"
     },
-    "An LRS\\'s State API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
+    "An LRS's State API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row2.b",
         "1.0.2_ref": "7.4.table1.row2.b",
         "1.0.3_ref": "part3.2.3.table1.row3.b"
     },
-    "An LRS\\'s State API rejects a DELETE request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a DELETE request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
+    "An LRS's State API rejects a DELETE request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a DELETE request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row2.a",
         "1.0.2_ref": "7.4.table1.row2.a",
         "1.0.3_ref": "part3.2.3.table1.row3.a"
@@ -4094,14 +4091,14 @@
     "Should reject DELETE with \"agent\" with type undefined": {
         "name": "Should reject DELETE with \"agent\" with type undefined"
     },
-    "An LRS\\'s State API can process a DELETE request with \"registration\" as a parameter": {
-        "name": "An LRS\\'s State API can process a DELETE request with \"registration\" as a parameter",
+    "An LRS's State API can process a DELETE request with \"registration\" as a parameter": {
+        "name": "An LRS's State API can process a DELETE request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
         "1.0.3_ref": "part3.2.3.table1.row3.b"
     },
-    "An LRS\\'s State API rejects a DELETE request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a DELETE request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
+    "An LRS's State API rejects a DELETE request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a DELETE request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
         "1.0.3_ref": "part3.2.3.table1.row3.a"
@@ -4115,67 +4112,67 @@
     "Should reject DELETE with \"registration\" with type not UUID": {
         "name": "Should reject DELETE with \"registration\" with type not UUID"
     },
-    "An LRS\\'s State API can process a DELETE request with \"stateId\" as a parameter": {
-        "name": "An LRS\\'s State API can process a DELETE request with \"stateId\" as a parameter",
+    "An LRS's State API can process a DELETE request with \"stateId\" as a parameter": {
+        "name": "An LRS's State API can process a DELETE request with \"stateId\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row3.b, 7.4.table2.row3.b, 7.4.table1.row1.b",
         "1.0.3_ref": "part3.2.3.table1.row4.b"
     },
-    "An LRS\\'s State API rejects a DELETE request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
-        "name": "An LRS\\'s State API rejects a DELETE request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
+    "An LRS's State API rejects a DELETE request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
+        "name": "An LRS's State API rejects a DELETE request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table2.row4.a",
         "1.0.2_ref": "7.4.table3.row4.a",
         "1.0.3_ref": "part3.2.3.table3.row4.a"
     },
-    "An LRS\\'s State API upon processing a successful DELETE request with a valid \"stateId\" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content": {
-        "name": "An LRS\\'s State API upon processing a successful DELETE request with a valid \"stateId\" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content",
+    "An LRS's State API upon processing a successful DELETE request with a valid \"stateId\" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content": {
+        "name": "An LRS's State API upon processing a successful DELETE request with a valid \"stateId\" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content",
         "1.0.2_ref_text": "7.4.b",
         "1.0.2_ref": "7.4.b",
         "1.0.3_ref": "part3.2.3.b"
     },
-    "An LRS\\'s State API upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 200 OK": {
-        "name": "An LRS\\'s State API upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 200 OK",
+    "An LRS's State API upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 200 OK": {
+        "name": "An LRS's State API upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 200 OK",
         "1.0.2_ref_text": "7.4.d",
         "1.0.2_ref": "7.4.d",
         "1.0.3_ref": "part3.2.3.d"
     },
-    "An LRS\\'s Activities API accepts GET requests": {
-        "name": "An LRS\\'s Activities API accepts GET requests",
+    "An LRS's Activities API accepts GET requests": {
+        "name": "An LRS's Activities API accepts GET requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
         "1.0.3_ref": "part3.2.5"
     },
-    "An LRS\\'s Activities API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activities API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Activities API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Activities API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table1.row1.b",
         "1.0.2_ref": "7.5.table1.row1.b",
         "1.0.3_ref": "part3.2.5.table1.row1.b"
     },
-    "An LRS\\'s Activities API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activities API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's Activities API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Activities API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table1.row1.a",
         "1.0.2_ref": "7.5.table1.row1.a",
         "1.0.3_ref": "part3.2.5.table1.row1.a"
     },
-    "An LRS\\'s Activities API upon processing a successful GET request returns the complete Activity Object": {
-        "name": "An LRS\\'s Activities API upon processing a successful GET request returns the complete Activity Object",
+    "An LRS's Activities API upon processing a successful GET request returns the complete Activity Object": {
+        "name": "An LRS's Activities API upon processing a successful GET request returns the complete Activity Object",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
         "1.0.3_ref": "part3.2.5"
     },
-    "An LRS\\'s Activity Profile API accepts PUT requests": {
-        "name": "An LRS\\'s Activity Profile API accepts PUT requests",
+    "An LRS's Activity Profile API accepts PUT requests": {
+        "name": "An LRS's Activity Profile API accepts PUT requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
         "1.0.3_ref": "part3.2.7"
     },
-    "An LRS\\'s Activity Profile API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c"
     },
-    "An LRS\\'s Activity Profile API API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's Activity Profile API API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row2.a",
         "1.0.2_ref": "7.5.table2.row2.a"
     },
@@ -4188,32 +4185,32 @@
     "Should reject PUT with \"activityId\" with type [object Object]": {
         "name": "Should reject PUT with \"activityId\" with type [object Object]"
     },
-    "An LRS\\'s Activity Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row2.c",
         "1.0.3_ref": "part3.2.7.table1.row2.c"
     },
-    "An LRS\\'s Activity Profile API upon processing a successful PUT request returns code 204 No Content": {
-        "name": "An LRS\\'s Activity Profile API upon processing a successful PUT request returns code 204 No Content",
+    "An LRS's Activity Profile API upon processing a successful PUT request returns code 204 No Content": {
+        "name": "An LRS's Activity Profile API upon processing a successful PUT request returns code 204 No Content",
         "1.0.2_ref_text": "7.5.b",
         "1.0.2_ref": "7.5.b",
         "1.0.3_ref": "part3.2.7.c"
     },
-    "An LRS\\'s Activity Profile API accepts POST requests": {
-        "name": "An LRS\\'s Activity Profile API accepts POST requests",
+    "An LRS's Activity Profile API accepts POST requests": {
+        "name": "An LRS's Activity Profile API accepts POST requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
         "1.0.3_ref": "part3.2.7"
     },
-    "An LRS\\'s Activity Profile API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
         "1.0.3_ref": "part3.2.7.table1.row1.c"
     },
-    "An LRS\\'s Activity Profile API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row2.a",
         "1.0.2_ref": "7.5.table2.row2.a",
         "1.0.3_ref": "part3.2.7.table1.row2.a"
@@ -4227,74 +4224,74 @@
     "Should reject POST with \"activityId\" with type [object Object]": {
         "name": "Should reject POST with \"activityId\" with type [object Object]"
     },
-    "An LRS\\'s Activity Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
         "1.0.3_ref": "part3.2.7.table1.row1.c"
     },
-    "An LRS\\'s Activity Profile API upon processing a successful POST request returns code 204 No Content": {
-        "name": "An LRS\\'s Activity Profile API upon processing a successful POST request returns code 204 No Content",
+    "An LRS's Activity Profile API upon processing a successful POST request returns code 204 No Content": {
+        "name": "An LRS's Activity Profile API upon processing a successful POST request returns code 204 No Content",
         "1.0.2_ref_text": "7.5.b",
         "1.0.2_ref": "7.5.b",
         "1.0.3_ref": "part3.2.7.b"
     },
-    "An LRS\\'s Activity Profile API accepts DELETE requests": {
-        "name": "An LRS\\'s Activity Profile API accepts DELETE requests",
+    "An LRS's Activity Profile API accepts DELETE requests": {
+        "name": "An LRS's Activity Profile API accepts DELETE requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
         "1.0.3_ref": "part3.2.7"
     },
-    "An LRS\\'s Activity Profile API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
         "1.0.3_ref": "part3.2.7.table1.row1.c"
     },
-    "An LRS\\'s Activity Profile API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row2.a",
         "1.0.2_ref": "7.5.table2.row2.a",
         "1.0.3_ref": "part3.2.7.table1.row2.a"
     },
-    "An LRS\\'s Activity Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
         "1.0.3_ref": "part3.2.7.table1.row1.c"
     },
-    "An LRS\\'s Activity Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content": {
-        "name": "An LRS\\'s Activity Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content",
+    "An LRS's Activity Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content": {
+        "name": "An LRS's Activity Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content",
         "1.0.2_ref_text": "7.5.b",
         "1.0.2_ref": "7.5.b",
         "1.0.3_ref": "part3.2.7.b"
     },
-    "An LRS\\'s Activity Profile API accepts GET requests": {
-        "name": "An LRS\\'s Activity Profile API accepts GET requests",
+    "An LRS's Activity Profile API accepts GET requests": {
+        "name": "An LRS's Activity Profile API accepts GET requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
         "1.0.3_ref": "part3.2.7"
     },
-    "An LRS\\'s Activity Profile API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
         "1.0.3_ref": "part3.2.7.table1.row1.c"
     },
-    "An LRS\\'s Activity Profile API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row1.a",
         "1.0.2_ref": "7.5.table2.row2.a",
         "1.0.3_ref": "part3.2.7.table1.row2.a"
     },
-    "An LRS\\'s Activity Profile API can process a GET request with \"since\" as a parameter": {
-        "name": "An LRS\\'s Activity Profile API can process a GET request with \"since\" as a parameter",
+    "An LRS's Activity Profile API can process a GET request with \"since\" as a parameter": {
+        "name": "An LRS's Activity Profile API can process a GET request with \"since\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.5.table3.row2.c, 7.5.table3.row2.b",
         "1.0.2_ref": "7.5.table3.row2.c, 7.5.table3.row2.b",
         "1.0.3_ref": "part3.2.7.table2.row2.c, part3.2.7.table.row2.b"
     },
-    "An LRS\\'s Activity Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
-        "name": "An LRS\\'s Activity Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
+    "An LRS's Activity Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table3.row2.a",
         "1.0.2_ref": "7.5.table3.row2.a",
         "1.0.3_ref": "part3.2.7.table2.row2.a"
@@ -4302,50 +4299,50 @@
     "Should reject GET with \"since\" with type": {
         "name": "Should reject GET with \"since\" with type"
     },
-    "An LRS\\'s Activity Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK": {
-        "name": "An LRS\\'s Activity Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
+    "An LRS's Activity Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK": {
+        "name": "An LRS's Activity Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.5.c",
         "1.0.2_ref": "7.5.c",
         "1.0.3_ref": "part3.2.7.b"
     },
-    "An LRS\\'s Activity Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK": {
-        "name": "An LRS\\'s Activity Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK",
+    "An LRS's Activity Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK": {
+        "name": "An LRS's Activity Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.5.d",
         "1.0.2_ref": "7.5.d",
         "1.0.3_ref": "part3.2.7.c"
     },
-    "An LRS\\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present": {
-        "name": "An LRS\\'s returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present",
+    "An LRS's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present": {
+        "name": "An LRS's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present",
         "1.0.2_ref_text": "7.6.table4.row2, 7.6.g",
         "1.0.2_ref": "7.6.table4.row2, 7.6.g",
         "1.0.3_ref": "part3.2.6.table2.row2, part3.2.6.d"
     },
-    "An LRS\\'s Agents API accepts GET requests": {
-        "name": "An LRS\\'s Agents API accepts GET requests",
+    "An LRS's Agents API accepts GET requests": {
+        "name": "An LRS's Agents API accepts GET requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
         "1.0.3_ref": "part3.2.4"
     },
-    "An LRS\\'s Agents API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agents API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
+    "An LRS's Agents API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Agents API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table2.row1.c",
         "1.0.2_ref": "7.6.table2.row1.c",
         "1.0.3_ref": "part3.2.4.table1.row1.c"
     },
-    "An LRS\\'s Agent Profile API accepts PUT requests": {
-        "name": "An LRS\\'s Agent Profile API accepts PUT requests",
+    "An LRS's Agent Profile API accepts PUT requests": {
+        "name": "An LRS's Agent Profile API accepts PUT requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
         "1.0.3_ref": "part3.2.6"
     },
-    "An LRS\\'s Agent Profile API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c",
         "1.0.3_ref": "part3.2.6.table1.row1.c"
     },
-    "An LRS\\'s Agent Profile API rejects a PUT request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a PUT request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a PUT request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a PUT request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row1.a",
         "1.0.2_ref": "7.6.table3.row1.a",
         "1.0.3_ref": "part3.2.6.table1.row1.a"
@@ -4362,32 +4359,32 @@
     "Should reject PUT with \"agent\" with type [object Object]": {
         "name": "Should reject PUT with \"agent\" with type [object Object]"
     },
-    "An LRS\\'s Agent Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row2.c",
         "1.0.2_ref": "7.6.table3.row2.c",
         "1.0.3_ref": "part3.2.6.table1.row2.c"
     },
-    "An LRS\\'s Agent Profile API upon processing a successful PUT request returns code 204 No Content": {
-        "name": "An LRS\\'s Agent Profile API upon processing a successful PUT request returns code 204 No Content",
+    "An LRS's Agent Profile API upon processing a successful PUT request returns code 204 No Content": {
+        "name": "An LRS's Agent Profile API upon processing a successful PUT request returns code 204 No Content",
         "1.0.2_ref_text": "7.6.e",
         "1.0.2_ref": "7.6.e",
         "1.0.3_ref": "part3.2.6.b"
     },
-    "An LRS\\'s Agent Profile API accepts POST requests": {
-        "name": "An LRS\\'s Agent Profile API accepts POST requests",
+    "An LRS's Agent Profile API accepts POST requests": {
+        "name": "An LRS's Agent Profile API accepts POST requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
         "1.0.3_ref": "part3.2.6"
     },
-    "An LRS\\'s Agent Profile API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c",
         "1.0.3_ref": "part3.2.6.table1.row1.c"
     },
-    "An LRS\\'s Agent Profile API rejects a POST request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a POST request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a POST request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a POST request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row1.a",
         "1.0.2_ref": "7.6.table3.row1.a",
         "1.0.3_ref": "part3.2.6.table1.row1.a"
@@ -4401,32 +4398,32 @@
     "Should reject POST with \"agent\" with type [object Object]": {
         "name": "Should reject POST with \"agent\" with type [object Object]"
     },
-    "An LRS\\'s Agent Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row2.c",
         "1.0.2_ref": "7.6.table3.row2.c",
         "1.0.3_ref": "part3.2.6.table1.row2.c"
     },
-    "An LRS\\'s Agent Profile API upon processing a successful POST request returns code 204 No Content": {
-        "name": "An LRS\\'s Agent Profile API upon processing a successful POST request returns code 204 No Content",
+    "An LRS's Agent Profile API upon processing a successful POST request returns code 204 No Content": {
+        "name": "An LRS's Agent Profile API upon processing a successful POST request returns code 204 No Content",
         "1.0.2_ref_text": "7.6.e",
         "1.0.2_ref": "7.6.e",
         "1.0.3_ref": "part3.2.6.b"
     },
-    "An LRS\\'s Agent Profile API accepts DELETE requests": {
-        "name": "An LRS\\'s Agent Profile API accepts DELETE requests",
+    "An LRS's Agent Profile API accepts DELETE requests": {
+        "name": "An LRS's Agent Profile API accepts DELETE requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
         "1.0.3_ref": "part3.2.6"
     },
-    "An LRS\\'s Agent Profile API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c",
         "1.0.3_ref": "part3.2.6.table1.row1.c"
     },
-    "An LRS\\'s Agent Profile API rejects a DELETE request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a DELETE request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a DELETE request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a DELETE request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row1.a",
         "1.0.2_ref": "7.6.table3.row1.a",
         "1.0.3_ref": "part3.2.6.table1.row1.a"
@@ -4434,14 +4431,14 @@
     "Should reject DELETE with \"agent\" with type [object Object]": {
         "name": "Should reject DELETE with \"agent\" with type [object Object]"
     },
-    "An LRS\\'s Agent Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row2.c",
         "1.0.2_ref": "7.6.table3.row2.c",
         "1.0.3_ref": "part3.2.6.table1.row2.c"
     },
-    "An LRS\\'s Agent Profile API rejects a DELETE request with \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a DELETE request with \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a DELETE request with \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a DELETE request with \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row2.a",
         "1.0.2_ref": "7.6.table3.row2.a",
         "1.0.3_ref": "part3.2.6.table1.row2.a"
@@ -4455,38 +4452,50 @@
     "Should reject DELETE with \"profileId\" with type [object Object]": {
         "name": "Should reject DELETE with \"profileId\" with type [object Object]"
     },
-    "An LRS\\'s Agent Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content": {
-        "name": "An LRS\\'s Agent Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content",
+    "An LRS's Agent Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content": {
+        "name": "An LRS's Agent Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content",
         "1.0.2_ref_text": "7.6.e",
         "1.0.2_ref": "7.6.e",
         "1.0.3_ref": "part3.2.6.b"
     },
-    "An LRS\\'s Agent Profile API accepts GET requests": {
-        "name": "An LRS\\'s Agent Profile API accepts GET requests",
+    "An LRS's Agent Profile API accepts GET requests": {
+        "name": "An LRS's Agent Profile API accepts GET requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
         "1.0.3_ref": "part3.2.6"
     },
-    "An LRS\\'s Agent Profile API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row1.c, 7.6.table4.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c, 7.6.table4.row1.c",
         "1.0.3_ref": "part3.2.6.table1.row1.c, part3.2.6.table1.row1.c"
     },
-    "An LRS\\'s Agent Profile API rejects a GET request with \"agent\" as a parameter if it is not an Actor Object with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a GET request with \"agent\" as a parameter if it is not an Actor Object with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a GET request with \"agent\" as a parameter if it is not an Actor Object with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a GET request with \"agent\" as a parameter if it is not an Actor Object with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row1.c, 7.6.table4.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c, 7.6.table4.row1.c",
         "1.0.3_ref": "part3.2.6.table1.row1.c, part3.2.6.table1.row1.c"
     },
-    "An LRS\\'s Agent Profile API can process a GET request with \"since\" as a parameter": {
-        "name": "An LRS\\'s Agent Profile API can process a GET request with \"since\" as a parameter",
+	"Should reject GET with \"since\" with type 1": {
+		"name": "Should reject GET with \"since\" with type 1"
+	},
+	"Should reject GET with \"since\" with type true": {
+		"name": "Should reject GET with \"since\" with type true"
+	},
+	"Should reject GET with \"since\" with type [object Object]": {
+		"name": "Should reject GET with \"since\" with type [object Object]"
+	},
+	"Should reject GET with \"since\" with type not timestamp": {
+		"name": "Should reject GET with \"since\" with type not timestamp"
+	},
+    "An LRS's Agent Profile API can process a GET request with \"since\" as a parameter": {
+        "name": "An LRS's Agent Profile API can process a GET request with \"since\" as a parameter",
         "1.0.2_ref_text": "Multiplicity, 7.6.table4.row2.a, 7.5.table4.row2.c",
         "1.0.2_ref": "7.6.table4.row2.a",
         "1.0.3_ref": "part3.2.6.table2.row2.a"
     },
-    "An LRS\\'s Agent Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
-        "name": "An LRS\\'s Agent Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
+    "An LRS's Agent Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
+        "name": "An LRS's Agent Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table4.row2.a",
         "1.0.2_ref": "7.6.table4.row2.a",
         "1.0.3_ref": "part3.2.6.table2.row2.a"
@@ -4503,50 +4512,50 @@
     "Should reject GET with \"since\" with type not timestamp": {
         "name": "Should reject GET with \"since\" with type not timestamp"
     },
-    "An LRS\\'s Agent Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK": {
-        "name": "An LRS\\'s Agent Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
+    "An LRS's Agent Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK": {
+        "name": "An LRS's Agent Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.6, 7.6.f",
         "1.0.2_ref": "7.6, 7.6.f",
         "1.0.3_ref": "part3.2.6.c"
     },
-    "An LRS\\'s Agent Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK": {
-        "name": "An LRS\\'s Agent Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK",
+    "An LRS's Agent Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK": {
+        "name": "An LRS's Agent Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.6, 7.6.g",
         "1.0.2_ref": "7.6, 7.6.g",
         "1.0.3_ref": "part3.2.6.d"
     },
-    "An LRS\\'s About API accepts GET requests": {
-        "name": "An LRS\\'s About API accepts GET requests",
+    "An LRS's About API accepts GET requests": {
+        "name": "An LRS's About API accepts GET requests",
         "1.0.2_ref_text": "7.7.b",
         "1.0.2_ref": "7.7.b",
         "1.0.3_ref": "part3.2.8"
     },
-    "An LRS\\'s About API upon processing a successful GET request returns a version property and code 200 OK": {
-        "name": "An LRS\\'s About API upon processing a successful GET request returns a version property and code 200 OK",
+    "An LRS's About API upon processing a successful GET request returns a version property and code 200 OK": {
+        "name": "An LRS's About API upon processing a successful GET request returns a version property and code 200 OK",
         "1.0.2_ref_text": "multiplicity, 7.7.table1.row1.c, 7.7.c",
         "1.0.2_ref": "7.7.table1.row1.c, 7.7.c",
         "1.0.3_ref": "part3.2.8.table1.row1.c, part3.2.8.c"
     },
-    "An LRS\\'s About API\\'s version property is an array of strings": {
-        "name": "An LRS\\'s About API\\'s version property is an array of strings",
+    "An LRS's About API's version property is an array of strings": {
+        "name": "An LRS's About API's version property is an array of strings",
         "1.0.2_ref_text": "format, 7.7.table1.row1.a",
         "1.0.2_ref": "7.7.table1.row1.a",
         "1.0.3_ref": "part3.2.8.table1.row1.a"
     },
-    "An LRS\\'s About API\\'s version property contains at least one string of \"1.0.1\"": {
-        "name": "An LRS\\'s About API\\'s version property contains at least one string of \"1.0.1\"",
+    "An LRS's About API's version property contains at least one string of \"1.0.1\"": {
+        "name": "An LRS's About API's version property contains at least one string of \"1.0.1\"",
         "1.0.2_ref_text": "7.7.d",
         "1.0.2_ref": "7.7.d",
         "1.0.3_ref": "part3.2.8.d"
     },
-    "An LRS\\'s About API\\'s version property can only have values of \".9\", \".95\", \"1.0\", \"1.0.0\", or \"\"1.0.\" + X\" with": {
-        "name": "An LRS\\'s About API\\'s version property can only have values of \".9\", \".95\", \"1.0\", \"1.0.0\", or \"\"1.0.\" + X\" with",
+    "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0\", \"1.0.0\", or \"\"1.0.\" + X\" with": {
+        "name": "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0\", \"1.0.0\", or \"\"1.0.\" + X\" with",
         "1.0.2_ref_text": "7.7.d.a",
         "1.0.2_ref": "7.7.d.a",
         "1.0.3_ref": "part3.2.8.d.a"
     },
-    "An LRS\\'s About API upon processing a successful GET request can return an Extension with code 200 OK": {
-        "name": "An LRS\\'s About API upon processing a successful GET request can return an Extension with code 200 OK",
+    "An LRS's About API upon processing a successful GET request can return an Extension with code 200 OK": {
+        "name": "An LRS's About API upon processing a successful GET request can return an Extension with code 200 OK",
         "1.0.2_ref_text": "multiplicity, 7.7.table1.row2.c, 7.7.c",
         "1.0.2_ref": "7.7.table1.row2.c, 7.7.c",
         "1.0.3_ref": "part3.2.8.table1.row2.c, part3.2.8.c"
@@ -4652,44 +4661,44 @@
         "1.0.2_ref": "7.6",
         "1.0.3_ref": "part3.2.4, part3.2.4.table1.row1.a"
     },
-    "A Person Object\\'s \"objectType\" property is a String and is \"Person\"": {
-        "name": "A Person Object\\'s \"objectType\" property is a String and is \"Person\"",
+    "A Person Object's \"objectType\" property is a String and is \"Person\"": {
+        "name": "A Person Object's \"objectType\" property is a String and is \"Person\"",
         "1.0.2_ref_text": "Format, Vocabulary, 7.6.table1.row1.a, 7.6.table1.row1.b",
         "1.0.2_ref": "7.6.table1.row1.a, 7.6.table1.row1.b",
         "1.0.3_ref": "part3.2.4.table2.row1.a, part3.2.4.table1.row1.b"
     },
-    "A Person Object\\'s \"name\" property is an Array of Strings": {
-        "name": "A Person Object\\'s \"name\" property is an Array of Strings",
+    "A Person Object's \"name\" property is an Array of Strings": {
+        "name": "A Person Object's \"name\" property is an Array of Strings",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row2.a",
         "1.0.2_ref": "7.6.table1.row2.a",
         "1.0.3_ref": "part3.2.4.table2.row2.a"
     },
-    "A Person Object\\'s \"mbox\" property is an Array of IRIs": {
-        "name": "A Person Object\\'s \"mbox\" property is an Array of IRIs",
+    "A Person Object's \"mbox\" property is an Array of IRIs": {
+        "name": "A Person Object's \"mbox\" property is an Array of IRIs",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row3.a",
         "1.0.2_ref": "7.6.table1.row3.a",
         "1.0.3_ref": "part3.2.4.table2.row3.a"
     },
-    "A Person Object\\'s \"mbox\" entries have the form \"mailto:emailaddress\"": {
-        "name": "A Person Object\\'s \"mbox\" entries have the form \"mailto:emailaddress\"",
+    "A Person Object's \"mbox\" entries have the form \"mailto:emailaddress\"": {
+        "name": "A Person Object's \"mbox\" entries have the form \"mailto:emailaddress\"",
         "1.0.2_ref_text": "Format, 7.6.table1.row3.a",
         "1.0.2_ref": "7.6.table1.row3.a",
         "1.0.3_ref": "part3.2.4.table2.row3.a"
     },
-    "A Person Object\\'s \"mbox_sha1sum\" property is an Array of Strings": {
-        "name": "A Person Object\\'s \"mbox_sha1sum\" property is an Array of Strings",
+    "A Person Object's \"mbox_sha1sum\" property is an Array of Strings": {
+        "name": "A Person Object's \"mbox_sha1sum\" property is an Array of Strings",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row4.a",
         "1.0.2_ref": "7.6.table1.row4.a",
         "1.0.3_ref": "part3.2.4.table2.row4.a"
     },
-    "A Person Object\\'s \"openid\" property is an Array of Strings": {
-        "name": "A Person Object\\'s \"openid\" property is an Array of Strings",
+    "A Person Object's \"openid\" property is an Array of Strings": {
+        "name": "A Person Object's \"openid\" property is an Array of Strings",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row5.a",
         "1.0.2_ref": "7.6.table1.row5.a",
         "1.0.3_ref": "part3.2.4.table2.row5.a"
     },
-    "A Person Object\\'s \"account\" property is an Array of Account Objects": {
-        "name": "A Person Object\\'s \"account\" property is an Array of Account Objects",
+    "A Person Object's \"account\" property is an Array of Account Objects": {
+        "name": "A Person Object's \"account\" property is an Array of Account Objects",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row6.a",
         "1.0.2_ref": "7.6.table1.row6.a",
         "1.0.3_ref": "part3.2.4.table2.row6.a"
@@ -5000,8 +5009,8 @@
     "should allow \"/statements\" GET": {
         "name": "should allow \"/statements\" GET"
     },
-    "An LRS\\'s Statement API accepts PUT requests": {
-        "name": "An LRS\\'s Statement API accepts PUT requests",
+    "An LRS's Statement API accepts PUT requests": {
+        "name": "An LRS's Statement API accepts PUT requests",
         "1.0.2_ref_text": "7.2.1",
         "1.0.2_ref": "7.2.1",
         "1.0.3_ref": "part3.2.1.1"
@@ -5009,8 +5018,8 @@
     "should persist statement using \"PUT\"": {
         "name": "should persist statement using \"PUT\""
     },
-    "An LRS\\'s Statement API accepts PUT requests only if it contains a \"statementId\" parameter": {
-        "name": "An LRS\\'s Statement API accepts PUT requests only if it contains a \"statementId\" parameter",
+    "An LRS's Statement API accepts PUT requests only if it contains a \"statementId\" parameter": {
+        "name": "An LRS's Statement API accepts PUT requests only if it contains a \"statementId\" parameter",
         "1.0.2_ref_text": "Multiplicity, 7.2.1.table1.a",
         "1.0.2_ref": "7.2.1.table1.a",
         "1.0.3_ref": "part3.2.1.1.table1.row1"
@@ -5021,8 +5030,8 @@
     "should fail without using \"statementId\" parameter": {
         "name": "should fail without using \"statementId\" parameter"
     },
-    "An LRS\\'s Statement API accepts PUT requests only if the \"statementId\" parameter is a String": {
-        "name": "An LRS\\'s Statement API accepts PUT requests only if the \"statementId\" parameter is a String",
+    "An LRS's Statement API accepts PUT requests only if the \"statementId\" parameter is a String": {
+        "name": "An LRS's Statement API accepts PUT requests only if the \"statementId\" parameter is a String",
         "1.0.2_ref_text": "Type, 7.2.1.table1.b",
         "1.0.2_ref": "7.2.1.table1.a",
         "1.0.3_ref": "part3.2.1.1.table1.row1.a"
@@ -5045,8 +5054,8 @@
     "should not update statement with matching \"statementId\" on PUT": {
         "name": "should not update statement with matching \"statementId\" on PUT"
     },
-    "An LRS\\'s Statement API upon processing a successful PUT request returns code 204 No Content": {
-        "name": "An LRS\\'s Statement API upon processing a successful PUT request returns code 204 No Content",
+    "An LRS's Statement API upon processing a successful PUT request returns code 204 No Content": {
+        "name": "An LRS's Statement API upon processing a successful PUT request returns code 204 No Content",
         "1.0.2_ref_text": "7.2.1",
         "1.0.2_ref": "7.2.1",
         "1.0.3_ref": "part3.2.1.1"
@@ -5054,8 +5063,8 @@
     "should persist statement and return status 204": {
         "name": "should persist statement and return status 204"
     },
-    "An LRS\\'s Statement API rejects with error code 409 Conflict any Statement with the \"statementID\" parameter equal to a Statement in the LRS already **Implicit**": {
-        "name": "An LRS\\'s Statement API rejects with error code 409 Conflict any Statement with the \"statementID\" parameter equal to a Statement in the LRS already **Implicit**",
+    "An LRS's Statement API rejects with error code 409 Conflict any Statement with the \"statementID\" parameter equal to a Statement in the LRS already **Implicit**": {
+        "name": "An LRS's Statement API rejects with error code 409 Conflict any Statement with the \"statementID\" parameter equal to a Statement in the LRS already **Implicit**",
         "1.0.2_ref_text": "7.2.1.b, 7.2.2.b",
         "1.0.2_ref": "7.2.1.b, 7.2.2.b",
         "1.0.3_ref": "part3.2.1.1.a"
@@ -5066,8 +5075,8 @@
     "should return 409 or 204 when statement ID already exists on PUT": {
         "name": "should return 409 or 204 when statement ID already exists on PUT"
     },
-    "An LRS\\'s Statement API accepts POST requests": {
-        "name": "An LRS\\'s Statement API accepts POST requests",
+    "An LRS's Statement API accepts POST requests": {
+        "name": "An LRS's Statement API accepts POST requests",
         "1.0.2_ref_text": "7.2.2",
         "1.0.2_ref": "7.2.2",
         "1.0.3_ref": "part3.2.1.2"
@@ -5084,8 +5093,8 @@
     "should return empty array list": {
         "name": "should return empty array list"
     },
-    "An LRS\\'s Statement API upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit**": {
-        "name": "An LRS\\'s Statement API upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit**",
+    "An LRS's Statement API upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit**": {
+        "name": "An LRS's Statement API upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit**",
         "1.0.2_ref_text": "7.2.2",
         "1.0.2_ref": "7.2.2",
         "1.0.3_ref": "part3.2.1.2"
@@ -5111,8 +5120,8 @@
     "should return empty \"more\" property when all statements returned": {
         "name": "should return empty \"more\" property when all statements returned"
     },
-    "If not empty, the \"more\" property\\'s IRL refers to a specific container object corresponding to the next page of results from the orignal GET request": {
-        "name": "If not empty, the \"more\" property\\'s IRL refers to a specific container object corresponding to the next page of results from the orignal GET request",
+    "If not empty, the \"more\" property's IRL refers to a specific container object corresponding to the next page of results from the orignal GET request": {
+        "name": "If not empty, the \"more\" property's IRL refers to a specific container object corresponding to the next page of results from the orignal GET request",
         "1.0.2_ref_text": "4.2.table1.row1.b",
         "1.0.2_ref": "4.2.table1.row1.b",
         "1.0.3_ref": "part2.2.5.table1.row1.b"
@@ -5129,8 +5138,8 @@
     "should return a voided statement when using GET \"voidedStatementId\"": {
         "name": "should return a voided statement when using GET \"voidedStatementId\""
     },
-    "An LRS\\'s Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request": {
-        "name": "An LRS\\'s Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request",
+    "An LRS's Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request": {
+        "name": "An LRS's Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request",
         "1.0.2_ref_text": "7.2.4.a",
         "1.0.2_ref": "7.2.4.a",
         "1.0.3_ref": "part3.2.1.4.a"
@@ -5138,8 +5147,8 @@
     "should not return a voided statement if using GET \"statementId\"": {
         "name": "should not return a voided statement if using GET \"statementId\""
     },
-    "LRS\\'s Statement API accepts GET requests": {
-        "name": "LRS\\'s Statement API accepts GET requests",
+    "LRS's Statement API accepts GET requests": {
+        "name": "LRS's Statement API accepts GET requests",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
         "1.0.3_ref": "part3.2.1.3"
@@ -5147,8 +5156,8 @@
     "should return using GET": {
         "name": "should return using GET"
     },
-    "An LRS\\'s Statement API can process a GET request with \"statementId\" as a parameter": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"statementId\" as a parameter",
+    "An LRS's Statement API can process a GET request with \"statementId\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"statementId\" as a parameter",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
         "1.0.3_ref": "part3.2.1.3"
@@ -5156,8 +5165,8 @@
     "should process using GET with \"statementId\"": {
         "name": "should process using GET with \"statementId\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"voidedStatementId\" as a parameter": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"voidedStatementId\" as a parameter",
+    "An LRS's Statement API can process a GET request with \"voidedStatementId\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"voidedStatementId\" as a parameter",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
         "1.0.3_ref": "part3.2.1.3"
@@ -5165,8 +5174,8 @@
     "should process using GET with \"voidedStatementId\"": {
         "name": "should process using GET with \"voidedStatementId\""
     },
-    "An LRS\\'s Statement API rejects a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters": {
-        "name": "An LRS\\'s Statement API rejects a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters",
+    "An LRS's Statement API rejects a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters": {
+        "name": "An LRS's Statement API rejects a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters",
         "1.0.2_ref_text": "7.2.3.a, 7.2.3.b",
         "1.0.2_ref": "7.2.3.a, 7.2.3.b",
         "1.0.3_ref": "part3.2.1.3.a, part3.2.1.3.b"
@@ -5210,92 +5219,92 @@
     "should pass when using \"statementId\" with \"attachments\"": {
         "name": "should pass when using \"statementId\" with \"attachments\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"agent\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"agent\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"agent\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"agent\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"agent\"": {
         "name": "should process using GET with \"agent\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"verb\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"verb\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"verb\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"verb\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"verb\"": {
         "name": "should process using GET with \"verb\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"activity\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"activity\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"activity\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"activity\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"activity\"": {
         "name": "should process using GET with \"activity\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"registration\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"registration\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"registration\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"registration\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"registration\"": {
         "name": "should process using GET with \"registration\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"related_activities\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"related_activities\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"related_activities\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"related_activities\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"related_activities\"": {
         "name": "should process using GET with \"related_activities\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"related_agents\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"related_agents\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"related_agents\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"related_agents\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"related_agents\"": {
         "name": "should process using GET with \"related_agents\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"since\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"since\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"since\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"since\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"since\"": {
         "name": "should process using GET with \"since\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"until\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"until\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"until\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"until\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"until\"": {
         "name": "should process using GET with \"until\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"limit\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"limit\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"limit\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"limit\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"limit\"": {
         "name": "should process using GET with \"limit\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"format\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"format\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"format\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"format\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"format\"": {
         "name": "should process using GET with \"format\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"attachments\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"attachments\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"attachments\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"attachments\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"attachments\"": {
         "name": "should process using GET with \"attachments\""
     },
-    "An LRS\\'s Statement API can process a GET request with \"ascending\" as a parameter  **Implicit**": {
-        "name": "An LRS\\'s Statement API can process a GET request with \"ascending\" as a parameter  **Implicit**",
+    "An LRS's Statement API can process a GET request with \"ascending\" as a parameter  **Implicit**": {
+        "name": "An LRS's Statement API can process a GET request with \"ascending\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit"
     },
     "should process using GET with \"ascending\"": {
         "name": "should process using GET with \"ascending\""
     },
-    "An LRS\\'s Statement API rejects a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters": {
-        "name": "An LRS\\'s Statement API rejects a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters",
+    "An LRS's Statement API rejects a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters": {
+        "name": "An LRS's Statement API rejects a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters",
         "1.0.2_ref_text": "7.2.3.a, 7.2.3.b",
         "1.0.2_ref": "7.2.3.a, 7.2.3.b",
         "1.0.3_ref": "part3.2.1.3.a, part3.2.1.3.b"
@@ -5336,8 +5345,8 @@
     "should pass when using \"voidedStatementId\" with \"attachments\"": {
         "name": "should pass when using \"voidedStatementId\" with \"attachments\""
     },
-    "An LRS\\'s Statement API upon processing a successful GET request with a \"statementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".": {
-        "name": "An LRS\\'s Statement API upon processing a successful GET request with a \"statementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
+    "An LRS's Statement API upon processing a successful GET request with a \"statementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".": {
+        "name": "An LRS's Statement API upon processing a successful GET request with a \"statementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
         "1.0.3_ref": "part3.2.1.3"
@@ -5345,14 +5354,14 @@
     "should retrieve statement using \"statementId\"": {
         "name": "should retrieve statement using \"statementId\""
     },
-    "An LRS\\'s Statement API upon processing a successful GET request with a \"voidedStatementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".": {
-        "name": "An LRS\\'s Statement API upon processing a successful GET request with a \"voidedStatementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
+    "An LRS's Statement API upon processing a successful GET request with a \"voidedStatementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".": {
+        "name": "An LRS's Statement API upon processing a successful GET request with a \"voidedStatementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
         "1.0.3_ref": "part3.2.1.3"
     },
-    "An LRS\\'s Statement API upon processing a successful GET request with neither a \"statementId\" nor a \"voidedStatementId\" parameter, returns code 200 OK and a StatementResult Object.": {
-        "name": "An LRS\\'s Statement API upon processing a successful GET request with neither a \"statementId\" nor a \"voidedStatementId\" parameter, returns code 200 OK and a StatementResult Object.",
+    "An LRS's Statement API upon processing a successful GET request with neither a \"statementId\" nor a \"voidedStatementId\" parameter, returns code 200 OK and a StatementResult Object.": {
+        "name": "An LRS's Statement API upon processing a successful GET request with neither a \"statementId\" nor a \"voidedStatementId\" parameter, returns code 200 OK and a StatementResult Object.",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
         "1.0.3_ref": "part3.2.1.3"
@@ -5402,8 +5411,8 @@
     "should not return multipart response format using GET with \"attachments\" parameter as false": {
         "name": "should not return multipart response format using GET with \"attachments\" parameter as false"
     },
-    "An LRS\\'s \"X-Experience-API-Consistent-Through\" header\\'s value is not before": {
-        "name": "An LRS\\'s \"X-Experience-API-Consistent-Through\" header\\'s value is not before",
+    "An LRS's \"X-Experience-API-Consistent-Through\" header's value is not before": {
+        "name": "An LRS's \"X-Experience-API-Consistent-Through\" header's value is not before",
         "1.0.2_ref_text": "temporal) any of the \"stored\" values of any of the returned Statements (7.2.3.c",
         "1.0.2_ref": "7.2.3.c",
         "1.0.3_ref": "part3..2.1.3.e"
@@ -5411,8 +5420,8 @@
     "should return \"X-Experience-API-Consistent-Through\" when using GET for statements": {
         "name": "should return \"X-Experience-API-Consistent-Through\" when using GET for statements"
     },
-    "An LRS\\'s Statement API upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.": {
-        "name": "An LRS\\'s Statement API upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.",
+    "An LRS's Statement API upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.": {
+        "name": "An LRS's Statement API upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.",
         "1.0.2_ref_text": "7.2.3.c",
         "1.0.2_ref": "7.2.3.c",
         "1.0.3_ref": "part3..2.1.3.e"
@@ -5456,8 +5465,8 @@
     "should return \"X-Experience-API-Consistent-Through\" using GET with \"attachments\"": {
         "name": "should return \"X-Experience-API-Consistent-Through\" using GET with \"attachments\""
     },
-    "An LRS\\'s \"X-Experience-API-Consistent-Through\" header is an ISO 8601 combined date and time": {
-        "name": "An LRS\\'s \"X-Experience-API-Consistent-Through\" header is an ISO 8601 combined date and time",
+    "An LRS's \"X-Experience-API-Consistent-Through\" header is an ISO 8601 combined date and time": {
+        "name": "An LRS's \"X-Experience-API-Consistent-Through\" header is an ISO 8601 combined date and time",
         "1.0.2_ref_text": "Type, 7.2.3.c",
         "1.0.2_ref": "7.2.3.c",
         "1.0.3_ref": "part3..2.1.3.e"
@@ -5510,8 +5519,8 @@
     "should return StatementResult with statements as array using GET with \"attachments\"": {
         "name": "should return StatementResult with statements as array using GET with \"attachments\""
     },
-    "An LRS\\'s Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it": {
-        "name": "An LRS\\'s Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it",
+    "An LRS's Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it": {
+        "name": "An LRS's Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it",
         "1.0.2_ref_text": "7.2.4.b",
         "1.0.2_ref": "7.2.4.b",
         "1.0.3_ref": "part3.2.1.4.b"
@@ -5581,8 +5590,8 @@
         "1.0.2_ref": "4.1.11.b, RFC 1341",
         "1.0.3_ref": "part3.1.5.2.b, RFC2046"
     },
-    "An LRS doesn\\'t make any adjustments to incoming Statements that are not specifically mentioned in this section": {
-        "name": "An LRS doesn\\'t make any adjustments to incoming Statements that are not specifically mentioned in this section",
+    "An LRS doesn't make any adjustments to incoming Statements that are not specifically mentioned in this section": {
+        "name": "An LRS doesn't make any adjustments to incoming Statements that are not specifically mentioned in this section",
         "1.0.2_ref_text": "4.1.12.d, Varies",
         "1.0.2_ref": "4.1.12.d, Varies",
         "1.0.3_ref": "part2.2.2.d",
