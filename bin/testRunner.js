@@ -1,131 +1,261 @@
-var child_process = require('child_process');
-//an object to hold the reference to the child process, manage communication with it, and store the outputs
-function runnerOutputMessage(type, message)
-{
-	this.time = Date.now().toString();
-	this.type = type;
-	this.message = message;
-	if (type == "test pass")
-		this.pass = true;
-	if (type == "test fail")
-		this.fail = true;
-}
+'use strict';
 
-function testResult(testTitle)
-{
-	this.title = testTitle;
-	this.pass = null;
-	this.message = null;
-}
+const child_process = require('child_process'),
+	libpath = require('path'),
+	fs = require('fs'),
+	EventEmitter = require('events').EventEmitter,
+	rollup = require('./rollupRules.js');
 
-function testSuite(title)
-{
-	this.title = title;
-	this.tests = [];
-}
-
-function testRunner()
-{
-	this.uuid = require('uuid').v4();
-	//storage for the output
-	this.messages = [];
-	var self = this;
-	//currently in progress?
-	this.running = false;
-	this.suites = [];
-	this.cancel = function()
-	{
-		if(self.test_runner_process)
-			self.test_runner_process.kill();		
+class Suite {
+	constructor(name){
+		this.name = name;
+		this.status = ''; // in ['cancelled', 'passed', 'failed']
+		this.parent = null;
+		this.tests = [];
 	}
-	this.start = function(options)
+	addTest(test){
+		this.tests.push(test);
+		test.parent = this;
+	}
+}
+
+class TestRunner extends EventEmitter
+{
+	constructor(name, owner, flags, lrsSettingsUUID,options, rollupRule)
 	{
-		//create the child process
-		var test_runner_process = child_process.fork(__dirname +"/lrs-test.js",["--debug"],{execArgv:[/*"--debug-brk=5959"*/],cwd:__dirname+"/../"});
-		this.running = true;
-		self.test_runner_process = test_runner_process;
-		
-		//hook up the messaging
-		test_runner_process.postMessage = function(action, payload)
-		{
-			test_runner_process.send(
+		super();
+
+		this.proc = null;
+
+		this.name = name;
+		this.owner = owner;
+		this.flags = flags;
+		this.options = options || {};
+		this.lrsSettingsUUID = lrsSettingsUUID;
+		this.rollupRule = rollup[rollupRule] ? rollupRule : 'mustPassAll';
+
+		this.uuid = require('uuid').v4();
+		this.startTime = null;
+		this.endTime = null;
+		this.duration = null;
+		this.state = 'notStarted'; // in ["notStarted", "started", "finished", "cancelled"]
+
+		this.summary = {
+			total: null,
+			passed: null,
+			failed: null
+		};
+
+		this.log = null;
+
+		this.activeTest = null;
+	}
+
+	start()
+	{
+		if(this.state !== 'notStarted') return;
+		this.state = 'started';
+
+		// spin up the child process
+		this.proc = child_process.fork( libpath.join(__dirname, "lrs-test.js"),
+			["--debug"],
 			{
-				action: action,
-				payload: payload
-			})
+				execArgv:[/*"--debug-brk=5959"*/],
+				cwd: libpath.join(__dirname,"/../")
+			}
+		);
+
+		// hook up listeners
+		this._registerStatusUpdates();
+
+		// kick off tests when ready
+		this.proc.on('message', function(msg)
+		{
+			if(msg.action === 'ready'){
+
+				//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options
+				var flags = JSON.parse(JSON.stringify(this.flags));
+				if(this.options && this.options.grep)
+					flags.grep = this.options.grep;
+				if(this.options && this.options.optional)
+					flags.optional = this.options.optional;
+				this.proc.send({action: 'runTests', payload: flags});
+			}
+		}.bind(this));
+	}
+
+	_registerStatusUpdates()
+	{
+		this.proc.on('message', function(msg)
+		{
+
+			var action = msg.action, payload = msg.payload;
+			switch(action)
+			{
+			case 'start':
+
+				// initialize counters
+				this.summary.total = payload;
+				this.summary.passed = 0;
+				this.summary.failed = 0;
+				this.startTime = Date.now();
+				break;
+
+			case 'end':
+
+				this.endTime = Date.now();
+				this.duration = this.endTime - this.startTime;
+				this.state = 'finished';
+				break;
+
+			case 'suite start':
+
+				// start a new suite
+				var newSuite = new Suite(payload);
+
+				// add to log
+				if(this.activeTest)
+					this.activeTest.addTest(newSuite);
+				else
+					this.log = newSuite;
+
+				this.activeTest = newSuite;
+				break;
+
+			case 'suite end':
+
+				if(this.activeTest)
+				{
+					// finish the suite
+					if(this.activeTest.name === payload)
+					{
+						// roll up test status
+						this.activeTest.status = rollup[this.rollupRule](this.activeTest);
+
+						// move test cursor
+						this.activeTest = this.activeTest.parent;
+					}
+					else
+						console.error('Dangling suite end!', this.activeTest.name);
+				}
+				break;
+
+			case 'test start':
+
+				// start a new test
+				var newTest = new Suite(payload);
+
+				// add to log
+				if(this.activeTest)
+					this.activeTest.addTest(newTest);
+				else
+					this.log = newTest;
+
+				this.activeTest = newTest;
+				break;
+
+			case 'test end':
+
+				if(this.activeTest)
+				{
+					if(this.activeTest.name === payload)
+						this.activeTest = this.activeTest.parent;
+					else
+						console.error('Dangling test end!', this.activeTest.name);
+					break;
+				}
+
+			case 'test pass':
+				if(this.activeTest)
+				{
+					this.activeTest.status = 'passed';
+					this.summary.passed++;
+				}
+				break;
+
+			case 'test fail':
+				if(this.activeTest){ //careful - cancel can blank this, then the message comes in
+					this.activeTest.status = 'failed';
+					this.activeTest.error = payload.message;
+					this.summary.failed++;
+				}
+				break;
+			};
+
+			// pass along the event
+			this.emit('message', msg);
+
+		}.bind(this));
+	}
+
+	cancel()
+	{
+		if(this.proc)
+		{
+			this.proc.kill();
+			this.endTime = Date.now();
+			this.duration = this.endTime - this.startTime;
+
+			// evaluate all in-progress suites to "cancelled"
+			this.state = 'cancelled';
+			this.activeTest.status = 'cancelled';
+			this.activeTest = this.activeTest.parent;
+			while(this.activeTest){
+				this.activeTest.status = rollup[this.rollupRule](this.activeTest);
+				this.emit('message', {action: 'suite end', payload: this.activeTest.name});
+				this.activeTest = this.activeTest.parent;
+			}
+
+			this.emit('message', {action: 'end'});
+			this.emit('close');
 		}
-		test_runner_process.on('message', function(message)
-		{
-			if (message.action == "test start")
-			{
-				self.messages.push(new runnerOutputMessage("test start", message.payload))
-				self.suites[self.suites.length - 1].tests.push(new testResult(message.payload))
-			}
-			if (message.action == "test pass")
-			{
-				self.messages.push(new runnerOutputMessage("test pass", message.payload))
-				var tests = self.suites[self.suites.length - 1].tests;
-				
-				var test;
-				for(var i = 0; i < tests.length; i++)
-				{
-					if(tests[i].title == message.payload)
-					{
-						test = tests[i];
-					}
-				}
-				if(test)
-				{
-					test.pass = true;
-					test.message = message.payload;
-				}
-			}
-			if (message.action == "test fail")
-			{
-				self.messages.push(new runnerOutputMessage("test fail", message.payload))
-				var tests = self.suites[self.suites.length - 1].tests;
-				
-				var test;
-				for(var i = 0; i < tests.length; i++)
-				{
-					if(tests[i].title == message.payload.title)
-					{
-						test = tests[i];
-					}
-				}
+	}
 
-				if(test)
-				{
-					test.pass = false;
-					test.message = message.payload.message;
-				}
+	getCleanRecord()
+	{
+		var runRecord = {
+			name: this.name || null,
+			owner: this.owner || null,
+			flags: {
+				endpoint: this.flags.endpoint,
+				basicAuth: this.flags.basicAuth,
+				authUser: this.flags.authUser,
+				oAuth1: this.flags.oAuth1,
+				consumer_key: this.flags.consumer_key,
+				grep:this.flags.grep
+			},
+			options:this.options,
+			lrsSettingsUUID: this.lrsSettingsUUID,
+			rollupRule: this.rollupRule,
+
+			uuid: this.uuid,
+			startTime: this.startTime,
+			endTime: this.endTime,
+			duration: this.duration,
+			state: this.state,
+			summary: {
+				total: this.summary.total,
+				passed: this.summary.passed,
+				failed: this.summary.failed
 			}
-			if (message.action == "ready")
-			{
-				test_runner_process.postMessage("runTests", options);	
-			}
-			if (message.action == "suite")
-			{
-				self.suites.push(new testSuite(message.payload));
-			}
-			//let the hosting application handle this
-			if (message.action == "log")
-			{
-				//console.log(message.payload);
-			}
-			self.emit(message.action,message);
-			self.emit("statusMessage",message);
-		});
-		//test communication
-		//test_runner_process.postMessage("ping");
-		//mark on close
-		test_runner_process.on('close', function()
+		};
+
+		function cleanLog(log)
 		{
-			self.running = false;
-			self.emit('close');
-		})
+			if(!log) return null;
+
+			return {
+				name: log.name,
+				status: log.status,
+				error: log.error,
+				tests: log.tests.map(cleanLog)
+			};
+		}
+
+		runRecord.log = cleanLog(this.log);
+		return runRecord;
 	}
 }
-var EventEmitter = require('events').EventEmitter;
-require('util').inherits(testRunner, EventEmitter);
-exports.testRunner = testRunner;
+
+
+exports.testRunner = TestRunner;
