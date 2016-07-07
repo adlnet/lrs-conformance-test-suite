@@ -29,6 +29,9 @@ if (!process.env.EB_NODE_COMMAND) {
     /** Appears to use relative path */
     var TEMPLATE_FOLDER_RELATIVE = './' + process.env.DIRECTORY + '/templates';
 
+    /* Creating a global variable to calculate the time difference between the test suite and the curent lrs endpoint for use with since and until */
+    var TIME_MARGIN;
+
     /** Endpoint About */
     var URL_ABOUT = '/about';
 
@@ -179,7 +182,7 @@ if (!process.env.EB_NODE_COMMAND) {
         getEndpointAndAuth: function () {
             return LRS_ENDPOINT;
             var urlparams =  {url:LRS_ENDPOINT};
-           
+
             if(global.OAUTH)
             {
                 console.log(global.OAUTH);
@@ -302,6 +305,64 @@ if (!process.env.EB_NODE_COMMAND) {
             });
             return list;
         },
+
+
+        /**
+         * Make the TIME_MARGIN available to tests
+         * @returns {integer}
+        */
+        getTimeMargin: function () {
+                return TIME_MARGIN;
+        },
+
+        /*
+         * Calculates the difference between the lrs time and the suite time and sets a variable for use with since and until requests.
+        */
+        setTimeMargin: function (done) {
+            var request = require('super-request'),
+                temp = [{statement: '{{statements.default}}'}],
+                stmt,
+                id = module.exports.generateUUID(),
+                query = module.exports.getUrlEncoding({
+                    statementId: id
+                }),
+                lrsTime,
+                suiteTime;
+                stmt = module.exports.createTestObject(module.exports.convertTemplate(temp)).statement;
+
+            stmt.id = id;
+            suiteTime = new Date();
+
+            if(global.OAUTH)
+                request = module.exports.OAuthRequest(request);
+
+            request(module.exports.getEndpointAndAuth())
+                .post(module.exports.getEndpointStatements())
+                .headers(module.exports.addAllHeaders({}))
+                .json(stmt)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        request(module.exports.getEndpointAndAuth())
+                        .get(module.exports.getEndpointStatements() + '?' + query)
+                        .headers(module.exports.addAllHeaders({}))
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err) {
+                                return err;
+                                done(err);
+                            } else {
+                                lrsTime = new Date(res.headers.date);
+                                TIME_MARGIN = suiteTime - lrsTime;
+                                done(err, TIME_MARGIN);
+                            }
+                        });
+                    }
+                });
+        },
+
         /**
          * Returns query string (does not work for Date object which needs toISOString()).
          * @returns {String}
@@ -343,7 +404,7 @@ if (!process.env.EB_NODE_COMMAND) {
                 'X-Experience-API-Version': '1.0.2',
                 'Content-Type': 'application/json',
                 'content': JSON.stringify(content)
-            }        
+            }
             if (id) {
                 body.statementId = id;
             }
@@ -465,7 +526,7 @@ if (!process.env.EB_NODE_COMMAND) {
                 //wrap a promise that returns a new test, so that calling .end() does not return a promise to a new request
                 //but a promise to a new wrapped request.
 
-                //The meta-ness here has grown stupidly complex... maybe better just to patch the underlying library instead of 
+                //The meta-ness here has grown stupidly complex... maybe better just to patch the underlying library instead of
                 //writing code that changes the basic structure of other code at runtime....
                 function wrapPromise(p)
                 {
@@ -488,8 +549,8 @@ if (!process.env.EB_NODE_COMMAND) {
                                     {
                                         wrapMethods(test);
                                     }
-                                } 
-                                return test;    
+                                }
+                                return test;
                             };
                         })(i)
                     }
@@ -509,7 +570,7 @@ if (!process.env.EB_NODE_COMMAND) {
                             //back up the original
                             r["_preAuth_" + i] = r[i];
 
-                            
+
                             r[i] = function() {
                             //calls the original function
                             var test = r["_preAuth_" + i].apply(r, arguments);
@@ -525,11 +586,11 @@ if (!process.env.EB_NODE_COMMAND) {
 
                                 //if this object retuned a new Test that we have not seen before, then we need to
                                 //wrap all its methods, so that when chainin method calls, each object in the chain sets
-                                //up the oauth on the next 
+                                //up the oauth on the next
                                 wrapMethods(test);
                                 return test;
                             }
-                            //the .end call works differently. The above if block won't catch it because it does not have a 
+                            //the .end call works differently. The above if block won't catch it because it does not have a
                             //_options member. Thats because it does not return a test, but a promise to a new test. The promise
                             //has the same interface, but queues up and does not fire until the first request finishes. This requires
                             //different wrapping logic.
@@ -537,10 +598,10 @@ if (!process.env.EB_NODE_COMMAND) {
                             {
                                 wrapPromise(test);
                             }
-                            
+
                             return test;
                         }
-                            
+
 
                         })(i) // call the closure with the current i
 
@@ -550,10 +611,10 @@ if (!process.env.EB_NODE_COMMAND) {
                 //wrap all the methods of the test given by the original constructor
                 wrapMethods(r,e);
 
-                //Ok, now we have a new object that has the auth set, and whos methods return Tests that have the auth set, and whos 
-                //methods return Tests that have the auth set, and whos 
-                //methods return Tests that have the auth set, and whos 
-                //methods return Tests that have the auth set, and whos 
+                //Ok, now we have a new object that has the auth set, and whos methods return Tests that have the auth set, and whos
+                //methods return Tests that have the auth set, and whos
+                //methods return Tests that have the auth set, and whos
+                //methods return Tests that have the auth set, and whos
                 //methods return Test.....
                 return r;
             }
