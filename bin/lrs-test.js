@@ -127,15 +127,7 @@
 
         if (options.optional){
           options.optional.forEach(function(dir) {
-              //process.postMessage("log", (JSON.stringify(global.OAUTH)));
-              var testDirectory = __dirname + '/../test/' + dir;
-              fs.readdirSync(testDirectory).filter(function(file) {
-                  return file.substr(-3) === '.js';
-              }).forEach(function(file) {
-                  mocha.addFile(
-                      path.join(testDirectory, file)
-                  );
-              });
+              options.directory.unshift(dir);
           });
         }
 
