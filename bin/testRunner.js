@@ -15,7 +15,12 @@ class Suite {
 		if(match = /\(([^\)]*\d[^\)]*)\)/.exec(title))
 		{
 			this.name = title.slice(0, match.index).trim();
-			this.requirement = SpecRefs[this.name] && SpecRefs[this.name]['1.0.3_link'] || match[1];
+			if(SpecRefs[this.name]){
+				var data = SpecRefs[this.name];
+				this.requirement = data['1.0.3_link'] || data['1.0.3_ref'] || data['1.0.2_ref_text'];
+			}
+			else
+				this.requirement = match[1];
 		}
 		else {
 			this.name = title;
