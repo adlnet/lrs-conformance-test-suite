@@ -3607,7 +3607,7 @@
     },
     "An LRS has an Activities API with endpoint \"base IRI\" + /activities\"": {
         "name": "An LRS has an Activities API with endpoint \"base IRI\" + /activities\"",
-        "1.0.2_ref_text": "7.5) **Implicit** (in that it is not named this by the spec",
+        "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5, Implicit",
         "1.0.3_ref": "part3.2.5"
     },
@@ -3619,7 +3619,7 @@
     },
     "An LRS has an Agents API with endpoint \"base IRI\" + /agents\"": {
         "name": "An LRS has an Agents API with endpoint \"base IRI\" + /agents\"",
-        "1.0.2_ref_text": "7.6) **Implicit** (in that it is not named this by the spec",
+        "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6, Implicit",
         "1.0.3_ref": "part3.2.4"
     },
@@ -4003,7 +4003,7 @@
     },
     "An LRS's State API can process a GET request with \"stateId\" as a parameter": {
         "name": "An LRS's State API can process a GET request with \"stateId\" as a parameter",
-        "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b",
+        "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b, 7.4.table2.row3.b, 7.4.table1.row1.b",
         "1.0.3_ref": "part3.2.3.table1.row4.b"
     },
@@ -4114,7 +4114,7 @@
     },
     "An LRS's State API can process a DELETE request with \"stateId\" as a parameter": {
         "name": "An LRS's State API can process a DELETE request with \"stateId\" as a parameter",
-        "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b) (multiplicity, 7.4.table1.row1.b",
+        "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b, 7.4.table2.row3.b, 7.4.table1.row1.b",
         "1.0.3_ref": "part3.2.3.table1.row4.b"
     },
@@ -4476,18 +4476,12 @@
         "1.0.2_ref": "7.6.table3.row1.c, 7.6.table4.row1.c",
         "1.0.3_ref": "part3.2.6.table1.row1.c, part3.2.6.table1.row1.c"
     },
-	"Should reject GET with \"since\" with type 1": {
-		"name": "Should reject GET with \"since\" with type 1"
-	},
-	"Should reject GET with \"since\" with type true": {
-		"name": "Should reject GET with \"since\" with type true"
-	},
-	"Should reject GET with \"since\" with type [object Object]": {
-		"name": "Should reject GET with \"since\" with type [object Object]"
-	},
-	"Should reject GET with \"since\" with type not timestamp": {
-		"name": "Should reject GET with \"since\" with type not timestamp"
-	},
+    "Should reject GET with \"agent\" with type [object Object]": {
+        "name": "Should reject GET with \"agent\" with type [object Object]"
+    },
+    "Should reject GET with \"agent\" with type not Actor": {
+        "name": "Should reject GET with \"agent\" with type not Actor"
+    },
     "An LRS's Agent Profile API can process a GET request with \"since\" as a parameter": {
         "name": "An LRS's Agent Profile API can process a GET request with \"since\" as a parameter",
         "1.0.2_ref_text": "Multiplicity, 7.6.table4.row2.a, 7.5.table4.row2.c",
@@ -4739,9 +4733,9 @@
         "1.0.2_ref": "7.6.table1.row6.c",
         "1.0.3_ref": "part3.2.4.table2.row6.c"
     },
-    "An LRS populates the \"authority\" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user": {
-        "name": "An LRS populates the \"authority\" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user",
-        "1.0.2_ref_text": "contained within the header) (Implicit, 4.1.9.b, 4.1.9.c",
+    "An LRS populates the \"authority\" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header)": {
+        "name": "An LRS populates the \"authority\" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header)",
+        "1.0.2_ref_text": "Implicit, 4.1.9.b, 4.1.9.c",
         "1.0.2_ref": "Implicit, 4.1.9.b, 4.1.9.c",
         "1.0.3_ref": "Implicit, part2.2.4.9.b, part2.2.4.9.c"
     },
@@ -5411,9 +5405,9 @@
     "should not return multipart response format using GET with \"attachments\" parameter as false": {
         "name": "should not return multipart response format using GET with \"attachments\" parameter as false"
     },
-    "An LRS's \"X-Experience-API-Consistent-Through\" header's value is not before": {
-        "name": "An LRS's \"X-Experience-API-Consistent-Through\" header's value is not before",
-        "1.0.2_ref_text": "temporal) any of the \"stored\" values of any of the returned Statements (7.2.3.c",
+    "An LRS's \"X-Experience-API-Consistent-Through\" header's value is not before (temporal) any of the \"stored\" values of any of the returned Statements": {
+        "name": "An LRS's \"X-Experience-API-Consistent-Through\" header's value is not before (temporal) any of the \"stored\" values of any of the returned Statements",
+        "1.0.2_ref_text": "7.2.3.c",
         "1.0.2_ref": "7.2.3.c",
         "1.0.3_ref": "part3..2.1.3.e"
     },
@@ -5608,18 +5602,18 @@
             "Data.md#2.4.9.s3.b1"
         ]
     },
-    "An LRS rejects a Statement of bad authorization": {
-        "name": "An LRS rejects a Statement of bad authorization",
-        "1.0.2_ref_text": "either authentication needed or failed credentials) with error code 401 Unauthorized (7.1",
+    "An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized": {
+        "name": "An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized",
+        "1.0.2_ref_text": "7.1",
         "1.0.2_ref": "7.1",
         "1.0.3_ref": "part3.3.2.b",
         "1.0.3_link": [
             "Communication.md#4.0.s2.b2"
         ]
     },
-    "An LRS rejects a Statement of insufficient permissions": {
-        "name": "An LRS rejects a Statement of insufficient permissions",
-        "1.0.2_ref_text": "credentials are valid, but not adequate) with error code 403 Forbidden (7.1",
+    "An LRS rejects a Statement of insufficient permissions (credentials are valid, but not adequate) with error code 403 Forbidden": {
+        "name": "An LRS rejects a Statement of insufficient permissions (credentials are valid, but not adequate) with error code 403 Forbidden",
+        "1.0.2_ref_text": "7.1",
         "1.0.2_ref": "7.1",
         "1.0.3_ref": "part3.3.2.c",
         "1.0.3_link": [
