@@ -5129,7 +5129,7 @@
         "name": "A \"more\" property is an IRL",
         "1.0.2_ref_text": "Format, 4.2.table1.row2.a",
         "1.0.2_ref": "4.2.table1.row2.a",
-        "1.0.3_ref": "part2.2.5.table1.row2.a"
+        "1.0.3_ref": "part2.2.5.table1.row2.a",
         "1.0.3_link": ["Data.md#2.5.s2.table1.row2"]
     },
     "should return \"more\" property as an IRL": {
