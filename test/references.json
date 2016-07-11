@@ -4393,49 +4393,73 @@
         "name": "An LRS's Activity Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.5.c",
         "1.0.2_ref": "7.5.c",
-        "1.0.3_ref": "part3.2.7.b"
+        "1.0.3_ref": "part3.2.7.b",
+        "1.0.3_link": [
+            "Communication.md#2.7.s3"
+        ]
     },
     "An LRS's Activity Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK": {
         "name": "An LRS's Activity Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.5.d",
         "1.0.2_ref": "7.5.d",
-        "1.0.3_ref": "part3.2.7.c"
+        "1.0.3_ref": "part3.2.7.c",
+        "1.0.3_link": [
+            "Communication.md#2.7.s3"
+        ]
     },
     "An LRS's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present": {
         "name": "An LRS's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present",
         "1.0.2_ref_text": "7.6.table4.row2, 7.6.g",
         "1.0.2_ref": "7.6.table4.row2, 7.6.g",
-        "1.0.3_ref": "part3.2.6.table2.row2, part3.2.6.d"
+        "1.0.3_ref": "part3.2.6.table2.row2, part3.2.6.d",
+        "1.0.3_link": [
+            "Communication.md#2.7.s4.table1.row2"
+        ]
     },
     "An LRS's Agents API accepts GET requests": {
         "name": "An LRS's Agents API accepts GET requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
-        "1.0.3_ref": "part3.2.4"
+        "1.0.3_ref": "part3.2.4",
+        "1.0.3_link": [
+            "Communication.md#2.4.s2"
+        ]
     },
     "An LRS's Agents API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Agents API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table2.row1.c",
         "1.0.2_ref": "7.6.table2.row1.c",
-        "1.0.3_ref": "part3.2.4.table1.row1.c"
+        "1.0.3_ref": "part3.2.4.table1.row1.c",
+        "1.0.3_link": [
+            "Communication.md#2.4.s2.table1.row1"
+        ]
     },
     "An LRS's Agent Profile API accepts PUT requests": {
         "name": "An LRS's Agent Profile API accepts PUT requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
-        "1.0.3_ref": "part3.2.6"
+        "1.0.3_ref": "part3.2.6",
+        "1.0.3_link": [
+            "Communication.md#2.6.s2"
+        ]
     },
     "An LRS's Agent Profile API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c",
-        "1.0.3_ref": "part3.2.6.table1.row1.c"
+        "1.0.3_ref": "part3.2.6.table1.row1.c",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row1"
+        ]
     },
     "An LRS's Agent Profile API rejects a PUT request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a PUT request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row1.a",
         "1.0.2_ref": "7.6.table3.row1.a",
-        "1.0.3_ref": "part3.2.6.table1.row1.a"
+        "1.0.3_ref": "part3.2.6.table1.row1.a",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row1"
+        ]
     },
     "Should reject PUT with \"agent\" with type 1": {
         "name": "Should reject PUT with \"agent\" with type 1"
@@ -4453,31 +4477,46 @@
         "name": "An LRS's Agent Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row2.c",
         "1.0.2_ref": "7.6.table3.row2.c",
-        "1.0.3_ref": "part3.2.6.table1.row2.c"
+        "1.0.3_ref": "part3.2.6.table1.row2.c",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row2"
+        ]
     },
     "An LRS's Agent Profile API upon processing a successful PUT request returns code 204 No Content": {
         "name": "An LRS's Agent Profile API upon processing a successful PUT request returns code 204 No Content",
         "1.0.2_ref_text": "7.6.e",
         "1.0.2_ref": "7.6.e",
-        "1.0.3_ref": "part3.2.6.b"
+        "1.0.3_ref": "part3.2.6.b",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3"
+        ]
     },
     "An LRS's Agent Profile API accepts POST requests": {
         "name": "An LRS's Agent Profile API accepts POST requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
-        "1.0.3_ref": "part3.2.6"
+        "1.0.3_ref": "part3.2.6",
+        "1.0.3_link": [
+            "Communication.md#2.6.s2"
+        ]
     },
     "An LRS's Agent Profile API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c",
-        "1.0.3_ref": "part3.2.6.table1.row1.c"
+        "1.0.3_ref": "part3.2.6.table1.row1.c",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row1"
+        ]
     },
     "An LRS's Agent Profile API rejects a POST request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a POST request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row1.a",
         "1.0.2_ref": "7.6.table3.row1.a",
-        "1.0.3_ref": "part3.2.6.table1.row1.a"
+        "1.0.3_ref": "part3.2.6.table1.row1.a",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row1"
+        ]
     },
     "Should reject POST with \"agent\" with type 1": {
         "name": "Should reject POST with \"agent\" with type 1"
@@ -4492,31 +4531,46 @@
         "name": "An LRS's Agent Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row2.c",
         "1.0.2_ref": "7.6.table3.row2.c",
-        "1.0.3_ref": "part3.2.6.table1.row2.c"
+        "1.0.3_ref": "part3.2.6.table1.row2.c",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row2"
+        ]
     },
     "An LRS's Agent Profile API upon processing a successful POST request returns code 204 No Content": {
         "name": "An LRS's Agent Profile API upon processing a successful POST request returns code 204 No Content",
         "1.0.2_ref_text": "7.6.e",
         "1.0.2_ref": "7.6.e",
-        "1.0.3_ref": "part3.2.6.b"
+        "1.0.3_ref": "part3.2.6.b",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3"
+        ]
     },
     "An LRS's Agent Profile API accepts DELETE requests": {
         "name": "An LRS's Agent Profile API accepts DELETE requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
-        "1.0.3_ref": "part3.2.6"
+        "1.0.3_ref": "part3.2.6",
+        "1.0.3_link": [
+            "Communication.md#2.6.s2"
+        ]
     },
     "An LRS's Agent Profile API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c",
-        "1.0.3_ref": "part3.2.6.table1.row1.c"
+        "1.0.3_ref": "part3.2.6.table1.row1.c",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row1"
+        ]
     },
     "An LRS's Agent Profile API rejects a DELETE request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a DELETE request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row1.a",
         "1.0.2_ref": "7.6.table3.row1.a",
-        "1.0.3_ref": "part3.2.6.table1.row1.a"
+        "1.0.3_ref": "part3.2.6.table1.row1.a",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row1"
+        ]
     },
     "Should reject DELETE with \"agent\" with type [object Object]": {
         "name": "Should reject DELETE with \"agent\" with type [object Object]"
@@ -4525,13 +4579,19 @@
         "name": "An LRS's Agent Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row2.c",
         "1.0.2_ref": "7.6.table3.row2.c",
-        "1.0.3_ref": "part3.2.6.table1.row2.c"
+        "1.0.3_ref": "part3.2.6.table1.row2.c",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row2"
+        ]
     },
     "An LRS's Agent Profile API rejects a DELETE request with \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a DELETE request with \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row2.a",
         "1.0.2_ref": "7.6.table3.row2.a",
-        "1.0.3_ref": "part3.2.6.table1.row2.a"
+        "1.0.3_ref": "part3.2.6.table1.row2.a",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3.table1.row2"
+        ]
     },
     "Should reject DELETE with \"profileId\" with type 1": {
         "name": "Should reject DELETE with \"profileId\" with type 1"
@@ -4546,25 +4606,37 @@
         "name": "An LRS's Agent Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content",
         "1.0.2_ref_text": "7.6.e",
         "1.0.2_ref": "7.6.e",
-        "1.0.3_ref": "part3.2.6.b"
+        "1.0.3_ref": "part3.2.6.b",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3"
+        ]
     },
     "An LRS's Agent Profile API accepts GET requests": {
         "name": "An LRS's Agent Profile API accepts GET requests",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
-        "1.0.3_ref": "part3.2.6"
+        "1.0.3_ref": "part3.2.6",
+        "1.0.3_link": [
+            "Communication.md#2.6.s2"
+        ]
     },
     "An LRS's Agent Profile API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.6.table3.row1.c, 7.6.table4.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c, 7.6.table4.row1.c",
-        "1.0.3_ref": "part3.2.6.table1.row1.c, part3.2.6.table1.row1.c"
+        "1.0.3_ref": "part3.2.6.table1.row1.c, part3.2.6.table1.row1.c",
+        "1.0.3_link": [
+            "Communication.md#2.6.s4.table1.row1"
+        ]
     },
     "An LRS's Agent Profile API rejects a GET request with \"agent\" as a parameter if it is not an Actor Object with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a GET request with \"agent\" as a parameter if it is not an Actor Object with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table3.row1.c, 7.6.table4.row1.c",
         "1.0.2_ref": "7.6.table3.row1.c, 7.6.table4.row1.c",
-        "1.0.3_ref": "part3.2.6.table1.row1.c, part3.2.6.table1.row1.c"
+        "1.0.3_ref": "part3.2.6.table1.row1.c, part3.2.6.table1.row1.c",
+        "1.0.3_link": [
+            "Communication.md#2.6.s4.table1.row1"
+        ]
     },
     "Should reject GET with \"agent\" with type [object Object]": {
         "name": "Should reject GET with \"agent\" with type [object Object]"
@@ -4576,13 +4648,19 @@
         "name": "An LRS's Agent Profile API can process a GET request with \"since\" as a parameter",
         "1.0.2_ref_text": "Multiplicity, 7.6.table4.row2.a, 7.5.table4.row2.c",
         "1.0.2_ref": "7.6.table4.row2.a",
-        "1.0.3_ref": "part3.2.6.table2.row2.a"
+        "1.0.3_ref": "part3.2.6.table2.row2.a",
+        "1.0.3_link": [
+            "Communication.md#2.6.s4.table1.row2"
+        ]
     },
     "An LRS's Agent Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.6.table4.row2.a",
         "1.0.2_ref": "7.6.table4.row2.a",
-        "1.0.3_ref": "part3.2.6.table2.row2.a"
+        "1.0.3_ref": "part3.2.6.table2.row2.a",
+        "1.0.3_link": [
+            "Communication.md#2.6.s4.table1.row2"
+        ]
     },
     "Should reject GET with \"since\" with type 1": {
         "name": "Should reject GET with \"since\" with type 1"
@@ -4600,96 +4678,144 @@
         "name": "An LRS's Agent Profile API upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.6, 7.6.f",
         "1.0.2_ref": "7.6, 7.6.f",
-        "1.0.3_ref": "part3.2.6.c"
+        "1.0.3_ref": "part3.2.6.c",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3"
+        ]
     },
     "An LRS's Agent Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK": {
         "name": "An LRS's Agent Profile API upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.6, 7.6.g",
         "1.0.2_ref": "7.6, 7.6.g",
-        "1.0.3_ref": "part3.2.6.d"
+        "1.0.3_ref": "part3.2.6.d",
+        "1.0.3_link": [
+            "Communication.md#2.6.s4"
+        ]
     },
     "An LRS's About API accepts GET requests": {
         "name": "An LRS's About API accepts GET requests",
         "1.0.2_ref_text": "7.7.b",
         "1.0.2_ref": "7.7.b",
-        "1.0.3_ref": "part3.2.8"
+        "1.0.3_ref": "part3.2.8",
+        "1.0.3_link": [
+            "Communication.md#2.8"
+        ]
     },
     "An LRS's About API upon processing a successful GET request returns a version property and code 200 OK": {
         "name": "An LRS's About API upon processing a successful GET request returns a version property and code 200 OK",
         "1.0.2_ref_text": "multiplicity, 7.7.table1.row1.c, 7.7.c",
         "1.0.2_ref": "7.7.table1.row1.c, 7.7.c",
-        "1.0.3_ref": "part3.2.8.table1.row1.c, part3.2.8.c"
+        "1.0.3_ref": "part3.2.8.table1.row1.c, part3.2.8.c",
+        "1.0.3_link": [
+            "Communication.md#2.8.s4"
+        ]
     },
     "An LRS's About API's version property is an array of strings": {
         "name": "An LRS's About API's version property is an array of strings",
         "1.0.2_ref_text": "format, 7.7.table1.row1.a",
         "1.0.2_ref": "7.7.table1.row1.a",
-        "1.0.3_ref": "part3.2.8.table1.row1.a"
+        "1.0.3_ref": "part3.2.8.table1.row1.a",
+        "1.0.3_link": [
+            "Communication.md#2.8.s4.table1.row1"
+        ]
     },
     "An LRS's About API's version property contains at least one string of \"1.0.1\"": {
         "name": "An LRS's About API's version property contains at least one string of \"1.0.1\"",
         "1.0.2_ref_text": "7.7.d",
         "1.0.2_ref": "7.7.d",
-        "1.0.3_ref": "part3.2.8.d"
+        "1.0.3_ref": "part3.2.8.d",
+        "1.0.3_link": [
+            "Communication.md#2.8.s5.b1.b1"
+        ]
     },
     "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0\", \"1.0.0\", or \"\"1.0.\" + X\" with": {
         "name": "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0\", \"1.0.0\", or \"\"1.0.\" + X\" with",
         "1.0.2_ref_text": "7.7.d.a",
         "1.0.2_ref": "7.7.d.a",
-        "1.0.3_ref": "part3.2.8.d.a"
+        "1.0.3_ref": "part3.2.8.d.a",
+        "1.0.3_link": [
+            "Communication.md#2.8.s5.b1.b1"
+        ]
     },
     "An LRS's About API upon processing a successful GET request can return an Extension with code 200 OK": {
         "name": "An LRS's About API upon processing a successful GET request can return an Extension with code 200 OK",
         "1.0.2_ref_text": "multiplicity, 7.7.table1.row2.c, 7.7.c",
         "1.0.2_ref": "7.7.table1.row2.c, 7.7.c",
-        "1.0.3_ref": "part3.2.8.table1.row2.c, part3.2.8.c"
+        "1.0.3_ref": "part3.2.8.table1.row2.c, part3.2.8.c",
+        "1.0.3_link": [
+            "Communication.md#2.8.s4.table1.row2"
+        ]
     },
     "Any LRS API that accepts a POST request can accept a POST request with a single query string parameter named \"method\" on that request": {
         "name": "Any LRS API that accepts a POST request can accept a POST request with a single query string parameter named \"method\" on that request",
         "1.0.2_ref_text": "7.8.a",
         "1.0.2_ref": "7.8.a",
-        "1.0.3_ref": "part3.1.3"
+        "1.0.3_ref": "part3.1.3",
+        "1.0.3_link": [
+            "Communication.md#1.3.s3.b2"
+        ]
     },
     "An LRS must parse the body of a Cross Origin Request and construct a new Request from it with the type of Request being the same as the value of the \"method\" parameter": {
         "name": "An LRS must parse the body of a Cross Origin Request and construct a new Request from it with the type of Request being the same as the value of the \"method\" parameter",
         "1.0.2_ref_text": "7.8.a, 7.8.b",
         "1.0.2_ref": "7.8.a, 7.8.b",
-        "1.0.3_ref": "part3.1.3.method, part3.1.3.headers"
+        "1.0.3_ref": "part3.1.3.method, part3.1.3.headers",
+        "1.0.3_link": [
+            "Communication.md#1.3.s3.b6"
+        ]
     },
     "An LRS will map form parameters from the body of the Cross Origin Request to the similarly named HTTP Headers in the new Request": {
         "name": "An LRS will map form parameters from the body of the Cross Origin Request to the similarly named HTTP Headers in the new Request",
         "1.0.2_ref_text": "7.8.b",
         "1.0.2_ref": "7.8.b",
-        "1.0.3_ref": "part3.1.3.headers"
+        "1.0.3_ref": "part3.1.3.headers",
+        "1.0.3_link": [
+            "Communication.md#1.3.s3.b7"
+        ]
     },
     "An LRS rejects a new Request in the same way for violating rules of this document as it would a normal Request **Implicit**": {
         "name": "An LRS rejects a new Request in the same way for violating rules of this document as it would a normal Request **Implicit**",
         "1.0.2_ref": "Implicit",
-        "1.0.3_ref": "part3.1.3, Implicit"
+        "1.0.3_ref": "part3.1.3, Implicit",
+        "1.0.3_link": [
+            "Communication.md#1.3"
+        ]
     },
     "An LRS will reject any request sending content which does not have a form parameter with the name of \"content\"": {
         "name": "An LRS will reject any request sending content which does not have a form parameter with the name of \"content\"",
         "1.0.2_ref_text": "7.8.c",
         "1.0.2_ref": "7.8.c",
-        "1.0.3_ref": "part3.1.3.content"
+        "1.0.3_ref": "part3.1.3.content",
+        "1.0.3_link": [
+            "Communication.md#1.3.s3.b4"
+        ]
     },
     "An LRS will reject a new Request with a form parameter named \"content\" if \"content\" is found to be binary data with error code 400 Bad Request": {
         "name": "An LRS will reject a new Request with a form parameter named \"content\" if \"content\" is found to be binary data with error code 400 Bad Request",
         "1.0.2_ref_text": "7.8.c",
         "1.0.2_ref": "7.8.c",
-        "1.0.3_ref": "part3.1.3.content"
+        "1.0.3_ref": "part3.1.3.content",
+        "1.0.3_link": [
+            "Communication.md#1.3.s3.b5"
+        ]
     },
     "An LRS will reject a Cross Origin Request which attempts to send attachment data with error code 400 Bad Request": {
         "name": "An LRS will reject a Cross Origin Request which attempts to send attachment data with error code 400 Bad Request",
         "1.0.2_ref_text": "7.8.d",
         "1.0.2_ref": "7.8.d",
-        "1.0.3_ref": "part3.1.3.attachments"
+        "1.0.3_ref": "part3.1.3.attachments",
+        "1.0.3_link": [
+            "Communication.md#1.3.s3.b15"
+        ]
     },
     "An LRS accepts HEAD requests": {
         "name": "An LRS accepts HEAD requests",
         "1.0.2_ref_text": "7.10.a",
         "1.0.2_ref": "7.10.a",
-        "1.0.3_ref": "part3.1.1.a"
+        "1.0.3_ref": "part3.1.1.a",
+        "1.0.3_link": [
+            "Communication.md#1.1"
+        ]
     },
     "should succeed GET about with no body": {
         "name": "should succeed GET about with no body"
@@ -4716,7 +4842,10 @@
         "name": "An LRS responds to a HEAD request in the same way as a GET request, but without the message-body",
         "1.0.2_ref_text": "7.10.a, 7.10.a.a",
         "1.0.2_ref": "7.10.a, 7.10.a.a",
-        "1.0.3_ref": "part3.1.1.a, part3.1.1.a.a"
+        "1.0.3_ref": "part3.1.1.a, part3.1.1.a.a",
+        "1.0.3_link": [
+            "Communication.md#1.1.s3.b1"
+        ]
     },
     "should succeed HEAD about with no body": {
         "name": "should succeed HEAD about with no body"
@@ -4743,85 +4872,127 @@
         "name": "A Person Object is an Object",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6",
-        "1.0.3_ref": "part3.2.4, part3.2.4.table1.row1.a"
+        "1.0.3_ref": "part3.2.4, part3.2.4.table1.row1.a",
+        "1.0.3_link": [
+            "Communication.md#2.4.s2"
+        ]
     },
     "A Person Object's \"objectType\" property is a String and is \"Person\"": {
         "name": "A Person Object's \"objectType\" property is a String and is \"Person\"",
         "1.0.2_ref_text": "Format, Vocabulary, 7.6.table1.row1.a, 7.6.table1.row1.b",
         "1.0.2_ref": "7.6.table1.row1.a, 7.6.table1.row1.b",
-        "1.0.3_ref": "part3.2.4.table2.row1.a, part3.2.4.table1.row1.b"
+        "1.0.3_ref": "part3.2.4.table2.row1.a, part3.2.4.table1.row1.b",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row1"
+        ]
     },
     "A Person Object's \"name\" property is an Array of Strings": {
         "name": "A Person Object's \"name\" property is an Array of Strings",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row2.a",
         "1.0.2_ref": "7.6.table1.row2.a",
-        "1.0.3_ref": "part3.2.4.table2.row2.a"
+        "1.0.3_ref": "part3.2.4.table2.row2.a",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row2"
+        ]
     },
     "A Person Object's \"mbox\" property is an Array of IRIs": {
         "name": "A Person Object's \"mbox\" property is an Array of IRIs",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row3.a",
         "1.0.2_ref": "7.6.table1.row3.a",
-        "1.0.3_ref": "part3.2.4.table2.row3.a"
+        "1.0.3_ref": "part3.2.4.table2.row3.a",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row3"
+        ]
     },
     "A Person Object's \"mbox\" entries have the form \"mailto:emailaddress\"": {
         "name": "A Person Object's \"mbox\" entries have the form \"mailto:emailaddress\"",
         "1.0.2_ref_text": "Format, 7.6.table1.row3.a",
         "1.0.2_ref": "7.6.table1.row3.a",
-        "1.0.3_ref": "part3.2.4.table2.row3.a"
+        "1.0.3_ref": "part3.2.4.table2.row3.a",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row3"
+        ]
     },
     "A Person Object's \"mbox_sha1sum\" property is an Array of Strings": {
         "name": "A Person Object's \"mbox_sha1sum\" property is an Array of Strings",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row4.a",
         "1.0.2_ref": "7.6.table1.row4.a",
-        "1.0.3_ref": "part3.2.4.table2.row4.a"
+        "1.0.3_ref": "part3.2.4.table2.row4.a",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row4"
+        ]
     },
     "A Person Object's \"openid\" property is an Array of Strings": {
         "name": "A Person Object's \"openid\" property is an Array of Strings",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row5.a",
         "1.0.2_ref": "7.6.table1.row5.a",
-        "1.0.3_ref": "part3.2.4.table2.row5.a"
+        "1.0.3_ref": "part3.2.4.table2.row5.a",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row5"
+        ]
     },
     "A Person Object's \"account\" property is an Array of Account Objects": {
         "name": "A Person Object's \"account\" property is an Array of Account Objects",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row6.a",
         "1.0.2_ref": "7.6.table1.row6.a",
-        "1.0.3_ref": "part3.2.4.table2.row6.a"
+        "1.0.3_ref": "part3.2.4.table2.row6.a",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row6"
+        ]
     },
     "A Person Object uses an \"objectType\" property exactly one time": {
         "name": "A Person Object uses an \"objectType\" property exactly one time",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row1.c",
         "1.0.2_ref": "7.6.table1.row1.c",
-        "1.0.3_ref": "part3.2.4.table2.row1.c"
+        "1.0.3_ref": "part3.2.4.table2.row1.c",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row1"
+        ]
     },
     "A Person Object uses a \"name\" property at most one time": {
         "name": "A Person Object uses a \"name\" property at most one time",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row2.c",
         "1.0.2_ref": "7.6.table1.row2.c",
-        "1.0.3_ref": "part3.2.4.table2.row2.c"
+        "1.0.3_ref": "part3.2.4.table2.row2.c",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row2"
+        ]
     },
     "A Person Object uses a \"mbox\" property at most one time": {
         "name": "A Person Object uses a \"mbox\" property at most one time",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row3.c",
         "1.0.2_ref": "7.6.table1.row3.c",
-        "1.0.3_ref": "part3.2.4.table2.row3.c"
+        "1.0.3_ref": "part3.2.4.table2.row3.c",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row3"
+        ]
     },
     "A Person Object uses a \"mbox_sha1sum\" property at most one time": {
         "name": "A Person Object uses a \"mbox_sha1sum\" property at most one time",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row4.c",
         "1.0.2_ref": "7.6.table1.row4.c",
-        "1.0.3_ref": "part3.2.4.table2.row4.c"
+        "1.0.3_ref": "part3.2.4.table2.row4.c",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row4"
+        ]
     },
     "A Person Object uses an \"openid\" property at most one time": {
         "name": "A Person Object uses an \"openid\" property at most one time",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row5.c",
         "1.0.2_ref": "7.6.table1.row5.c",
-        "1.0.3_ref": "part3.2.4.table2.row5.c"
+        "1.0.3_ref": "part3.2.4.table2.row5.c",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row5"
+        ]
     },
     "A Person Object uses an \"account\" property at most one time": {
         "name": "A Person Object uses an \"account\" property at most one time",
         "1.0.2_ref_text": "Multiplicity, 7.6.table1.row6.c",
         "1.0.2_ref": "7.6.table1.row6.c",
-        "1.0.3_ref": "part3.2.4.table2.row6.c"
+        "1.0.3_ref": "part3.2.4.table2.row6.c",
+        "1.0.3_link": [
+            "Communication.md#2.4.s5.table1.row6"
+        ]
     },
     "An LRS populates the \"authority\" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header)": {
         "name": "An LRS populates the \"authority\" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header)",
