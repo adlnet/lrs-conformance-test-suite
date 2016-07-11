@@ -424,8 +424,8 @@
         });
     });
 
-    describe('An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to "1.0.2" (4.1.10.b)', function () {
-        it('should respond with header "version" set to "1.0.2"', function (done) {
+    describe('An LRS MUST set the X-Experience-API-Version header to the latest patch version (Communication 3.3.b2)', function () {
+        it('should respond with header "version" set to "1.0.3"', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -442,7 +442,7 @@
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
-                .expect('x-experience-api-version', '1.0.2', done);
+                .expect('x-experience-api-version', '1.0.3', done);
         });
     });
 

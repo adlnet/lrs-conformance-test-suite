@@ -4885,11 +4885,12 @@
     "should fail when statement PUT without header \"X-Experience-API-Version\"": {
         "name": "should fail when statement PUT without header \"X-Experience-API-Version\""
     },
-    "An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to \"1.0.2\"": {
-        "name": "An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to \"1.0.2\"",
+    "An LRS MUST set the X-Experience-API-Version header to the latest patch version (Communication 3.3.b2)": {
+        "name": "An LRS MUST set the X-Experience-API-Version header to the latest patch version (Communication 3.3.b2)",
         "1.0.2_ref_text": "4.1.10.b",
         "1.0.2_ref": "4.1.10.b",
-        "1.0.3_ref": "part2.2.4.10.b"
+        "1.0.3_ref": "part2.2.4.10.b",
+        "1.0.3_link": ["Communication.md#3.3.s3.b2"]
     },
     "should respond with header \"version\" set to \"1.0.2\"": {
         "name": "should respond with header \"version\" set to \"1.0.2\""
@@ -4898,7 +4899,9 @@
         "name": "An LRS will not modify Statements based on a \"version\" before \"1.0.1\"",
         "1.0.2_ref_text": "6.2.l",
         "1.0.2_ref": "6.2.l",
-        "1.0.3_ref": "part3.3.3.m"
+        "1.0.3_ref": "part3.3.3.m",
+        "1.0.3_link": ["Communication.md#3.3.s3.b4"]
+
     },
     "should not convert newer version format to prior version format": {
         "name": "should not convert newer version format to prior version format"
@@ -4907,7 +4910,9 @@
         "name": "An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter with differing case",
         "1.0.2_ref_text": "7.0.b",
         "1.0.2_ref": "7.0.b",
-        "1.0.3_ref": "part3.3.2.p"
+        "1.0.3_ref": "part3.3.2.p",
+        "1.0.3_link": ["Communication.md#3.2.s3.b8"]
+
     },
     "should fail on PUT statement when not using \"statementId\"": {
         "name": "should fail on PUT statement when not using \"statementId\""
@@ -4983,7 +4988,9 @@
         "name": "An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing",
         "1.0.2_ref_text": "7.0.c, **Implicit**",
         "1.0.2_ref": "7.0.c, **Implicit**",
-        "1.0.3_ref": "part3.3.2.q"
+        "1.0.3_ref": "part3.3.2.q",
+		"1.0.3_link": ["Communication.md#3.2.s3.b9"]
+
     },
     "should not persist any statements on a single failure": {
         "name": "should not persist any statements on a single failure"
@@ -4992,7 +4999,9 @@
         "name": "An LRS has a Statement API with endpoint \"base IRI\"+\"/statements\"",
         "1.0.2_ref_text": "7.2",
         "1.0.2_ref": "7.2",
-        "1.0.3_ref": "part3.2.1"
+        "1.0.3_ref": "part3.2.1",
+		"1.0.3_link": ["Communication.md#2.0"]
+
     },
     "should allow \"/statements\" POST": {
         "name": "should allow \"/statements\" POST"
@@ -5007,7 +5016,8 @@
         "name": "An LRS's Statement API accepts PUT requests",
         "1.0.2_ref_text": "7.2.1",
         "1.0.2_ref": "7.2.1",
-        "1.0.3_ref": "part3.2.1.1"
+        "1.0.3_ref": "part3.2.1.1",
+		"1.0.3_link": ["Communication.md#2.1.1.s1"]
     },
     "should persist statement using \"PUT\"": {
         "name": "should persist statement using \"PUT\""
@@ -5016,7 +5026,8 @@
         "name": "An LRS's Statement API accepts PUT requests only if it contains a \"statementId\" parameter",
         "1.0.2_ref_text": "Multiplicity, 7.2.1.table1.a",
         "1.0.2_ref": "7.2.1.table1.a",
-        "1.0.3_ref": "part3.2.1.1.table1.row1"
+        "1.0.3_ref": "part3.2.1.1.table1.row1",
+		"1.0.3_link": ["Communication.md#2.1.1.s1.table1.row1"]
     },
     "should persist statement using \"statementId\" parameter": {
         "name": "should persist statement using \"statementId\" parameter"
@@ -5028,7 +5039,8 @@
         "name": "An LRS's Statement API accepts PUT requests only if the \"statementId\" parameter is a String",
         "1.0.2_ref_text": "Type, 7.2.1.table1.b",
         "1.0.2_ref": "7.2.1.table1.a",
-        "1.0.3_ref": "part3.2.1.1.table1.row1.a"
+        "1.0.3_ref": "part3.2.1.1.table1.row1.a",
+        "1.0.3_link": ["Communication.md#2.1.1.s1.table1.row1"]
     },
     "should fail statement using \"statementId\" parameter as boolean": {
         "name": "should fail statement using \"statementId\" parameter as boolean"
@@ -5040,7 +5052,8 @@
         "name": "An LRS cannot modify a Statement, state, or Object in the event it receives a Statement with statementID equal to a Statement in the LRS already.",
         "1.0.2_ref_text": "7.2.1.a, 7.2.2.b",
         "1.0.2_ref": "7.2.1.a, 7.2.2.b",
-        "1.0.3_ref": "part3.2.1.1.a"
+        "1.0.3_ref": "part3.2.1.1.a",
+        "1.0.3_link": ["Communication.md#2.1.1.s2.b2"]
     },
     "should not update statement with matching \"statementId\" on POST": {
         "name": "should not update statement with matching \"statementId\" on POST"
@@ -5052,7 +5065,8 @@
         "name": "An LRS's Statement API upon processing a successful PUT request returns code 204 No Content",
         "1.0.2_ref_text": "7.2.1",
         "1.0.2_ref": "7.2.1",
-        "1.0.3_ref": "part3.2.1.1"
+        "1.0.3_ref": "part3.2.1.1",
+        "1.0.3_link": ["Communication.md#2.1.1.s1"]
     },
     "should persist statement and return status 204": {
         "name": "should persist statement and return status 204"
@@ -5061,7 +5075,8 @@
         "name": "An LRS's Statement API rejects with error code 409 Conflict any Statement with the \"statementID\" parameter equal to a Statement in the LRS already **Implicit**",
         "1.0.2_ref_text": "7.2.1.b, 7.2.2.b",
         "1.0.2_ref": "7.2.1.b, 7.2.2.b",
-        "1.0.3_ref": "part3.2.1.1.a"
+        "1.0.3_ref": "part3.2.1.1.a",
+        "1.0.3_link": ["Communication.md#2.1.1.s2.b2"]
     },
     "should return 409 or 204 when statement ID already exists on POST": {
         "name": "should return 409 or 204 when statement ID already exists on POST"
@@ -5073,7 +5088,8 @@
         "name": "An LRS's Statement API accepts POST requests",
         "1.0.2_ref_text": "7.2.2",
         "1.0.2_ref": "7.2.2",
-        "1.0.3_ref": "part3.2.1.2"
+        "1.0.3_ref": "part3.2.1.2",
+        "1.0.3_link": ["Communication.md#2.1.2.s1"]
     },
     "should persist statement using \"POST\"": {
         "name": "should persist statement using \"POST\""
@@ -5091,7 +5107,8 @@
         "name": "An LRS's Statement API upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit**",
         "1.0.2_ref_text": "7.2.2",
         "1.0.2_ref": "7.2.2",
-        "1.0.3_ref": "part3.2.1.2"
+        "1.0.3_ref": "part3.2.1.2",
+        "1.0.3_link": ["Communication.md#2.1.2.s1"]
     },
     "should persist statement using \"POST\" and return array if IDs": {
         "name": "should persist statement using \"POST\" and return array if IDs"
@@ -5101,6 +5118,7 @@
         "1.0.2_ref_text": "Format, 4.2.table1.row2.a",
         "1.0.2_ref": "4.2.table1.row2.a",
         "1.0.3_ref": "part2.2.5.table1.row2.a"
+        "1.0.3_link": ["Data.md#2.5.s2.table1.row2"]
     },
     "should return \"more\" property as an IRL": {
         "name": "should return \"more\" property as an IRL"
@@ -5109,7 +5127,8 @@
         "name": "The \"more\" property is an empty string if the entire results of the original GET request have been returned",
         "1.0.2_ref_text": "4.2.table1.row2.b",
         "1.0.2_ref": "4.2.table1.row2.b",
-        "1.0.3_ref": "part2.2.5.table1.row2.b"
+        "1.0.3_ref": "part2.2.5.table1.row2.b",
+        "1.0.3_link": ["Data.md#2.5.s2.table1.row2"]
     },
     "should return empty \"more\" property when all statements returned": {
         "name": "should return empty \"more\" property when all statements returned"
@@ -5118,7 +5137,8 @@
         "name": "If not empty, the \"more\" property's IRL refers to a specific container object corresponding to the next page of results from the orignal GET request",
         "1.0.2_ref_text": "4.2.table1.row1.b",
         "1.0.2_ref": "4.2.table1.row1.b",
-        "1.0.3_ref": "part2.2.5.table1.row1.b"
+        "1.0.3_ref": "part2.2.5.table1.row1.b",
+        "1.0.3_link": ["Data.md#2.5.s2.table1.row2"]
     },
     "should return \"more\" which refers to next page of results": {
         "name": "should return \"more\" which refers to next page of results"
@@ -5127,7 +5147,8 @@
         "name": "A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS",
         "1.0.2_ref_text": "4.2.c",
         "1.0.2_ref": "4.2.c",
-        "1.0.3_ref": "part2.2.3.d"
+        "1.0.3_ref": "part2.2.3.d",
+        "1.0.3_link": ["Data.md#2.3.2.s2.b3"]
     },
     "should return a voided statement when using GET \"voidedStatementId\"": {
         "name": "should return a voided statement when using GET \"voidedStatementId\""
@@ -5136,7 +5157,8 @@
         "name": "An LRS's Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request",
         "1.0.2_ref_text": "7.2.4.a",
         "1.0.2_ref": "7.2.4.a",
-        "1.0.3_ref": "part3.2.1.4.a"
+        "1.0.3_ref": "part3.2.1.4.a",
+        "1.0.3_link": ["Communication.md#2.1.4.s1.b1"]
     },
     "should not return a voided statement if using GET \"statementId\"": {
         "name": "should not return a voided statement if using GET \"statementId\""
@@ -5145,7 +5167,8 @@
         "name": "LRS's Statement API accepts GET requests",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "part3.2.1.3"
+        "1.0.3_ref": "part3.2.1.3",
+        "1.0.3_link": ["Communication.md#2.1.3.s1"]
     },
     "should return using GET": {
         "name": "should return using GET"
@@ -5154,7 +5177,8 @@
         "name": "An LRS's Statement API can process a GET request with \"statementId\" as a parameter",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "part3.2.1.3"
+        "1.0.3_ref": "part3.2.1.3",
+        "1.0.3_link": ["Communication.md#2.1.3.s1"]
     },
     "should process using GET with \"statementId\"": {
         "name": "should process using GET with \"statementId\""
@@ -5163,7 +5187,8 @@
         "name": "An LRS's Statement API can process a GET request with \"voidedStatementId\" as a parameter",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "part3.2.1.3"
+        "1.0.3_ref": "part3.2.1.3",
+        "1.0.3_link": ["Communication.md#2.1.3.s1"]
     },
     "should process using GET with \"voidedStatementId\"": {
         "name": "should process using GET with \"voidedStatementId\""
@@ -5172,7 +5197,8 @@
         "name": "An LRS's Statement API rejects with error code 400 a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters",
         "1.0.2_ref_text": "7.2.3.a, 7.2.3.b",
         "1.0.2_ref": "7.2.3.a, 7.2.3.b",
-        "1.0.3_ref": "part3.2.1.3.a, part3.2.1.3.b"
+        "1.0.3_ref": "part3.2.1.3.a, part3.2.1.3.b",
+        "1.0.3_link": ["Communication.md#2.1.3.s1"]
     },
     "persist statement": {
         "name": "persist statement"
@@ -5301,7 +5327,8 @@
         "name": "An LRS's Statement API rejects with error code 400 a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters",
         "1.0.2_ref_text": "7.2.3.a, 7.2.3.b",
         "1.0.2_ref": "7.2.3.a, 7.2.3.b",
-        "1.0.3_ref": "part3.2.1.3.a, part3.2.1.3.b"
+        "1.0.3_ref": "part3.2.1.3.a, part3.2.1.3.b",
+        "1.0.3_link": ["Communication.md#2.1.3.s1"]
     },
     "should fail when using \"voidedStatementId\" with \"agent\"": {
         "name": "should fail when using \"voidedStatementId\" with \"agent\""
@@ -5343,7 +5370,8 @@
         "name": "An LRS's Statement API upon processing a successful GET request with a \"statementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "part3.2.1.3"
+        "1.0.3_ref": "part3.2.1.3",
+        "1.0.3_link": ["Communication.md#2.1.3.s1"]
     },
     "should retrieve statement using \"statementId\"": {
         "name": "should retrieve statement using \"statementId\""
@@ -5352,13 +5380,15 @@
         "name": "An LRS's Statement API upon processing a successful GET request with a \"voidedStatementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "part3.2.1.3"
+        "1.0.3_ref": "part3.2.1.3",
+        "1.0.3_link": ["Communication.md#2.1.3.s1"]
     },
     "An LRS's Statement API upon processing a successful GET request with neither a \"statementId\" nor a \"voidedStatementId\" parameter, returns code 200 OK and a StatementResult Object.": {
         "name": "An LRS's Statement API upon processing a successful GET request with neither a \"statementId\" nor a \"voidedStatementId\" parameter, returns code 200 OK and a StatementResult Object.",
         "1.0.2_ref_text": "7.2.3",
         "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "part3.2.1.3"
+        "1.0.3_ref": "part3.2.1.3",
+        "1.0.3_link": ["Communication.md#2.1.3.s1"]
     },
     "persist substatement": {
         "name": "persist substatement"
@@ -5409,7 +5439,8 @@
         "name": "An LRS's \"X-Experience-API-Consistent-Through\" header's value is not before (temporal) any of the \"stored\" values of any of the returned Statements",
         "1.0.2_ref_text": "7.2.3.c",
         "1.0.2_ref": "7.2.3.c",
-        "1.0.3_ref": "part3..2.1.3.e"
+        "1.0.3_ref": "part3..2.1.3.e",
+        "1.0.3_link": ["Communication.md#2.1.3.s2.b5"]
     },
     "should return \"X-Experience-API-Consistent-Through\" when using GET for statements": {
         "name": "should return \"X-Experience-API-Consistent-Through\" when using GET for statements"
@@ -5418,7 +5449,8 @@
         "name": "An LRS's Statement API upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.",
         "1.0.2_ref_text": "7.2.3.c",
         "1.0.2_ref": "7.2.3.c",
-        "1.0.3_ref": "part3..2.1.3.e"
+        "1.0.3_ref": "part3..2.1.3.e",
+        "1.0.3_link": ["Communication.md#2.1.3.s2.b5"]
     },
     "should return \"X-Experience-API-Consistent-Through\" using GET": {
         "name": "should return \"X-Experience-API-Consistent-Through\" using GET"
@@ -5463,7 +5495,8 @@
         "name": "An LRS's \"X-Experience-API-Consistent-Through\" header is an ISO 8601 combined date and time",
         "1.0.2_ref_text": "Type, 7.2.3.c",
         "1.0.2_ref": "7.2.3.c",
-        "1.0.3_ref": "part3..2.1.3.e"
+        "1.0.3_ref": "part3..2.1.3.e",
+        "1.0.3_link": ["Communication.md#2.1.3.s2.b5"]
     },
     "should return valid \"X-Experience-API-Consistent-Through\" using GET": {
         "name": "should return valid \"X-Experience-API-Consistent-Through\" using GET"
@@ -5472,7 +5505,8 @@
         "name": "A \"statements\" property is an Array of Statements",
         "1.0.2_ref_text": "Type, 4.2.table1.row1.a",
         "1.0.2_ref": "4.2.table1.row1.a",
-        "1.0.3_ref": "part2.2.5.table1.row1.a"
+        "1.0.3_ref": "part2.2.5.table1.row1.a",
+        "1.0.3_link": ["Data.md#2.5.s2.table1.row1"]
     },
     "should return StatementResult with statements as array using GET without \"statementId\" or \"voidedStatementId\"": {
         "name": "should return StatementResult with statements as array using GET without \"statementId\" or \"voidedStatementId\""
@@ -5517,7 +5551,8 @@
         "name": "An LRS's Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it",
         "1.0.2_ref_text": "7.2.4.b",
         "1.0.2_ref": "7.2.4.b",
-        "1.0.3_ref": "part3.2.1.4.b"
+        "1.0.3_ref": "part3.2.1.4.b",
+        "1.0.3_link": ["Communication.md#2.1.4.s1.b2"]
     },
     "persist object with statement references": {
         "name": "persist object with statement references"
@@ -5540,10 +5575,7 @@
     "JSON parser validates this": {
         "name": "JSON parser validates this",
         "1.0.2_ref": "4.2.table1.row1.b",
-        "1.0.3_ref": "part2.2.5.table1.row1.b",
-        "1.0.3_link": [
-            "part2.2.5.table1.row1.b"
-        ]
+        "1.0.3_ref": "part2.2.5.table1.row1.b"
     },
     "Handled internally by LRS": {
         "name": "Handled internally by LRS",
