@@ -5168,8 +5168,8 @@
     "should process using GET with \"voidedStatementId\"": {
         "name": "should process using GET with \"voidedStatementId\""
     },
-    "An LRS's Statement API rejects a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters": {
-        "name": "An LRS's Statement API rejects a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters",
+    "An LRS's Statement API rejects with error code 400 a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters": {
+        "name": "An LRS's Statement API rejects with error code 400 a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters",
         "1.0.2_ref_text": "7.2.3.a, 7.2.3.b",
         "1.0.2_ref": "7.2.3.a, 7.2.3.b",
         "1.0.3_ref": "part3.2.1.3.a, part3.2.1.3.b"
@@ -5297,8 +5297,8 @@
     "should process using GET with \"ascending\"": {
         "name": "should process using GET with \"ascending\""
     },
-    "An LRS's Statement API rejects a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters": {
-        "name": "An LRS's Statement API rejects a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters",
+    "An LRS's Statement API rejects with error code 400 a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters": {
+        "name": "An LRS's Statement API rejects with error code 400 a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters",
         "1.0.2_ref_text": "7.2.3.a, 7.2.3.b",
         "1.0.2_ref": "7.2.3.a, 7.2.3.b",
         "1.0.3_ref": "part3.2.1.3.a, part3.2.1.3.b"
