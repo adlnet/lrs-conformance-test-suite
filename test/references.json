@@ -3210,7 +3210,10 @@
         "name": "A Statement Reference is defined by the \"objectType\" of an \"object\" with value \"StatementRef\"",
         "1.0.2_ref_text": "4.1.4.2.a",
         "1.0.2_ref": "4.1.4.3.a",
-        "1.0.3_ref": "part2.2.4.4.3.a"
+        "1.0.3_ref": "part2.2.4.4.3.a",
+        "1.0.3_link": [
+            "Data.md#2.4.4.3.s4.b1"
+        ]
     },
     "statementref invalid when not \"StatementRef\"": {
         "name": "statementref invalid when not \"StatementRef\""
@@ -3222,7 +3225,10 @@
         "name": "A Statement Reference contains an \"id\" property",
         "1.0.2_ref_text": "Multiplicity, 4.1.4.3.table1.row2.b",
         "1.0.2_ref": "4.1.4.3.table1.row2.b",
-        "1.0.3_ref": "part2.2.4.4.3.table1.row2.b"
+        "1.0.3_ref": "part2.2.4.4.3.table1.row2.b",
+        "1.0.3_link": [
+            "Data.md#2.4.4.3.s4.table1.row2"
+        ]
     },
     "statementref invalid when missing \"id\"": {
         "name": "statementref invalid when missing \"id\""
@@ -3234,7 +3240,10 @@
         "name": "A Statement Reference's \"id\" property is a UUID",
         "1.0.2_ref_text": "Type, 4.1.4.3.table1.row2.a",
         "1.0.2_ref": "4.1.4.3.table1.row2.a",
-        "1.0.3_ref": "part2.2.4.4.3.table1.row2.a"
+        "1.0.3_ref": "part2.2.4.4.3.table1.row2.a",
+        "1.0.3_link": [
+            "Data.md#2.4.4.3.s4.table1.row2"
+        ]
     },
     "statementref \"id\" not \"uuid\"": {
         "name": "statementref \"id\" not \"uuid\""
@@ -3252,7 +3261,10 @@
         "name": "A Statement contains an \"actor\" property",
         "1.0.2_ref_text": "Multiplicity, 4.1.b",
         "1.0.2_ref": "4.1.b",
-        "1.0.3_ref": "part2.2.2.b, part2.2.4.table1.row2.c"
+        "1.0.3_ref": "part2.2.2.b, part2.2.4.table1.row2.c",
+        "1.0.3_link": [
+            "Data.md#2.2.s2.b3"
+        ]
     },
     "statement \"actor\" missing": {
         "name": "statement \"actor\" missing"
@@ -3261,7 +3273,10 @@
         "name": "A Statement contains a \"verb\" property",
         "1.0.2_ref_text": "Multiplicity, 4.1.b",
         "1.0.2_ref": "4.1.b",
-        "1.0.3_ref": "part2.2.2.b, part2.2.4.table1.row3.c"
+        "1.0.3_ref": "part2.2.2.b, part2.2.4.table1.row3.c",
+        "1.0.3_link": [
+            "Data.md#2.2.s2.b3"
+        ]
     },
     "statement \"verb\" missing": {
         "name": "statement \"verb\" missing"
@@ -3270,7 +3285,10 @@
         "name": "A Statement contains an \"object\" property",
         "1.0.2_ref_text": "Multiplicity, 4.1.b",
         "1.0.2_ref": "4.1.b",
-        "1.0.3_ref": "part2.2.2.b, part2.2.4.table1.row4.c"
+        "1.0.3_ref": "part2.2.2.b, part2.2.4.table1.row4.c",
+        "1.0.3_link": [
+            "Data.md#2.2.s2.b3"
+        ]
     },
     "statement \"object\" missing": {
         "name": "statement \"object\" missing"
@@ -3279,7 +3297,10 @@
         "name": "A Statement's \"id\" property is a String",
         "1.0.2_ref_text": "Type, 4.1.1.description.a",
         "1.0.2_ref": "4.1.1.description",
-        "1.0.3_ref": "part2.2.4.1.description"
+        "1.0.3_ref": "part2.2.4.1.description",
+        "1.0.3_link": [
+            "Data.md#2.4.1.s1"
+        ]
     },
     "statement \"id\" invalid numeric": {
         "name": "statement \"id\" invalid numeric"
@@ -3291,7 +3312,10 @@
         "name": "A Statement's \"id\" property is a UUID following RFC 4122",
         "1.0.2_ref_text": "Syntax, RFC 4122",
         "1.0.2_ref": "4.1.1.description, RFC 4122",
-        "1.0.3_ref": "part2.2.4.1.description, RFC 4122"
+        "1.0.3_ref": "part2.2.4.1.description, RFC 4122",
+        "1.0.3_link": [
+            "Data.md#2.4.1.s1"
+        ]
     },
     "statement \"id\" invalid UUID with too many digits": {
         "name": "statement \"id\" invalid UUID with too many digits"
@@ -3303,7 +3327,10 @@
         "name": "A TimeStamp is defined as a Date/Time formatted according to ISO 8601",
         "1.0.2_ref_text": "Format, ISO8601",
         "1.0.2_ref": "4.1.table1.row7.b, ISO8601",
-        "1.0.3_ref": "part2.4.5.a, ISO8601"
+        "1.0.3_ref": "part2.4.5.a, ISO8601",
+        "1.0.3_link": [
+            "Data.md#2.4.s1.table1.row7"
+        ]
     },
     "statement \"template\" invalid string": {
         "name": "statement \"template\" invalid string"
@@ -3315,13 +3342,19 @@
         "name": "A \"timestamp\" property is a TimeStamp",
         "1.0.2_ref_text": "Type, 4.1.2.1.table1.row7.a, 4.1.2.1.table1.row7.b",
         "1.0.2_ref": "4.1.table1.row7.a, 4.1.table1.row7.b",
-        "1.0.3_ref": "part2.2.4.table1.row7.a"
+        "1.0.3_ref": "part2.2.4.table1.row7.a",
+        "1.0.3_link": [
+            "Data.md#2.4.s1.table1.row7"
+        ]
     },
     "A \"stored\" property is a TimeStamp": {
         "name": "A \"stored\" property is a TimeStamp",
         "1.0.2_ref_text": "Type, 4.1.2.1.table1.row8.a, 4.1.2.1.table1.row8.b",
         "1.0.2_ref": "4.1.table1.row8.a",
-        "1.0.3_ref": "part2.2.4.table1.row8.a"
+        "1.0.3_ref": "part2.2.4.table1.row8.a",
+        "1.0.3_link": [
+            "Data.md#2.4.s1.table1.row8"
+        ]
     },
     "statement \"stored\" invalid string": {
         "name": "statement \"stored\" invalid string"
@@ -3333,7 +3366,10 @@
         "name": "A \"version\" property enters the LRS with the value of \"1.0.0\" or is not used",
         "1.0.2_ref_text": "Vocabulary, 4.1.10.e, 4.1.10.f",
         "1.0.2_ref": "4.1.10.e",
-        "1.0.3_ref": "part2.2.4.10.e"
+        "1.0.3_ref": "part2.2.4.10.e",
+        "1.0.3_link": [
+            "Data.md#2.4.4.1.s5.b3"
+        ]
     },
     "statement \"version\" invalid string": {
         "name": "statement \"version\" invalid string"
@@ -3345,7 +3381,10 @@
         "name": "An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to \"null\", except in an \"extensions\" property",
         "1.0.2_ref_text": "4.1.12.d.a",
         "1.0.2_ref": "4.1.12.d.a",
-        "1.0.3_ref": "part2.2.2.k.a"
+        "1.0.3_ref": "part2.2.2.k.a",
+        "1.0.3_link": [
+            "Data.md#2.2.s4.b1.b1"
+        ]
     },
     "statement actor should fail on \"null\"": {
         "name": "statement actor should fail on \"null\""
@@ -3363,7 +3402,10 @@
         "name": "An LRS rejects with error code 400 Bad Request, a Request which uses \"version\" and has the value set to anything but \"1.0\" or \"1.0.x\", where x is the semantic versioning number",
         "1.0.2_ref_text": "Format, 4.1.10.b, 6.2.c, 6.2.f",
         "1.0.2_ref": "4.1.10.b, 4.1.10.c, 6.2.c, 6.2.f",
-        "1.0.3_ref": "part2.2.4.10.b, part2.2.4.10.c, part3.3.3.c, part3.3.3.f"
+        "1.0.3_ref": "part2.2.4.10.b, part2.2.4.10.c, part3.3.3.c, part3.3.3.f",
+        "1.0.3_link": [
+            "Data.md#2.4.10.s2.b1","Data.md#2.4.10.s3.b1","Communication.md#3.3.s3.b3","Communication.md#3.3.s3.b6"
+        ]
     },
     "statement \"version\" valid 1.0": {
         "name": "statement \"version\" valid 1.0"
