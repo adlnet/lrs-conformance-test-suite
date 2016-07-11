@@ -86,7 +86,7 @@
             process.exit();
         }
 
-        var DIRECTORY = ['v1_0_2'];
+        var DIRECTORY = ['v1_0_3'];//['v1_0_2'];
         var options = {
             directory: _options.directory || DIRECTORY,
             endpoint: _options.endpoint,

@@ -1,0 +1,14 @@
+{
+  "objectType": "Group",
+  "member": [
+    {
+      "account": {
+        "homePage": "http://example.com/xAPI/OAuth/Token",
+        "name": "oauth_consumer_x75db"
+      }
+    },
+    {
+      "mbox": "mailto:bob_authority@example.com"
+    }
+  ]
+}

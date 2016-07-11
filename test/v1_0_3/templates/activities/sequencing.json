@@ -1,0 +1,51 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "definition": {
+    "name": {
+      "en": "Sequencing"
+    },
+    "description": {
+      "en": "Order players by their pong ladder position:"
+    },
+    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+    "moreInfo": "http://virtualmeeting.example.com/345256",
+    "interactionType": "sequencing",
+    "correctResponsesPattern": [
+      "tim[,]mike[,]ells[,]ben"
+    ],
+    "choices": [
+      {
+        "id": "tim",
+        "description": {
+          "en-US": "Tim"
+        }
+      },
+      {
+        "id": "ben",
+        "description": {
+          "en-US": "Ben"
+        }
+      },
+      {
+        "id": "ells",
+        "description": {
+          "en-US": "Ells"
+        }
+      },
+      {
+        "id": "mike",
+        "description": {
+          "en-US": "Mike"
+        }
+      }
+    ],
+    "extensions": {
+      "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+      "http://example.com/profiles/meetings/extension/reporter": {
+        "name": "Thomas",
+        "id": "http://openid.com/342"
+      }
+    }
+  }
+}

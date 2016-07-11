@@ -1,0 +1,33 @@
+{
+  "registration": "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
+  "platform": "Example virtual meeting software",
+  "language": "tlh",
+  "statement": {
+    "objectType": "StatementRef",
+    "id": "6690e6c9-3ef0-4ed3-8b37-7f3964730bee"
+  },
+  "contextActivities": {
+    "parent": {
+      "objectType": "Activity",
+      "id": "http://www.example.com/meetings/occurances/34534",
+      "definition": {
+        "name": {
+          "en-GB": "example meeting",
+          "en-US": "example meeting"
+        },
+        "description": {
+          "en-GB": "An example meeting that happened on a specific occasion with certain people present.",
+          "en-US": "An example meeting that happened on a specific occasion with certain people present."
+        },
+        "moreInfo": "http://virtualmeeting.example.com/345256",
+        "extensions": {
+          "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+          "http://example.com/profiles/meetings/extension/reporter": {
+            "name": "Thomas",
+            "id": "http://openid.com/342"
+          }
+        }
+      }
+    }
+  }
+}
