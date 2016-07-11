@@ -3603,61 +3603,72 @@
         "name": "An LRS has a State API with endpoint \"base IRI\"+\"/activities/state\"",
         "1.0.2_ref_text": "7.3.table1.row1.a ,7.3.table1.row1.c",
         "1.0.2_ref": "7.3.table1.row1.b ,7.3.table1.row1.c",
-        "1.0.3_ref": "part3.2.2.table2.row1.a, part3.2.2.table2.row1.c"
+        "1.0.3_ref": "Communication.md#2.2.table2.row1.a, Communication.md#2.2.table2.row1.c",
+        "1.0.3_link": ["Communication.md#2.2.table2.row1.a", "Communication.md#2.2.table2.row1.c"]
     },
     "An LRS has an Activities API with endpoint \"base IRI\" + /activities\"": {
         "name": "An LRS has an Activities API with endpoint \"base IRI\" + /activities\"",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5, Implicit",
-        "1.0.3_ref": "part3.2.5"
+        "1.0.3_ref": "Communication.md#2.5",
+        "1.0.3_link": ["Communication.md#2.5"]
     },
     "An LRS has an Activity Profile API with endpoint \"base IRI\"+\"/activities/profile\"": {
         "name": "An LRS has an Activity Profile API with endpoint \"base IRI\"+\"/activities/profile\"",
         "1.0.2_ref_text": "7.3.table1.row2.a, 7.3.table1.row2.c",
         "1.0.2_ref": "7.3.table1.row2.b, 7.3.table1.row2.c",
-        "1.0.3_ref": "part3.2.2.table2.row2.a, part3.2.2.table2.row2.c"
+        "1.0.3_ref": "Communication.md#2.2.table2.row2.a, Communication.md#2.2.table2.row2.c",
+        "1.0.3_link": ["Communication.md#2.2.table2.row2.a", "Communication.md#2.2.table2.row2.c"]
+
     },
     "An LRS has an Agents API with endpoint \"base IRI\" + /agents\"": {
         "name": "An LRS has an Agents API with endpoint \"base IRI\" + /agents\"",
         "1.0.2_ref_text": "7.6",
         "1.0.2_ref": "7.6, Implicit",
-        "1.0.3_ref": "part3.2.4"
+        "1.0.3_ref": "Communication.md#2.4",
+        "1.0.3_link": ["Communication.md#2.4"]
     },
     "An LRS has an Agent Profile API with endpoint \"base IRI\"+\"/agents/profile\"": {
         "name": "An LRS has an Agent Profile API with endpoint \"base IRI\"+\"/agents/profile\"",
         "1.0.2_ref_text": "7.3.table1.row3.a, 7.3.table1.row3.c",
         "1.0.2_ref": "7.3.table1.row3.b, 7.3.table1.row3.c",
-        "1.0.3_ref": "part3.2.2.table2.row3.a, part3.2.2.table2.row3.c"
+        "1.0.3_ref": "Communication.md#2.2.table2.row3.a, Communication.md#2.2.table2.row3.c",
+        "1.0.3_link": ["Communication.md#2.2.table2.row3.a", "Communication.md#2.2.table2.row3.c"]
     },
     "An LRS has an About API with endpoint \"base IRI\"+\"/about\"": {
         "name": "An LRS has an About API with endpoint \"base IRI\"+\"/about\"",
         "1.0.2_ref_text": "7.7.a",
         "1.0.2_ref": "7.7.a",
-        "1.0.3_ref": "part3.2.8"
+        "1.0.3_ref": "Communication.md#2.8",
+        "1.0.3_link": ["Communication.md#2.8"]
     },
     "An LRS will accept a POST request to the State API": {
         "name": "An LRS will accept a POST request to the State API",
         "1.0.2_ref_text": "7.3.table1.row1.b",
         "1.0.2_ref": "7.3.table1.row1.a",
-        "1.0.3_ref": "part3.2.2.table2.row1.a"
+        "1.0.3_ref": "Communication.md#2.2.table2.row1.a",
+        "1.0.3_link": ["Communication.md#2.2.table2.row1.a"]
     },
     "An LRS will accept a POST request to the Activity Profile API": {
         "name": "An LRS will accept a POST request to the Activity Profile API",
         "1.0.2_ref_text": "7.3.table1.row2.b",
         "1.0.2_ref": "7.3.table1.row2.a",
-        "1.0.3_ref": "part3.2.2.table2.row2.a"
+        "1.0.3_ref": "Communication.md#2.2.table2.row2.a",
+        "1.0.3_link": ["Communication.md#2.2.table2.row2.a"]
     },
     "An LRS will accept a POST request to the Agent Profile API": {
         "name": "An LRS will accept a POST request to the Agent Profile API",
         "1.0.2_ref_text": "7.3.table1.row3.b",
         "1.0.2_ref": "7.3.table1.row3.a",
-        "1.0.3_ref": "part3.2.2.table2.row3.a"
+        "1.0.3_ref": "Communication.md#2.2.table2.row3.a",
+        "1.0.3_link": ["Communication.md#2.2.table2.row3.a"]
     },
     "An LRS cannot reject a POST request to the State API based on the contents of the name/value pairs of the document": {
         "name": "An LRS cannot reject a POST request to the State API based on the contents of the name/value pairs of the document",
         "1.0.2_ref_text": "7.3.b",
         "1.0.2_ref": "7.3.b, Implicit",
-        "1.0.3_ref": "part3.2.2.b, Implicit"
+        "1.0.3_ref": "Communication.md#2.2.b, Implicit",
+        "1.0.3_link": ["Communication.md#2.2.b"]
     },
     "Should accept POST to State with document [object Object]": {
         "name": "Should accept POST to State with document [object Object]"
@@ -3672,7 +3683,8 @@
         "name": "An LRS cannot reject a POST request to the Activity Profile API based on the contents of the name/value pairs of the document",
         "1.0.2_ref_text": "7.3.b",
         "1.0.2_ref": "7.3.b, Implicit",
-        "1.0.3_ref": "part3.2.2.b, Implicit"
+        "1.0.3_ref": "Communication.md#2.2.b, Implicit",
+        "1.0.3_link": ["Communication.md#2.2.b"]
     },
     "Should accept POST to Activity profile with document [object Object]": {
         "name": "Should accept POST to Activity profile with document [object Object]"
@@ -3687,7 +3699,8 @@
         "name": "An LRS cannot reject a POST request to the Agent Profile API based on the contents of the name/value pairs of the document",
         "1.0.2_ref_text": "7.3.b",
         "1.0.2_ref": "7.3.b, Implicit",
-        "1.0.3_ref": "part3.2.2.b, Implicit"
+        "1.0.3_ref": "Communication.md#2.2.b, Implicit",
+        "1.0.3_link": ["Communication.md#2.2.b"]
     },
     "Should accept POST to Agent profile with document [object Object]": {
         "name": "Should accept POST to Agent profile with document [object Object]"
@@ -3702,85 +3715,99 @@
         "name": "An LRS's State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
         "1.0.2_ref_text": "7.3.f",
         "1.0.2_ref": "7.3.f",
-        "1.0.3_ref": "Implicit"
+        "1.0.3_ref": "Communication.md#2.2.s7, Implicit",
+        "1.0.3_link": ["Communication.md#2.2.s7"]
     },
     "An LRS's State API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request": {
         "name": "An LRS's State API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
         "1.0.2_ref_text": "7.3.e",
         "1.0.2_ref": "7.3.e",
-        "1.0.3_ref": "part3.2.2.h"
+        "1.0.3_ref": "Communication.md#2.2.s8.b1",
+        "1.0.3_link": ["Communication.md#2.2.s8.b1"]
     },
     "A Document Merge overwrites any duplicate Objects from the previous document with the new document.": {
         "name": "A Document Merge overwrites any duplicate Objects from the previous document with the new document.",
         "1.0.2_ref_text": "7.3.d",
         "1.0.2_ref": "7.3.d",
-        "1.0.3_ref": "part3.2.2.e, part3.2.2.f, part3.2.2.g"
+        "1.0.3_ref": "Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3",
+        "1.0.3_link": ["Communication.md#2.2.s7.b1", "Communication.md#2.2.s7.b2", "Communication.md#2.2.s7.b3"]
     },
     "A Document Merge only performs overwrites at one level deep, although the entire object is replaced.": {
         "name": "A Document Merge only performs overwrites at one level deep, although the entire object is replaced.",
         "1.0.2_ref_text": "7.3.d",
         "1.0.2_ref": "7.3.d",
-        "1.0.3_ref": "part3.2.2.e, part3.2.2.f, part3.2.2.g"
+        "1.0.3_ref": "Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3",
+        "1.0.3_link": ["Communication.md#2.2.s7.b1", "Communication.md#2.2.s7.b2", "Communication.md#2.2.s7.b3"]
     },
     "An LRS's State API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"": {
         "name": "An LRS's State API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
         "1.0.2_ref_text": "7.3.d",
         "1.0.2_ref": "7.3.d",
-        "1.0.3_ref": "part3.2.2.e, part3.2.2.f, part3.2.2.g"
+        "1.0.3_ref": "Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3",
+        "1.0.3_link": ["Communication.md#2.2.s7.b1", "Communication.md#2.2.s7.b2", "Communication.md#2.2.s7.b3"]
     },
     "An LRS's Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document": {
         "name": "An LRS's Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
         "1.0.2_ref_text": "7.3.f",
         "1.0.2_ref": "7.3.f",
-        "1.0.3_ref": "Implicit"
+        "1.0.3_ref": "Communication.md#2.2.s7",
+        "1.0.3_link": ["Communication.md#2.2.s7"]
     },
     "An LRS's Activity Profile API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
         "1.0.2_ref_text": "7.3.e",
         "1.0.2_ref": "7.3.e",
-        "1.0.3_ref": "part3.2.2.h"
+        "1.0.3_ref": "Communication.md#2.2.s8.b1",
+        "1.0.3_link": ["Communication.md#2.2.s8.b1"]
     },
     "An LRS's Activity Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"": {
         "name": "An LRS's Activity Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
         "1.0.2_ref_text": "7.3.d",
         "1.0.2_ref": "7.3.d",
-        "1.0.3_ref": "part3.2.2.e, part3.2.2.f, part3.2.2.g"
+        "1.0.3_ref": "Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3",
+        "1.0.3_link": ["Communication.md#2.2.s7.b1", "Communication.md#2.2.s7.b2", "Communication.md#2.2.s7.b3"]
     },
     "An LRS's Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document": {
         "name": "An LRS's Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
         "1.0.2_ref_text": "7.3.f",
         "1.0.2_ref": "7.3.f",
-        "1.0.3_ref": "Implicit"
+        "1.0.3_ref": "Communication.md#2.2.s7",
+        "1.0.3_link": ["Communication.md#2.2.s7"]
     },
     "An LRS's Agent Profile API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request": {
         "name": "An LRS's Agent Profile API, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
         "1.0.2_ref_text": "7.3.e",
         "1.0.2_ref": "7.3.e",
-        "1.0.3_ref": "part3.2.2.h"
+        "1.0.3_ref": "Communication.md#2.2.s8.b1",
+        "1.0.3_link": ["Communication.md#2.2.s8.b1"]
     },
     "An LRS's Agent Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"": {
         "name": "An LRS's Agent Profile API performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
         "1.0.2_ref_text": "7.3.d",
         "1.0.2_ref": "7.3.d",
-        "1.0.3_ref": "part3.2.2.e, part3.2.2.f, part3.2.2.g"
+        "1.0.3_ref": "Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3",
+        "1.0.3_link": ["Communication.md#2.2.s7.b1", "Communication.md#2.2.s7.b2", "Communication.md#2.2.s7.b3"]
     },
     "An LRS's State API accepts PUT requests": {
         "name": "An LRS's State API accepts PUT requests",
         "1.0.2_ref_text": "7.4",
         "1.0.2_ref": "7.4",
-        "1.0.3_ref": "part3.2.3"
+        "1.0.3_ref": "Communication.md#2.3",
+        "1.0.3_link": ["Communication.md#2.3"]
     },
     "An LRS's State API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row1.b",
-        "1.0.3_ref": "part3.2.3.table1.row1.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row1"]
     },
     "An LRS's State API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row1.a",
         "1.0.2_ref": "7.4.table1.row1.a",
-        "1.0.3_ref": "part3.2.3.table1.row1.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row1"]
     },
     "Should State API reject a PUT request with activityId type [object Object]": {
         "name": "Should State API reject a PUT request with activityId type [object Object]"
@@ -3798,25 +3825,29 @@
         "name": "An LRS's State API rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row2.b",
         "1.0.2_ref": "7.4.table1.row2.b",
-        "1.0.3_ref": "part3.2.3.table1.row2.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row2"]
     },
     "An LRS's State API rejects a PUT request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a PUT request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row2.a",
         "1.0.2_ref": "7.4.table1.row2.a",
-        "1.0.3_ref": "part3.2.3.table1.row2.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row2"]
     },
     "An LRS's State API can process a PUT request with \"registration\" as a parameter": {
         "name": "An LRS's State API can process a PUT request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
-        "1.0.3_ref": "part3.2.3.table1.row3.b"
+        "1.0.3_link": "multiplicity, Communication.md#2.3.s3.table1.row3",
+        "1.0.3_ref": ["Communication.md#2.3.s3.table1.row3"]
     },
     "An LRS's State API rejects a PUT request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a PUT request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
-        "1.0.3_ref": "part3.2.3.table1.row3.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row3",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row3"]
     },
     "Should reject PUT with \"registration\" with type 1": {
         "name": "Should reject PUT with \"registration\" with type 1"
@@ -3831,31 +3862,36 @@
         "name": "An LRS's State API rejects a PUT request without \"stateId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row4.b",
-        "1.0.3_ref": "part3.2.3.table1.row4.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row4",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row4"]
     },
     "An LRS's State API upon processing a successful PUT request returns code 204 No Content": {
         "name": "An LRS's State API upon processing a successful PUT request returns code 204 No Content",
         "1.0.2_ref_text": "7.4.a",
         "1.0.2_ref": "7.4.a",
-        "1.0.3_ref": "part3.2.3.a"
+        "1.0.3_ref": "Communication.md#2.3.s3",
+        "1.0.3_link": ["Communication.md#2.3.s3"]
     },
     "An LRS's State API accepts POST requests": {
         "name": "An LRS's State API accepts POST requests",
         "1.0.2_ref_text": "7.4",
         "1.0.2_ref": "7.4",
-        "1.0.3_ref": "part3.2.3"
+        "1.0.3_ref": "Communication.md#2.3",
+        "1.0.3_link": ["Communication.md#2.3"]
     },
     "An LRS's State API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row1.b",
-        "1.0.3_ref": "part3.2.3.table1.row1.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row1"]
     },
     "An LRS's State API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row1.a",
         "1.0.2_ref": "7.4.table1.row1.a",
-        "1.0.3_ref": "part3.2.3.table1.row1.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row1"]
     },
     "Should reject PUT State with stateId type : 1": {
         "name": "Should reject PUT State with stateId type : 1"
@@ -3873,13 +3909,15 @@
         "name": "An LRS's State API rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row2.b",
         "1.0.2_ref": "7.4.table1.row2.b",
-        "1.0.3_ref": "part3.2.3.table1.row2.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row2"]
     },
     "An LRS's State API rejects a POST request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a POST request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row2.a",
         "1.0.2_ref": "7.4.table1.row2.a",
-        "1.0.3_ref": "part3.2.3.table1.row2.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row2"]
     },
     "Should reject POST State with agent type : 1": {
         "name": "Should reject POST State with agent type : 1"
@@ -3897,13 +3935,15 @@
         "name": "An LRS's State API can process a POST request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
-        "1.0.3_ref": "part3.2.3.table1.row3.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row3",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row3"]
     },
     "An LRS's State API rejects a POST request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a POST request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
-        "1.0.3_ref": "part3.2.3.table1.row3.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row3",
+        "1.0.3_link": "Communication.md#2.3.s3.table1.row3"
     },
     "Should reject POST with \"registration\" with type 1": {
         "name": "Should reject POST with \"registration\" with type 1"
@@ -3918,31 +3958,36 @@
         "name": "An LRS's State API rejects a POST request without \"stateId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row4.b",
-        "1.0.3_ref": "part3.2.3.table1.row4.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row4",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row4"]
     },
     "An LRS's State API upon processing a successful POST request returns code 204 No Content": {
         "name": "An LRS's State API upon processing a successful POST request returns code 204 No Content",
         "1.0.2_ref_text": "7.4.a",
         "1.0.2_ref": "7.4.a",
-        "1.0.3_ref": "part3.2.3.a"
+        "1.0.3_ref": "Communication.md#2.3.s3",
+        "1.0.3_link": ["Communication.md#2.3.s3"]
     },
     "An LRS's State API accepts GET requests": {
         "name": "An LRS's State API accepts GET requests",
         "1.0.2_ref_text": "7.4",
         "1.0.2_ref": "7.4",
-        "1.0.3_ref": "part3.2.3"
+        "1.0.3_ref": "Communication.md#2.3",
+        "1.0.3_link": ["Communication.md#2.3"]
     },
     "An LRS's State API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row1.b",
-        "1.0.3_ref": "part3.2.3.table1.row1.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row1"]
     },
     "An LRS's State API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row1.a",
         "1.0.2_ref": "7.4.table1.row1.a",
-        "1.0.3_ref": "part3.2.3.table1.row1.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row1"]
     },
     "Should reject GET with \"activityId\" with type 1": {
         "name": "Should reject GET with \"activityId\" with type 1"
@@ -3960,13 +4005,15 @@
         "name": "An LRS's State API rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row2.b",
         "1.0.2_ref": "7.4.table1.row2.b",
-        "1.0.3_ref": "part3.2.3.table1.row3.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row2"]
     },
     "An LRS's State API rejects a GET request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a GET request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row2.a",
         "1.0.2_ref": "7.4.table1.row2.a",
-        "1.0.3_ref": "part3.2.3.table1.row3.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row2"]
     },
     "Should reject GET with \"agent\" with type 1": {
         "name": "Should reject GET with \"agent\" with type 1"
@@ -3984,13 +4031,15 @@
         "name": "An LRS's State API can process a GET request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
-        "1.0.3_ref": "part3.2.3.table1.row3.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row3",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row3"]
     },
     "An LRS's State API rejects a GET request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a GET request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
-        "1.0.3_ref": "part3.2.3.table1.row3.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row3",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row3"]
     },
     "Should reject GET with \"registration\" with type 1": {
         "name": "Should reject GET with \"registration\" with type 1"
@@ -4005,55 +4054,64 @@
         "name": "An LRS's State API can process a GET request with \"stateId\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b, 7.4.table2.row3.b, 7.4.table1.row1.b",
-        "1.0.3_ref": "part3.2.3.table1.row4.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row4",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row4"]
     },
     "An LRS's State API can process a GET request with \"since\" as a parameter": {
         "name": "An LRS's State API can process a GET request with \"since\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b",
         "1.0.2_ref": "7.4.table2.row4.b, 7.4.table2.row3.b",
-        "1.0.3_ref": "part3.2.3table2.row4.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s4.table1.row4",
+        "1.0.3_link": ["Communication.md#2.3.s4.table1.row4"]
     },
     "An LRS's State API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table2.row4.a",
         "1.0.2_ref": "7.4.table2.row4.a",
-        "1.0.3_ref": "part3.2.3.table2.row4.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s4.table1.row4",
+        "1.0.3_link": ["Communication.md#2.3.s4.table1.row4"]
     },
     "An LRS's State API upon processing a successful GET request with a valid \"stateId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK": {
         "name": "An LRS's State API upon processing a successful GET request with a valid \"stateId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.4.b",
         "1.0.2_ref": "7.4.b",
-        "1.0.3_ref": "part3.2.3.b"
+        "1.0.3_ref": "Communication.md#2.3.s3",
+        "1.0.3_link": ["Communication.md#2.3.s3"]
     },
     "An LRS's State API upon processing a successful GET request without \"stateId\" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK": {
         "name": "An LRS's State API upon processing a successful GET request without \"stateId\" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK",
         "1.0.2_ref_text": "7.4.c",
         "1.0.2_ref": "7.4.c",
-        "1.0.3_ref": "part3.2.3.c"
+        "1.0.3_ref": "Communication.md#2.3.s4",
+        "1.0.3_link": ["Communication.md#2.3.s4"]
     },
     "An LRS's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request": {
         "name": "An LRS's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request",
         "1.0.2_ref_text": "7.4.table2.row4",
         "1.0.2_ref": "7.4.table2.row4",
-        "1.0.3_ref": "part3.2.3.table2.row4"
+        "1.0.3_ref": "Communication.md#2.3.s4.table1.row4",
+        "1.0.3_link": ["Communication.md#2.3.s4.table1.row4"]
     },
     "An LRS's State API accepts DELETE requests": {
         "name": "An LRS's State API accepts DELETE requests",
         "1.0.2_ref_text": "7.4",
         "1.0.2_ref": "7.4",
-        "1.0.3_ref": "part3.2.3"
+        "1.0.3_ref": "Communication.md#2.3",
+        "1.0.3_link": ["Communication.md#2.3"]
     },
     "An LRS's State API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row1.b",
         "1.0.2_ref": "7.4.table1.row1.b",
-        "1.0.3_ref": "part3.2.3.table1.row1.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row1"]
     },
     "An LRS's State API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row1.a",
         "1.0.2_ref": "7.4.table1.row1.a",
-        "1.0.3_ref": "part3.2.3.table1.row1.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row1"]
     },
     "Should reject DELETE with \"activityId\" with type 1": {
         "name": "Should reject DELETE with \"activityId\" with type 1"
@@ -4071,13 +4129,15 @@
         "name": "An LRS's State API rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row2.b",
         "1.0.2_ref": "7.4.table1.row2.b",
-        "1.0.3_ref": "part3.2.3.table1.row3.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row2"]
     },
     "An LRS's State API rejects a DELETE request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a DELETE request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row2.a",
         "1.0.2_ref": "7.4.table1.row2.a",
-        "1.0.3_ref": "part3.2.3.table1.row3.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row2"]
     },
     "Should reject DELETE with \"agent\" with type 1": {
         "name": "Should reject DELETE with \"agent\" with type 1"
@@ -4095,13 +4155,15 @@
         "name": "An LRS's State API can process a DELETE request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
-        "1.0.3_ref": "part3.2.3.table1.row3.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row3",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row3"]
     },
     "An LRS's State API rejects a DELETE request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a DELETE request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
-        "1.0.3_ref": "part3.2.3.table1.row3.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row3",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row3"]
     },
     "Should reject DELETE with \"registration\" with type 1": {
         "name": "Should reject DELETE with \"registration\" with type 1"
@@ -4116,65 +4178,78 @@
         "name": "An LRS's State API can process a DELETE request with \"stateId\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b, 7.4.table2.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b, 7.4.table2.row3.b, 7.4.table1.row1.b",
-        "1.0.3_ref": "part3.2.3.table1.row4.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.3.s3.table1.row4",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row4"]
     },
     "An LRS's State API rejects a DELETE request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
         "name": "An LRS's State API rejects a DELETE request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.4.table2.row4.a",
         "1.0.2_ref": "7.4.table3.row4.a",
-        "1.0.3_ref": "part3.2.3.table3.row4.a"
+        "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row4",
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row4"]
     },
     "An LRS's State API upon processing a successful DELETE request with a valid \"stateId\" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content": {
         "name": "An LRS's State API upon processing a successful DELETE request with a valid \"stateId\" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content",
         "1.0.2_ref_text": "7.4.b",
         "1.0.2_ref": "7.4.b",
-        "1.0.3_ref": "part3.2.3.b"
+        "1.0.3_ref": "Communication.md#2.3.s3",
+        "1.0.3_link": ["Communication.md#2.3.s3"]
     },
-    "An LRS's State API upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 200 OK": {
-        "name": "An LRS's State API upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 200 OK",
+    "An LRS's State API upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 204 No Content": {
+        "name": "An LRS's State API upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 204 No Content",
         "1.0.2_ref_text": "7.4.d",
         "1.0.2_ref": "7.4.d",
-        "1.0.3_ref": "part3.2.3.d"
+        "1.0.3_ref": "Communication.md#2.3.s5",
+        "1.0.3_link": ["Communication.md#2.3.s5"]
     },
     "An LRS's Activities API accepts GET requests": {
         "name": "An LRS's Activities API accepts GET requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
-        "1.0.3_ref": "part3.2.5"
+        "1.0.3_ref": "Communication.md#2.5",
+        "1.0.3_link": ["Communication.md#2.5"]
     },
     "An LRS's Activities API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Activities API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table1.row1.b",
         "1.0.2_ref": "7.5.table1.row1.b",
-        "1.0.3_ref": "part3.2.5.table1.row1.b"
+        "1.0.3_ref": "multiplicity, Communication.md#2.5.s1.table1.row1",
+        "1.0.3_link": ["Communication.md#2.5.s1.table1.row1"]
     },
     "An LRS's Activities API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's Activities API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table1.row1.a",
         "1.0.2_ref": "7.5.table1.row1.a",
-        "1.0.3_ref": "part3.2.5.table1.row1.a"
+        "1.0.3_ref": "format, Communication.md#2.5.s1.table1.row1",
+        "1.0.3_link": ["Communication.md#2.5.s1.table1.row1"]
     },
     "An LRS's Activities API upon processing a successful GET request returns the complete Activity Object": {
         "name": "An LRS's Activities API upon processing a successful GET request returns the complete Activity Object",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
-        "1.0.3_ref": "part3.2.5"
+        "1.0.3_ref": "Communication.md#2.5.s1",
+        "1.0.3_link": ["Communication.md#2.5.s1"]
     },
     "An LRS's Activity Profile API accepts PUT requests": {
         "name": "An LRS's Activity Profile API accepts PUT requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
-        "1.0.3_ref": "part3.2.7"
+        "1.0.3_ref": "Communication.md#2.7",
+        "1.0.3_link": ["Communication.md#2.7"]
     },
     "An LRS's Activity Profile API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
-        "1.0.2_ref": "7.5.table2.row1.c"
+        "1.0.2_ref": "7.5.table2.row1.c",
+        "1.0.3_ref": "multiplicity, Communication.md#2.7.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row1"]
     },
     "An LRS's Activity Profile API API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row2.a",
-        "1.0.2_ref": "7.5.table2.row2.a"
+        "1.0.2_ref": "7.5.table2.row2.a",
+        "1.0.2_ref": "format, Communication.md#2.7.s3.table1.row1",
+        "1.0.2_link": ["Communication.md#2.7.s3.table1.row1"]
     },
     "Should reject PUT with \"activityId\" with type 1": {
         "name": "Should reject PUT with \"activityId\" with type 1"
@@ -4189,31 +4264,36 @@
         "name": "An LRS's Activity Profile API rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row2.c",
-        "1.0.3_ref": "part3.2.7.table1.row2.c"
+        "1.0.3_ref": "multiplicity, Communication.md#2.7.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row2"]
     },
     "An LRS's Activity Profile API upon processing a successful PUT request returns code 204 No Content": {
         "name": "An LRS's Activity Profile API upon processing a successful PUT request returns code 204 No Content",
         "1.0.2_ref_text": "7.5.b",
         "1.0.2_ref": "7.5.b",
-        "1.0.3_ref": "part3.2.7.c"
+        "1.0.3_ref": "Communication.md#2.7.s2",
+        "1.0.3_link": ["Communication.md#2.7.s2"]
     },
     "An LRS's Activity Profile API accepts POST requests": {
         "name": "An LRS's Activity Profile API accepts POST requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
-        "1.0.3_ref": "part3.2.7"
+        "1.0.3_ref": "Communication.md#2.7",
+        "1.0.3_link": ["Communication.md#2.7"]
     },
     "An LRS's Activity Profile API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
-        "1.0.3_ref": "part3.2.7.table1.row1.c"
+        "1.0.3_ref": "multiplicity, Communication.md#2.7.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row1"]
     },
     "An LRS's Activity Profile API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a POST request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row2.a",
         "1.0.2_ref": "7.5.table2.row2.a",
-        "1.0.3_ref": "part3.2.7.table1.row2.a"
+        "1.0.3_ref": "format, Communication.md#2.7.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row1"]
     },
     "Should reject POST with \"activityId\" with type 1": {
         "name": "Should reject POST with \"activityId\" with type 1"
@@ -4228,73 +4308,85 @@
         "name": "An LRS's Activity Profile API rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
-        "1.0.3_ref": "part3.2.7.table1.row1.c"
+        "1.0.3_ref": "multiplicity, Communication.md#2.7.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row2"]
     },
     "An LRS's Activity Profile API upon processing a successful POST request returns code 204 No Content": {
         "name": "An LRS's Activity Profile API upon processing a successful POST request returns code 204 No Content",
         "1.0.2_ref_text": "7.5.b",
         "1.0.2_ref": "7.5.b",
-        "1.0.3_ref": "part3.2.7.b"
+        "1.0.3_ref": "Communication.md#2.7.s2",
+        "1.0.3_link": ["Communication.md#2.7.s2"]
     },
     "An LRS's Activity Profile API accepts DELETE requests": {
         "name": "An LRS's Activity Profile API accepts DELETE requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
-        "1.0.3_ref": "part3.2.7"
+        "1.0.3_ref": "Communication.md#2.7",
+        "1.0.3_link": ["Communication.md#2.7"]
     },
     "An LRS's Activity Profile API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
-        "1.0.3_ref": "part3.2.7.table1.row1.c"
+        "1.0.3_ref": "multiplicity, Communication.md#2.7.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row1"]
     },
     "An LRS's Activity Profile API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a DELETE request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row2.a",
         "1.0.2_ref": "7.5.table2.row2.a",
-        "1.0.3_ref": "part3.2.7.table1.row2.a"
+        "1.0.3_ref": "format, Communication.md#2.7.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row1"]
     },
     "An LRS's Activity Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
-        "1.0.3_ref": "part3.2.7.table1.row1.c"
+        "1.0.3_ref": "multiplicity, Communication.md#2.7.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row2"]
     },
     "An LRS's Activity Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content": {
         "name": "An LRS's Activity Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content",
         "1.0.2_ref_text": "7.5.b",
         "1.0.2_ref": "7.5.b",
-        "1.0.3_ref": "part3.2.7.b"
+        "1.0.3_ref": "Communication.md#2.7.s2",
+        "1.0.3_link": ["Communication.md#2.7.s2"]
     },
     "An LRS's Activity Profile API accepts GET requests": {
         "name": "An LRS's Activity Profile API accepts GET requests",
         "1.0.2_ref_text": "7.5",
         "1.0.2_ref": "7.5",
-        "1.0.3_ref": "part3.2.7"
+        "1.0.3_ref": "Communication.md#2.7",
+        "1.0.3_link": ["Communication.md#2.7"]
     },
     "An LRS's Activity Profile API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
         "1.0.2_ref": "7.5.table2.row1.c",
-        "1.0.3_ref": "part3.2.7.table1.row1.c"
+        "1.0.3_ref": "multiplicity, Communication.md#2.7.s3.table1.row1, Communication.md#2.7.s4.table1.row1",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row1", "Communication.md#2.7.s4.table1.row1"]
     },
     "An LRS's Activity Profile API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row1.a",
         "1.0.2_ref": "7.5.table2.row2.a",
-        "1.0.3_ref": "part3.2.7.table1.row2.a"
+        "1.0.3_ref": "format, Communication.md#2.7.s3.table1.row1, Communication.md#2.7.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row1", "Communication.md#2.7.s4.table1.row1"]
     },
     "An LRS's Activity Profile API can process a GET request with \"since\" as a parameter": {
         "name": "An LRS's Activity Profile API can process a GET request with \"since\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.5.table3.row2.c, 7.5.table3.row2.b",
         "1.0.2_ref": "7.5.table3.row2.c, 7.5.table3.row2.b",
-        "1.0.3_ref": "part3.2.7.table2.row2.c, part3.2.7.table.row2.b"
+        "1.0.3_ref": "format, Communication.md#2.7.s4.table1.row2",
+        "1.0.3_link": ["Communication.md#2.7.s4.table1.row2"]
     },
     "An LRS's Activity Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table3.row2.a",
         "1.0.2_ref": "7.5.table3.row2.a",
-        "1.0.3_ref": "part3.2.7.table2.row2.a"
+        "1.0.3_ref": "format, Communication.md#2.7.s4.table1.row2",
+        "1.0.3_link": ["Communication.md#2.7.s4.table1.row2"]
     },
     "Should reject GET with \"since\" with type": {
         "name": "Should reject GET with \"since\" with type"
