@@ -44,7 +44,7 @@
             directory: Joi.array().items(Joi.string().required()),
             /* See [RFC-3986](http://tools.ietf.org/html/rfc3986#page-17) */
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
-            grep: Joi.string(),
+            grep: Joi.array().items(Joi.string().required()),
             optional: Joi.array().items(Joi.string().required()),
             basicAuth: Joi.any(true, false),
             oAuth1: Joi.any(true, false),
@@ -77,7 +77,6 @@
                 then: Joi.required()
             }),
             reporter: Joi.string().regex(/^((dot)|(spec)|(nyan)|(tap)|(List)|(progress)|(min)|(doc))$/).default('nyan'),
-            grep: Joi.string(),
             bail: Joi.boolean()
         }).unknown(false);
 
@@ -109,10 +108,20 @@
         RegExp.escape = function(string) {
             return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
         };
+        var grep = '';
+        if (options.grep){
+          options.grep.forEach(function(g){
+            var tmpGrep = RegExp.escape(g);
+            tmpGrep += '|';
+            grep += tmpGrep;
+          });
+        }
+        grep = grep.slice(0,-1);
+        console.log("before regex grep -",grep);
+        grep = new RegExp(grep);
 
-        var grep;
-        if (options.grep)
-            grep = new RegExp(RegExp.escape(options.grep));
+
+        console.log("grep -",grep);
 
         var mocha = new Mocha({
             uii: 'bdd',
@@ -126,10 +135,12 @@
         console.log("optional is ", options.optional);
 
         if (options.optional){
-          options.optional.forEach(function(dir) {
+          options.optional.reverse().forEach(function(dir) {
               options.directory.unshift(dir);
           });
         }
+
+        console.log("directory is ", options.directory);
 
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;
