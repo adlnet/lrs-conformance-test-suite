@@ -5463,7 +5463,8 @@
         "name": "The LRS will NOT reject a GET request which returns an empty \"statements\" property",
         "1.0.2_ref_text": "**Implicit**, 4.2.table1.row1.b",
         "1.0.2_ref": "**Implicit**, 4.2.table1.row1.b",
-        "1.0.3_ref": "Implicit"
+        "1.0.3_ref": "Implicit",
+        "1.0.3_link": ["Communication.md#2.1.3.s2.b4"]
     },
     "should return empty array list": {
         "name": "should return empty array list"
@@ -5475,8 +5476,8 @@
         "1.0.3_ref": "part3.2.1.2",
         "1.0.3_link": ["Communication.md#2.1.2.s1"]
     },
-    "should persist statement using \"POST\" and return array if IDs": {
-        "name": "should persist statement using \"POST\" and return array if IDs"
+    "should persist statement using \"POST\" and return array of IDs": {
+        "name": "should persist statement using \"POST\" and return array of IDs"
     },
     "A \"more\" property is an IRL": {
         "name": "A \"more\" property is an IRL",

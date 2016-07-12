@@ -29,7 +29,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-    describe('test An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
+    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
 
         it('should populate authority ', function (done) {
             
@@ -1013,8 +1013,8 @@
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a successful POST request returns code 200 No Content and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
-        it('should persist statement using "POST" and return array if IDs', function (done) {
+    describe('An LRS\'s Statement API upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
+        it('should persist statement using "POST" and return array of IDs', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
