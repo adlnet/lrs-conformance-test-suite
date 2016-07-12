@@ -1,0 +1,12 @@
+---------314159265358979323846
+Content-Type: application/json
+
+{"actor":{"objectType":"Agent","mbox":"mailto:sample.agent@example.com","name":"Sample Agent"},"verb":{"id":"http://adlnet.gov/expapi/verbs/answered","display":{"en-US":"answered"}},"object":{"id":"http://www.example.com/tincan/activities/multipart","objectType":"Activity","definition":{"name":{"en-US":"Multi Part Activity"},"description":{"en-US":"Multi Part Activity Description"}}},"timestamp":"2014-07-11T13:51:03.971Z","attachments":[{"usageType":"http://example.com/attachment-usage/test","display":{"en-US":"A test attachment"},"contentType":"text/plain","length":27,"sha2":"495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a","description":{"en-US":"A test attachment (description)"}}]}
+---------314159265358979323846
+Content-Disposition: attachment; filename="text_data.txt"
+Content-Type: text/plain
+Content-Transfer-Encoding: base64
+X-Experience-API-Hash: 495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a
+
+here is a simple attachment
+---------314159265358979323846--

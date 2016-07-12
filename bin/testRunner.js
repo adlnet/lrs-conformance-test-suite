@@ -4,12 +4,30 @@ const child_process = require('child_process'),
 	libpath = require('path'),
 	fs = require('fs'),
 	EventEmitter = require('events').EventEmitter,
-	rollup = require('./rollupRules.js');
+	rollup = require('./rollupRules.js'),
+	SpecRefs = require('../test/references.json');
 
 class Suite {
-	constructor(name){
-		this.name = name;
-		this.status = 'running'; // in ['running', 'cancelled', 'passed', 'failed']
+	constructor(title)
+	{
+		var match;
+		this.title = title;
+		if(match = /\(([^\)]*\d[^\)]*)\)/.exec(title))
+		{
+			this.name = title.slice(0, match.index).trim();
+			if(SpecRefs[this.name]){
+				var data = SpecRefs[this.name];
+				this.requirement = data['1.0.3_link'] || data['1.0.3_ref'] || data['1.0.2_ref_text'];
+			}
+			else
+				this.requirement = match[1];
+		}
+		else {
+			this.name = title;
+			this.requirement = '';
+		}
+
+		this.status = ''; // in ['cancelled', 'passed', 'failed']
 		this.parent = null;
 		this.tests = [];
 	}
@@ -21,7 +39,7 @@ class Suite {
 
 class TestRunner extends EventEmitter
 {
-	constructor(name, owner, config, configUUID, rollupRule)
+	constructor(name, owner, flags, lrsSettingsUUID,options, rollupRule)
 	{
 		super();
 
@@ -29,8 +47,9 @@ class TestRunner extends EventEmitter
 
 		this.name = name;
 		this.owner = owner;
-		this.config = config;
-		this.configUUID = configUUID;
+		this.flags = flags;
+		this.options = options || {};
+		this.lrsSettingsUUID = lrsSettingsUUID;
 		this.rollupRule = rollup[rollupRule] ? rollupRule : 'mustPassAll';
 
 		this.uuid = require('uuid').v4();
@@ -63,7 +82,7 @@ class TestRunner extends EventEmitter
 				cwd: libpath.join(__dirname,"/../")
 			}
 		);
-	
+
 		// hook up listeners
 		this._registerStatusUpdates();
 
@@ -71,7 +90,14 @@ class TestRunner extends EventEmitter
 		this.proc.on('message', function(msg)
 		{
 			if(msg.action === 'ready'){
-				this.proc.send({action: 'runTests', payload: this.config});
+
+				//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options
+				var flags = JSON.parse(JSON.stringify(this.flags));
+				if(this.options && this.options.grep)
+					flags.grep = this.options.grep;
+				if(this.options && this.options.optional)
+					flags.optional = this.options.optional;
+				this.proc.send({action: 'runTests', payload: flags});
 			}
 		}.bind(this));
 	}
@@ -80,6 +106,7 @@ class TestRunner extends EventEmitter
 	{
 		this.proc.on('message', function(msg)
 		{
+
 			var action = msg.action, payload = msg.payload;
 			switch(action)
 			{
@@ -115,19 +142,22 @@ class TestRunner extends EventEmitter
 
 			case 'suite end':
 
-				// finish the suite
-				if(this.activeTest.name === payload)
+				if(this.activeTest)
 				{
-					// roll up test status
-					this.activeTest.status = rollup[this.rollupRule](this.activeTest);
+					// finish the suite
+					if(this.activeTest.title === payload)
+					{
+						// roll up test status
+						this.activeTest.status = rollup[this.rollupRule](this.activeTest);
 
-					// move test cursor
-					this.activeTest = this.activeTest.parent;
+						// move test cursor
+						this.activeTest = this.activeTest.parent;
+					}
+					else
+						console.error('Dangling suite end!', this.activeTest.title);
 				}
-				else
-					console.error('Dangling suite end!', this.activeTest.name);
 				break;
-				
+
 			case 'test start':
 
 				// start a new test
@@ -144,21 +174,29 @@ class TestRunner extends EventEmitter
 
 			case 'test end':
 
-				if(this.activeTest.name === payload)
-					this.activeTest = this.activeTest.parent;
-				else
-					console.error('Dangling test end!', this.activeTest.name);
-				break;
+				if(this.activeTest)
+				{
+					if(this.activeTest.title === payload)
+						this.activeTest = this.activeTest.parent;
+					else
+						console.error('Dangling test end!', this.activeTest.title);
+					break;
+				}
 
 			case 'test pass':
-				this.activeTest.status = 'passed';
-				this.summary.passed++;
+				if(this.activeTest)
+				{
+					this.activeTest.status = 'passed';
+					this.summary.passed++;
+				}
 				break;
 
 			case 'test fail':
-				this.activeTest.status = 'failed';
-				this.activeTest.error = payload.message;
-				this.summary.failed++;
+				if(this.activeTest){ //careful - cancel can blank this, then the message comes in
+					this.activeTest.status = 'failed';
+					this.activeTest.error = payload.message;
+					this.summary.failed++;
+				}
 				break;
 			};
 
@@ -182,7 +220,7 @@ class TestRunner extends EventEmitter
 			this.activeTest = this.activeTest.parent;
 			while(this.activeTest){
 				this.activeTest.status = rollup[this.rollupRule](this.activeTest);
-				this.emit('message', {action: 'suite end', payload: this.activeTest.name});
+				this.emit('message', {action: 'suite end', payload: this.activeTest.title});
 				this.activeTest = this.activeTest.parent;
 			}
 
@@ -196,14 +234,16 @@ class TestRunner extends EventEmitter
 		var runRecord = {
 			name: this.name || null,
 			owner: this.owner || null,
-			config: {
-				endpoint: this.config.endpoint,
-				basicAuth: this.config.basicAuth,
-				authUser: this.config.authUser,
-				oAuth1: this.config.oAuth1,
-				consumer_key: this.config.consumer_key
+			flags: {
+				endpoint: this.flags.endpoint,
+				basicAuth: this.flags.basicAuth,
+				authUser: this.flags.authUser,
+				oAuth1: this.flags.oAuth1,
+				consumer_key: this.flags.consumer_key,
+				grep:this.flags.grep
 			},
-			configUUID: this.configUUID,
+			options:this.options,
+			lrsSettingsUUID: this.lrsSettingsUUID,
 			rollupRule: this.rollupRule,
 
 			uuid: this.uuid,
@@ -223,7 +263,10 @@ class TestRunner extends EventEmitter
 			if(!log) return null;
 
 			return {
+				title: log.title,
 				name: log.name,
+				requirement: log.requirement,
+
 				status: log.status,
 				error: log.error,
 				tests: log.tests.map(cleanLog)

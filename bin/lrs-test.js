@@ -44,6 +44,8 @@
             directory: Joi.array().items(Joi.string().required()),
             /* See [RFC-3986](http://tools.ietf.org/html/rfc3986#page-17) */
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
+            grep: Joi.string(),
+            optional: Joi.array().items(Joi.string().required()),
             basicAuth: Joi.any(true, false),
             oAuth1: Joi.any(true, false),
             authUser: Joi.string().when('basicAuth', {
@@ -85,7 +87,7 @@
             process.exit();
         }
 
-        var DIRECTORY = ['v1_0_2'];
+        var DIRECTORY = ['v1_0_3'];
         var options = {
             directory: _options.directory || DIRECTORY,
             endpoint: _options.endpoint,
@@ -94,6 +96,7 @@
             authPass: _options.authPass,
             reporter: _options.reporter,
             grep: _options.grep,
+            optional: _options.optional,
             bail: _options.bail,
             consumer_key: _options.consumer_key,
             consumer_secret: _options.consumer_secret,
@@ -102,13 +105,36 @@
             verifier: _options.verifier,
             oAuth1: _options.oAuth1,
         };
+
+        RegExp.escape = function(string) {
+            return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+        };
+
+        var grep;
+        if (options.grep)
+            grep = new RegExp(RegExp.escape(options.grep));
+
         var mocha = new Mocha({
             uii: 'bdd',
             reporter: processMessageReporter(process),
             timeout: '15000',
-            grep: options.grep,
+            grep: grep,
             bail: options.bail
         });
+
+        console.log("Grep is " + options.grep);
+        console.log("optional is " + options.optional);
+
+        if (options.optional){
+          options.optional.forEach(function(dir) {
+              options.directory.unshift(dir);
+          });
+        }
+
+        options.directory.forEach(function(dir){
+          console.log(dir);
+        });
+
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;
         process.env.BASIC_AUTH_USER = options.authUser;
