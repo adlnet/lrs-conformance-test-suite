@@ -8,23 +8,6 @@
 (function (process, request, should, chai, isEmail, helper) {
     'use strict';
 
-	/*var fs = require('fs');
-	var logFile = fs.createWriteStream('document_tests.log');
-
-    // wrap mocha methods in test enumeration code
-	function describe(title, body)
-	{
-		logFile.write(title+'\n');
-		context(title, body);
-	}
-
-	function it(title, body)
-	{
-		logFile.write('\t'+title+'\n');
-		specify(title, body);
-	}*/
-
-
     var expect = chai.expect;
 
     var MAIL_TO = 'mailto:';
@@ -75,7 +58,6 @@
      */
     function sendRequest(type, url, params, body, expect) {
         var reqUrl = params ? (url + '?' + helper.getUrlEncoding(params)) : url;
-
 
         var headers = helper.addAllHeaders({});
         var pre = request[type](reqUrl);

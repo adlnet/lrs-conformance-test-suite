@@ -9,21 +9,6 @@
 (function (module, process, request, should, helper) {
     "use strict";
 
-	/*var fs = require('fs');
-	var logFile = fs.createWriteStream('templated_tests.log');
-
-    // wrap mocha methods in test enumeration code
-	function describe(title, body)
-	{
-		logFile.write(title+'\n');
-		context(title, body);
-	}
-
-	function it(title, body)
-	{
-		logFile.write('\t'+title+'\n');
-		specify(title, body);
-	}*/
 
     if(global.OAUTH)
         request = helper.OAuthRequest(request);

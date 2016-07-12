@@ -5,32 +5,19 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
-(function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser) {
+
+(function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser, redirect) {
     // "use strict";
 
     var expect = chai.expect;
-	/*var fs = require('fs');
-	var logFile = fs.createWriteStream('non_templated_tests.log');
-
-    // wrap mocha methods in test enumeration code
-	function describe(title, body)
-	{
-		logFile.write(title+'\n');
-		context(title, body);
-	}
-
-	function it(title, body)
-	{
-		logFile.write('\t'+title+'\n');
-		specify(title, body);
-	}
-	*/
 
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
-        it('should populate authority', function (done) {
+    describe('test An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
+
+        it('should populate authority ', function (done) {
+
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -563,7 +550,6 @@
 
         it('should fail on GET statement when not using "since"', function (done) {
             var query = helper.getUrlEncoding({Since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1275,7 +1261,7 @@
         });
     });
 
-    describe('An LRS\'s Statement API rejects a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function () {
+    describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
         var id;
 
         before('persist statement', function (done) {
@@ -1572,7 +1558,6 @@
     describe('An LRS\'s Statement API can process a GET request with "since" as a parameter  **Implicit**', function () {
         it('should process using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1630,7 +1615,7 @@
         });
     });
 
-    describe('An LRS\'s Statement API rejects a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function () {
+    describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
         var voidedId = helper.generateUUID();
 
         before('persist voided statement', function (done) {
@@ -2086,7 +2071,6 @@
 
         it('should return StatementResult using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2371,7 +2355,6 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2649,7 +2632,6 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2947,7 +2929,6 @@
 
         it('should return StatementResult with statements as array using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -3134,7 +3115,6 @@
                 verb: verb,
                 since: voidingTime
             });
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -3198,7 +3178,6 @@
             var query = helper.getUrlEncoding({
                 verb: verb
             });
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -3764,4 +3743,4 @@
         return parsed;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('joi'), require('./../helper'), require('./../multipartParser')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
