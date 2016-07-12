@@ -1,0 +1,18 @@
+{
+  "objectType": "SubStatement",
+  "actor": {
+    "objectType": "Agent",
+    "name": "xAPI account",
+    "mbox": "mailto:xapi@adlnet.gov"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/reported",
+    "display": {
+      "en-GB": "reported",
+      "en-US": "reported"
+    }
+  },
+  "object": {
+    "objectType": "Group"
+  }
+}

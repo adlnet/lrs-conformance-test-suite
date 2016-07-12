@@ -1,0 +1,5 @@
+{
+  "objectType": "Agent",
+  "name": "xAPI openid",
+  "openid": "http://openid.example.org/12345"
+}

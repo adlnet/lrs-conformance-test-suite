@@ -30,7 +30,7 @@ program
     .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
     .option('-g, --grep [string]', 'Only run tests that match the given pattern')
     .option('-b, --bail', 'Abort the battery if one test fails')
-    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, ['v1_0_2'])
+    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, ['v1_0_3'])
     .parse(process.argv);
 
 var options = {
@@ -102,9 +102,9 @@ process.on('exit', function() {
 
 function start(options)
 {
-	testRunner = new TestRunner('console', null, options, null);
+	testRunner = new TestRunner('console', null, options);
     testRunner.start();
-	
+
 	var interval = setInterval(function(){
 		console.log(JSON.stringify(testRunner.summary));
 	}.bind(this), 2000);
@@ -119,7 +119,7 @@ function start(options)
 			clearInterval(interval);
 			console.log(JSON.stringify(testRunner.summary));
 			console.log(`Tests completed in ${testRunner.duration/1000} seconds`);
-			
+
 			// write log to file
 			var cleanLog = testRunner.getCleanRecord();
 			var output = JSON.stringify(cleanLog, null, '    ');
@@ -169,8 +169,7 @@ else {
             token_secret: options.token_secret,
             verifier: options.verifier
         }
-        
+
 		start(options);
     });
 }
-
