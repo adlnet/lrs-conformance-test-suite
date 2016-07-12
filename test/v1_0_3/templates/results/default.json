@@ -1,0 +1,19 @@
+{
+  "score": {
+    "scaled": 0.95,
+    "raw": 95,
+    "min": 0,
+    "max": 100
+  },
+  "extensions": {
+    "http://example.com/profiles/meetings/resultextensions/minuteslocation": "X:\\meetings\\minutes\\examplemeeting.one",
+    "http://example.com/profiles/meetings/resultextensions/reporter": {
+      "name": "Thomas",
+      "id": "http://openid.com/342"
+    }
+  },
+  "success": true,
+  "completion": true,
+  "response": "We agreed on some example actions.",
+  "duration": "PT1H0M0S"
+}

@@ -4,11 +4,29 @@ const child_process = require('child_process'),
 	libpath = require('path'),
 	fs = require('fs'),
 	EventEmitter = require('events').EventEmitter,
-	rollup = require('./rollupRules.js');
+	rollup = require('./rollupRules.js'),
+	SpecRefs = require('../test/references.json');
 
 class Suite {
-	constructor(name){
-		this.name = name;
+	constructor(title)
+	{
+		var match;
+		this.title = title;
+		if(match = /\(([^\)]*\d[^\)]*)\)/.exec(title))
+		{
+			this.name = title.slice(0, match.index).trim();
+			if(SpecRefs[this.name]){
+				var data = SpecRefs[this.name];
+				this.requirement = data['1.0.3_link'] || data['1.0.3_ref'] || data['1.0.2_ref_text'];
+			}
+			else
+				this.requirement = match[1];
+		}
+		else {
+			this.name = title;
+			this.requirement = '';
+		}
+
 		this.status = ''; // in ['cancelled', 'passed', 'failed']
 		this.parent = null;
 		this.tests = [];
@@ -30,7 +48,7 @@ class TestRunner extends EventEmitter
 		this.name = name;
 		this.owner = owner;
 		this.flags = flags;
-		this.options = options;
+		this.options = options || {};
 		this.lrsSettingsUUID = lrsSettingsUUID;
 		this.rollupRule = rollup[rollupRule] ? rollupRule : 'mustPassAll';
 
@@ -72,14 +90,12 @@ class TestRunner extends EventEmitter
 		this.proc.on('message', function(msg)
 		{
 			if(msg.action === 'ready'){
-
-			//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options
-			var flags = JSON.parse(JSON.stringify(this.flags));
-			if(this.options.grep)
-				flags.grep = this.options.grep;
-			if(this.options.optional)
-				flags.optional = this.options.optional;
-
+				//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options
+				var flags = JSON.parse(JSON.stringify(this.flags));
+				if(this.options && this.options.grep)
+					flags.grep = this.options.grep;
+				if(this.options && this.options.optional)
+					flags.optional = this.options.optional;
 				this.proc.send({action: 'runTests', payload: flags});
 			}
 		}.bind(this));
@@ -128,7 +144,7 @@ class TestRunner extends EventEmitter
 				if(this.activeTest)
 				{
 					// finish the suite
-					if(this.activeTest.name === payload)
+					if(this.activeTest.title === payload)
 					{
 						// roll up test status
 						this.activeTest.status = rollup[this.rollupRule](this.activeTest);
@@ -137,7 +153,7 @@ class TestRunner extends EventEmitter
 						this.activeTest = this.activeTest.parent;
 					}
 					else
-						console.error('Dangling suite end!', this.activeTest.name);
+						console.error('Dangling suite end!', this.activeTest.title);
 				}
 				break;
 
@@ -159,10 +175,10 @@ class TestRunner extends EventEmitter
 
 				if(this.activeTest)
 				{
-					if(this.activeTest.name === payload)
+					if(this.activeTest.title === payload)
 						this.activeTest = this.activeTest.parent;
 					else
-						console.error('Dangling test end!', this.activeTest.name);
+						console.error('Dangling test end!', this.activeTest.title);
 					break;
 				}
 
@@ -203,7 +219,7 @@ class TestRunner extends EventEmitter
 			this.activeTest = this.activeTest.parent;
 			while(this.activeTest){
 				this.activeTest.status = rollup[this.rollupRule](this.activeTest);
-				this.emit('message', {action: 'suite end', payload: this.activeTest.name});
+				this.emit('message', {action: 'suite end', payload: this.activeTest.title});
 				this.activeTest = this.activeTest.parent;
 			}
 
@@ -247,7 +263,10 @@ class TestRunner extends EventEmitter
 			if(!log) return null;
 
 			return {
+				title: log.title,
 				name: log.name,
+				requirement: log.requirement,
+
 				status: log.status,
 				error: log.error,
 				tests: log.tests.map(cleanLog)

@@ -1,0 +1,25 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "definition": {
+    "name": {
+      "en": "Other"
+    },
+    "description": {
+      "en": "On this map, please mark Franklin, TN"
+    },
+    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+    "moreInfo": "http://virtualmeeting.example.com/345256",
+    "interactionType": "other",
+    "correctResponsesPattern": [
+      "(35.937432,-86.868896)"
+    ],
+    "extensions": {
+      "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+      "http://example.com/profiles/meetings/extension/reporter": {
+        "name": "Thomas",
+        "id": "http://openid.com/342"
+      }
+    }
+  }
+}
