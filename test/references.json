@@ -4033,7 +4033,7 @@
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
         "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row3",
-        "1.0.3_link": "Communication.md#2.3.s3.table1.row3"
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row3"]
     },
     "Should reject POST with \"registration\" with type 1": {
         "name": "Should reject POST with \"registration\" with type 1"
@@ -4338,8 +4338,8 @@
         "name": "An LRS's Activity Profile API API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row2.a",
         "1.0.2_ref": "7.5.table2.row2.a",
-        "1.0.2_ref": "format, Communication.md#2.7.s3.table1.row1",
-        "1.0.2_link": ["Communication.md#2.7.s3.table1.row1"]
+        "1.0.3_ref": "format, Communication.md#2.7.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row1"]
     },
     "Should reject PUT with \"activityId\" with type 1": {
         "name": "Should reject PUT with \"activityId\" with type 1"

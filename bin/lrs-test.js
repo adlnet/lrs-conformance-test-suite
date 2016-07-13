@@ -111,17 +111,12 @@
         var grep = '';
         if (options.grep){
           options.grep.forEach(function(g){
-            var tmpGrep = RegExp.escape(g);
-            tmpGrep += '|';
-            grep += tmpGrep;
+            grep += RegExp.escape(g) + '|';
           });
         }
+        //removes extra '|' character at the end
         grep = grep.slice(0,-1);
-        console.log("before regex grep -",grep);
         grep = new RegExp(grep);
-
-
-        console.log("grep -",grep);
 
         var mocha = new Mocha({
             uii: 'bdd',
@@ -131,9 +126,10 @@
             bail: options.bail
         });
 
-        console.log("Grep is " + options.grep);
+        console.log("Grep is " + grep);
         console.log("optional is ", options.optional);
 
+        //adds optional tests to the front in ascending order
         if (options.optional){
           options.optional.reverse().forEach(function(dir) {
               options.directory.unshift(dir);
