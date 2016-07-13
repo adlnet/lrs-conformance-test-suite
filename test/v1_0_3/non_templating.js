@@ -14,7 +14,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-    describe('test An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
+    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
 
         it('should populate authority ', function (done) {
 
@@ -409,8 +409,8 @@
         });
     });
 
-    describe('An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to "1.0.2" (4.1.10.b)', function () {
-        it('should respond with header "version" set to "1.0.2"', function (done) {
+    describe('An LRS MUST set the X-Experience-API-Version header to the latest patch version (Communication 3.3.b2)', function () {
+        it('should respond with header "version" set to "1.0.3"', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -427,7 +427,7 @@
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
-                .expect('x-experience-api-version', '1.0.2', done);
+                .expect('x-experience-api-version', '1.0.3', done);
         });
     });
 
@@ -998,8 +998,8 @@
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a successful POST request returns code 200 No Content and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
-        it('should persist statement using "POST" and return array if IDs', function (done) {
+    describe('An LRS\'s Statement API upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
+        it('should persist statement using "POST" and return array of IDs', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
