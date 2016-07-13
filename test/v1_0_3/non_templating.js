@@ -9,6 +9,27 @@
 (function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser, redirect) {
     // "use strict";
 
+
+
+    var delay = function(val)
+    {
+console.log('In the delay function', val);
+        var time = new Date(val._headers['x-experience-api-consistent-through']) || 5000;
+console.log('Surprise', time);
+        var p = new comb.Promise();
+console.log('Okay, but I do get this message', time);
+        setTimeout(function()
+        {
+            p.resolve();
+        }, time);
+console.log('ready to return from delay', time);
+        return p;
+    }
+
+
+
+    var comb = require('comb');
+
     var expect = chai.expect;
 
     if(global.OAUTH)
@@ -17,33 +38,90 @@
     describe('test An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
 
         it('should populate authority ', function (done) {
-
+            // debug;
+console.log(new Date());
+// delay(10000);
+console.log(new Date());
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
             var data = createFromTemplate(templates);
             data = data.statement;
             data.id = helper.generateUUID();
-
+            var query = helper.getEndpointStatements() + '?statementId=' + data.id,
+                badquery = helper.getEndpointStatements() + '?statementId=' + helper.generateUUID();
+console.log('enpoint check', helper.getEndpointAndAuth() + helper.getEndpointStatements());
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                // .get(query)
+                .get(badquery)
                 .headers(helper.addAllHeaders({}))
-                .expect(200).end(function (err, res) {
+                // .expect(200)
+                .end(function (err, res) {
                     if (err) {
+console.log('ERROR in the get', res, err);
                         done(err);
                     } else {
-                        var statement = parse(res.body, done);
-                        expect(statement).to.have.property('authority');
-                        done();
+console.log('We good', res.statusCode, res.headers);
+                        if (res.statusCode === 200) {
+console.log('Made it, and now we are out of here');
+                            var statement = parse(res.body, done);
+                            expect(statement).to.have.property('authority');
+                            done();
+                        } else if (res.statusCode === 404) {
+console.log('this should be a 404 and we should wait and try the get again\n', res.statusCode, res.body, res.headers['x-experience-api-consistent-through']);
+                            request(helper.getEndpointAndAuth())
+                            // .delay(res.headers[X-Experience-API-Consistent-Through])
+                            .get(badquery)
+                            .headers(helper.addAllHeaders({}))
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+console.log('so close and yet so far');
+                                    done(err);
+                                } else {
+console.log('been a long time coming');
+                                    var statement = parse(res.body, done);
+                                    expect(statement).to.have.property('authority');
+                                    done();
+                                }
+                            })
+                        } else {console.log('No go away!!');}
                     }
                 });
         });
     });
+
+//Beware Below
+
+function ensureConsistency (delayTime, done) {
+    var result, code;
+    do {
+console.log('so now', result, code);
+        var newId = helper.generateUUID();
+        request(helper.getEndpointAndAuth())
+            // .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .get(helper.getEndpointStatements() + '?statementId=' + newId)
+            .headers(helper.addAllHeaders({}))
+            .end(function (err, res) {
+console.log('check', data.id, newId);
+                if (err) {
+                    done(err);
+                } else {
+                    result = res;
+                    code = res.headers.statusCode;
+                }
+            });
+    } while (code === 404);
+// console.log('no don\'t do this');
+}
+
+
+//Beware Above
 
     describe('A Voiding Statement cannot Target another Voiding Statement (4.3)', function () {
         var voidedId;
