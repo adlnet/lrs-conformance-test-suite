@@ -4033,7 +4033,7 @@
         "1.0.2_ref_text": "format, 7.4.table1.row3.a",
         "1.0.2_ref": "7.4.table1.row3.a",
         "1.0.3_ref": "format, Communication.md#2.3.s3.table1.row3",
-        "1.0.3_link": "Communication.md#2.3.s3.table1.row3"
+        "1.0.3_link": ["Communication.md#2.3.s3.table1.row3"]
     },
     "Should reject POST with \"registration\" with type 1": {
         "name": "Should reject POST with \"registration\" with type 1"
@@ -4338,8 +4338,8 @@
         "name": "An LRS's Activity Profile API API rejects a PUT request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
         "1.0.2_ref_text": "format, 7.5.table2.row2.a",
         "1.0.2_ref": "7.5.table2.row2.a",
-        "1.0.2_ref": "format, Communication.md#2.7.s3.table1.row1",
-        "1.0.2_link": ["Communication.md#2.7.s3.table1.row1"]
+        "1.0.3_ref": "format, Communication.md#2.7.s3.table1.row1",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row1"]
     },
     "Should reject PUT with \"activityId\" with type 1": {
         "name": "Should reject PUT with \"activityId\" with type 1"
@@ -6044,5 +6044,25 @@
         "1.0.3_link": [
             "Communication.md#2.1.2.s2.b2"
         ]
-    }
+    },
+	"LRS must validate and store statement signatures if they are provided": {
+		"name": "LRS must validate and store statement signatures if they are provided",
+		"1.0.3_link": ["Data.md#2.6"]
+	},
+    "Signed statement with \"RS256\"": {
+		"name": "Signed statement with \"RS256\"",
+		"1.0.3_link": ["Data.md#2.6.s4.b1"]
+	},
+    "LRS must reject with 400 a signed statement with malformed signature - bad contentType": {
+		"name": "LRS must reject with 400 a signed statement with malformed signature - bad contentType",
+		"1.0.3_link": ["Data.md#2.6.s4.b1"]
+	},
+    "LRS must reject with 400 a signed statement with malformed signature - bad algorithm": {
+		"name": "LRS must reject with 400 a signed statement with malformed signature - bad algorithm",
+		"1.0.3_link": ["Data.md#2.6.s4.b4"]
+	},
+    "LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement": {
+		"name": "LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement",
+		"1.0.3_link": ["Data.md#2.6.s4.b3"]
+	}
 }
