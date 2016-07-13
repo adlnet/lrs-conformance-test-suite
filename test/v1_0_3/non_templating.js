@@ -21,13 +21,12 @@
                 .headers(helper.addAllHeaders({}))
                 .end(function(err, res)
                 {
-                    
                    if(res.statusCode == 200)
                    {
                         p.resolve();
                         console.log("Statement is available - do next check");
-
-                   }else if (res.statusCode == 500)
+                   }
+                   else if (res.statusCode == 500)
                    {
                         p.reject();
                    }
@@ -45,7 +44,6 @@
     }
 
     var comb = require('comb');
-
     var expect = chai.expect;
 
     if(global.OAUTH)
