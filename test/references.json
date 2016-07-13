@@ -6044,5 +6044,25 @@
         "1.0.3_link": [
             "Communication.md#2.1.2.s2.b2"
         ]
-    }
+    },
+	"LRS must validate and store statement signatures if they are provided": {
+		"name": "LRS must validate and store statement signatures if they are provided",
+		"1.0.3_link": ["Data.md#2.6"]
+	},
+    "Signed statement with \"RS256\"": {
+		"name": "Signed statement with \"RS256\"",
+		"1.0.3_link": ["Data.md#2.6.s4.b1"]
+	},
+    "LRS must reject with 400 a signed statement with malformed signature - bad contentType": {
+		"name": "LRS must reject with 400 a signed statement with malformed signature - bad contentType",
+		"1.0.3_link": ["Data.md#2.6.s4.b1"]
+	},
+    "LRS must reject with 400 a signed statement with malformed signature - bad algorithm": {
+		"name": "LRS must reject with 400 a signed statement with malformed signature - bad algorithm",
+		"1.0.3_link": ["Data.md#2.6.s4.b4"]
+	},
+    "LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement": {
+		"name": "LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement",
+		"1.0.3_link": ["Data.md#2.6.s4.b3"]
+	}
 }
