@@ -1,0 +1,12 @@
+{
+  "objectType": "Group",
+  "name": "Group Identified",
+  "openid": "http://openid.example.org/12345",
+  "member": [
+    {
+      "objectType": "Agent",
+      "name": "xAPI mbox",
+      "mbox": "mailto:xapi@adlnet.gov"
+    }
+  ]
+}

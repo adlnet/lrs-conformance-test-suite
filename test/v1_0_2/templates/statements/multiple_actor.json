@@ -1,0 +1,23 @@
+{
+  "actor": {
+    "objectType": "Agent",
+    "name": "xAPI mbox",
+    "mbox": "mailto:xapi@adlnet.gov"
+  },
+  "actor": {
+    "objectType": "Agent",
+    "name": "xAPI mbox2",
+    "mbox": "mailto:xapi2@adlnet.gov"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/attended",
+    "display": {
+      "en-GB": "attended",
+      "en-US": "attended"
+    }
+  },
+  "object": {
+    "objectType": "Activity",
+    "id": "http://www.example.com/meetings/occurances/34534"
+  }
+}

@@ -44,7 +44,7 @@
             directory: Joi.array().items(Joi.string().required()),
             /* See [RFC-3986](http://tools.ietf.org/html/rfc3986#page-17) */
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
-            grep: Joi.string(),
+            grep: Joi.array().items(Joi.string().required()),
             optional: Joi.array().items(Joi.string().required()),
             basicAuth: Joi.any(true, false),
             oAuth1: Joi.any(true, false),
@@ -77,7 +77,6 @@
                 then: Joi.required()
             }),
             reporter: Joi.string().regex(/^((dot)|(spec)|(nyan)|(tap)|(List)|(progress)|(min)|(doc))$/).default('nyan'),
-            grep: Joi.string(),
             bail: Joi.boolean()
         }).unknown(false);
 
@@ -87,7 +86,7 @@
             process.exit();
         }
 
-        var DIRECTORY = ['v1_0_2'];
+        var DIRECTORY = ['v1_0_3'];
         var options = {
             directory: _options.directory || DIRECTORY,
             endpoint: _options.endpoint,
@@ -109,10 +108,15 @@
         RegExp.escape = function(string) {
             return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
         };
-
-        var grep;
-        if (options.grep)
-            grep = new RegExp(RegExp.escape(options.grep));
+        var grep = '';
+        if (options.grep){
+          options.grep.forEach(function(g){
+            grep += RegExp.escape(g) + '|';
+          });
+        }
+        //removes extra '|' character at the end
+        grep = grep.slice(0,-1);
+        grep = new RegExp(grep);
 
         var mocha = new Mocha({
             uii: 'bdd',
@@ -122,22 +126,17 @@
             bail: options.bail
         });
 
-        console.log("Grep is " + options.grep);
+        console.log("Grep is " + grep);
         console.log("optional is ", options.optional);
 
+        //adds optional tests to the front in ascending order
         if (options.optional){
-          options.optional.forEach(function(dir) {
-              //process.postMessage("log", (JSON.stringify(global.OAUTH)));
-              var testDirectory = __dirname + '/../test/' + dir;
-              fs.readdirSync(testDirectory).filter(function(file) {
-                  return file.substr(-3) === '.js';
-              }).forEach(function(file) {
-                  mocha.addFile(
-                      path.join(testDirectory, file)
-                  );
-              });
+          options.optional.reverse().forEach(function(dir) {
+              options.directory.unshift(dir);
           });
         }
+
+        console.log("directory is ", options.directory);
 
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;

@@ -5,7 +5,7 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
-(function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser) {
+(function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser, redirect) {
     // "use strict";
 
     var expect = chai.expect;
@@ -29,8 +29,10 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
-        it('should populate authority', function (done) {
+    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
+
+        it('should populate authority ', function (done) {
+            
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -215,7 +217,7 @@
             ];
             data = createFromTemplate(templates);
             data = data.statement;
-console.log('nonT before: \n\n\n\n');
+
             attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
         });
 
@@ -236,7 +238,6 @@ console.log('nonT before: \n\n\n\n');
         });
 
         it('should succeed when attachment is raw data and request content-type is "multipart/mixed"', function (done) {
-console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), 'why doesn\'t the string print');
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
             request(helper.getEndpointAndAuth())
@@ -367,12 +368,11 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
         it('should fail when attachments missing header "X-Experience-API-Hash"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_no_x_experience_api_hash.part', {encoding: 'binary'});
-            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
-                .body(attachment).expect(200, done);
+                .body(attachment).expect(400, done);
         });
 
         it('should fail when attachments header "X-Experience-API-Hash" does not match "sha2"', function (done) {
@@ -424,8 +424,8 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
         });
     });
 
-    describe('An LRS modifies the value of the header of any Statement not rejected by the previous three requirements to "1.0.2" (4.1.10.b)', function () {
-        it('should respond with header "version" set to "1.0.2"', function (done) {
+    describe('An LRS MUST set the X-Experience-API-Version header to the latest patch version (Communication 3.3.b2)', function () {
+        it('should respond with header "version" set to "1.0.3"', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -442,7 +442,7 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
-                .expect('x-experience-api-version', '1.0.2', done);
+                .expect('x-experience-api-version', '1.0.3', done);
         });
     });
 
@@ -565,7 +565,6 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
 
         it('should fail on GET statement when not using "since"', function (done) {
             var query = helper.getUrlEncoding({Since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1014,8 +1013,8 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a successful POST request returns code 200 No Content and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
-        it('should persist statement using "POST" and return array if IDs', function (done) {
+    describe('An LRS\'s Statement API upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit** (7.2.2)', function () {
+        it('should persist statement using "POST" and return array of IDs', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -1277,7 +1276,7 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
         });
     });
 
-    describe('An LRS\'s Statement API rejects a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function () {
+    describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
         var id;
 
         before('persist statement', function (done) {
@@ -1574,7 +1573,6 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
     describe('An LRS\'s Statement API can process a GET request with "since" as a parameter  **Implicit**', function () {
         it('should process using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -1632,7 +1630,7 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
         });
     });
 
-    describe('An LRS\'s Statement API rejects a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b) with error code 400 Bad Request.', function () {
+    describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
         var voidedId = helper.generateUUID();
 
         before('persist voided statement', function (done) {
@@ -2088,7 +2086,6 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
 
         it('should return StatementResult using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2373,7 +2370,6 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2651,7 +2647,6 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -2949,7 +2944,6 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
 
         it('should return StatementResult with statements as array using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -3106,8 +3100,8 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
                     if (err){
                         done(err);
                     } else {
-                        voidingTime = new Date(Date.now() - helper.getTimeMargin() - 10000).toISOString();
-                        untilVoidingTime = new Date(Date.now() + helper.getTimeMargin()).toISOString();
+                        voidingTime = new Date().toISOString();
+                        untilVoidingTime = new Date(Date.now() + 300000).toISOString();
                         done();
                     }
                 });
@@ -3136,7 +3130,6 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
                 verb: verb,
                 since: voidingTime
             });
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -3200,7 +3193,6 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
             var query = helper.getUrlEncoding({
                 verb: verb
             });
-
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
@@ -3766,4 +3758,4 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
         return parsed;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('joi'), require('./../helper'), require('./../multipartParser')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));

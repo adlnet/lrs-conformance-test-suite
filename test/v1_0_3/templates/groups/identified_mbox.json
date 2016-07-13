@@ -1,0 +1,12 @@
+{
+  "objectType": "Group",
+  "name": "Group Identified",
+  "mbox": "mailto:xapi@adlnet.gov",
+  "member": [
+    {
+      "objectType": "Agent",
+      "name": "xAPI mbox",
+      "mbox": "mailto:xapi@adlnet.gov"
+    }
+  ]
+}

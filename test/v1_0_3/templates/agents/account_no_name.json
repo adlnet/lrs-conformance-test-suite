@@ -1,0 +1,7 @@
+{
+  "objectType": "Agent",
+  "name": "xAPI account",
+  "account": {
+    "homePage": "http://www.example.com"
+  }
+}
