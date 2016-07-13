@@ -6053,10 +6053,6 @@
 		"name": "Signed statement with \"RS256\"",
 		"1.0.3_link": ["Data.md#2.6.s4.b1"]
 	},
-    "LRS must reject with 400 a signed statement with malformed signature - bad usageType": {
-		"name": "LRS must reject with 400 a signed statement with malformed signature - bad usageType",
-		"1.0.3_link": ["Data.md#2.6.s4.b1"]
-	},
     "LRS must reject with 400 a signed statement with malformed signature - bad contentType": {
 		"name": "LRS must reject with 400 a signed statement with malformed signature - bad contentType",
 		"1.0.3_link": ["Data.md#2.6.s4.b1"]

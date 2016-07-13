@@ -33,7 +33,7 @@
 
         }); //end it good sig with "RS256"
 
-        it("LRS must reject with 400 a signed statement with malformed signature - bad usageType (Data.md#2.6.s4.b1)", function (done)
+        /*it("LRS must reject with 400 a signed statement with malformed signature - bad usageType (Data.md#2.6.s4.b1)", function (done)
         {
             data.id = helper.generateUUID();
             var options = {attachmentInfo: {usageType: 'http://adlnet.gov/expapi/voided'}};
@@ -47,7 +47,7 @@
                 .end(function (err, res) {
                     done(err);
                 });
-        });
+        });*/
 
         it("LRS must reject with 400 a signed statement with malformed signature - bad contentType (Data.md#2.6.s4.b1)", function (done) {
             data.id = helper.generateUUID();
@@ -90,13 +90,7 @@
                 .body(body)
                 .expect(400)
                 .end(function (err, res) {
-                    if (err) {
-console.log('Oops', err);
-                        done(err);
-                    } else {
-console.log('Ta Da', res.headers, res.body, res.statusCode, res.statusMessage);
-                        done();
-                    }
+					done(err);
                 });
         });
 /*
