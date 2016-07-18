@@ -108,15 +108,17 @@
         RegExp.escape = function(string) {
             return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
         };
-        var grep = '';
+        var grep;
         if (options.grep){
+          grep = '';
           options.grep.forEach(function(g){
             grep += RegExp.escape(g) + '|';
           });
+          //removes extra '|' character at the end
+          grep = grep.slice(0,-1);
+          grep = new RegExp(grep);
         }
-        //removes extra '|' character at the end
-        grep = grep.slice(0,-1);
-        grep = new RegExp(grep);
+
 
         var mocha = new Mocha({
             uii: 'bdd',
