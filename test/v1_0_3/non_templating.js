@@ -40,7 +40,7 @@
             doRequest();
             return p;
         }
-        return delay();    
+        return delay();
     }
 
     var comb = require('comb');
@@ -166,6 +166,7 @@
                     .expect(200)
                     .end()
                     .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                    .wait(genDelay(data.id))
                     .headers(helper.addAllHeaders({}))
                     .expect(200)
                     .end(function (err, res) {
@@ -200,6 +201,7 @@
                     .expect(200)
                     .end()
                     .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                    .wait(genDelay(data.id))
                     .headers(helper.addAllHeaders({}))
                     .expect(200)
                     .end(function (err, res) {
@@ -463,6 +465,7 @@
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .wait(genDelay(data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .expect('x-experience-api-version', '1.0.2', done);
@@ -485,6 +488,7 @@
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .wait(genDelay(data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200).end(function (err, res) {
                     if (err) {
@@ -729,6 +733,7 @@
                 .expect(400)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
+                .wait(genDelay(data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(404, done);
         });
@@ -877,6 +882,7 @@
                 .json(modified)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .wait(genDelay(data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -912,6 +918,7 @@
                 .json(modified)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .wait(genDelay(data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1076,6 +1083,7 @@
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?limit=1')
+                .wait(genDelay(data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1168,6 +1176,7 @@
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1220,6 +1229,7 @@
             var query = helper.getUrlEncoding({statementId: voidedId});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(404, done);
 
@@ -1251,6 +1261,7 @@
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .wait(genDelay(data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1294,6 +1305,7 @@
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1328,6 +1340,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1341,6 +1354,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1354,6 +1368,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1367,6 +1382,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1380,6 +1396,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1393,6 +1410,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1406,6 +1424,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1419,6 +1438,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1432,6 +1452,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1445,6 +1466,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1458,6 +1480,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1471,6 +1494,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1552,6 +1576,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1588,6 +1613,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1696,6 +1722,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1709,6 +1736,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1722,6 +1750,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1735,6 +1764,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1748,6 +1778,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1761,6 +1792,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1774,6 +1806,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1787,6 +1820,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1800,6 +1834,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1813,6 +1848,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1826,6 +1862,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1839,6 +1876,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1866,6 +1904,7 @@
         it('should retrieve statement using "statementId"', function (done) {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?statementId=' + id)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200).end(function (err, res) {
                     if (err) {
@@ -1917,6 +1956,7 @@
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1981,6 +2021,7 @@
         it('should return StatementResult using GET without "statementId" or "voidedStatementId"', function (done) {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements())
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2003,6 +2044,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2020,6 +2062,7 @@
             var query = helper.getUrlEncoding({verb: statement.verb.id});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2037,6 +2080,7 @@
             var query = helper.getUrlEncoding({activity: statement.object.id});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2054,6 +2098,7 @@
             var query = helper.getUrlEncoding({registration: statement.context.registration});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2074,6 +2119,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2094,6 +2140,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2111,6 +2158,7 @@
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2128,6 +2176,7 @@
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2145,6 +2194,7 @@
             var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2162,6 +2212,7 @@
             var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2179,6 +2230,7 @@
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2196,6 +2248,7 @@
             var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2217,6 +2270,7 @@
             var query = helper.getUrlEncoding({attachments: false});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2546,6 +2600,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2566,6 +2621,7 @@
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2586,6 +2642,7 @@
             var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2606,6 +2663,7 @@
             var query = helper.getUrlEncoding({registration: helper.generateUUID()});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2629,6 +2687,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2652,6 +2711,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2672,6 +2732,7 @@
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2692,6 +2753,7 @@
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2712,6 +2774,7 @@
             var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2732,6 +2795,7 @@
             var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2752,6 +2816,7 @@
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2772,6 +2837,7 @@
             var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2839,6 +2905,7 @@
         it('should return StatementResult with statements as array using GET without "statementId" or "voidedStatementId"', function (done) {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements())
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2861,6 +2928,7 @@
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2878,6 +2946,7 @@
             var query = helper.getUrlEncoding({verb: statement.verb.id});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2895,6 +2964,7 @@
             var query = helper.getUrlEncoding({activity: statement.object.id});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2912,6 +2982,7 @@
             var query = helper.getUrlEncoding({registration: statement.context.registration});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2932,6 +3003,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2952,6 +3024,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2969,6 +3042,7 @@
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2986,6 +3060,7 @@
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3003,6 +3078,7 @@
             var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3020,6 +3096,7 @@
             var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3037,6 +3114,7 @@
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3062,6 +3140,7 @@
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3155,6 +3234,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3176,6 +3256,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3197,6 +3278,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3218,6 +3300,7 @@
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(query))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3688,6 +3771,7 @@
             it('statement values should be the same', function (done) {
                 request(helper.getEndpointAndAuth())
                     .get(helper.getEndpointStatements() + '?statementId=' + returnedID)
+                    .wait(genDelay(query))
                     .headers(helper.addAllHeaders({}))
                     .expect(200).end(function (err, res) {
                         if (err) {
@@ -3735,14 +3819,17 @@
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?foo=bar')
                 .headers(helper.addAllHeaders({}))
-                .expect(400).end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        expect(res.body).to.equal('The get statements request contained unexpected parameters: foo');
-                        done();
-                    }
-                });
+                .expect(400, done)
+
+//The xAPI specification stipulates the error code, but not a particular "response"
+                // .end(function (err, res) {
+                //     if (err) {
+                //         done(err);
+                //     } else {
+                //         expect(res.body).to.equal('The get statements request contained unexpected parameters: foo');
+                //         done();
+                //     }
+                // });
         });
 
         it('A GET request is defined as either a GET request or a POST request containing a GET request (7.2.3, 7.2.2.e)', function (done) {
