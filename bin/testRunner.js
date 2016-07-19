@@ -126,12 +126,6 @@ class TestRunner extends EventEmitter
 				this.endTime = Date.now();
 				this.duration = this.endTime - this.startTime;
 				this.state = 'finished';
-
-				var conformance = false;
-				if (!this.flags.grep && this.summary.total >= 1440 && this.summary.passed === this.summary.total)
-					conformance = true;
-				this.summary.conformant =  conformance
-
 				break;
 
 			case 'suite start':
@@ -239,9 +233,7 @@ class TestRunner extends EventEmitter
 
 	getCleanRecord()
 	{
-		var conformance = false;
-		if (!this.flags.grep && this.summary.total >= 1440 && this.summary.passed === this.summary.total)
-			conformance = true;
+
 
 		var runRecord = {
 			name: this.name || null,
@@ -268,8 +260,7 @@ class TestRunner extends EventEmitter
 				total: this.summary.total,
 				passed: this.summary.passed,
 				failed: this.summary.failed,
-				version: version.versionNumber,
-				conformant: conformance
+				version: version.versionNumber
 			}
 		};
 
