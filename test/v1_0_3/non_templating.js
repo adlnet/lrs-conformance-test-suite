@@ -14,27 +14,44 @@
         var delay = function(val)
         {
             var p = new comb.Promise();
+            var time = Date.now();
+            // var time = new Date();
+console.log(time);
             function doRequest()
             {
                 request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?statementId=' + statementID)
+                .head(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .end(function(err, res)
                 {
-                   if(res.statusCode == 200)
-                   {
-                        p.resolve();
-                        console.log("Statement is available - do next check");
-                   }
-                   else if (res.statusCode == 500)
-                   {
+                    if (err) {
+                        console.log('Error', err);
+                        // p.reject(err);
                         p.reject();
-                   }
-                   else
-                   {
-                        console.log("Statement is NOT available - wait 1000ms and try again");
-                        setTimeout(doRequest,1000);
-                   }
+                    } else if (!(res && res.headers)) {
+                        console.log("Didn't get the results/headers I wanted");
+                        p.reject()
+                    } else if (new Date(res.headers['x-experience-api-consistent-through']).valueOf() >= (time - helper.getTimeMargin())) {
+                        console.log('Yay, it is time to do the rest of the test');
+                        p.resolve();
+                    } else {
+console.log('Sorry try again.\n', new Date(res.headers['x-experience-api-consistent-through']).valueOf(), ' vs. ', (time - helper.getTimeMargin()));
+                        setTimeout(doRequest, 1000);
+                    }
+                //    if(res.statusCode == 200)
+                //    {
+                //         p.resolve();
+                //         console.log("Statement is available - do next check");
+                //    }
+                //    else if (res.statusCode == 500)
+                //    {
+                //         p.reject();
+                //    }
+                //    else
+                //    {
+                //         console.log("Statement is NOT available - wait 1000ms and try again");
+                //         setTimeout(doRequest,1000);
+                //    }
                 })
             }
             doRequest();
@@ -42,6 +59,39 @@
         }
         return delay();
     }
+    // function genDelay(statementID)
+    // {
+    //     var delay = function(val)
+    //     {
+    //         var p = new comb.Promise();
+    //         function doRequest()
+    //         {
+    //             request(helper.getEndpointAndAuth())
+    //             .get(helper.getEndpointStatements() + '?statementId=' + statementID)
+    //             .headers(helper.addAllHeaders({}))
+    //             .end(function(err, res)
+    //             {
+    //                if(res.statusCode == 200)
+    //                {
+    //                     p.resolve();
+    //                     console.log("Statement is available - do next check");
+    //                }
+    //                else if (res.statusCode == 500)
+    //                {
+    //                     p.reject();
+    //                }
+    //                else
+    //                {
+    //                     console.log("Statement is NOT available - wait 1000ms and try again");
+    //                     setTimeout(doRequest,1000);
+    //                }
+    //             })
+    //         }
+    //         doRequest();
+    //         return p;
+    //     }
+    //     return delay();
+    // }
 
     var comb = require('comb');
     var expect = chai.expect;
