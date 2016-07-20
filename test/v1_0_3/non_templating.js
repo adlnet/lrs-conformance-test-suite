@@ -9,35 +9,44 @@
 (function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser, redirect) {
     // "use strict";
 
-    function genDelay(time)
+    function genDelay(time, query, id)
     {
+console.log('You have reached the function genDelay', time, query, id);
         var delay = function(val)
         {
             var p = new comb.Promise();
-            // var time = Date.now();
-            // var time = new Date();
-// console.log(time.toISOString());
+
             function doRequest()
             {
                 request(helper.getEndpointAndAuth())
-                .head(helper.getEndpointStatements())
+                .get(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .end(function(err, res)
                 {
                     if (err) {
+                        //if there was an error, we quit and go home
                         console.log('Error', err);
-                        // p.reject(err);
                         p.reject();
                     } else if (!(res && res.headers)) {
+                        //if the headers are not right, we quit and go home
                         console.log("Didn't get the results/headers I wanted");
                         p.reject();
-} else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
+                    } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
+                        //if the consistent-through header is more recent than our time of sending the statement (adjusting for time differences), then we go on to continue the test
                         console.log('Yay, it is time to do the rest of the test', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
                         p.resolve();
                     } else {
+                        //the consistent-through header is in the past, so we will check to see if we got the statement anyway
 console.log((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
 // console.log('Sorry try again.\n', new Date(time).toISOString(),'\n', new Date(new Date(res.headers['x-experience-api-consistent-through']).valueOf() + helper.getTimeMargin()).toISOString());
-                        setTimeout(doRequest, 1000);
+                        if (id && res.body) {
+                            //now if we find the id we are looking for, we can quit and go home
+                            console.log('We found a body', res.body)
+                            p.resolve();
+                        } else {
+                            //otherwise we try it again
+                            setTimeout(doRequest, 1000);
+                        }
                     }
                 })
             }
@@ -94,6 +103,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             data = data.statement;
             data.id = helper.generateUUID();
+            var query = '?statementId=' + data.id;
             this.timeout(60000);
             var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
@@ -102,9 +112,9 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
                 .json(data)
                 .expect(200)
                 .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .get(helper.getEndpointStatements() + query)
                 .headers(helper.addAllHeaders({}))
-                .wait(genDelay(stmtTime))
+                .wait(genDelay(stmtTime, query, data.id))
                 .expect(200).end(function (err, res) {
                     if (err) {
                         done(err);
@@ -192,6 +202,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
                 var data = createFromTemplate(templates);
                 data = data.statement;
                 data.id = helper.generateUUID();
+                var query = '?statementId=' + data.id;
                 var stmtTime = Date.now();
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointStatements())
@@ -199,8 +210,8 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
                     .json(data)
                     .expect(200)
                     .end()
-                    .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                    .wait(genDelay(stmtTime))
+                    .get(helper.getEndpointStatements() + query)
+                    .wait(genDelay(stmtTime, query, data.id))
                     .headers(helper.addAllHeaders({}))
                     .expect(200)
                     .end(function (err, res) {
@@ -227,15 +238,16 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
                 var data = createFromTemplate(templates);
                 data = data.statement;
                 data.id = helper.generateUUID();
-                var stmtTime
+                var query = '?statementId=' + data.id;
+                var stmtTime = Date.now();
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
                     .json(data)
                     .expect(200)
                     .end()
-                    .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                    .wait(genDelay(data.id))
+                    .get(helper.getEndpointStatements() + query)
+                    .wait(genDelay(stmtTime, query, data.id))
                     .headers(helper.addAllHeaders({}))
                     .expect(200)
                     .end(function (err, res) {
@@ -491,15 +503,16 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             data = data.statement;
             data.id = helper.generateUUID();
-
+            var query = '?statementId=' + data.id;
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .wait(genDelay(data.id))
+                .get(helper.getEndpointStatements() + query)
+                .wait(genDelay(stmtTime, query, data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .expect('x-experience-api-version', '1.0.2', done);
@@ -514,15 +527,16 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             data = data.statement;
             data.id = helper.generateUUID();
-
+            var query = '?statementId=' + data.id;
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .wait(genDelay(data.id))
+                .get(helper.getEndpointStatements() + query)
+                .wait(genDelay(stmtTime, query, data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200).end(function (err, res) {
                     if (err) {
@@ -759,15 +773,17 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             incorrect.id = helper.generateUUID();
 
             incorrect.verb.id = 'should fail';
-
+            var query = '?statementId=' + correct.id;
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json([correct, incorrect])
                 .expect(400)
                 .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
-                .wait(genDelay(data.id))
+                .get(helper.getEndpointStatements() + query)
+                .wait(genDelay(stmtTime, query, correct.id))
+                .wait(genDelay(stmtTime, query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(404, done);
         });
@@ -901,22 +917,22 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             data = data.statement;
             data.id = helper.generateUUID();
-
+            var query = '?statementId=' + data.id;
             var modified = extend(true, {}, data);
             modified.verb.id = 'different value';
-
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
-                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .put(helper.getEndpointStatements() + query)
                 .headers(helper.addAllHeaders({}))
                 .json(modified)
                 .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .wait(genDelay(data.id))
+                .get(helper.getEndpointStatements() + query)
+                .wait(genDelay(stmtTime, query, data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -937,12 +953,12 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             data = data.statement;
             data.id = helper.generateUUID();
-
+            var query = '?statementId=' + data.id;
             var modified = extend(true, {}, data);
             modified.verb.id = 'different value';
-
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
-                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                .put(helper.getEndpointStatements() + query)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(204)
@@ -951,8 +967,8 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
                 .headers(helper.addAllHeaders({}))
                 .json(modified)
                 .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .wait(genDelay(data.id))
+                .get(helper.getEndpointStatements() + query)
+                .wait(genDelay(stmtTime, query, data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1109,7 +1125,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             ];
             var data = createFromTemplate(templates);
             var statement = data.statement;
-
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1117,7 +1133,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?limit=1')
-                .wait(genDelay(data.id))
+                .wait(genDelay(stmtTime, '?limit=1', undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1174,6 +1190,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
 
     describe('A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS (4.2.c)', function () {
         var voidedId = helper.generateUUID();
+        var stmtTime;
 
         before('persist voided statement', function (done) {
             var templates = [
@@ -1198,7 +1215,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var voiding = createFromTemplate(templates);
             voiding = voiding.statement;
             voiding.object.id = voidedId;
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1210,7 +1227,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1227,6 +1244,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
 
     describe('An LRS\'s Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request (7.2.4.a)', function () {
         var voidedId = helper.generateUUID();
+        var stmtTime;
 
         before('persist voided statement', function (done) {
             var templates = [
@@ -1251,7 +1269,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var voiding = createFromTemplate(templates);
             voiding = voiding.statement;
             voiding.object.id = voidedId;
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1263,7 +1281,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({statementId: voidedId});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(404, done);
 
@@ -1287,15 +1305,16 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             data = data.statement;
             data.id = helper.generateUUID();
-
+            var query = '?statementId=' + data.id;
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(200)
                 .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .wait(genDelay(data.id))
+                .get(helper.getEndpointStatements() + query)
+                .wait(genDelay(stmtTime, '?' + query, data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1303,6 +1322,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
 
     describe('An LRS\'s Statement API can process a GET request with "voidedStatementId" as a parameter  (7.2.3)', function () {
         var voidedId = helper.generateUUID();
+        var stmtTime;
 
         before('persist voided statement', function (done) {
             var templates = [
@@ -1327,7 +1347,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var voiding = createFromTemplate(templates);
             voiding = voiding.statement;
             voiding.object.id = voidedId;
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1339,7 +1359,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1347,6 +1367,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
 
     describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
         var id;
+        var stmtTime;
 
         before('persist statement', function (done) {
             var templates = [
@@ -1356,7 +1377,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             data = data.statement;
             data.id = helper.generateUUID();
             id = data.id;
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1374,7 +1395,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1388,7 +1409,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1402,7 +1423,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1416,7 +1437,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1430,7 +1451,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1444,7 +1465,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1458,7 +1479,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1472,7 +1493,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1486,7 +1507,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1500,7 +1521,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1514,7 +1535,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1528,7 +1549,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1580,7 +1601,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
     });
 
     describe('An LRS\'s Statement API can process a GET request with "related_activities" as a parameter  **Implicit**', function () {
-        var statement;
+        var statement, stmtTime;
 
         before('persist statement', function (done) {
             var templates = [
@@ -1595,7 +1616,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             statement = data.statement;
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1610,14 +1631,14 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
 
     describe('An LRS\'s Statement API can process a GET request with "related_agents" as a parameter  **Implicit**', function () {
-        var statement;
+        var statement, stmtTime;
 
         before('persist statement', function (done) {
             var templates = [
@@ -1632,7 +1653,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             statement = data.statement;
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1647,7 +1668,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1715,6 +1736,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
 
     describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
         var voidedId = helper.generateUUID();
+        var stmtTime;
 
         before('persist voided statement', function (done) {
             var templates = [
@@ -1739,6 +1761,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             voiding = voiding.statement;
             voiding.object.id = voidedId;
 
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1752,11 +1775,10 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             ];
             var data = createFromTemplate(templates);
             data.statementId = voidedId;
-
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1770,7 +1792,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1784,7 +1806,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1798,7 +1820,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1812,7 +1834,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1826,7 +1848,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1840,7 +1862,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1854,7 +1876,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1868,7 +1890,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1882,7 +1904,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -1896,7 +1918,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
@@ -1910,14 +1932,14 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
         });
     });
 
     describe('An LRS\'s Statement API upon processing a successful GET request with a "statementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (7.2.3)', function () {
-        var id;
+        var id, stmtTime;
 
         before('persist statement', function (done) {
             var templates = [
@@ -1927,7 +1949,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             data = data.statement;
             data.id = helper.generateUUID();
             id = data.id;
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1938,7 +1960,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
         it('should retrieve statement using "statementId"', function (done) {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?statementId=' + id)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?statementId=' + id, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200).end(function (err, res) {
                     if (err) {
@@ -1954,6 +1976,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
 
     describe('An LRS\'s Statement API upon processing a successful GET request with a "voidedStatementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (7.2.3)', function () {
         var voidedId = helper.generateUUID();
+        var stmtTime;
 
         before('persist voided statement', function (done) {
             var templates = [
@@ -1978,7 +2001,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var voiding = createFromTemplate(templates);
             voiding = voiding.statement;
             voiding.object.id = voidedId;
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -1990,7 +2013,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2006,8 +2029,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
     });
 
     describe('An LRS\'s Statement API upon processing a successful GET request with neither a "statementId" nor a "voidedStatementId" parameter, returns code 200 OK and a StatementResult Object.  (7.2.3)', function () {
-        var statement;
-        var substatement;
+        var statement, substatement, stmtTime;
 
         before('persist statement', function (done) {
             var templates = [
@@ -2044,7 +2066,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             substatement = data.statement;
             substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -2055,7 +2077,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
         it('should return StatementResult using GET without "statementId" or "voidedStatementId"', function (done) {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements())
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, undefined, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2078,7 +2100,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2096,7 +2118,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({verb: statement.verb.id});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2114,7 +2136,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({activity: statement.object.id});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2132,7 +2154,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({registration: statement.context.registration});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2153,7 +2175,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2174,7 +2196,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2192,7 +2214,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2210,7 +2232,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2228,7 +2250,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2246,7 +2268,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2264,7 +2286,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2282,7 +2304,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2304,7 +2326,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({attachments: false});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2583,7 +2605,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
     });
 
     describe('An LRS\'s "X-Experience-API-Consistent-Through" header is an ISO 8601 combined date and time (Type, 7.2.3.c).', function () {
-        var statement;
+        var statement, stmtTime;
 
         before('persist statement', function (done) {
             var templates = [
@@ -2598,7 +2620,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             statement = data.statement;
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -2634,7 +2656,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2655,7 +2677,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2676,7 +2698,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2697,7 +2719,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({registration: helper.generateUUID()});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2721,7 +2743,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2745,7 +2767,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2766,7 +2788,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2787,7 +2809,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2808,7 +2830,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2829,7 +2851,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2850,7 +2872,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2871,7 +2893,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2890,8 +2912,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
     });
 
     describe('A "statements" property is an Array of Statements (Type, 4.2.table1.row1.a)', function () {
-        var statement;
-        var substatement;
+        var statement, substatement, stmtTime;
 
         before('persist statement', function (done) {
             var templates = [
@@ -2928,7 +2949,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var data = createFromTemplate(templates);
             substatement = data.statement;
             substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -2939,7 +2960,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
         it('should return StatementResult with statements as array using GET without "statementId" or "voidedStatementId"', function (done) {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements())
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, undefined, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2962,7 +2983,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2980,7 +3001,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({verb: statement.verb.id});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -2998,7 +3019,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({activity: statement.object.id});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3016,7 +3037,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({registration: statement.context.registration});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3037,7 +3058,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3058,7 +3079,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3076,7 +3097,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3094,7 +3115,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3112,7 +3133,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3130,7 +3151,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3148,7 +3169,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3166,7 +3187,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
             var query = helper.getUrlEncoding({attachments: true});
-
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
@@ -3174,7 +3195,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3200,6 +3221,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
         var voidingId = helper.generateUUID();
         var statementRefId = helper.generateUUID();
         var voidingTime, untilVoidingTime;
+        var stmtTime;
 
         before('persist voided statement', function (done) {
             var voidedTemplates = [
@@ -3252,7 +3274,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             statementRef.id = statementRefId;
             statementRef.object.id = voidedId;
             statementRef.verb.id = verb;
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -3268,7 +3290,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3290,7 +3312,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3312,7 +3334,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3334,7 +3356,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             });
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(query))
+                .wait(genDelay(stmtTime, '?' + query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -3781,14 +3803,14 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
         });
 
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
-            var returnedID;
-            var data;
+            var returnedID, data, stmtTime;
             before('persist statement', function (done) {
                 var templates = [
                     {statement: '{{statements.default}}'}
                 ];
                 data = createFromTemplate(templates);
                 data = data.statement;
+                stmtTime = Date.now();
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
@@ -3805,7 +3827,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             it('statement values should be the same', function (done) {
                 request(helper.getEndpointAndAuth())
                     .get(helper.getEndpointStatements() + '?statementId=' + returnedID)
-                    .wait(genDelay(query))
+                    .wait(genDelay(stmtTime, '?statementId=' + returnedID, returnedID))
                     .headers(helper.addAllHeaders({}))
                     .expect(200).end(function (err, res) {
                         if (err) {
