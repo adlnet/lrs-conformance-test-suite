@@ -9,14 +9,14 @@
 (function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser, redirect) {
     // "use strict";
 
-    function genDelay(statementID)
+    function genDelay(time)
     {
         var delay = function(val)
         {
             var p = new comb.Promise();
-            var time = Date.now();
+            // var time = Date.now();
             // var time = new Date();
-console.log(time);
+// console.log(time.toISOString());
             function doRequest()
             {
                 request(helper.getEndpointAndAuth())
@@ -30,28 +30,15 @@ console.log(time);
                         p.reject();
                     } else if (!(res && res.headers)) {
                         console.log("Didn't get the results/headers I wanted");
-                        p.reject()
-                    } else if (new Date(res.headers['x-experience-api-consistent-through']).valueOf() >= (time - helper.getTimeMargin())) {
-                        console.log('Yay, it is time to do the rest of the test');
+                        p.reject();
+} else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
+                        console.log('Yay, it is time to do the rest of the test', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
                         p.resolve();
                     } else {
-console.log('Sorry try again.\n', new Date(res.headers['x-experience-api-consistent-through']).valueOf(), ' vs. ', (time - helper.getTimeMargin()));
+console.log((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
+// console.log('Sorry try again.\n', new Date(time).toISOString(),'\n', new Date(new Date(res.headers['x-experience-api-consistent-through']).valueOf() + helper.getTimeMargin()).toISOString());
                         setTimeout(doRequest, 1000);
                     }
-                //    if(res.statusCode == 200)
-                //    {
-                //         p.resolve();
-                //         console.log("Statement is available - do next check");
-                //    }
-                //    else if (res.statusCode == 500)
-                //    {
-                //         p.reject();
-                //    }
-                //    else
-                //    {
-                //         console.log("Statement is NOT available - wait 1000ms and try again");
-                //         setTimeout(doRequest,1000);
-                //    }
                 })
             }
             doRequest();
@@ -107,7 +94,8 @@ console.log('Sorry try again.\n', new Date(res.headers['x-experience-api-consist
             var data = createFromTemplate(templates);
             data = data.statement;
             data.id = helper.generateUUID();
-
+            this.timeout(60000);
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -116,7 +104,7 @@ console.log('Sorry try again.\n', new Date(res.headers['x-experience-api-consist
                 .end()
                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
-                .wait(genDelay(data.id))
+                .wait(genDelay(stmtTime))
                 .expect(200).end(function (err, res) {
                     if (err) {
                         done(err);
@@ -128,10 +116,6 @@ console.log('Sorry try again.\n', new Date(res.headers['x-experience-api-consist
                 });
         });
     });
-
-
-
-//Beware Above
 
     describe('A Voiding Statement cannot Target another Voiding Statement (4.3)', function () {
         var voidedId;
@@ -208,7 +192,7 @@ console.log('Sorry try again.\n', new Date(res.headers['x-experience-api-consist
                 var data = createFromTemplate(templates);
                 data = data.statement;
                 data.id = helper.generateUUID();
-
+                var stmtTime = Date.now();
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
@@ -216,7 +200,7 @@ console.log('Sorry try again.\n', new Date(res.headers['x-experience-api-consist
                     .expect(200)
                     .end()
                     .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                    .wait(genDelay(data.id))
+                    .wait(genDelay(stmtTime))
                     .headers(helper.addAllHeaders({}))
                     .expect(200)
                     .end(function (err, res) {
@@ -243,7 +227,7 @@ console.log('Sorry try again.\n', new Date(res.headers['x-experience-api-consist
                 var data = createFromTemplate(templates);
                 data = data.statement;
                 data.id = helper.generateUUID();
-
+                var stmtTime
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
