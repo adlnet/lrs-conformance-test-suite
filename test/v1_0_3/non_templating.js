@@ -32,7 +32,7 @@
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
 
         it('should populate authority ', function (done) {
-            
+
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -3100,8 +3100,8 @@
                     if (err){
                         done(err);
                     } else {
-                        voidingTime = new Date().toISOString();
-                        untilVoidingTime = new Date(Date.now() + 300000).toISOString();
+                        voidingTime = new Date(Date.now() - helper.getTimeMargin() - 10000).toISOString();
+                        untilVoidingTime = new Date(Date.now() + helper.getTimeMargin()).toISOString();
                         done();
                     }
                 });
