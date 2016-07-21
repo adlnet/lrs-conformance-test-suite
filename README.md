@@ -1,5 +1,5 @@
-LRS Conformance Tests
-=====================
+LRS Conformance Test Suite
+==========================
 
 ### Description
 
@@ -8,153 +8,51 @@ This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](h
 ### Installation  
 
 Dependency  
-This requires npm for installation  
-
-```bash
-$ sudo apt-get install npm
-```
+This requires npm for installation.  NodeJS version 4.x or later.
 
 Clone and install
 
 ```bash
 $ git clone https://github.com/adlnet/lrs-conformance-test-suite.git
-$ cd lrs-conformance-tests
+$ cd lrs-conformance-test-suite
 $ npm install
-$ npm link
-```
-ADL Note  
-If `npm link` fails, try the following:  
-
-```bash
-$ sudo npm link
-$ sudo ln -s /usr/bin/nodejs /usr/bin/node
-```
-
-ADL Note
-If `npm link` fails, try the following:
-```bash
-$ sudo npm link
-$ sudo ln -s /usr/bin/nodejs /usr/bin/node
 ```
 
 Verify installation
 ```bash
-$ lrs-test --help
+$ node bin/console_runner.js --help
 
-Usage: lrs-test [options]
+  Usage: console_runner [options]
 
-Options:
+  Options:
 
-  -h, --help                    output usage information
-  -V, --version                 output the version number
-  -d, --directory [path]        test directory, default: v1_0_2
-  -e, --endpoint <path>         the connection string
-  -a, --basicAuth <true/false>  enables basic authentication
-  -u, --authUser <username>     sets user name (required when basic authentication enabled)
-  -p, --authPass <password>     sets password (required when basic authentication enabled)
-  -b, --bail                    bail after first test failure
-  -R, --reporter <name>         specify the reporter to use
-  -g, --grep <pattern>          only run tests matching <pattern>
+    -h, --help                         output usage information
+    -V, --version                      output the version number
+    -e, --endpoint [url]               xAPI endpoint
+    -u, --authUser [string]            Basic Auth Username
+    -p, --authPassword [string]        Basic Auth Password
+    -a, --basicAuth                    Enable Basic Auth
+    -o, --oAuth1                       Enable oAuth 1
+    -c, --consumer_key [string]        oAuth 1 Consumer Key
+    -s, --consumer_secret [string]     oAuth 1 Consumer Secert
+    -r, --request_token_path [string]  Path to OAuth request token endpoint (relative to endpoint)
+    -t, --auth_token_path [string]     Path to OAuth authorization token endpoint (relative to endpoint)
+    -l, --authorization_path [string]  Path to OAuth user authorization endpoint (relative to endpoint)
+    -g, --grep [string]                Only run tests that match the given pattern
+    -b, --bail                         Abort the battery if one test fails
+    -d, --directory [value]            Specific directories of tests (as a comma seperated list with no spaces)
 ```
 
 ### Running Test Suite
 
 Example:
 
-```
-bash $ lrs-test --endpoint http://localhost/xapi --basicAuth true --authUser username --authPass password
+```bash
+$ node bin/console_runner.js --endpoint http://localhost/xapi --basicAuth true --authUser username --authPass password
 
-bash $ lrs-test -e http://localhost/xapi -a true -u username -p password
+$ node bin/console_runner.js -e http://localhost/xapi -a true -u username -p password
 ```
 
-### Creating/Extending Test Suite
-
-Everything within the config array defines a test that validates the requirement.
-* The 'name' key describes the test.
-* The 'json' key is used to pass in a JSON object without templating.
-* The 'expect' key is an array with values that are applied to super-request expect().
-* The 'template' key is an array of JSON objects (Currently only supporting JSON objects with one key).
-    * Items in template use a single key with a reference to the JSON file to construct the template object.  Then values are overriden by subsequent items in array.  Template JSON files are referenced with a prefix of '{{' folder of template (period) filename <without extension> and suffix '}}' i.e. '{{statements.default}}'.  Templates mappings are replaced with their JSON object.  The easiest way to create a JSON without a property is to create another template.
-
-Examples how JSON objects are merged with subsequent items in array (Currently only supporting JSON objects with one key):
-
-* Example 1 shows how the second item in array can modify a specific attribute's value in the first item's JSON value -
-
-```
-templates: [
-    {
-        statement: {
-           actor: { key: 'value' },
-           verb: { key: 'value' },
-           object: { key: 'value' }
-       }
-    },
-    {
-        actor: { key: 'another_value' }
-    }
-]
-```
-The result are merged with the key 'actor' from the second item in array referencing the first item's value of 'actor' and the value is replaced -
-```
-{
-    statement: {
-       actor: { key: 'another_value' },
-       verb: { key: 'value' },
-       object: { key: 'value' }
-   }
-}
-```
-* Example 2 shows how the second item in array can add a specific attribute in the first item's JSON value -
-```
-templates: [
-    {
-        statement: {
-           actor: { key: 'value' },
-           verb: { key: 'value' },
-           object: { key: 'value' }
-       }
-    },
-    {
-        actor: { another_key: 'value' }
-    }
-]
-```
-The result are merged with the key 'actor' from the second item in array referencing the first item's value of 'actor' and the their attributes are merged -
-```
-{
-    statement: {
-       actor: { key: 'value', another_key: 'value' },
-       verb: { key: 'value' },
-       object: { key: 'value' }
-   }
-}
-```
-* Example 3 shows how the second item in array is added to first item's JSON value -
-```
-templates: [
-    {
-        statement: {
-           actor: { key: 'value' },
-           verb: { key: 'value' },
-           object: { key: 'value' }
-       }
-    },
-    {
-        another_key: 'value'
-    }
-]
-```
-The result are merged with the key from the second item in array is not found in the first item's value so default behavior is to merge -
-```
-{
-    statement: {
-       actor: { key: 'value' },
-       verb: { key: 'value' },
-       object: { key: 'value' },
-       another_key: 'value'
-   }
-}
-```
 
 ### License
 MIT License
