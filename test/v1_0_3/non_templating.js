@@ -15,14 +15,22 @@ console.log('You have reached the function genDelay', time, query, id);
         var delay = function(val)
         {
             var p = new comb.Promise();
+            var endP = helper.getEndpointStatements();
+            if (query) {
+                endP += query;
+            }
+            console.log('New Hampshire', endP, helper.getEndpointStatements() + query);
 
             function doRequest()
             {
+console.log('In do request');
                 request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements())
+                // .get(endP)
                 .headers(helper.addAllHeaders({}))
                 .end(function(err, res)
                 {
+console.log('In end', id, parse(res.body).id, res.headers);
                     if (err) {
                         //if there was an error, we quit and go home
                         console.log('Error', err);
@@ -31,23 +39,20 @@ console.log('You have reached the function genDelay', time, query, id);
                         //if the headers are not right, we quit and go home
                         console.log("Didn't get the results/headers I wanted");
                         p.reject();
+                    } else if (id && res.body && (parse(res.body).id === id)) {
+                        //if the body contains what we are looking for, we're good we can continue with the testing
+                        console.log('Yay, we found the body - it is time to do the rest of the test', parse(res.body).id, id);
+                        p.resolve();
                     } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
-                        //if the consistent-through header is more recent than our time of sending the statement (adjusting for time differences), then we go on to continue the test
-                        console.log('Yay, it is time to do the rest of the test', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
+                        //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
+                        console.log('Saskatchewan', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
                         p.resolve();
                     } else {
-                        //the consistent-through header is in the past, so we will check to see if we got the statement anyway
-console.log((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
-// console.log('Sorry try again.\n', new Date(time).toISOString(),'\n', new Date(new Date(res.headers['x-experience-api-consistent-through']).valueOf() + helper.getTimeMargin()).toISOString());
-                        if (id && res.body) {
-                            //now if we find the id we are looking for, we can quit and go home
-                            console.log('We found a body', res.body)
-                            p.resolve();
-                        } else {
-                            //otherwise we try it again
-                            setTimeout(doRequest, 1000);
-                        }
+                        //otherwise we give the lrs a second to catch up and try again
+                        console.log('we are going to try again', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
+                        setTimeout(doRequest, 1000);
                     }
+console.log('This is a line you never should see');
                 })
             }
             doRequest();
@@ -768,11 +773,12 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
             var correct = createFromTemplate(templates);
             correct = correct.statement;
             var incorrect = extend(true, {}, correct);
-
+// console.log('Correct and Incorrect upon creation:\n', correct, '\n', incorrect);
             correct.id = helper.generateUUID();
             incorrect.id = helper.generateUUID();
 
             incorrect.verb.id = 'should fail';
+// console.log('\n\nCorrect and Incorrect upon modifications:\n', correct, '\n', incorrect);
             var query = '?statementId=' + correct.id;
             var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
@@ -782,7 +788,7 @@ console.log((new Date(res.headers['x-experience-api-consistent-through'])).value
                 .expect(400)
                 .end()
                 .get(helper.getEndpointStatements() + query)
-                .wait(genDelay(stmtTime, query, correct.id))
+                // .wait(genDelay(stmtTime, query, correct.id))
                 .wait(genDelay(stmtTime, query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(404, done);

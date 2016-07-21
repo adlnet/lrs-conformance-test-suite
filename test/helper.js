@@ -342,7 +342,7 @@ if (!process.env.EB_NODE_COMMAND) {
                     if (err) {
                         done(err);
                     } else {
-console.log('POST headers', res.headers, res.body);
+// console.log('POST headers', res.headers, res.body);
                         request(module.exports.getEndpointAndAuth())
                         .get(module.exports.getEndpointStatements() + '?' + query)
                         .headers(module.exports.addAllHeaders({}))
@@ -352,7 +352,7 @@ console.log('POST headers', res.headers, res.body);
                                 return err;
                                 done(err);
                             } else {
-console.log('Headers', res.headers, res.body);
+// console.log('Headers', res.headers, res.body);
                                 lrsTime = new Date(res.headers.date);
                                 TIME_MARGIN = suiteTime - lrsTime;
 console.log("the time margin is", TIME_MARGIN);
