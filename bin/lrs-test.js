@@ -119,6 +119,7 @@
         });
 
         console.log("Grep is " + grep);
+        process.env.DIRECTORY = options.directory[0];
 
         //adds optional tests to the front in ascending order
         if (options.optional){
@@ -128,6 +129,7 @@
         }
 
         console.log("directory is ", options.directory);
+
 
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;
