@@ -11,26 +11,24 @@
 
     function genDelay(time, query, id)
     {
-console.log('You have reached the function genDelay', time, query, id);
         var delay = function(val)
         {
+            var count = 0;
             var p = new comb.Promise();
             var endP = helper.getEndpointStatements();
             if (query) {
                 endP += query;
             }
-            console.log('New Hampshire', endP, helper.getEndpointStatements() + query);
 
             function doRequest()
             {
-console.log('In do request');
+                count++;
                 request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements())
                 // .get(endP)
                 .headers(helper.addAllHeaders({}))
                 .end(function(err, res)
                 {
-console.log('In end', id, parse(res.body).id, res.headers);
                     if (err) {
                         //if there was an error, we quit and go home
                         console.log('Error', err);
@@ -41,18 +39,25 @@ console.log('In end', id, parse(res.body).id, res.headers);
                         p.reject();
                     } else if (id && res.body && (parse(res.body).id === id)) {
                         //if the body contains what we are looking for, we're good we can continue with the testing
-                        console.log('Yay, we found the body - it is time to do the rest of the test', parse(res.body).id, id);
+                        console.log('Yay, we found what we were looking for - it is time to do the rest of the test', parse(res.body).id, id);
                         p.resolve();
                     } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
                         //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
-                        console.log('Saskatchewan', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
+                        console.log('comparing con-thru', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
                         p.resolve();
                     } else {
                         //otherwise we give the lrs a second to catch up and try again
                         console.log('we are going to try again', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
+                        if ((count % 5) === 0) {
+                            console.log('before post request');
+                            request(helper.getEndpointAndAuth())
+                            .post(helper.getEndpointStatements())
+                            .headers(helper.addAllHeaders({}))
+                            .json(createFromTemplate([{statement: '{{statements.default}}'}]).statement)
+                            .end(console.log('end of post request'));
+                        }
                         setTimeout(doRequest, 1000);
                     }
-console.log('This is a line you never should see');
                 })
             }
             doRequest();
@@ -60,39 +65,6 @@ console.log('This is a line you never should see');
         }
         return delay();
     }
-    // function genDelay(statementID)
-    // {
-    //     var delay = function(val)
-    //     {
-    //         var p = new comb.Promise();
-    //         function doRequest()
-    //         {
-    //             request(helper.getEndpointAndAuth())
-    //             .get(helper.getEndpointStatements() + '?statementId=' + statementID)
-    //             .headers(helper.addAllHeaders({}))
-    //             .end(function(err, res)
-    //             {
-    //                if(res.statusCode == 200)
-    //                {
-    //                     p.resolve();
-    //                     console.log("Statement is available - do next check");
-    //                }
-    //                else if (res.statusCode == 500)
-    //                {
-    //                     p.reject();
-    //                }
-    //                else
-    //                {
-    //                     console.log("Statement is NOT available - wait 1000ms and try again");
-    //                     setTimeout(doRequest,1000);
-    //                }
-    //             })
-    //         }
-    //         doRequest();
-    //         return p;
-    //     }
-    //     return delay();
-    // }
 
     var comb = require('comb');
     var expect = chai.expect;
@@ -773,12 +745,11 @@ console.log('This is a line you never should see');
             var correct = createFromTemplate(templates);
             correct = correct.statement;
             var incorrect = extend(true, {}, correct);
-// console.log('Correct and Incorrect upon creation:\n', correct, '\n', incorrect);
             correct.id = helper.generateUUID();
             incorrect.id = helper.generateUUID();
 
             incorrect.verb.id = 'should fail';
-// console.log('\n\nCorrect and Incorrect upon modifications:\n', correct, '\n', incorrect);
+            this.timeout(600000);
             var query = '?statementId=' + correct.id;
             var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
@@ -788,8 +759,8 @@ console.log('This is a line you never should see');
                 .expect(400)
                 .end()
                 .get(helper.getEndpointStatements() + query)
-                // .wait(genDelay(stmtTime, query, correct.id))
-                .wait(genDelay(stmtTime, query, undefined))
+                .wait(genDelay(stmtTime, query, correct.id))
+                // .wait(genDelay(stmtTime, query, undefined))
                 .headers(helper.addAllHeaders({}))
                 .expect(404, done);
         });
