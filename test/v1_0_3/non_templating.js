@@ -3100,8 +3100,8 @@
                     if (err){
                         done(err);
                     } else {
-                        voidingTime = new Date().toISOString();
-                        untilVoidingTime = new Date(Date.now() + 300000).toISOString();
+                        voidingTime = new Date(Date.now() - helper.getTimeMargin() - 10000).toISOString();
+                        untilVoidingTime = new Date(Date.now() + helper.getTimeMargin()).toISOString();
                         done();
                     }
                 });
