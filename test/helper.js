@@ -349,8 +349,8 @@ if (!process.env.EB_NODE_COMMAND) {
                         .expect(200)
                         .end(function (err, res) {
                             if (err) {
-                                return err;
                                 done(err);
+                                return err;
                             } else {
 // console.log('Headers', res.headers, res.body);
                                 lrsTime = new Date(res.headers.date);
