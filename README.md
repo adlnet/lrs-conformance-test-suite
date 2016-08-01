@@ -48,9 +48,9 @@ $ node bin/console_runner.js --help
 Example:
 
 ```bash
-$ node bin/console_runner.js --endpoint http://localhost/xapi --basicAuth true --authUser username --authPass password
-
 $ node bin/console_runner.js -e http://localhost/xapi -a true -u username -p password
+-or-
+$ node bin/console_runner.js --endpoint http://localhost/xapi --basicAuth true --authUser username --authPass password
 ```
 
 
