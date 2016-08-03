@@ -1,0 +1,12 @@
+{
+  "objectType": "Group",
+  "name": "Group Identified",
+  "mbox_sha1sum": "cd9b00a5611f94eaa7b1661edab976068e364975",
+  "member": [
+    {
+      "objectType": "Agent",
+      "name": "xAPI mbox",
+      "mbox": "mailto:xapi@adlnet.gov"
+    }
+  ]
+}

@@ -5,8 +5,12 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
+
 (function (module, process, request, should, helper) {
     "use strict";
+
+    if(global.OAUTH)
+        request = helper.OAuthRequest(request);
 
     describe('Conformance Requirements using Templating', function () {
 
