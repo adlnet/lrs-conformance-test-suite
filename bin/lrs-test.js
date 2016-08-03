@@ -44,7 +44,7 @@
             directory: Joi.array().items(Joi.string().required()),
             /* See [RFC-3986](http://tools.ietf.org/html/rfc3986#page-17) */
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
-            grep: Joi.array().items(Joi.string().required()),
+            grep: Joi.string(),
             optional: Joi.array().items(Joi.string().required()),
             basicAuth: Joi.any(true, false),
             oAuth1: Joi.any(true, false),
@@ -105,20 +105,10 @@
             oAuth1: _options.oAuth1,
         };
 
-        RegExp.escape = function(string) {
-            return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
-        };
         var grep;
         if (options.grep){
-          grep = '';
-          options.grep.forEach(function(g){
-            grep += RegExp.escape(g) + '|';
-          });
-          //removes extra '|' character at the end
-          grep = grep.slice(0,-1);
-          grep = new RegExp(grep);
+          grep = new RegExp(options.grep);
         }
-
 
         var mocha = new Mocha({
             uii: 'bdd',
@@ -129,7 +119,7 @@
         });
 
         console.log("Grep is " + grep);
-        console.log("optional is ", options.optional);
+        process.env.DIRECTORY = options.directory[0];
 
         //adds optional tests to the front in ascending order
         if (options.optional){
@@ -139,6 +129,7 @@
         }
 
         console.log("directory is ", options.directory);
+
 
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;

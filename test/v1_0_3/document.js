@@ -1679,35 +1679,35 @@
                 });
         });
 
-        it('A Person Object uses an "objectType" property exactly one time (Multiplicity, 7.6.table1.row1.c)', function (done) {
-            // JSON Parser validation
-            done();
-        });
-
-        it('A Person Object uses a "name" property at most one time (Multiplicity, 7.6.table1.row2.c)', function (done) {
-            // JSON Parser validation
-            done();
-        });
-
-        it('A Person Object uses a "mbox" property at most one time (Multiplicity, 7.6.table1.row3.c)', function (done) {
-            // JSON Parser validation
-            done();
-        });
-
-        it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function (done) {
-            // JSON Parser validation
-            done();
-        });
-
-        it('A Person Object uses an "openid" property at most one time (Multiplicity, 7.6.table1.row5.c)', function (done) {
-            // JSON Parser validation
-            done();
-        });
-
-        it('A Person Object uses an "account" property at most one time (Multiplicity, 7.6.table1.row6.c)', function (done) {
-            // JSON Parser validation
-            done();
-        });
+        // it('A Person Object uses an "objectType" property exactly one time (Multiplicity, 7.6.table1.row1.c)', function (done) {
+        //     // JSON Parser validation
+        //     done();
+        // });
+        //
+        // it('A Person Object uses a "name" property at most one time (Multiplicity, 7.6.table1.row2.c)', function (done) {
+        //     // JSON Parser validation
+        //     done();
+        // });
+        //
+        // it('A Person Object uses a "mbox" property at most one time (Multiplicity, 7.6.table1.row3.c)', function (done) {
+        //     // JSON Parser validation
+        //     done();
+        // });
+        //
+        // it('A Person Object uses a "mbox_sha1sum" property at most one time (Multiplicity, 7.6.table1.row4.c)', function (done) {
+        //     // JSON Parser validation
+        //     done();
+        // });
+        //
+        // it('A Person Object uses an "openid" property at most one time (Multiplicity, 7.6.table1.row5.c)', function (done) {
+        //     // JSON Parser validation
+        //     done();
+        // });
+        //
+        // it('A Person Object uses an "account" property at most one time (Multiplicity, 7.6.table1.row6.c)', function (done) {
+        //     // JSON Parser validation
+        //     done();
+        // });
     });
 
     function createFromTemplate(templates) {

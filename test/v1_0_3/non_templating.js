@@ -6,7 +6,7 @@
  *
  */
 
-(function (module, fs, extend, moment, request, requestPromise, chai, Joi, helper, multipartParser, redirect) {
+(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
     // "use strict";
 
     var expect = chai.expect;
@@ -3198,406 +3198,128 @@
     });
 
     describe('Miscellaneous Requirements', function () {
+
         it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
-            // JSON parser validates this
-            done();
+          var verbTemplate = 'http://adlnet.gov/expapi/test/unicode/target/';
+          var verb = verbTemplate + helper.generateUUID();
+          var malformedTemplates = [
+              {statement: '{{statements.default}}'}
+          ];
+          var malformed = createFromTemplate(malformedTemplates);
+          malformed = malformed.statement;
+          var string = "\"objectType\": \"Agent\"";
+          malformed.actor.objectType = string;
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(malformed)
+              .expect(400, done)
         });
 
         it('All Strings are encoded and interpreted as UTF-8 (6.1.a)', function (done) {
-            // Handled internally by LRS
-            done();
-        });
-
-        /*
-        JSON never specifies about duplicate keys and while many parsers
-        automatically remove or merge such can not be relied upon, and the
-        best indication from the xAPI spec is that malformed statements
-        should be rejected
-        */
-        it('A Statement uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement uses the "actor" property exactly one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement uses the "verb" property exactly one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement uses the "object" property exactly one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement uses the "result" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement uses the "context" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement uses the "timestamp" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        /*
-        An lrs does not accept statements with a stored property, duplicates or no.  An lrs is to assign the stored statement.
-        */
-        it('A Statement uses the "stored" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        /*
-        LRS is accepting and putting its own stamp of approval on the statement, throwing out the authority that it was given, if it doesn't not trust the given authority.  There seems to be no rejection of a statement based on wrong/invalid/untrusted authority.
-        */
-        it('A Statement uses the "authority" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement uses the "version" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement uses the "attachments" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Group uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Group uses the "member" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An "actor" property uses the "objectType" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Agent uses the "mbox_sha1sum" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Agent uses the "openid" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Agent uses the "account" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Agent uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Agent uses the "mbox" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Anonymous Group uses the "member" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Identified Group uses the "mbox" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Identified Group uses the "mbox_sha1sum" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Identified Group uses the "openid" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Identified Group uses the "account" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Account Object uses the "homePage" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Account Object property uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A "verb" property uses the "id" property at most one time (Multiplicity, 4.1.3.table1.row1.aultiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Voiding Statement\'s Target is defined as the Statement corresponding to the "object" property\'s "id" property\'s IRI (4.3.b)', function (done) {
-            // Handled by templating
-            done();
-        });
-
-        it('A "verb" property uses the "display" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An "object" property uses the "objectType" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An "object" property uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An "object" property uses the "definition" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity is defined by the "objectType" of an "object" with value "Activity" (4.1.4.1.table1.row1.b)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity uses the "definition" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "name" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "description" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "type" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "moreInfo" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "interactionType" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "correctResponsesPattern" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "choices" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "scale" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "source" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "target" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "steps" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Interaction Component uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Interaction Component uses the "description" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Activity Definition uses the "extensions" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement Reference uses the "id" property at most one time (Multiplicity, 4.1.a)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A "score" Object uses a "scaled" property at most one time (Multiplicity, 4.1.5.1.table1.row1.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A "score" Object uses a "raw" property at most one time (Multiplicity, 4.1.5.1.table1.row3.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A "score" Object uses a "min" property at most one time (Multiplicity, 4.1.5.1.table1.row3.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A "score" Object uses a "max" property at most one time (Multiplicity, 4.1.5.1.table1.row4.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "result" property uses a "success" property at most one time (Multiplicity, 4.1.5.table1.row2.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "result" property uses a "completion" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "result" property uses a "response" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "result" property uses a "duration" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "result" property uses an "extensions" property at most one time (Multiplicity, 4.1.5.table1.row3.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "context" property uses a "registration" property at most one time (Multiplicity, 4.1.6.table1.row1.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "context" property uses an "instructor" property at most one time (Multiplicity, 4.1.6.table1.row2.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "context" property uses an "team" property at most one time (Multiplicity, 4.1.6.table1.row3.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "context" property uses a "contextActivities" property at most one time (Multiplicity, 4.1.6.table1.row4.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "context" property uses an "revision" property at most one time (Multiplicity, 4.1.6.table1.row5.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "context" property uses an "platform" property at most one time (Multiplicity, 4.1.6.table1.row6.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "context" property uses a "language" property at most one time (Multiplicity, 4.1.6.table1.row7.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "context" property uses a "statement" property at most one time (Multiplicity, 4.1.6.table1.row8.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('A Statement\'s "context" property uses an "extensions" property at most one time (Multiplicity, 4.1.6.table1.row9.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Attachment uses a "usageType" property exactly one time (Multiplicity, 4.1.11.table1.row1.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Attachment uses a "display" property exactly one time (Multiplicity, 4.1.11.table1.row2.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Attachment uses a "description" property at most one time (Multiplicity, 4.1.11.table1.row3.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Attachment uses a "contentType" property exactly one time (Multiplicity, 4.1.11.table1.row4.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Attachment uses a "length" property exactly one time (Multiplicity, 4.1.11.table1.row5.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Attachment uses a "sha2" property exactly one time (Multiplicity, 4.1.11.table1.row6.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An Attachment uses a "fileUrl" property at most one time (Multiplicity, 4.1.11.table1.row7.c)', function (done) {
-            // JSON parser validates this
-            done();
-        });
-
-        it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, 4.2.table1.row1.c)', function (done) {
-            // JSON parser validates this
-            done();
+          var verbTemplate = 'http://adlnet.gov/expapi/test/unicode/target/';
+          var verb = verbTemplate + helper.generateUUID();
+          var unicodeTemplates = [
+              {statement: '{{statements.unicode}}'}
+          ];
+
+          var unicode = createFromTemplate(unicodeTemplates);
+          unicode = unicode.statement;
+          unicode.verb.id = verb;
+
+          var query = helper.getUrlEncoding({
+              verb: verb
+          });
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(unicode)
+              .expect(200)
+              .end()
+              .get(helper.getEndpointStatements() + '?' + query)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function (err, res) {
+                  if (err) {
+                      done(err);
+                  } else {
+                      var results = parse(res.body, done);
+                      var languages = results.statements[0].verb.display;
+                      var unicodeConformant = true;
+                      for (var key in languages){
+                        if (languages[key] !== unicode.verb.display[key])
+                          unicodeConformant = false;
+                      }
+                      expect(unicodeConformant).to.be.true;
+                      done();
+                  }
+              });
         });
 
         it('A "more" property\'s referenced container object follows the same rules as the original GET request, originating with a single "statements" property and a single "more" property (4.2.table1.row1.b)', function (done) {
-            // JSON parser validates this
-            done();
+
+          var verbTemplate = 'http://adlnet.gov/expapi/test/more/target/';
+          var id1 = helper.generateUUID();
+          var id2 = helper.generateUUID();
+          var statementTemplates = [
+              {statement: '{{statements.default}}'}
+          ];
+
+          var statement1 = createFromTemplate(statementTemplates);
+          statement1 = statement1.statement;
+          statement1.verb.id = verbTemplate + "one";
+          statement1.id = id1;
+
+          var statement2 = createFromTemplate(statementTemplates);
+          statement2 = statement2.statement;
+          statement2.verb.id = verbTemplate + "two";
+          statement2.id = id2;
+          var query = helper.getUrlEncoding(
+            {limit:1}
+          );
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(statement1)
+              .expect(200)
+              .end()
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(statement2)
+              .expect(200)
+              .end()
+              .get(helper.getEndpointStatements() + '?' + query)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function (err, res) {
+                  if (err) {
+                      done(err);
+                  }
+                  else {
+                      var results = parse(res.body, done);
+                          request('')
+                          .get(liburl.resolve(res.request.href, results.more))
+                          .headers(helper.addAllHeaders({}))
+                          .expect(200)
+                          .end(function (err, res) {
+                              if (err) {
+                                done(err);
+                              }
+                              else {
+                              var results2 = parse(res.body, done);
+                              var moreRequest = false;
+                                  if (results2.statements && results2.more){
+                                    moreRequest = true;
+                                  }
+                              expect(moreRequest).to.be.true;
+                              done();
+                              }
+                          });
+                  }
+              });
         });
 
         it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
@@ -3743,4 +3465,4 @@
         return parsed;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
