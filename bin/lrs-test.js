@@ -149,7 +149,6 @@
                 verifier: _options.verifier
             }
         }
-    });
 
         options.directory.forEach(function(dir) {
             //process.postMessage("log", (JSON.stringify(global.OAUTH)));
