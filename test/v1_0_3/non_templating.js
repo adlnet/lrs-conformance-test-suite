@@ -3324,27 +3324,207 @@
 
         it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
             // Using requirement: An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**
-            done();
+            var id = helper.generateUUID();
+            var statementTemplates = [
+                {statement: '{{statements.default}}'}
+            ];
+
+            var statement = createFromTemplate(statementTemplates);
+            statement = statement.statement;
+            statement.id = id;
+            var query = helper.getUrlEncoding({statementId: id});
+
+            console.log("before request", statement);
+
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(statement)
+                .expect(200)
+                .end();
+                console.log("does this work");
+                requestPromise(helper.getEndpoint())
+                .delete(helper.getEndpointStatements() + '?statementId=' + statement.id)
+                .set('X-Experience-API-Version', '1.0.1')
+                .expect(405)
+                .end(function(err,res){
+                  if (err){
+                    console.log(err);
+                    done(err);
+                  }
+                  else{
+                    console.log("success", res.body);
+                    done();
+                  }
+                });
+            //done();
         });
 
         it('A POST request is defined as a "pure" POST, as opposed to a GET taking on the form of a POST (7.2.2.e)', function (done) {
             // All of these "defined" aren't really tests, rather ways to disambiguate future tests.
+
+
+
             done();
         });
 
         it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
             // Not concerned with "Content-Type" when use a GET request
-            done();
+            var id = helper.generateUUID();
+            var templates = [
+                {statement: '{{statements.attachment}}'},
+                {
+                    attachments: [
+                        {
+                            "usageType": "http://example.com/attachment-usage/test",
+                            "display": {"en-US": "A test attachment"},
+                            "description": {"en-US": "A test attachment (description)"},
+                            "contentType": "application/json",
+                            "length": 27,
+                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
+                            "fileUrl": "http://over.there.com/file.txt",
+
+                        }
+                    ]
+                }
+            ];
+            var attachment = createFromTemplate(templates);
+            attachment = attachment.statement;
+            attachment.id = id;
+
+            var data = {
+              contentType: "application/json",
+                statementId: id,
+                attachments: true
+            };
+            var query = helper.getUrlEncoding(data);
+
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(attachment)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addAllHeaders({}))
+                .expect(400, done);
         });
 
         it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d, 7.2.3.e)', function (done) {
             // Not concerned with "Content-Type" when use a GET request
-            done();
+            var id = helper.generateUUID();
+            var templates = [
+                {statement: '{{statements.attachment}}'},
+                {
+                    attachments: [
+                        {
+                            "usageType": "http://example.com/attachment-usage/test",
+                            "display": {"en-US": "A test attachment"},
+                            "description": {"en-US": "A test attachment (description)"},
+                            "contentType": "text",
+                            "length": 27,
+                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
+                            "fileUrl": "http://over.there.com/file.txt",
+
+                        }
+                    ]
+                }
+            ];
+            var attachment = createFromTemplate(templates);
+            attachment = attachment.statement;
+            attachment.id = id;
+
+            var data = {
+              contentType: "text",
+                statementId: id,
+                attachments: false
+            };
+            var query = helper.getUrlEncoding(data);
+
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(attachment)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addAllHeaders({}))
+                .expect(400, done);
         });
 
         it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
             // RFC 1341: MIME-Version header field is required at the top level of a message. It is not required for each body part of a multipart entity
+            /*
+            var id = helper.generateUUID();
+            var templates = [
+                {statement: '{{statements.attachment}}'},
+                {
+                    attachments: [
+                        {
+                            "usageType": "http://example.com/attachment-usage/test",
+                            "display": {"en-US": "A test attachment"},
+                            "description": {"en-US": "A test attachment (description)"},
+                            "contentType": "multipart/mixed",
+                            "length": 27,
+                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
+                            "fileUrl": "http://over.there.com/file.txt"
+                        }
+                    ]
+                }
+            ];
+
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846', "MIME-Version" : "test"};
+            var attachment = createFromTemplate(templates);
+            attachment = attachment.statement;
+            attachment.id = id;
+
+            var data = {
+              contentType: "multipart/mixed",
+                statementId: id,
+                attachments: false
+            };
+            var query = helper.getUrlEncoding(data);
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
+
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders(header))
+                .body(attachment).expect(200)
+                .end(function(err,res){
+                  if (err) {
+                    console.log(err);
+                    done(err);
+                  }
+                  else{
+                    console.log(res.request.req._header);
+                    done();
+                  }
+            });
+            */
             done();
+        });
+
+        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "Content-Transfer-Encoding" with a value of "binary" (4.1.11.b.c, 4.1.11.b.e)', function (done) {
+
+          // not implemented yet
+          done();
+        });
+
+        it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done){
+
+          done();
+        });
+
+        it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.d)', function (done){
+
+          done();
+        });
+
+
+        it ('An LRS sends a header response with "X-Experience-API-Version" as the name and "1.0.1" as the value (Format, 6.2.a, 6.2.b)', function (done){
+          var versionHeader = helper.addHeaderXapiVersion({});
+          expect(versionHeader["X-Experience-API-Version"] === "1.0.1").to.be.true;
+          done();
         });
 
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
@@ -3445,6 +3625,60 @@
                     }
                 });
         });
+
+
+    it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including 7.3.e)', function (done){
+      var templates = [
+          {statement: '{{statements.default}}'}
+      ];
+      var correct = createFromTemplate(templates);
+      correct = correct.statement;
+      var incorrect = extend(true, {}, correct);
+
+      correct.id = helper.generateUUID();
+      incorrect.id = helper.generateUUID();
+
+      incorrect.verb.id = 'should fail';
+
+      request(helper.getEndpointAndAuth())
+          .post(helper.getEndpointStatements())
+          .headers(helper.addAllHeaders({}))
+          .json([correct, incorrect])
+          .expect(400)
+          .end()
+          .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
+          .headers(helper.addAllHeaders({}))
+          .expect(404, done);
+  });
+
+      it ('An LRS generates the "id" property of a Statement if none is provided (Modify, 4.1.1.a)', function (done){
+        var templates = [
+
+
+
+            {statement: '{{statements.default}}'}
+        ];
+        data = createFromTemplate(templates);
+        data = data.statement;
+        request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(200)
+            .end()
+            .get(helper.getEndpointStatements() + '?limit=1')
+            .headers(helper.addAllHeaders({}))
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var results = parse(res.body, done);
+                    expect(results.statements[0].id).to.not.be.undefined;
+                    done();
+                }
+            });
+      });
+
     });
 
     function createFromTemplate(templates) {
