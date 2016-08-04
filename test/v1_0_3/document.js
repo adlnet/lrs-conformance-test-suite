@@ -59,7 +59,6 @@
     function sendRequest(type, url, params, body, expect) {
         var reqUrl = params ? (url + '?' + helper.getUrlEncoding(params)) : url;
 
-
         var headers = helper.addAllHeaders({});
         var pre = request[type](reqUrl);
         //Add the .sign funciton to the request

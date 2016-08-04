@@ -104,7 +104,7 @@ function start(options)
 {
 	testRunner = new TestRunner('console', null, options);
     testRunner.start();
-	
+
 	var interval = setInterval(function(){
 		console.log(JSON.stringify(testRunner.summary));
 	}.bind(this), 2000);
@@ -119,7 +119,7 @@ function start(options)
 			clearInterval(interval);
 			console.log(JSON.stringify(testRunner.summary));
 			console.log(`Tests completed in ${testRunner.duration/1000} seconds`);
-			
+
 			// write log to file
 			var cleanLog = testRunner.getCleanRecord();
 			var output = JSON.stringify(cleanLog, null, '    ');
@@ -169,8 +169,7 @@ else {
             token_secret: options.token_secret,
             verifier: options.verifier
         }
-        
+
 		start(options);
     });
 }
-
