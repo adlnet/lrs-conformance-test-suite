@@ -3042,7 +3042,7 @@
         });
     });
 
-    describe('An LRS\'s Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it (7.2.4.b)', function () {
+    describe('An LRS\'s Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it (Communication 2.1.4.s1.b2)', function () {
         var verbTemplate = 'http://adlnet.gov/expapi/test/voided/target/';
         var verb = verbTemplate + helper.generateUUID();
         var voidedId = helper.generateUUID();
@@ -3142,7 +3142,7 @@
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
-                        done(err);
+                        done('AssertionError: expected results to have property statements and that to contain ' + voidingId);
                     } else {
                         var results = parse(res.body, done);
                         expect(results).to.have.property('statements');
