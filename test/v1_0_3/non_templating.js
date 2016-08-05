@@ -3142,12 +3142,19 @@
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
-                        done('AssertionError: expected results to have property statements and that to contain ' + voidingId);
+                        done(err);
                     } else {
-                        var results = parse(res.body, done);
-                        expect(results).to.have.property('statements');
-                        expect(JSON.stringify(results.statements)).to.contain(voidingId);
-                        done();
+                        try {
+                            var results = parse(res.body, done);
+                            expect(results).to.have.property('statements');
+                            expect(JSON.stringify(results.statements)).to.contain(voidingId);
+                            done();
+                        } catch (e) {
+                            if (e.message.length > 400) {
+                                e.message = "expected results to have property 'statements' containing " + voidingId;
+                            }
+                            done(e);
+                        }
                     }
                 });
         });
