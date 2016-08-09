@@ -65,8 +65,8 @@ console.log(err, typeof res.body, res.statusCode, res.statusMessage, typeof res.
                                 console.log('Setting the max wait time', delta, finish);
                             }
                             console.log('waiting at least', delta, 'ms, up to', delta * 10, 'ms');
-                            console.log('compare these', Date.now(), finish);
-                            if (Date.now() >= finish) {
+                            console.log('compare these', res.headers.date, finish);
+                            if (new Date(res.headers.date).valueOf() >= finish) {
                                 console.log('We have waited long enough, we are moving on');
                                 p.resolve()
                             }
