@@ -13,57 +13,82 @@
     {
         var delay = function(val)
         {
-            var count = 0;
             var p = new comb.Promise();
             var endP = helper.getEndpointStatements();
             if (query) {
                 endP += query;
             }
-
+            var delta, finish;
+console.log('\n\nwhat about', helper.getEndpointAndAuth(), helper.getEndpointStatements(), query);
             function doRequest()
             {
-                count++;
+                var result;
                 request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements())
-                // .get(endP)
+                .get(endP)
                 .headers(helper.addAllHeaders({}))
                 .end(function(err, res)
                 {
+console.log("here is what we sent", res.request.path);
+console.log(err, typeof res.body, res.statusCode, res.statusMessage, typeof res.body, res.body.length);
+
                     if (err) {
-                        //if there was an error, we quit and go home
+                    //if there was an error, we quit and go home
                         console.log('Error', err);
                         p.reject();
-                    } else if (!(res && res.headers)) {
-                        //if the headers are not right, we quit and go home
-                        console.log("Didn't get the results/headers I wanted");
-                        p.reject();
-                    } else if (id && res.body && (parse(res.body).id === id)) {
-                        //if the body contains what we are looking for, we're good we can continue with the testing
-                        console.log('Yay, we found what we were looking for - it is time to do the rest of the test', parse(res.body).id, id);
-                        p.resolve();
-                    } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
-                        //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
-                        console.log('comparing con-thru', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
-                        p.resolve();
                     } else {
-                        //otherwise we give the lrs a second to catch up and try again
-                        console.log('we are going to try again', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
-                        if ((count % 5) === 0) {
-                            console.log('before post request');
-                            request(helper.getEndpointAndAuth())
-                            .post(helper.getEndpointStatements())
-                            .headers(helper.addAllHeaders({}))
-                            .json(createFromTemplate([{statement: '{{statements.default}}'}]).statement)
-                            .end(console.log('end of post request'));
+                        try {
+                        //we parse the result into either a single statment or a statements object
+                            result = parse(res.body);
+                        } catch (e) {
+                            console.log('res.body did not parse');
+                            result = {};
                         }
-                        setTimeout(doRequest, 1000);
+                        if (id && result.id && (result.id === id)) {
+                        //if we find a single statment and the id we are looking for, then we're good we can continue with the testing
+                            console.log("Pennsylvania", typeof res.body, res.body.length);
+                            p.resolve();
+                        } else if (id && result.statements && stmtFound(result.statements, id)) {
+                        //if we find a block of statments and the id we are looking for, then we're good and we can continue with the testing
+                            console.log('Ohio', result.statements.length);
+                            p.resolve();
+                        } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
+                        //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
+                            console.log('comparing con-thru', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
+                            p.resolve();
+                        } else {
+                        //otherwise we give the lrs a second to catch up and try again
+                            if (!delta) {
+                                // first time only - we use the provided headers to calculate a maximum wait time
+                                console.log('Are these what I want them to be??', Date.now(), res.headers.date, res.headers['x-experience-api-consistent-through']);
+                                delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
+                                finish = Date.now() + 10 * delta;
+                                console.log('Setting the max wait time', delta, finish);
+                            }
+                            console.log('waiting at least', delta, 'ms, up to', delta * 10, 'ms');
+                            console.log('compare these', Date.now(), finish);
+                            if (Date.now() >= finish) {
+                                console.log('We have waited long enough, we are moving on');
+                                p.resolve()
+                            }
+                            console.log('we are going to try again', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
+                            setTimeout(doRequest, 1000);
+                        }
                     }
-                })
+                });
             }
             doRequest();
             return p;
         }
         return delay();
+
+        function stmtFound (arr, id) {
+            console.log('In stmtFound attempting', arr.length, 'up to times to find', id);
+            arr.forEach (function (s) {
+                if (s.id === id) return true;
+            });
+            console.log('we did not find', id, 'in array, please continue');
+            return false;
+        }
     }
 
     var comb = require('comb');
@@ -81,8 +106,9 @@
             data = data.statement;
             data.id = helper.generateUUID();
             var query = '?statementId=' + data.id;
-            this.timeout(60000);
+            // this.timeout(60000);
             var stmtTime = Date.now();
+
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -169,6 +195,7 @@
 
     describe('An LRS returns a ContextActivity in an array, even if only a single ContextActivity is returned (4.1.6.2.c, 4.1.6.2.d)', function () {
         var types = ['parent', 'grouping', 'category', 'other'];
+        // this.timeout(0);
 
         types.forEach(function (type) {
             it('should return array for statement context "' + type + '"  when single ContextActivity is passed', function (done) {
