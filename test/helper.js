@@ -305,8 +305,6 @@ if (!process.env.EB_NODE_COMMAND) {
             });
             return list;
         },
-
-
         /**
          * Make the TIME_MARGIN available to tests
          * @returns {integer}
@@ -314,7 +312,6 @@ if (!process.env.EB_NODE_COMMAND) {
         getTimeMargin: function () {
                 return TIME_MARGIN;
         },
-
         /*
          * Calculates the difference between the lrs time and the suite time and sets a variable for use with since and until requests.
         */
@@ -345,24 +342,26 @@ if (!process.env.EB_NODE_COMMAND) {
                     if (err) {
                         done(err);
                     } else {
+// console.log('POST headers', res.headers, res.body);
                         request(module.exports.getEndpointAndAuth())
                         .get(module.exports.getEndpointStatements() + '?' + query)
                         .headers(module.exports.addAllHeaders({}))
                         .expect(200)
                         .end(function (err, res) {
                             if (err) {
-                                return err;
                                 done(err);
+                                return err;
                             } else {
+// console.log('Headers', res.headers, res.body);
                                 lrsTime = new Date(res.headers.date);
                                 TIME_MARGIN = suiteTime - lrsTime;
+console.log("the time margin is", TIME_MARGIN);
                                 done(err, TIME_MARGIN);
                             }
                         });
                     }
                 });
         },
-
         /**
          * Returns query string (does not work for Date object which needs toISOString()).
          * @returns {String}
@@ -676,7 +675,7 @@ if (!process.env.EB_NODE_COMMAND) {
                 privateKey: options.privateKey
             });
             sig = new Buffer(sig);
-            
+
             // attach metadata
             statement.attachments = [{
                 "usageType": options.attachmentInfo.usageType,
@@ -739,10 +738,7 @@ if (!process.env.EB_NODE_COMMAND) {
                 '3QIDAQAB',
                 '-----END PUBLIC KEY-----'
             ].join('\n');
-
-
         }
-
     };
 
     function createMapping(mapper, string) {

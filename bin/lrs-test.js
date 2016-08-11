@@ -1,10 +1,9 @@
 #!/usr/bin/env node
-
 /**
  * Description : This is the command line interface for running the lrs conformance test suite.
  *
  */
-(function(process, require, program, exit, packageJson, Q, Joi, fs, path, Mocha) {
+(function (process, require, program, exit, packageJson, Q, Joi, fs, path, Mocha) {
     'use strict';
 
     function processMessageReporter(p) {

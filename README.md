@@ -54,6 +54,12 @@ $ node bin/console_runner.js --endpoint http://localhost/xapi --basicAuth true -
 ```
 
 
+## Contributing to the project
+We welcome contributions to this project. Fork this repository,
+make changes, and submit pull requests. If you're not comfortable
+with editing the code, please [submit an issue](https://github.com/adlnet/lrs-conformance-test-suite/issues) and we'll be happy
+to address it. 
+
 ### License
 MIT License
 

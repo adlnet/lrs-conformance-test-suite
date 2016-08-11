@@ -8,28 +8,12 @@
 (function (process, request, should, chai, isEmail, helper) {
     'use strict';
 
-	/*var fs = require('fs');
-	var logFile = fs.createWriteStream('document_tests.log');
-
-    // wrap mocha methods in test enumeration code
-	function describe(title, body)
-	{
-		logFile.write(title+'\n');
-		context(title, body);
-	}
-
-	function it(title, body)
-	{
-		logFile.write('\t'+title+'\n');
-		specify(title, body);
-	}*/
-
-
     var expect = chai.expect;
 
     var MAIL_TO = 'mailto:';
 
     var request = request(helper.getEndpoint());
+
     var oauth;
     if (global.OAUTH) {
         var OAuth = require('oauth');
@@ -64,6 +48,7 @@
             pre.set('Authorization', signature);
         }
     }
+
     /**
      * Sends an HTTP request using supertest
      * @param {string} type ex. GET, POST, PUT, DELETE and HEAD
@@ -76,25 +61,14 @@
     function sendRequest(type, url, params, body, expect) {
         var reqUrl = params ? (url + '?' + helper.getUrlEncoding(params)) : url;
 
-
         var headers = helper.addAllHeaders({});
         var pre = request[type](reqUrl);
-        //Add the .sign funciton to the request
-        extendRequestWithOauth(pre);
         if (body) {
             pre.send(body);
         }
         pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
         if (process.env.BASIC_AUTH_ENABLED === 'true') {
             pre.set('Authorization', headers['Authorization']);
-        }
-        //If we're doing oauth, set it up!
-        try {
-            if (global.OAUTH) {
-                pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-            }
-        } catch (e) {
-            console.log(e);
         }
         return pre.expect(expect);
     }
