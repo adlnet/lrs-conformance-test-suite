@@ -738,10 +738,7 @@ console.log("the time margin is", TIME_MARGIN);
                 '3QIDAQAB',
                 '-----END PUBLIC KEY-----'
             ].join('\n');
-
-
         }
-
     };
 
     function createMapping(mapper, string) {

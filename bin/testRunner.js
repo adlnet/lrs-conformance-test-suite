@@ -5,6 +5,7 @@ const child_process = require('child_process'),
 	fs = require('fs'),
 	EventEmitter = require('events').EventEmitter,
 	rollup = require('./rollupRules.js'),
+	version = require('../version.js'),
 	SpecRefs = require('../test/references.json');
 
 class Suite {
@@ -90,13 +91,13 @@ class TestRunner extends EventEmitter
 		this.proc.on('message', function(msg)
 		{
 			if(msg.action === 'ready'){
-
 				//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options
 				var flags = JSON.parse(JSON.stringify(this.flags));
 				if(this.options && this.options.grep)
 					flags.grep = this.options.grep;
 				if(this.options && this.options.optional)
 					flags.optional = this.options.optional;
+
 				this.proc.send({action: 'runTests', payload: flags});
 			}
 		}.bind(this));
@@ -117,6 +118,7 @@ class TestRunner extends EventEmitter
 				this.summary.passed = 0;
 				this.summary.failed = 0;
 				this.startTime = Date.now();
+				this.summary.version = version.versionNumber;
 				break;
 
 			case 'end':
@@ -231,6 +233,8 @@ class TestRunner extends EventEmitter
 
 	getCleanRecord()
 	{
+
+
 		var runRecord = {
 			name: this.name || null,
 			owner: this.owner || null,
@@ -240,7 +244,8 @@ class TestRunner extends EventEmitter
 				authUser: this.flags.authUser,
 				oAuth1: this.flags.oAuth1,
 				consumer_key: this.flags.consumer_key,
-				grep:this.flags.grep
+				grep:this.flags.grep,
+				optional: this.flags.optional
 			},
 			options:this.options,
 			lrsSettingsUUID: this.lrsSettingsUUID,
@@ -254,7 +259,8 @@ class TestRunner extends EventEmitter
 			summary: {
 				total: this.summary.total,
 				passed: this.summary.passed,
-				failed: this.summary.failed
+				failed: this.summary.failed,
+				version: version.versionNumber
 			}
 		};
 

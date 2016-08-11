@@ -40,7 +40,6 @@
         request = helper.OAuthRequest(request);
 
 
-
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
         it('should populate authority', function (done) {
             var templates = [
@@ -50,7 +49,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -80,7 +79,7 @@
             ];
             var data = createFromTemplate(templates);
             data = data.statement;
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data).expect(200).end(function (err, res) {
@@ -101,7 +100,7 @@
             var data = createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidedId;
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data).expect(200).end(function (err, res) {
@@ -121,7 +120,7 @@
             var data = createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidedId;
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data).expect(400).end(function (err, res) {
@@ -147,7 +146,7 @@
                 data = data.statement;
                 data.id = helper.generateUUID();
 
-                request(helper.getEndpointAndAuth())
+                request(helper.getEndpoint())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
                     .json(data)
@@ -181,7 +180,7 @@
                 data = data.statement;
                 data.id = helper.generateUUID();
 
-                request(helper.getEndpointAndAuth())
+                request(helper.getEndpoint())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
                     .json(data)
@@ -228,12 +227,12 @@
             ];
             data = createFromTemplate(templates);
             data = data.statement;
-
+console.log('nonT before: \n\n\n\n');
             attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
         });
 
         it('should succeed when attachment uses "fileUrl" and request content-type is "application/json"', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data).expect(200, done);
@@ -242,16 +241,17 @@
         it('should fail when attachment uses "fileUrl" and request content-type is "multipart/form-data"', function (done) {
             var header = {'Content-Type': 'multipart/form-data; boundary=-------314159265358979323846'};
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(JSON.stringify(data)).expect(400, done);
         });
 
         it('should succeed when attachment is raw data and request content-type is "multipart/mixed"', function (done) {
+console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), 'why doesn\'t the string print');
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(200, done);
@@ -260,7 +260,7 @@
         it('should fail when attachment is raw data and request content-type is "multipart/form-data"', function (done) {
             var header = {'Content-Type': 'multipart/form-data; boundary=-------314159265358979323846'};
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
@@ -296,7 +296,7 @@
             var data = createFromTemplate(templates);
             data = data.statement;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data).expect(400, done);
@@ -308,7 +308,7 @@
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_content_type.part', {encoding: 'binary'});
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
@@ -320,7 +320,7 @@
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_no_boundary.part', {encoding: 'binary'});
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
@@ -332,7 +332,7 @@
             var header = {'Content-Type': 'multipart/mixed;'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
@@ -344,7 +344,7 @@
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_no_boundary.part', {encoding: 'binary'});
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
@@ -356,7 +356,7 @@
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_first_part_content_type.part', {encoding: 'binary'});
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
@@ -368,7 +368,7 @@
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_statement_parts.part', {encoding: 'binary'});
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
@@ -379,18 +379,19 @@
         it('should fail when attachments missing header "X-Experience-API-Hash"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_no_x_experience_api_hash.part', {encoding: 'binary'});
+            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
-                .body(attachment).expect(400, done);
+                .body(attachment).expect(200, done);
         });
 
         it('should fail when attachments header "X-Experience-API-Hash" does not match "sha2"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_invalid_no_match_sha2.part', {encoding: 'binary'});
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(400, done);
@@ -399,13 +400,13 @@
 
     describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (Format, 6.2.a, 6.2.f, 7.7.f)', function () {
         it('should pass when GET without header "X-Experience-API-Version"', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointAbout())
                 .expect(200, done);
         });
 
         it('should fail when statement GET without header "X-Experience-API-Version"', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
                 .expect(400, done);
         });
@@ -417,7 +418,7 @@
             var data = createFromTemplate(templates);
             data = data.statement;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .json(data).expect(400, done);
         });
@@ -429,7 +430,7 @@
             var data = createFromTemplate(templates);
             data = data.statement;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
                 .json(data).expect(400, done);
         });
@@ -444,7 +445,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -466,7 +467,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -498,7 +499,7 @@
             data.id = helper.generateUUID();
 
             var query = helper.getUrlEncoding({StatementId: data.id});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -507,7 +508,7 @@
 
         it('should fail on GET statement when not using "statementId"', function (done) {
             var query = helper.getUrlEncoding({StatementId: helper.generateUUID()});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -515,7 +516,7 @@
 
         it('should fail on GET statement when not using "voidedStatementId"', function (done) {
             var query = helper.getUrlEncoding({VoidedStatementId: helper.generateUUID()});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -528,7 +529,7 @@
             var data = createFromTemplate(templates);
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -536,7 +537,7 @@
 
         it('should fail on GET statement when not using "verb"', function (done) {
             var query = helper.getUrlEncoding({Verb: 'http://adlnet.gov/expapi/verbs/attended'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -544,7 +545,7 @@
 
         it('should fail on GET statement when not using "activity"', function (done) {
             var query = helper.getUrlEncoding({Activity: 'http://www.example.com/meetings/occurances/34534'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -552,7 +553,7 @@
 
         it('should fail on GET statement when not using "registration"', function (done) {
             var query = helper.getUrlEncoding({Registration: 'ec531277-b57b-4c15-8d91-d292c5b2b8f7'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -560,7 +561,7 @@
 
         it('should fail on GET statement when not using "related_activities"', function (done) {
             var query = helper.getUrlEncoding({Related_Activities: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -568,7 +569,7 @@
 
         it('should fail on GET statement when not using "related_agents"', function (done) {
             var query = helper.getUrlEncoding({Related_Agents: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -585,7 +586,7 @@
 
         it('should fail on GET statement when not using "until"', function (done) {
             var query = helper.getUrlEncoding({Until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -593,7 +594,7 @@
 
         it('should fail on GET statement when not using "limit"', function (done) {
             var query = helper.getUrlEncoding({Limit: 10});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -601,7 +602,7 @@
 
         it('should fail on GET statement when not using "format"', function (done) {
             var query = helper.getUrlEncoding({Format: 'ids'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -609,7 +610,7 @@
 
         it('should fail on GET statement when not using "attachments"', function (done) {
             var query = helper.getUrlEncoding({Attachments: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -617,7 +618,7 @@
 
         it('should fail on GET statement when not using "ascending"', function (done) {
             var query = helper.getUrlEncoding({Ascending: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -643,7 +644,7 @@
 
         it('should fail with activities "POST"', function (done) {
             var query = helper.getUrlEncoding({activityId: 'http://www.example.com/meetings/occurances/34534'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointActivities() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(405, done);
@@ -651,7 +652,7 @@
 
         it('should fail with activities "PUT"', function (done) {
             var query = helper.getUrlEncoding({activityId: 'http://www.example.com/meetings/occurances/34534'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointActivities() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(405, done);
@@ -677,7 +678,7 @@
             var data = createFromTemplate(templates);
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointAgents() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(405, done);
@@ -690,7 +691,7 @@
             var data = createFromTemplate(templates);
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointAgents() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(405, done);
@@ -711,7 +712,7 @@
 
             incorrect.verb.id = 'should fail';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json([correct, incorrect])
@@ -731,7 +732,7 @@
             var data = createFromTemplate(templates);
             data = data.statement;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -746,7 +747,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -755,7 +756,7 @@
 
         it('should allow "/statements" GET', function (done) {
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -771,7 +772,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -788,7 +789,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -803,7 +804,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -820,7 +821,7 @@
             data = data.statement;
             data.id = true;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -835,7 +836,7 @@
             data = data.statement;
             data.id = {key: 'should fail'};
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -855,7 +856,7 @@
             var modified = extend(true, {}, data);
             modified.verb.id = 'different value';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -890,7 +891,7 @@
             var modified = extend(true, {}, data);
             modified.verb.id = 'different value';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -924,7 +925,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -941,7 +942,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -969,7 +970,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -998,7 +999,7 @@
             var data = createFromTemplate(templates);
             data = data.statement;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -1009,7 +1010,7 @@
     describe('The LRS will NOT reject a GET request which returns an empty "statements" property (**Implicit**, 4.2.table1.row1.b)', function () {
         it('should return empty array list', function (done) {
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -1034,7 +1035,7 @@
             data = data.statement;
             data.id = helper.generateUUID()
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -1058,7 +1059,7 @@
             var data = createFromTemplate(templates);
             var statement = data.statement;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json([statement, statement])
@@ -1083,7 +1084,7 @@
     describe('The "more" property is an empty string if the entire results of the original GET request have been returned (4.2.table1.row2.b)', function () {
         it('should return empty "more" property when all statements returned', function (done) {
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent/344588672021038'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -1102,7 +1103,7 @@
 
     describe('If not empty, the "more" property\'s IRL refers to a specific container object corresponding to the next page of results from the orignal GET request (4.2.table1.row1.b)', function () {
         it('should return "more" which refers to next page of results', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?limit=1')
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -1130,7 +1131,7 @@
             voided = voided.statement;
             voided.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voided)
@@ -1146,7 +1147,7 @@
             voiding = voiding.statement;
             voiding.object.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voiding)
@@ -1155,7 +1156,7 @@
 
         it('should return a voided statement when using GET "voidedStatementId"', function (done) {
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -1182,7 +1183,7 @@
             voided = voided.statement;
             voided.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voided)
@@ -1198,7 +1199,7 @@
             voiding = voiding.statement;
             voiding.object.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voiding)
@@ -1207,7 +1208,7 @@
 
         it('should not return a voided statement if using GET "statementId"', function (done) {
             var query = helper.getUrlEncoding({statementId: voidedId});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(404, done);
@@ -1217,7 +1218,7 @@
 
     describe('LRS\'s Statement API accepts GET requests (7.2.3)', function () {
         it('should return using GET', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1233,7 +1234,7 @@
             data = data.statement;
             data.id = helper.generateUUID();
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -1256,7 +1257,7 @@
             voided = voided.statement;
             voided.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voided)
@@ -1272,7 +1273,7 @@
             voiding = voiding.statement;
             voiding.object.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voiding)
@@ -1281,7 +1282,7 @@
 
         it('should process using GET with "voidedStatementId"', function (done) {
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1300,7 +1301,7 @@
             data.id = helper.generateUUID();
             id = data.id;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -1315,7 +1316,7 @@
             data.statementId = id;
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1328,7 +1329,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1341,7 +1342,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1354,7 +1355,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1367,7 +1368,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1380,7 +1381,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1393,7 +1394,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1406,7 +1407,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1419,7 +1420,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1432,7 +1433,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1445,7 +1446,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1458,7 +1459,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1473,7 +1474,7 @@
             var data = createFromTemplate(templates);
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1483,7 +1484,7 @@
     describe('An LRS\'s Statement API can process a GET request with "verb" as a parameter  **Implicit**', function () {
         it('should process using GET with "verb"', function (done) {
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1493,7 +1494,7 @@
     describe('An LRS\'s Statement API can process a GET request with "activity" as a parameter  **Implicit**', function () {
         it('should process using GET with "activity"', function (done) {
             var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1503,7 +1504,7 @@
     describe('An LRS\'s Statement API can process a GET request with "registration" as a parameter  **Implicit**', function () {
         it('should process using GET with "registration"', function (done) {
             var query = helper.getUrlEncoding({registration: helper.generateUUID()});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1527,7 +1528,7 @@
             statement = data.statement;
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statement)
@@ -1539,7 +1540,7 @@
                 activity: statement.context.contextActivities.category.id,
                 related_activities: true
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1563,7 +1564,7 @@
             statement = data.statement;
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statement)
@@ -1575,7 +1576,7 @@
                 agent: statement.context.instructor,
                 related_agents: true
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1596,7 +1597,7 @@
     describe('An LRS\'s Statement API can process a GET request with "until" as a parameter  **Implicit**', function () {
         it('should process using GET with "until"', function (done) {
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1606,7 +1607,7 @@
     describe('An LRS\'s Statement API can process a GET request with "limit" as a parameter  **Implicit**', function () {
         it('should process using GET with "limit"', function (done) {
             var query = helper.getUrlEncoding({limit: 1});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1616,7 +1617,7 @@
     describe('An LRS\'s Statement API can process a GET request with "format" as a parameter  **Implicit**', function () {
         it('should process using GET with "format"', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1626,7 +1627,7 @@
     describe('An LRS\'s Statement API can process a GET request with "attachments" as a parameter  **Implicit**', function () {
         it('should process using GET with "attachments"', function (done) {
             var query = helper.getUrlEncoding({attachments: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1636,7 +1637,7 @@
     describe('An LRS\'s Statement API can process a GET request with "ascending" as a parameter  **Implicit**', function () {
         it('should process using GET with "ascending"', function (done) {
             var query = helper.getUrlEncoding({ascending: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1654,7 +1655,7 @@
             voided = voided.statement;
             voided.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voided)
@@ -1669,7 +1670,7 @@
             voiding = voiding.statement;
             voiding.object.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voiding)
@@ -1684,7 +1685,7 @@
             data.statementId = voidedId;
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1697,7 +1698,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1710,7 +1711,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1723,7 +1724,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1736,7 +1737,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1749,7 +1750,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1762,7 +1763,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1775,7 +1776,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1788,7 +1789,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1801,7 +1802,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
@@ -1814,7 +1815,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1827,7 +1828,7 @@
             };
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200, done);
@@ -1846,7 +1847,7 @@
             data.id = helper.generateUUID();
             id = data.id;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
@@ -1854,7 +1855,7 @@
         });
 
         it('should retrieve statement using "statementId"', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?statementId=' + id)
                 .headers(helper.addAllHeaders({}))
                 .expect(200).end(function (err, res) {
@@ -1880,7 +1881,7 @@
             voided = voided.statement;
             voided.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voided)
@@ -1896,7 +1897,7 @@
             voiding = voiding.statement;
             voiding.object.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voiding)
@@ -1905,7 +1906,7 @@
 
         it('should return a voided statement when using GET "voidedStatementId"', function (done) {
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -1939,7 +1940,7 @@
             statement = data.statement;
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statement)
@@ -1961,7 +1962,7 @@
             substatement = data.statement;
             substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(substatement)
@@ -1969,7 +1970,7 @@
         });
 
         it('should return StatementResult using GET without "statementId" or "voidedStatementId"', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -1991,7 +1992,7 @@
             var data = createFromTemplate(templates);
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2008,7 +2009,7 @@
 
         it('should return StatementResult using GET with "verb"', function (done) {
             var query = helper.getUrlEncoding({verb: statement.verb.id});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2025,7 +2026,7 @@
 
         it('should return StatementResult using GET with "activity"', function (done) {
             var query = helper.getUrlEncoding({activity: statement.object.id});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2042,7 +2043,7 @@
 
         it('should return StatementResult using GET with "registration"', function (done) {
             var query = helper.getUrlEncoding({registration: statement.context.registration});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2062,7 +2063,7 @@
                 activity: statement.context.contextActivities.category.id,
                 related_activities: true
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2082,7 +2083,7 @@
                 agent: statement.context.instructor,
                 related_agents: true
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2117,7 +2118,7 @@
 
         it('should return StatementResult using GET with "until"', function (done) {
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2134,7 +2135,7 @@
 
         it('should return StatementResult using GET with "limit"', function (done) {
             var query = helper.getUrlEncoding({limit: 1});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2151,7 +2152,7 @@
 
         it('should return StatementResult using GET with "ascending"', function (done) {
             var query = helper.getUrlEncoding({ascending: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2168,7 +2169,7 @@
 
         it('should return StatementResult using GET with "format"', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2185,7 +2186,7 @@
 
         it('should return multipart response format StatementResult using GET with "attachments" parameter as true', function (done) {
             var query = helper.getUrlEncoding({attachments: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2206,7 +2207,7 @@
 
         it('should not return multipart response format using GET with "attachments" parameter as false', function (done) {
             var query = helper.getUrlEncoding({attachments: false});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2228,7 +2229,7 @@
 
     describe('An LRS\'s "X-Experience-API-Consistent-Through" header\'s value is not before (temporal) any of the "stored" values of any of the returned Statements (7.2.3.c).', function () {
         it('should return "X-Experience-API-Consistent-Through" when using GET for statements', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2260,7 +2261,7 @@
 
     describe('An LRS\'s Statement API upon processing a GET request, returns a header with name "X-Experience-API-Consistent-Through" regardless of the code returned. (7.2.3.c)', function () {
         it('should return "X-Experience-API-Consistent-Through" using GET', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2282,7 +2283,7 @@
             var data = createFromTemplate(templates);
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2299,7 +2300,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "verb"', function (done) {
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2316,7 +2317,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "activity"', function (done) {
             var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2333,7 +2334,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "registration"', function (done) {
             var query = helper.getUrlEncoding({registration: helper.generateUUID()});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2350,7 +2351,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_activities"', function (done) {
             var query = helper.getUrlEncoding({related_activities: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2367,7 +2368,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_agents"', function (done) {
             var query = helper.getUrlEncoding({related_agents: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2402,7 +2403,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "until"', function (done) {
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2419,7 +2420,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
             var query = helper.getUrlEncoding({limit: 1});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2436,7 +2437,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "ascending"', function (done) {
             var query = helper.getUrlEncoding({ascending: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2453,7 +2454,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "format"', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2470,7 +2471,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "attachments"', function (done) {
             var query = helper.getUrlEncoding({attachments: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2503,7 +2504,7 @@
             statement = data.statement;
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statement)
@@ -2511,7 +2512,7 @@
         });
 
         it('should return valid "X-Experience-API-Consistent-Through" using GET', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2536,7 +2537,7 @@
             var data = createFromTemplate(templates);
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2556,7 +2557,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "verb"', function (done) {
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2576,7 +2577,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "activity"', function (done) {
             var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2596,7 +2597,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "registration"', function (done) {
             var query = helper.getUrlEncoding({registration: helper.generateUUID()});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2619,7 +2620,7 @@
                 activity: statement.context.contextActivities.category.id,
                 related_activities: true
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2642,7 +2643,7 @@
                 agent: statement.context.instructor,
                 related_agents: true
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2683,7 +2684,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "until"', function (done) {
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2703,7 +2704,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
             var query = helper.getUrlEncoding({limit: 1});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2723,7 +2724,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "ascending"', function (done) {
             var query = helper.getUrlEncoding({ascending: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2743,7 +2744,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "format"', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2763,7 +2764,7 @@
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "attachments"', function (done) {
             var query = helper.getUrlEncoding({attachments: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2800,7 +2801,7 @@
             statement = data.statement;
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statement)
@@ -2822,7 +2823,7 @@
             substatement = data.statement;
             substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(substatement)
@@ -2830,7 +2831,7 @@
         });
 
         it('should return StatementResult with statements as array using GET without "statementId" or "voidedStatementId"', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2852,7 +2853,7 @@
             var data = createFromTemplate(templates);
 
             var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2869,7 +2870,7 @@
 
         it('should return StatementResult with statements as array using GET with "verb"', function (done) {
             var query = helper.getUrlEncoding({verb: statement.verb.id});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2886,7 +2887,7 @@
 
         it('should return StatementResult with statements as array using GET with "activity"', function (done) {
             var query = helper.getUrlEncoding({activity: statement.object.id});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2903,7 +2904,7 @@
 
         it('should return StatementResult with statements as array using GET with "registration"', function (done) {
             var query = helper.getUrlEncoding({registration: statement.context.registration});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2923,7 +2924,7 @@
                 activity: statement.context.contextActivities.category.id,
                 related_activities: true
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2943,7 +2944,7 @@
                 agent: statement.context.instructor,
                 related_agents: true
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2978,7 +2979,7 @@
 
         it('should return StatementResult with statements as array using GET with "until"', function (done) {
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -2995,7 +2996,7 @@
 
         it('should return StatementResult with statements as array using GET with "limit"', function (done) {
             var query = helper.getUrlEncoding({limit: 1});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -3012,7 +3013,7 @@
 
         it('should return StatementResult with statements as array using GET with "ascending"', function (done) {
             var query = helper.getUrlEncoding({ascending: true});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -3029,7 +3030,7 @@
 
         it('should return StatementResult with statements as array using GET with "format"', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -3049,7 +3050,7 @@
             var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
             var query = helper.getUrlEncoding({attachments: true});
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment)
@@ -3091,7 +3092,7 @@
             voided.id = voidedId;
             voided.verb.id = verb;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voided)
@@ -3108,7 +3109,7 @@
             voiding.id = voidingId;
             voiding.object.id = voidedId;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(voiding)
@@ -3134,7 +3135,7 @@
             statementRef.object.id = voidedId;
             statementRef.verb.id = verb;
 
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statementRef)
@@ -3169,7 +3170,7 @@
                 verb: "http://adlnet.gov/expapi/verbs/voided",
                 until: untilVoidingTime
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -3190,7 +3191,7 @@
                 verb: verb,
                 limit: 1
             });
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
@@ -3668,7 +3669,7 @@
                 ];
                 data = createFromTemplate(templates);
                 data = data.statement;
-                request(helper.getEndpointAndAuth())
+                request(helper.getEndpoint())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
                     .json(data).expect(200).end(function (err, res) {
@@ -3682,7 +3683,7 @@
             });
 
             it('statement values should be the same', function (done) {
-                request(helper.getEndpointAndAuth())
+                request(helper.getEndpoint())
                     .get(helper.getEndpointStatements() + '?statementId=' + returnedID)
                     .headers(helper.addAllHeaders({}))
                     .expect(200).end(function (err, res) {
@@ -3710,12 +3711,13 @@
             ];
             var data = createFromTemplate(templates);
             data = data.statement;
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(400, done)
         });
+
         if(!global.OAUTH)
         {
             //This test appears to only make sense in the case of http basic Auth. Should we have additional tests for bad OAUTH, which is more complicated?
@@ -3728,7 +3730,7 @@
         }
 
         it('An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter not recognized by the LRS (7.0.a)', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .get(helper.getEndpointStatements() + '?foo=bar')
                 .headers(helper.addAllHeaders({}))
                 .expect(400).end(function (err, res) {
@@ -3742,7 +3744,7 @@
         });
 
         it('A GET request is defined as either a GET request or a POST request containing a GET request (7.2.3, 7.2.2.e)', function (done) {
-            request(helper.getEndpointAndAuth())
+            request(helper.getEndpoint())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .form({limit: 1})

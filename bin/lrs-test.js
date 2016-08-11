@@ -1,10 +1,9 @@
 #!/usr/bin/env node
-
 /**
  * Description : This is the command line interface for running the lrs conformance test suite.
  *
  */
-(function(process, require, program, exit, packageJson, Q, Joi, fs, path, Mocha) {
+(function (process, require, program, exit, packageJson, Q, Joi, fs, path, Mocha) {
     'use strict';
 
     function processMessageReporter(p) {
@@ -77,7 +76,6 @@
                 then: Joi.required()
             }),
             reporter: Joi.string().regex(/^((dot)|(spec)|(nyan)|(tap)|(List)|(progress)|(min)|(doc))$/).default('nyan'),
-            grep: Joi.string(),
             bail: Joi.boolean()
         }).unknown(false);
 
@@ -106,13 +104,10 @@
             oAuth1: _options.oAuth1,
         };
 
-        RegExp.escape = function(string) {
-            return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
-        };
-
         var grep;
-        if (options.grep)
-            grep = new RegExp(RegExp.escape(options.grep));
+        if (options.grep){
+          grep = new RegExp(options.grep);
+        }
 
         var mocha = new Mocha({
             uii: 'bdd',
@@ -122,18 +117,18 @@
             bail: options.bail
         });
 
-        console.log("Grep is " + options.grep);
-        console.log("optional is " + options.optional);
+        console.log("Grep is " + grep);
+        process.env.DIRECTORY = options.directory[0];
 
+        //adds optional tests to the front in ascending order
         if (options.optional){
-          options.optional.forEach(function(dir) {
+          options.optional.reverse().forEach(function(dir) {
               options.directory.unshift(dir);
           });
         }
 
-        options.directory.forEach(function(dir){
-          console.log(dir);
-        });
+        console.log("directory is ", options.directory);
+
 
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;
@@ -166,6 +161,7 @@
                 );
             });
         });
+
         mocha.run(function(failures) {
             if (failures) {} else {}
 
