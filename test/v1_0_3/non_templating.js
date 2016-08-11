@@ -3283,12 +3283,7 @@
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
               .headers(helper.addAllHeaders({}))
-              .json(statement1)
-              .expect(200)
-              .end()
-              .post(helper.getEndpointStatements())
-              .headers(helper.addAllHeaders({}))
-              .json(statement2)
+              .json([statement1, statement2])
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
@@ -3334,37 +3329,29 @@
             statement.id = id;
             var query = helper.getUrlEncoding({statementId: id});
 
-            console.log("before request", statement);
-
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statement)
                 .expect(200)
                 .end();
-                console.log("does this work");
-                requestPromise(helper.getEndpoint())
+
+            requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointStatements() + '?statementId=' + statement.id)
                 .set('X-Experience-API-Version', '1.0.1')
                 .expect(405)
                 .end(function(err,res){
                   if (err){
-                    console.log(err);
                     done(err);
                   }
                   else{
-                    console.log("success", res.body);
                     done();
                   }
                 });
-            //done();
         });
 
         it('A POST request is defined as a "pure" POST, as opposed to a GET taking on the form of a POST (7.2.2.e)', function (done) {
             // All of these "defined" aren't really tests, rather ways to disambiguate future tests.
-
-
-
             done();
         });
 
@@ -3522,9 +3509,193 @@
 
 
         it ('An LRS sends a header response with "X-Experience-API-Version" as the name and "1.0.1" as the value (Format, 6.2.a, 6.2.b)', function (done){
-          var versionHeader = helper.addHeaderXapiVersion({});
-          expect(versionHeader["X-Experience-API-Version"] === "1.0.1").to.be.true;
+          //Will need to be updated to 1.0.2/1.0.3
+          var id = helper.generateUUID();
+          var statementTemplates = [
+              {statement: '{{statements.default}}'}
+          ];
+
+          var statement = createFromTemplate(statementTemplates);
+          statement = statement.statement;
+          statement.id = id;
+          var query = helper.getUrlEncoding({statementId: id});
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(statement)
+              .expect(200)
+              .end()
+              .get(helper.getEndpointStatements() + '?' + query)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function(err,res){
+                if (err){
+                  done(err);
+                }
+                else{
+                  //console.log(res.request.req._headers['x-experience-api-version']);
+                  expect(res.request.req._headers['x-experience-api-version'] === "1.0.1").to.be.true;
+                  done();
+                }
+              });
+        });
+
+        it ('An LRS rejects a Statement due to size if the Statement exceeds the size limit the LRS is configured to with error code 413 Request Entity Too Large (7.1)', function (done){
+          //limit depends on LRS -- not implemented
+          var id = helper.generateUUID();
+          var statementTemplates = [
+              {statement: '{{statements.default}}'}
+          ];
+
+          var statement = createFromTemplate(statementTemplates);
+          statement = statement.statement;
+          statement.id = id;
+          var query = helper.getUrlEncoding({statementId: id});
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(statement)
+              .expect(200)
+              .end()
+              .get(helper.getEndpointStatements() + '?' + query)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function(err,res){
+                if (err){
+                  done(err);
+                }
+                else{
+                  console.log(res.body);
+                  done();
+                }
+              });
+              done();
+        });
+
+        it('An LRS rejects a Statement due to network/server issues with an error code of 500 Internal Server Error (7.1)', function (done){
+          //not implemented
           done();
+        });
+
+        it('An LRS\'s Statement API, upon receiving a Get request, had a field in the header with name "Content-Type" ***Assumed?***', function (done){
+          //Implicit, does not test
+          done();
+        });
+
+
+        it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done){
+          //implicit
+          done();
+        });
+
+        it('A "statements" property which is too large for a single page will create a container for each additional page (4.2.table1.row1.b)', function (done){
+          var statementTemplates = [
+              {statement: '{{statements.default}}'}
+          ];
+
+          var statement1 = createFromTemplate(statementTemplates);
+          statement1 = statement1.statement;
+
+          var statement2 = createFromTemplate(statementTemplates);
+          statement2 = statement2.statement;
+
+          var query = helper.getUrlEncoding(
+            {limit:1}
+          );
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json([statement1, statement2])
+              .expect(200)
+              .end()
+              .get(helper.getEndpointStatements() + '?' + query)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function (err, res) {
+                  if (err) {
+                      done(err);
+                  }
+                  else {
+                      var results = parse(res.body, done);
+                      expect(results.statements).to.exist;
+                      done();
+                  }
+              });
+        });
+
+        it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "more" property (Multiplicity, Format, 4.2.table1.row2.c)', function (done){
+          var query = helper.getUrlEncoding(
+            {limit:1}
+          );
+
+          request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointStatements() + '?' + query)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function (err, res) {
+                  if (err) {
+                      done(err);
+                  }
+                  else {
+                      var results = parse(res.body, done);
+                      console.log(results.more);
+                      expect(results.more).to.exist;
+                      done();
+                  }
+              });
+        });
+
+        it('A "more" property IRL is accessible for at least 24 hours after being returned (4.2.a)', function (done){
+          //impractical to test in real-time
+          done();
+        });
+
+        it('A Document Merge is defined by the merging of an existing document at an endpoint with a document received in a POST request. (7.3)', function (done){
+          //definition. Already covered in document.js (Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3)
+          done();
+        });
+
+        it('A Document Merge de-serializes all Objects represented by each document before making other changes. (7.3.d)', function (done){
+          //definition. Already covered in document.js (Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3)
+          done();
+        });
+
+        it('A Document Merge re-serializes all Objects to finalize a single document (7.3.d)', function (done){
+          //definition. Already covered in document.js (Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3)
+          done();
+        });
+
+        it('In 1.0.3, the IRI requires a scheme, but does not in 1.0.2, thus we only test type String in this version', function (done){
+          //update test once version 1.0.3 is released
+          done();
+        });
+
+        it('NOTE: **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**', function (done){
+          //not a test
+          done();
+        });
+
+        it('A Cross Origin Request is defined as this POST request as described in the previous requirement (definition)', function (done){
+          //definition
+          done();
+        });
+
+        it('An LRS accepts HEAD requests without Content-Length headers (7.10.a.b)', function (done) {
+
+                request(helper.getEndpointAndAuth())
+                    .head(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200, done);
+        });
+
+        it('An LRS accepts GET requests without Content-Length headers (7.10.a.b)', function (done) {
+                request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200, done);
         });
 
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
