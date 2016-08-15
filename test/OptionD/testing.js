@@ -14,18 +14,55 @@ describe('New requirements for specification version 1.0.3', function() {
     describe('Stored Statements property is a “Timestamp (Formatted according to ISO 8601) of when this Statement was recorded. Set by LRS.” (4.1 Statement Properties)', function () {
         it('Message goes here', function (done) {
 
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = createFromTemplate(templates).statement;
-            data.id = helper.generateUUID();
+            function testTime (ctr) {
+                console.log('Attempt #', ctr);
+                var templates = [
+                    {statement: '{{statements.default}}'}
+                ];
+                var data = createFromTemplate(templates).statement;
+                data.id = helper.generateUUID();
+                var query = '?statementId=' + data.id;
+                var stmtTime = Date.now();
 
-            request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders())
-            .json(data)
-            .expect(200, done);
-            // done();
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders())
+                .json(data)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + query)
+                // .wait(stmtTime, query, data.id);
+                .headers(helper.addAllHeaders())
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        console.log('This is the first thing that should be printed in the results section');
+                        stmt = parse(res.body);
+                        console.log('We have parsed the body of the res');
+                        expect(stmt).to.have.property('stored');
+                        console.log('There is a stored property');
+                        var stored = moment(stmt.stored, moment.ISO_8601, true);
+                        console.log('This is after the moment strict iso thing');
+                        expect(stored.isValid()).to.be.true;
+                        console.log('Stored property is', Object.keys(stored), stored._i);
+                        stored._pf.parsedDateParts[6] = 0;
+                        console.log("Ciao", stored._pf, stored._pf.parsedDateParts[6]);
+                        //The following will send and recieve multiple times if necessary to determine that an LRS preserves a timestamp to at least milliseconds
+                        if (stored._pf.parsedDateParts[6] === 0) {
+                            if (ctr < 5) {
+                                testTime(++ctr);
+                            } else {
+                                throw new Error("LRS did not preseve milliseconds");
+                                done(err);
+                            }
+                        } else {
+                            done();
+                        }
+                    }
+                });
+            } testTime(1);
         });
     });
 
@@ -86,7 +123,7 @@ describe('New requirements for specification version 1.0.3', function() {
 
         describe('If Header precondition in PUT Requests for RFC2616 fail', function () {
 
-            it('Return HTTP 412 (Precondition faileD)', function (done) {
+            it('Return HTTP 412 (Precondition Failed)', function (done) {
                 done();
             });
 
