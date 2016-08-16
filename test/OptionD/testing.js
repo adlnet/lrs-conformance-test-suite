@@ -11,7 +11,7 @@
 describe('New requirements for specification version 1.0.3', function() {
 
 
-    describe('Stored Statements property is a “Timestamp (Formatted according to ISO 8601) of when this Statement was recorded. Set by LRS.” (4.1 Statement Properties)', function () {
+    describe('Stored Statements property is a “Timestamp (Formatted according to ISO 8601) of when this Statement was recorded. Set by LRS.” (Data#2.4.8 Statement Properties)', function () {
         it('Message goes here', function (done) {
 
             function testTime (ctr) {
@@ -60,7 +60,7 @@ describe('New requirements for specification version 1.0.3', function() {
     });
 
 
-    describe('Statements returned by an LRS MUST retain the version they are accepted with. (4.1.10)', function () {
+    describe('Statements returned by an LRS MUST retain the version they are accepted with. (Data#2.4.10)', function () {
         var versions = ['1.0', '1.0.0', '1.0.1', '1.0.2', '1.0.3', '1.0.4', '1.0.9'];
         var notVersions = ['0.1', '0.9', '0.95', '1.1', '1.1.1', '2.0']
         var templates = [
@@ -116,12 +116,12 @@ describe('New requirements for specification version 1.0.3', function() {
     }); //Versions describe
 
 
-    describe('If it (LRS) accepts the attachment, it can match the raw data of an attachment with the attachment header in a Statement by comparing the SHA-2 of the raw data to the SHA-2 declared in the header. It (LRS) MUST not do so any other way. (4.4.11)', function () {
+    describe('If it (LRS) accepts the attachment, it can match the raw data of an attachment with the attachment header in a Statement by comparing the SHA-2 of the raw data to the SHA-2 declared in the header. It (LRS) MUST not do so any other way. (Data#2.4.11)', function () {
         // done();
     });
 
 
-    describe('When handling Statement Signature, LRS MUST do the following (4.4)', function () {
+    describe('When handling Statement Signature, LRS MUST do the following (Data#2.6)', function () {
 
         it('Reject requests to store Statements that contain malformed signatures, with HTTP 400.', function (done) {
             done();
@@ -142,7 +142,7 @@ describe('New requirements for specification version 1.0.3', function() {
     });
 
 
-    describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile). (6.3)', function () {
+    describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile). (Communication#3.1)', function () {
 
 
         it('When responding to a GET request, include an ETag HTTP header in the response', function (done) {
