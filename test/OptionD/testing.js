@@ -61,14 +61,59 @@ describe('New requirements for specification version 1.0.3', function() {
 
 
     describe('Statements returned by an LRS MUST retain the version they are accepted with. (4.1.10)', function () {
-        // var versions = ['0.9', '1.0', '1.0.0', '1.0.1', '1.0.2', '1.0.3'];
-        // versions.forEach(function(version) {
-        //     var templates = [
-        //         {statement: '{{statments.default}}'}
-        //     ];
-        // })
-        // done();
-    });
+        var versions = ['1.0', '1.0.0', '1.0.1', '1.0.2', '1.0.3', '1.0.4', '1.0.9'];
+        var notVersions = ['0.1', '0.9', '0.95', '1.1', '1.1.1', '2.0']
+        var templates = [
+            {statement: '{{statements.default}}'}
+        ];
+        var statement = createFromTemplate(templates).statement;
+        var stmtTime;
+
+        versions.forEach(function(version) {
+            it('Version ' + version, function(done) {
+                // this.timeout(0);
+                statement.version = version;
+
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(statement)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        id = res.body[0];
+                        stmtTime = res.headers.date;
+                        request(helper.getEndpointAndAuth())
+                        .get(helper.getEndpointStatements())
+                        // .wait(genDelay(stmtTime, '?statementId=' + id, id))
+                        .headers(helper.addAllHeaders({}))
+                        .expect(200)
+                        .end(function(err, res) {
+                            if (err) {
+                                done(err);
+                            } else {
+                                done();
+                            }
+                        }); //get end
+                    }   //if else
+                }); //post end
+            }); //it
+        }); //version forEach
+
+        notVersions.forEach(function(version) {
+            it('Not Version ' + version, function(done) {
+                statement.version = version;
+
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(statement)
+                .expect(400, done);
+            }); //it
+        }); //notVersions forEach
+    }); //Versions describe
 
 
     describe('If it (LRS) accepts the attachment, it can match the raw data of an attachment with the attachment header in a Statement by comparing the SHA-2 of the raw data to the SHA-2 declared in the header. It (LRS) MUST not do so any other way. (4.4.11)', function () {
