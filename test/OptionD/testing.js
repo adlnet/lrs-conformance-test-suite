@@ -31,7 +31,7 @@ describe('New requirements for specification version 1.0.3', function() {
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + query)
-                // .wait(stmtTime, query, data.id);
+                // .wait(genDelay(stmtTime, query, data.id));
                 .headers(helper.addAllHeaders())
                 .expect(200)
                 .end(function (err, res) {
@@ -47,7 +47,6 @@ describe('New requirements for specification version 1.0.3', function() {
                         console.log('This is after the moment strict iso thing');
                         expect(stored.isValid()).to.be.true;
                         console.log('Stored property is', Object.keys(stored), stored._i);
-                        stored._pf.parsedDateParts[6] = 0;
                         console.log("Ciao", stored._pf, stored._pf.parsedDateParts[6]);
                         //The following will send and recieve multiple times if necessary to determine that an LRS preserves a timestamp to at least milliseconds
                         if (stored._pf.parsedDateParts[6] === 0) {
@@ -68,6 +67,12 @@ describe('New requirements for specification version 1.0.3', function() {
 
 
     describe('Statements returned by an LRS MUST retain the version they are accepted with. (4.1.10)', function () {
+        // var versions = ['0.9', '1.0', '1.0.0', '1.0.1', '1.0.2', '1.0.3'];
+        // versions.forEach(function(version) {
+        //     var templates = [
+        //         {statement: '{{statments.default}}'}
+        //     ];
+        // })
         // done();
     });
 
