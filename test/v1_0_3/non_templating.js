@@ -2437,6 +2437,21 @@
                 });
         });
 
+        it('should return "X-Experience-API-Consistent-Through" misusing GET (status code 400)', function (done) {
+            request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements())
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        var through = res.headers['x-experience-api-consistent-through'];
+                        expect(through).to.be.ok;
+                        done();
+                    }
+                });
+        });
+
         it('should return "X-Experience-API-Consistent-Through" using GET with "agent"', function (done) {
             var templates = [
                 {agent: '{{agents.default}}'}
