@@ -420,7 +420,8 @@
                 it('Should State API reject a PUT request with activityId type ' + type, function () {
                     var parameters = helper.buildState(),
                         document = helper.buildDocument();
-                    delete parameters.activityId;
+                    //delete parameters.activityId;
+                    parameters.activityId = type;
                     return sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
                 });
             });
@@ -1679,61 +1680,40 @@
                 });
         });
 
-        describe('An LRS\'s State API rejects a PUT request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+        describe('An LRS\'s Activity Profile API rejects a PUT request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
           var document = helper.buildDocument(),
               invalidTypes = [1, true, { key: 'value'}];
           invalidTypes.forEach(function (type) {
-              it('Should reject PUT with "stateId" with type ' + type, function () {
-                  var parameters = helper.buildState();
-                  parameters.stateId = type;
-                  return sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
+              it('Should reject PUT with "profileId" with type ' + type, function () {
+                  var parameters = helper.buildActivityProfile();
+                  parameters.agent = type;
+                  return sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 400);
               });
           });
         });
 
-        describe('An LRS\'s State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+        describe('An LRS\'s Activity Profile API rejects a POST request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
           var document = helper.buildDocument(),
               invalidTypes = [1, true, { key: 'value'}];
           invalidTypes.forEach(function (type) {
-              it('Should reject POST with "stateId" with type ' + type, function () {
-                  var parameters = helper.buildState();
-                  parameters.stateId = type;
-                  return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
+              it('Should reject POST with "profileId" with type ' + type, function () {
+                  var parameters = helper.buildActivityProfile();
+                  parameters.agent = type;
+                  return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 400);
               });
           });
         });
 
-        describe('An LRS\'s State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+        describe('An LRS\'s Activity Profile API rejects a GET request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
           var document = helper.buildDocument(),
               invalidTypes = [1, true, { key: 'value'}];
           invalidTypes.forEach(function (type) {
-              it('Should reject GET with "stateId" with type ' + type, function () {
-                  var parameters = helper.buildState();
-                  parameters.stateId = type;
-                  return sendRequest('get', helper.getEndpointActivitiesState(), parameters, document, 400);
+              it('Should reject GET with "profileId" with type ' + type, function () {
+                  var parameters = helper.buildActivityProfile();
+                  parameters.agent = type;
+                  return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, document, 400);
               });
           });
-        });
-
-        it('An LRS\'s Activity Profile API rejects a PUT request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
-            var parameters = helper.buildActivityProfile(),
-                document = helper.buildDocument();
-            parameters.stateId = 1;
-            return sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 400);
-        });
-
-        it('An LRS\'s Activity Profile API rejects a POST request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
-            var parameters = helper.buildActivityProfile(),
-                document = helper.buildDocument();
-            parameters.stateId = 1;
-            return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 400);
-        });
-
-        it('An LRS\'s Activity Profile API rejects a GET request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)', function () {
-            var parameters = helper.buildActivityProfile(),
-                document = helper.buildDocument();
-            parameters.stateId = 1;
-            return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, document, 400);
         });
 
         it('An LRS\'s Activity Profile API rejects a PUT request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication.md#2.3.s3.table1.row2)', function () {
@@ -1765,36 +1745,23 @@
         });
 
         it('An LRS\'s Agent API upon processing a successful GET request returns a Person Object if the "agent" parameter can be found in the LRS and code 200 OK (7.6c, 7.6d)', function () {
+          var templates = [
+              {statement: '{{statements.default}}'}
+          ];
+          var data = createFromTemplate(templates);
+          var statement = data.statement;
 
-            var parameters = helper.buildAgentProfile(),
-                document = helper.buildDocument();
-                console.log(parameters);
-            //console.log(sendRequest('get', helper.getEndpointAgentsProfile(), parameters, document, 400));
-            return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, document, 200);
-        });
-
-        describe('An LRS\'s Agent Pfoile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
-          var document = helper.buildDocument(),
-              invalidTypes = [1, true, { key: 'value'}];
-          invalidTypes.forEach(function (type) {
-              it('Should reject PUT with "profileId" with type ' + type, function () {
-                  var parameters = helper.buildAgentProfile();
-                  parameters.agent = type;
-                  return sendRequest('put', helper.getEndpointAgentsProfile(), parameters, document, 400);
+          return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
+              .then(function () {
+                var parameters = {
+                    agent: statement.actor
+                }
+                  return sendRequest('get', helper.getEndpointAgents(), parameters, undefined, 200)
+                      .then(function (res) {
+                          expect(res.body.objectType).to.eql("Person");
+                          expect(res.body).to.be.an('object');
+                      });
               });
-          });
-        });
-
-        describe('An LRS\'s Agent Pfoile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
-          var document = helper.buildDocument(),
-              invalidTypes = [1, true, { key: 'value'}];
-          invalidTypes.forEach(function (type) {
-              it('Should reject POST with "profileId" with type ' + type, function () {
-                  var parameters = helper.buildAgentProfile();
-                  parameters.agent = type;
-                  return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 400);
-              });
-          });
         });
 
         it('An LRS will reject a Cross Origin Request or new Request which contains any extra information with error code 400 Bad Request **Implicit**', function () {
@@ -1803,7 +1770,7 @@
             ];
             var data = createFromTemplate(templates);
             data.statement.test = "test";
-            console.log(data);
+            //console.log(data);
             var statement = data.statement;
             var sID = helper.generateUUID();
             var headers = helper.addAllHeaders({});
@@ -1815,7 +1782,7 @@
             return sendRequest('post', helper.getEndpointStatements(), parameters, body, 400);
         });
 
-        
+
 
     });
 
