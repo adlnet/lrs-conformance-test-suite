@@ -38,16 +38,10 @@ describe('New requirements for specification version 1.0.3', function() {
                     if (err) {
                         done(err);
                     } else {
-                        console.log('This is the first thing that should be printed in the results section');
                         stmt = parse(res.body);
-                        console.log('We have parsed the body of the res');
                         expect(stmt).to.have.property('stored');
-                        console.log('There is a stored property');
                         var stored = moment(stmt.stored, moment.ISO_8601, true);
-                        console.log('This is after the moment strict iso thing');
                         expect(stored.isValid()).to.be.true;
-                        console.log('Stored property is', Object.keys(stored), stored._i);
-                        console.log("Ciao", stored._pf, stored._pf.parsedDateParts[6]);
                         //The following will send and recieve multiple times if necessary to determine that an LRS preserves a timestamp to at least milliseconds
                         if (stored._pf.parsedDateParts[6] === 0) {
                             if (ctr < 5) {
