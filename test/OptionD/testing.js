@@ -14,25 +14,106 @@ describe('New requirements for specification version 1.0.3', function() {
     describe('Stored Statements property is a “Timestamp (Formatted according to ISO 8601) of when this Statement was recorded. Set by LRS.” (4.1 Statement Properties)', function () {
         it('Message goes here', function (done) {
 
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = createFromTemplate(templates).statement;
-            data.id = helper.generateUUID();
+            function testTime (ctr) {
+                console.log('Attempt #', ctr);
+                var templates = [
+                    {statement: '{{statements.default}}'}
+                ];
+                var data = createFromTemplate(templates).statement;
+                data.id = helper.generateUUID();
+                var query = '?statementId=' + data.id;
+                var stmtTime = Date.now();
 
-            request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders())
-            .json(data)
-            .expect(200, done);
-            // done();
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders())
+                .json(data)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + query)
+                // .wait(genDelay(stmtTime, query, data.id));
+                .headers(helper.addAllHeaders())
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        stmt = parse(res.body);
+                        expect(stmt).to.have.property('stored');
+                        var stored = moment(stmt.stored, moment.ISO_8601, true);
+                        expect(stored.isValid()).to.be.true;
+                        //The following will send and recieve multiple times if necessary to determine that an LRS preserves a timestamp to at least milliseconds
+                        if (stored._pf.parsedDateParts[6] === 0) {
+                            if (ctr < 5) {
+                                testTime(++ctr);
+                            } else {
+                                throw new Error("LRS did not preseve milliseconds");
+                                done(err);
+                            }
+                        } else {
+                            done();
+                        }
+                    }
+                });
+            } testTime(1);
         });
     });
 
 
     describe('Statements returned by an LRS MUST retain the version they are accepted with. (4.1.10)', function () {
-        // done();
-    });
+        var versions = ['1.0', '1.0.0', '1.0.1', '1.0.2', '1.0.3', '1.0.4', '1.0.9'];
+        var notVersions = ['0.1', '0.9', '0.95', '1.1', '1.1.1', '2.0']
+        var templates = [
+            {statement: '{{statements.default}}'}
+        ];
+        var statement = createFromTemplate(templates).statement;
+        var stmtTime;
+
+        versions.forEach(function(version) {
+            it('Version ' + version, function(done) {
+                // this.timeout(0);
+                statement.version = version;
+
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(statement)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        id = res.body[0];
+                        stmtTime = res.headers.date;
+                        request(helper.getEndpointAndAuth())
+                        .get(helper.getEndpointStatements())
+                        // .wait(genDelay(stmtTime, '?statementId=' + id, id))
+                        .headers(helper.addAllHeaders({}))
+                        .expect(200)
+                        .end(function(err, res) {
+                            if (err) {
+                                done(err);
+                            } else {
+                                done();
+                            }
+                        }); //get end
+                    }   //if else
+                }); //post end
+            }); //it
+        }); //version forEach
+
+        notVersions.forEach(function(version) {
+            it('Not Version ' + version, function(done) {
+                statement.version = version;
+
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(statement)
+                .expect(400, done);
+            }); //it
+        }); //notVersions forEach
+    }); //Versions describe
 
 
     describe('If it (LRS) accepts the attachment, it can match the raw data of an attachment with the attachment header in a Statement by comparing the SHA-2 of the raw data to the SHA-2 declared in the header. It (LRS) MUST not do so any other way. (4.4.11)', function () {
@@ -86,7 +167,7 @@ describe('New requirements for specification version 1.0.3', function() {
 
         describe('If Header precondition in PUT Requests for RFC2616 fail', function () {
 
-            it('Return HTTP 412 (Precondition faileD)', function (done) {
+            it('Return HTTP 412 (Precondition Failed)', function (done) {
                 done();
             });
 
