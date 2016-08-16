@@ -3464,6 +3464,7 @@
         });
 
         it('All Strings are encoded and interpreted as UTF-8 (6.1.a)', function (done) {
+          this.timeout(0);
           var verbTemplate = 'http://adlnet.gov/expapi/test/unicode/target/';
           var verb = verbTemplate + helper.generateUUID();
           var unicodeTemplates = [
@@ -3477,6 +3478,7 @@
           var query = helper.getUrlEncoding({
               verb: verb
           });
+          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3485,6 +3487,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -3506,6 +3509,7 @@
 
         it('A "more" property\'s referenced container object follows the same rules as the original GET request, originating with a single "statements" property and a single "more" property (4.2.table1.row1.b)', function (done) {
 
+          this.timeout(0);
           var verbTemplate = 'http://adlnet.gov/expapi/test/more/target/';
           var id1 = helper.generateUUID();
           var id2 = helper.generateUUID();
@@ -3525,6 +3529,7 @@
           var query = helper.getUrlEncoding(
             {limit:1}
           );
+          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3533,6 +3538,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, query, id2))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -3603,6 +3609,7 @@
 
         it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
             // Not concerned with "Content-Type" when use a GET request
+            this.timeout(0);
             var id = helper.generateUUID();
             var templates = [
                 {statement: '{{statements.attachment}}'},
@@ -3631,6 +3638,7 @@
                 attachments: true
             };
             var query = helper.getUrlEncoding(data);
+            var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
@@ -3639,12 +3647,14 @@
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
 
         it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d, 7.2.3.e)', function (done) {
             // Not concerned with "Content-Type" when use a GET request
+            this.timeout(0);
             var id = helper.generateUUID();
             var templates = [
                 {statement: '{{statements.attachment}}'},
@@ -3673,6 +3683,7 @@
                 attachments: false
             };
             var query = helper.getUrlEncoding(data);
+            var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
@@ -3681,6 +3692,7 @@
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(400, done);
         });
@@ -3754,8 +3766,8 @@
         });
 
 
-        it ('An LRS sends a header response with "X-Experience-API-Version" as the name and "1.0.1" as the value (Format, 6.2.a, 6.2.b)', function (done){
-          //Will need to be updated to 1.0.2/1.0.3
+        it ('An LRS sends a header response with "X-Experience-API-Version" as the name and "1.0.3" as the value (Format, 6.2.a, 6.2.b)', function (done){
+          this.timeout(0);
           var id = helper.generateUUID();
           var statementTemplates = [
               {statement: '{{statements.default}}'}
@@ -3765,6 +3777,7 @@
           statement = statement.statement;
           statement.id = id;
           var query = helper.getUrlEncoding({statementId: id});
+          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3773,6 +3786,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, id))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function(err,res){
@@ -3780,8 +3794,7 @@
                   done(err);
                 }
                 else{
-                  //console.log(res.request.req._headers['x-experience-api-version']);
-                  expect(res.request.req._headers['x-experience-api-version'] === "1.0.1").to.be.true;
+                  expect(res.headers['x-experience-api-version'] === "1.0.3").to.be.true;
                   done();
                 }
               });
@@ -3789,6 +3802,7 @@
 
         it ('An LRS rejects a Statement due to size if the Statement exceeds the size limit the LRS is configured to with error code 413 Request Entity Too Large (7.1)', function (done){
           //limit depends on LRS -- not implemented
+          this.timeout(0);
           var id = helper.generateUUID();
           var statementTemplates = [
               {statement: '{{statements.default}}'}
@@ -3798,6 +3812,7 @@
           statement = statement.statement;
           statement.id = id;
           var query = helper.getUrlEncoding({statementId: id});
+          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3806,6 +3821,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, id))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function(err,res){
@@ -3817,7 +3833,6 @@
                   done();
                 }
               });
-              done();
         });
 
         it('An LRS rejects a Statement due to network/server issues with an error code of 500 Internal Server Error (7.1)', function (done){
@@ -3837,6 +3852,7 @@
         });
 
         it('A "statements" property which is too large for a single page will create a container for each additional page (4.2.table1.row1.b)', function (done){
+            this.timeout(0);
           var statementTemplates = [
               {statement: '{{statements.default}}'}
           ];
@@ -3850,6 +3866,7 @@
           var query = helper.getUrlEncoding(
             {limit:1}
           );
+          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3858,6 +3875,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4051,6 +4069,7 @@
 
 
     it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including 7.3.e)', function (done){
+      this.timeout(0);
       var templates = [
           {statement: '{{statements.default}}'}
       ];
@@ -4062,6 +4081,7 @@
       incorrect.id = helper.generateUUID();
 
       incorrect.verb.id = 'should fail';
+      var stmtTime = Date.now();
 
       request(helper.getEndpointAndAuth())
           .post(helper.getEndpointStatements())
@@ -4070,19 +4090,20 @@
           .expect(400)
           .end()
           .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
+          .wait(genDelay(stmtTime, '/statmentId=' + correct.id, correct.id))
           .headers(helper.addAllHeaders({}))
           .expect(404, done);
   });
 
       it ('An LRS generates the "id" property of a Statement if none is provided (Modify, 4.1.1.a)', function (done){
+        this.timeout(0);
         var templates = [
-
-
-
             {statement: '{{statements.default}}'}
         ];
         data = createFromTemplate(templates);
         data = data.statement;
+        var stmtTime = Date.now();
+
         request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders({}))
@@ -4090,6 +4111,7 @@
             .expect(200)
             .end()
             .get(helper.getEndpointStatements() + '?limit=1')
+            .wait(genDelay(stmtTime, null, null))
             .headers(helper.addAllHeaders({}))
             .end(function (err, res) {
                 if (err) {
