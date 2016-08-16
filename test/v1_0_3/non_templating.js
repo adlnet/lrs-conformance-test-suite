@@ -134,7 +134,7 @@
     });
 
     describe('A Voiding Statement cannot Target another Voiding Statement (4.3)', function () {
-        var voidedId;
+        var voidedId, voidingId;
 
         before('persist voided statement', function (done) {
             var templates = [
@@ -170,6 +170,29 @@
                     if (err) {
                         done(err);
                     } else {
+                        voidingId = res.body[0];
+                        console.log('Void -ed vs -ing', voidedId, voidingId);
+                        done();
+                    }
+                });
+        });
+
+        it('should fail when "StatementRef" points to a voided statement', function (done) {
+            var templates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            var data = createFromTemplate(templates);
+            data = data.statement;
+            data.object.id = voidedId;
+            console.log('stmt3', data);
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(data).expect(400).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
                         done();
                     }
                 });
@@ -182,7 +205,8 @@
             ];
             var data = createFromTemplate(templates);
             data = data.statement;
-            data.object.id = voidedId;
+            data.object.id = voidingId;
+            console.log('stmt4', data);
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
