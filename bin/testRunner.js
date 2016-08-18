@@ -104,7 +104,9 @@ class TestRunner extends EventEmitter
 	}
 
 	_registerStatusUpdates()
-	{
+	{	
+		
+
 		this.proc.on('message', function(msg)
 		{
 
@@ -206,20 +208,38 @@ class TestRunner extends EventEmitter
 			this.emit('message', msg);
 
 		}.bind(this));
+
+		this.proc.on("close", function(w)
+		{		
+			if(this.state == "cancelled" || this.state == "finished")
+			{		
+				return;
+			}	
+			else
+			{
+				this.state = "error";
+				this.emit('message', {action: 'end'});
+				this.emit('close');
+			}
+		}.bind(this));
 	}
 
 	cancel()
 	{
 		if(this.proc)
 		{
-			this.proc.kill();
+			
 			this.endTime = Date.now();
 			this.duration = this.endTime - this.startTime;
 
 			// evaluate all in-progress suites to "cancelled"
 			this.state = 'cancelled';
-			this.activeTest.status = 'cancelled';
-			this.activeTest = this.activeTest.parent;
+			this.proc.kill();
+			if(this.activeTest)
+			{
+				this.activeTest.status = 'cancelled';
+				this.activeTest = this.activeTest.parent;
+			}
 			while(this.activeTest){
 				this.activeTest.status = rollup[this.rollupRule](this.activeTest);
 				this.emit('message', {action: 'suite end', payload: this.activeTest.title});
