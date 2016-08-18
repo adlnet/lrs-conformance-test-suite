@@ -165,6 +165,102 @@ if (!process.env.EB_NODE_COMMAND) {
             return from;
         },
         /**
+         * Delays to check for "X-Experience-API-Consistent-Through" header.
+         *
+         * @param {Number} time - Date value to check aginst determine if we have delayed long enough for the LRS to process any requests we will be using in a given test
+         * @param {String} query - parameter to limit the size of get requests to the information we are looking for
+         * @param {String} id - check aginst to see if we are able to get the information we are looking for
+         */
+        genDelay: function (time, query, id)
+        {
+            var comb = require('comb'),
+                request = require('super-request');
+            var delay = function(val)
+            {
+                var p = new comb.Promise();
+                var endP = module.exports.getEndpointStatements();
+                if (query) {
+                    endP += query;
+                }
+                var delta, finish;
+    //            console.log('\n\nAllowing for consistency', module.exports.getEndpointAndAuth(), module.exports.getEndpointStatements(), query, time, id);
+                function doRequest()
+                {
+                    if(global.OAUTH)
+                        request = module.exports.OAuthRequest(request);
+                    var result;
+                    request(module.exports.getEndpointAndAuth())
+                    .get(endP)
+                    .headers(module.exports.addAllHeaders({}))
+                    .end(function(err, res)
+                    {
+    //                    console.log(err, res.statusCode, res.statusMessage, typeof res.body, res.body.length);
+
+                        if (err) {
+                        //if there was an error, we quit and go home
+    //                        console.log('Error', err);
+                            p.reject();
+                        } else {
+                            try {
+                            //we parse the result into either a single statment or a statements object
+                                result = parse(res.body);
+                            } catch (e) {
+    //                            console.log('res.body did not parse');
+                                result = {};
+                            }
+                            if (id && result.id && (result.id === id)) {
+                            //if we find a single statment and the id we are looking for, then we're good we can continue with the testing
+    //                            console.log("Single Statement matched");
+                                p.resolve();
+                            } else if (id && result.statements && stmtFound(result.statements, id)) {
+                            //if we find a block of statments and the id we are looking for, then we're good and we can continue with the testing
+    //                            console.log('Statement Object matched');
+                                p.resolve();
+                            } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + module.exports.getTimeMargin() >= time) {
+                            //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
+    //                            console.log('X-Experience-API-Consistent-Through header GOOD - continue test', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + module.exports.getTimeMargin(), time);
+                                p.resolve();
+                            } else {
+                            //otherwise we give the lrs a second to catch up and try again
+                                if (!delta) {
+                                    // first time only - we use the provided headers to calculate a maximum wait time
+     //                                console.log(res.headers);
+                                    delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
+                                    finish = Date.now() + 10 * delta;
+    //                                console.log('Setting the max wait time', delta, finish);
+                                }
+    //                            console.log('waiting up to', delta * 10, 'ms\tcompare these', Date.now(), finish);
+                                if (Date.now() >= finish) {
+    //                                console.log('Exceeded the maximum time limit - continue test');
+                                    p.resolve()
+                                }
+    //                            console.log('No match No con-thru - wait and check again', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + module.exports.getTimeMargin(), time);
+                                setTimeout(doRequest, 1000);
+                            }
+                        }
+                    });
+                }
+                doRequest();
+                return p;
+            }
+            return delay();
+
+            function stmtFound (arr, id) {
+    //            console.log('Searching through Statement Object for', id);
+                var found = false;
+                arr.forEach (function (s) {
+                    if (s.id === id) {
+    //                    console.log('Found', s.id, id);
+                        found = true;
+                    }
+                });
+                //if (!found) console.log(id, 'Not found - please continue');
+                return found;
+            }
+        },
+
+
+        /**
          * Generates an RFC4122 compliant uuid.
          * http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
          * @returns {String}

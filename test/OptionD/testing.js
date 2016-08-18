@@ -86,7 +86,7 @@ describe('New requirements for specification version 1.0.3', function() {
                         id = res.body[0];
                         stmtTime = res.headers.date;
                         request(helper.getEndpointAndAuth())
-                        .get(helper.getEndpointStatements())
+                        .get(helper.getEndpointStatements() + '?statementId=' + id)
                         // .wait(genDelay(stmtTime, '?statementId=' + id, id))
                         .headers(helper.addAllHeaders({}))
                         .expect(200)
@@ -94,6 +94,9 @@ describe('New requirements for specification version 1.0.3', function() {
                             if (err) {
                                 done(err);
                             } else {
+                                result = parse(res.body);
+                                console.log('this is the id and the version:\n', result.id, 'vs', id, '\nVersion', result.version, 'vs', version);
+                                expect(result.version).to.be.eql(version);
                                 done();
                             }
                         }); //get end
@@ -208,18 +211,43 @@ describe('New requirements for specification version 1.0.3', function() {
         });
     });
 
-    describe('The LRS rejects with Error Code 429 Too Many Requests, if the LRS had received too many requests from the Client or set of credentials in a given amount of time. (Error Codes, Communication#3.2)', function() {
-        this.timeout(0);
-        var templates = [
-            {statement: '{{statments.default}}'}
-        ];
-        var data = createFromTemplate(templates).statement;
-        var stmts = [];
-        for (var i = 0, i < 100, i++) {
-            data.push(i);
-        }
-        console.log(data);
-    });
+    // describe('The LRS rejects with Error Code 429 Too Many Requests, if the LRS had received too many requests from the Client or set of credentials in a given amount of time. (Error Codes, Communication#3.2)', function() {
+    //     it('test heading here', function(done) {
+    //         this.timeout(0);
+    //         var templates = [
+    //             {statement: '{{statements.default}}'}
+    //         ];
+    //         var data = createFromTemplate(templates).statement;
+    //         var stmts = [];
+    //         // for (var i = 0; i < 10000; i++) {
+    //             stmts.push(data);
+    //         // }
+    //         console.log(stmts.length);
+    //         var count = 0;
+    //         var startTime = Date.now();
+    //         function overload () {
+    //             request(helper.getEndpointAndAuth())
+    //             .post(helper.getEndpointStatements())
+    //             .headers(helper.addAllHeaders({}))
+    //             .json(stmts)
+    //             .end(function(err, res) {
+    //                 if (err) {
+    //                     console.log('No good', err);
+    //                     done(err);
+    //                 } else {
+    //                     console.log('Good', res.statusCode, res.statusMessage);
+    //                     if (res.statusCode === 200) {
+    //                         console.log('Again', count++);
+    //                         overload();
+    //                     } else {
+    //                         console.log('It is over!!', Date.now() - startTime);
+    //                         done();
+    //                     }
+    //                 }
+    //             })
+    //         } overload();
+    //     });
+    // });
 
 });
 
