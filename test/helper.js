@@ -54,7 +54,8 @@ if (!process.env.EB_NODE_COMMAND) {
     var URL_STATEMENTS = '/statements';
 
     /** HTTP header xAPI Version */
-    var XAPI_VERSION = process.env.XAPI_VERSION;
+    var XAPI_VERSION = '1.0.2'; //for now '1.0.3' for release
+    //process.env.XAPI_VERSION; - kept getting 1.0.1
 
     module.exports = {
         /**
