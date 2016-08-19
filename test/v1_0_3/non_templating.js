@@ -3357,8 +3357,8 @@
         });
     });
 
-    describe('Stored Statements property is a “Timestamp", formatted according to ISO 8601, of when this Statement was recorded. Set by LRS.” (Data#2.4.8 Statement Properties)', function () {
-        it('Message goes here', function (done) {
+    describe('Stored Statements property is a “Timestamp" of when this Statement was recorded. Set by LRS.” (Data#2.4.8 Statement Properties)', function () {
+        it('formatted according to ISO 8601', function (done) {
 
             function testTime (ctr) {
                 var templates = [
