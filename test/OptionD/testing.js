@@ -15,7 +15,6 @@ describe('New requirements for specification version 1.0.3', function() {
         it('Message goes here', function (done) {
 
             function testTime (ctr) {
-                console.log('Attempt #', ctr);
                 var templates = [
                     {statement: '{{statements.default}}'}
                 ];
@@ -31,7 +30,7 @@ describe('New requirements for specification version 1.0.3', function() {
                 .expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + query)
-                // .wait(genDelay(stmtTime, query, data.id));
+                .wait(helper.genDelay(stmtTime, query, data.id))
                 .headers(helper.addAllHeaders())
                 .expect(200)
                 .end(function (err, res) {
@@ -71,37 +70,31 @@ describe('New requirements for specification version 1.0.3', function() {
 
         versions.forEach(function(version) {
             it('Version ' + version, function(done) {
-                // this.timeout(0);
+                this.timeout(0);
                 statement.version = version;
+                var id = helper.generateUUID();
+                statement.id = id;
+                stmtTime = Date.now();
 
                 request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statement)
                 .expect(200)
-                .end(function (err, res) {
+                .end()
+                .get(helper.getEndpointStatements() + '?statementId=' + id)
+                .wait(helper.genDelay(stmtTime, '?statementId=' + id, id))
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function(err, res) {
                     if (err) {
                         done(err);
                     } else {
-                        id = res.body[0];
-                        stmtTime = res.headers.date;
-                        request(helper.getEndpointAndAuth())
-                        .get(helper.getEndpointStatements() + '?statementId=' + id)
-                        // .wait(genDelay(stmtTime, '?statementId=' + id, id))
-                        .headers(helper.addAllHeaders({}))
-                        .expect(200)
-                        .end(function(err, res) {
-                            if (err) {
-                                done(err);
-                            } else {
-                                result = parse(res.body);
-                                console.log('this is the id and the version:\n', result.id, 'vs', id, '\nVersion', result.version, 'vs', version);
-                                expect(result.version).to.be.eql(version);
-                                done();
-                            }
-                        }); //get end
-                    }   //if else
-                }); //post end
+                        var result = parse(res.body);
+                        expect(result.version).to.be.eql(version);
+                        done();
+                    }
+                }); //get end
             }); //it
         }); //version forEach
 
@@ -113,7 +106,13 @@ describe('New requirements for specification version 1.0.3', function() {
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(statement)
-                .expect(400, done);
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();                    }
+                });
             }); //it
         }); //notVersions forEach
     }); //Versions describe

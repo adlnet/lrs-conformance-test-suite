@@ -9,91 +9,6 @@
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
     // "use strict";
 
-//     function genDelay(time, query, id)
-//     {
-//         var delay = function(val)
-//         {
-//             var p = new comb.Promise();
-//             var endP = helper.getEndpointStatements();
-//             if (query) {
-//                 endP += query;
-//             }
-//             var delta, finish;
-// //            console.log('\n\nAllowing for consistency', helper.getEndpointAndAuth(), helper.getEndpointStatements(), query, time, id);
-//             function doRequest()
-//             {
-//                 var result;
-//                 request(helper.getEndpointAndAuth())
-//                 .get(endP)
-//                 .headers(helper.addAllHeaders({}))
-//                 .end(function(err, res)
-//                 {
-// //                    console.log(err, res.statusCode, res.statusMessage, typeof res.body, res.body.length);
-//
-//                     if (err) {
-//                     //if there was an error, we quit and go home
-// //                        console.log('Error', err);
-//                         p.reject();
-//                     } else {
-//                         try {
-//                         //we parse the result into either a single statment or a statements object
-//                             result = parse(res.body);
-//                         } catch (e) {
-// //                            console.log('res.body did not parse');
-//                             result = {};
-//                         }
-//                         if (id && result.id && (result.id === id)) {
-//                         //if we find a single statment and the id we are looking for, then we're good we can continue with the testing
-// //                            console.log("Single Statement matched");
-//                             p.resolve();
-//                         } else if (id && result.statements && stmtFound(result.statements, id)) {
-//                         //if we find a block of statments and the id we are looking for, then we're good and we can continue with the testing
-// //                            console.log('Statement Object matched');
-//                             p.resolve();
-//                         } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
-//                         //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
-// //                            console.log('X-Experience-API-Consistent-Through header GOOD - continue test', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
-//                             p.resolve();
-//                         } else {
-//                         //otherwise we give the lrs a second to catch up and try again
-//                             if (!delta) {
-//                                 // first time only - we use the provided headers to calculate a maximum wait time
-// //                                console.log(res.headers);
-//                                 delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
-//                                 finish = Date.now() + 10 * delta;
-// //                                console.log('Setting the max wait time', delta, finish);
-//                             }
-// //                            console.log('waiting up to', delta * 10, 'ms\tcompare these', Date.now(), finish);
-//                             if (Date.now() >= finish) {
-// //                                console.log('Exceeded the maximum time limit - continue test');
-//                                 p.resolve()
-//                             }
-// //                            console.log('No match No con-thru - wait and check again', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
-//                             setTimeout(doRequest, 1000);
-//                         }
-//                     }
-//                 });
-//             }
-//             doRequest();
-//             return p;
-//         }
-//         return delay();
-//
-//         function stmtFound (arr, id) {
-// //            console.log('Searching through Statement Object for', id);
-//             var found = false;
-//             arr.forEach (function (s) {
-//                 if (s.id === id) {
-// //                    console.log('Found', s.id, id);
-//                     found = true;
-//                 }
-//             });
-//             //if (!found) console.log(id, 'Not found - please continue');
-//             return found;
-//         }
-//     }
-//
-//     var comb = require('comb');
     var expect = chai.expect;
 
     if(global.OAUTH)
@@ -173,7 +88,6 @@
                         done(err);
                     } else {
                         voidingId = res.body[0];
-                        console.log('Void -ed vs -ing', voidedId, voidingId);
                         done();
                     }
                 });
@@ -187,7 +101,6 @@
             var data = createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidedId;
-            console.log('stmt3', data);
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -208,7 +121,6 @@
             var data = createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidingId;
-            console.log('stmt4', data);
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -3909,7 +3821,6 @@
                   }
                   else {
                       var results = parse(res.body, done);
-                      console.log(results.more);
                       expect(results.more).to.exist;
                       done();
                   }
@@ -3938,11 +3849,6 @@
 
         it('In 1.0.3, the IRI requires a scheme, but does not in 1.0.2, thus we only test type String in this version', function (done){
           //update test once version 1.0.3 is released
-          done();
-        });
-
-        it('NOTE: **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**', function (done){
-          //not a test
           done();
         });
 
