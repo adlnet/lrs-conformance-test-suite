@@ -461,8 +461,7 @@
                 .wait(helper.genDelay(stmtTime, query, data.id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
-                .expect('x-experience-api-version', '1.0.2', done);
-                // .expect('x-experience-api-version', '1.0.3', done);
+                .expect('x-experience-api-version', '1.0.3', done);
         });
     });
 
@@ -3358,6 +3357,111 @@
         });
     });
 
+    describe('Stored Statements property is a “Timestamp", formatted according to ISO 8601, of when this Statement was recorded. Set by LRS.” (Data#2.4.8 Statement Properties)', function () {
+        it('Message goes here', function (done) {
+
+            function testTime (ctr) {
+                var templates = [
+                    {statement: '{{statements.default}}'}
+                ];
+                var data = createFromTemplate(templates).statement;
+                data.id = helper.generateUUID();
+                var query = '?statementId=' + data.id;
+                var stmtTime = Date.now();
+
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders())
+                .json(data)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + query)
+                .wait(helper.genDelay(stmtTime, query, data.id))
+                .headers(helper.addAllHeaders())
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        stmt = parse(res.body);
+                        expect(stmt).to.have.property('stored');
+                        var stored = moment(stmt.stored, moment.ISO_8601, true);
+                        expect(stored.isValid()).to.be.true;
+                        //The following will send and recieve multiple times if necessary to determine that an LRS preserves a timestamp to at least milliseconds
+                        if (stored._pf.parsedDateParts[6] === 0) {
+                            if (ctr < 5) {
+                                testTime(++ctr);
+                            } else {
+                                throw new Error("LRS did not preseve milliseconds");
+                                done(err);
+                            }
+                        } else {
+                            done();
+                        }
+                    }
+                });
+            } testTime(1);
+        });
+    });
+
+    describe('Statements returned by an LRS MUST retain the version they are accepted with. (Data#2.4.10)', function () {
+        var versions = ['1.0', '1.0.0', '1.0.1', '1.0.2', '1.0.3', '1.0.4', '1.0.9'];
+        var notVersions = ['0.1', '0.9', '0.95', '1.1', '1.1.1', '2.0']
+        var templates = [
+            {statement: '{{statements.default}}'}
+        ];
+        var statement = createFromTemplate(templates).statement;
+        var stmtTime;
+
+        versions.forEach(function(version) {
+            it('Version ' + version, function(done) {
+                this.timeout(0);
+                statement.version = version;
+                var id = helper.generateUUID();
+                statement.id = id;
+                stmtTime = Date.now();
+
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(statement)
+                .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + '?statementId=' + id)
+                .wait(helper.genDelay(stmtTime, '?statementId=' + id, id))
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function(err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        var result = parse(res.body);
+                        expect(result.version).to.be.eql(version);
+                        done();
+                    }
+                }); //get end
+            }); //it
+        }); //version forEach
+
+        notVersions.forEach(function(version) {
+            it('Not Version ' + version, function(done) {
+                statement.version = version;
+
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(statement)
+                .expect(400)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        done();                    }
+                });
+            }); //it
+        }); //notVersions forEach
+    }); //Versions describe
+
     describe('Miscellaneous Requirements', function () {
 
         it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
@@ -3709,8 +3813,7 @@
                   done(err);
                 }
                 else{
-                  expect(res.headers['x-experience-api-version']).to.eql('1.0.2');
-                //   expect(res.headers['x-experience-api-version'] === "1.0.3").to.be.true;
+                  expect(res.headers['x-experience-api-version']).to.eql('1.0.3');
                   done();
                 }
               });
