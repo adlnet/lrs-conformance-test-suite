@@ -3969,7 +3969,7 @@
         });
 
         it('An LRS\'s Statement API, upon receiving a Get request, had a field in the header with name "Content-Type" ***Assumed?***', function (done){
-          //Implicit, does not test
+          //Implicit, does not test --move to document
           done();
         });
 

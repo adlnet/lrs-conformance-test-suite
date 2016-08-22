@@ -54,7 +54,8 @@ if (!process.env.EB_NODE_COMMAND) {
     var URL_STATEMENTS = '/statements';
 
     /** HTTP header xAPI Version */
-    var XAPI_VERSION = process.env.XAPI_VERSION;
+    var XAPI_VERSION = '1.0.2'; //for now '1.0.3' for release
+    //process.env.XAPI_VERSION; - kept getting 1.0.1
 
     module.exports = {
         /**
@@ -164,6 +165,89 @@ if (!process.env.EB_NODE_COMMAND) {
             });
             return from;
         },
+        /**
+         * Delays to check for "X-Experience-API-Consistent-Through" header.
+         *
+         * @param {Number} time - Date value to check aginst determine if we have delayed long enough for the LRS to process any requests we will be using in a given test
+         * @param {String} query - parameter to limit the size of get requests to the information we are looking for
+         * @param {String} id - check aginst to see if we are able to get the information we are looking for
+         */
+        genDelay: function (time, query, id)
+        {
+            // console.log("Checking LRS for Consistency");
+            var comb = require('comb'),
+                request = require('super-request');
+            var delay = function(val)
+            {
+                var p = new comb.Promise();
+                var endP = module.exports.getEndpointStatements();
+                if (query) {
+                    endP += query;
+                }
+                var delta, finish;
+                function doRequest()
+                {
+                    if(global.OAUTH)
+                        request = module.exports.OAuthRequest(request);
+                    var result;
+                    request(module.exports.getEndpointAndAuth())
+                    .get(endP)
+                    .headers(module.exports.addAllHeaders({}))
+                    .end(function(err, res)
+                    {
+                        if (err) {
+                        //if there was an error, we quit and go home
+                            p.reject();
+                        } else {
+                            try {
+                            //we parse the result into either a single statment or a statements object
+                                result = parse(res.body);
+                            } catch (e) {
+                                result = {};
+                            }
+                            if (id && result.id && (result.id === id)) {
+                            //if we find a single statment and the id we are looking for, then we're good we can continue with the testing
+                                p.resolve();
+                            } else if (id && result.statements && stmtFound(result.statements, id)) {
+                            //if we find a block of statments and the id we are looking for, then we're good and we can continue with the testing
+                                p.resolve();
+                            } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + module.exports.getTimeMargin() >= time) {
+                            //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
+                                p.resolve();
+                            } else {
+                            //otherwise we give the lrs a second to catch up and try again
+                                if (!delta) {
+                                    // first time only - we use the provided headers to calculate a maximum wait time
+                                    delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
+                                    finish = Date.now() + 10 * delta;
+                                }
+                                if (Date.now() >= finish) {
+                                   console.log('Exceeded the maximum time limit (' + delta * 10 + ')- continue test');
+                                    p.resolve()
+                                }
+                                setTimeout(doRequest, 1000);
+                            }
+                        }
+                    });
+                }
+                doRequest();
+                return p;
+            }
+            return delay();
+
+            function stmtFound (arr, id) {
+                var found = false;
+                arr.forEach (function (s) {
+                    if (s.id === id) {
+                        found = true;
+                    }
+                });
+                //if (!found) console.log(id, 'Not found - please continue');
+                return found;
+            }
+        },
+
+
         /**
          * Generates an RFC4122 compliant uuid.
          * http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
@@ -342,7 +426,6 @@ if (!process.env.EB_NODE_COMMAND) {
                     if (err) {
                         done(err);
                     } else {
-// console.log('POST headers', res.headers, res.body);
                         request(module.exports.getEndpointAndAuth())
                         .get(module.exports.getEndpointStatements() + '?' + query)
                         .headers(module.exports.addAllHeaders({}))
@@ -352,10 +435,8 @@ if (!process.env.EB_NODE_COMMAND) {
                                 done(err);
                                 return err;
                             } else {
-// console.log('Headers', res.headers, res.body);
                                 lrsTime = new Date(res.headers.date);
                                 TIME_MARGIN = suiteTime - lrsTime;
-console.log("the time margin is", TIME_MARGIN);
                                 done(err, TIME_MARGIN);
                             }
                         });

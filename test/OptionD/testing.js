@@ -8,120 +8,12 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-describe('New requirements for specification version 1.0.3', function() {
-
-
-    describe('Stored Statements property is a “Timestamp (Formatted according to ISO 8601) of when this Statement was recorded. Set by LRS.” (4.1 Statement Properties)', function () {
-        it('Message goes here', function (done) {
-
-            function testTime (ctr) {
-                console.log('Attempt #', ctr);
-                var templates = [
-                    {statement: '{{statements.default}}'}
-                ];
-                var data = createFromTemplate(templates).statement;
-                data.id = helper.generateUUID();
-                var query = '?statementId=' + data.id;
-                var stmtTime = Date.now();
-
-                request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders())
-                .json(data)
-                .expect(200)
-                .end()
-                .get(helper.getEndpointStatements() + query)
-                // .wait(genDelay(stmtTime, query, data.id));
-                .headers(helper.addAllHeaders())
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        stmt = parse(res.body);
-                        expect(stmt).to.have.property('stored');
-                        var stored = moment(stmt.stored, moment.ISO_8601, true);
-                        expect(stored.isValid()).to.be.true;
-                        //The following will send and recieve multiple times if necessary to determine that an LRS preserves a timestamp to at least milliseconds
-                        if (stored._pf.parsedDateParts[6] === 0) {
-                            if (ctr < 5) {
-                                testTime(++ctr);
-                            } else {
-                                throw new Error("LRS did not preseve milliseconds");
-                                done(err);
-                            }
-                        } else {
-                            done();
-                        }
-                    }
-                });
-            } testTime(1);
-        });
-    });
-
-
-    describe('Statements returned by an LRS MUST retain the version they are accepted with. (4.1.10)', function () {
-        var versions = ['1.0', '1.0.0', '1.0.1', '1.0.2', '1.0.3', '1.0.4', '1.0.9'];
-        var notVersions = ['0.1', '0.9', '0.95', '1.1', '1.1.1', '2.0']
-        var templates = [
-            {statement: '{{statements.default}}'}
-        ];
-        var statement = createFromTemplate(templates).statement;
-        var stmtTime;
-
-        versions.forEach(function(version) {
-            it('Version ' + version, function(done) {
-                // this.timeout(0);
-                statement.version = version;
-
-                request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(statement)
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        id = res.body[0];
-                        stmtTime = res.headers.date;
-                        request(helper.getEndpointAndAuth())
-                        .get(helper.getEndpointStatements())
-                        // .wait(genDelay(stmtTime, '?statementId=' + id, id))
-                        .headers(helper.addAllHeaders({}))
-                        .expect(200)
-                        .end(function(err, res) {
-                            if (err) {
-                                done(err);
-                            } else {
-                                done();
-                            }
-                        }); //get end
-                    }   //if else
-                }); //post end
-            }); //it
-        }); //version forEach
-
-        notVersions.forEach(function(version) {
-            it('Not Version ' + version, function(done) {
-                statement.version = version;
-
-                request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(statement)
-                .expect(400, done);
-            }); //it
-        }); //notVersions forEach
-    }); //Versions describe
-
-
-    describe('If it (LRS) accepts the attachment, it can match the raw data of an attachment with the attachment header in a Statement by comparing the SHA-2 of the raw data to the SHA-2 declared in the header. It (LRS) MUST not do so any other way. (4.4.11)', function () {
+    describe('If it (LRS) accepts the attachment, it can match the raw data of an attachment with the attachment header in a Statement by comparing the SHA-2 of the raw data to the SHA-2 declared in the header. It (LRS) MUST not do so any other way. (Data#2.4.11)', function () {
         // done();
     });
 
 
-    describe('When handling Statement Signature, LRS MUST do the following (4.4)', function () {
+    describe('When handling Statement Signature, LRS MUST do the following (Data#2.6)', function () {
 
         it('Reject requests to store Statements that contain malformed signatures, with HTTP 400.', function (done) {
             done();
@@ -142,7 +34,7 @@ describe('New requirements for specification version 1.0.3', function() {
     });
 
 
-    describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile). (6.3)', function () {
+    describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile). (Communication#3.1)', function () {
 
 
         it('When responding to a GET request, include an ETag HTTP header in the response', function (done) {
@@ -208,189 +100,49 @@ describe('New requirements for specification version 1.0.3', function() {
         });
     });
 
+    // describe('The LRS rejects with Error Code 429 Too Many Requests, if the LRS had received too many requests from the Client or set of credentials in a given amount of time. (Error Codes, Communication#3.2)', function() {
+    //     it('test heading here', function(done) {
+    //         this.timeout(0);
+    //         var templates = [
+    //             {statement: '{{statements.default}}'}
+    //         ];
+    //         var data = createFromTemplate(templates).statement;
+    //         var stmts = [];
+    //         // for (var i = 0; i < 10000; i++) {
+    //             stmts.push(data);
+    //         // }
+    //         console.log(stmts.length);
+    //         var count = 0;
+    //         var startTime = Date.now();
+    //         function overload () {
+    //             request(helper.getEndpointAndAuth())
+    //             .post(helper.getEndpointStatements())
+    //             .headers(helper.addAllHeaders({}))
+    //             .json(stmts)
+    //             .end(function(err, res) {
+    //                 if (err) {
+    //                     console.log('No good', err);
+    //                     done(err);
+    //                 } else {
+    //                     console.log('Good', res.statusCode, res.statusMessage);
+    //                     if (res.statusCode === 200) {
+    //                         console.log('Again', count++);
+    //                         overload();
+    //                     } else {
+    //                         console.log('It is over!!', Date.now() - startTime);
+    //                         done();
+    //                     }
+    //                 }
+    //             })
+    //         } overload();
+    //     });
+    // });
+
 });
 
 
-    // describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c)', function () {
-    //     it('should populate authority', function (done) {
-    //         var templates = [
-    //             {statement: '{{statements.default}}'}
-    //         ];
-    //         var data = createFromTemplate(templates);
-    //         data = data.statement;
-    //         data.id = helper.generateUUID();
-    //
-    //         request(helper.getEndpoint())
-    //             .post(helper.getEndpointStatements())
-    //             .headers(helper.addAllHeaders({}))
-    //             .json(data)
-    //             .expect(200)
-    //             .end()
-    //             .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-    //             .headers(helper.addAllHeaders({}))
-    //             .expect(200).end(function (err, res) {
-    //                 if (err) {
-    //                     done(err);
-    //                 } else {
-    //                     var statement = parse(res.body, done);
-    //                     expect(statement).to.have.property('authority');
-    //                     done();
-    //                 }
-    //             });
-    //     });
-    // });
 
-    // describe('A Voiding Statement cannot Target another Voiding Statement (4.3)', function () {
-    //     var voidedId;
-    //
-    //     before('persist voided statement', function (done) {
-    //         var templates = [
-    //             {statement: '{{statements.default}}'}
-    //         ];
-    //         var data = createFromTemplate(templates);
-    //         data = data.statement;
-    //         request(helper.getEndpoint())
-    //             .post(helper.getEndpointStatements())
-    //             .headers(helper.addAllHeaders({}))
-    //             .json(data).expect(200).end(function (err, res) {
-    //                 if (err) {
-    //                     done(err);
-    //                 } else {
-    //                     voidedId = res.body[0];
-    //                     done();
-    //                 }
-    //             });
-    //     });
-    //
-    //     before('persist voiding statement', function (done) {
-    //         var templates = [
-    //             {statement: '{{statements.object_statementref}}'},
-    //             {verb: '{{verbs.voided}}'}
-    //         ];
-    //         var data = createFromTemplate(templates);
-    //         data = data.statement;
-    //         data.object.id = voidedId;
-    //         request(helper.getEndpoint())
-    //             .post(helper.getEndpointStatements())
-    //             .headers(helper.addAllHeaders({}))
-    //             .json(data).expect(200).end(function (err, res) {
-    //                 if (err) {
-    //                     done(err);
-    //                 } else {
-    //                     done();
-    //                 }
-    //             });
-    //     });
-    //
-    //     it('should fail when "StatementRef" points to a voiding statement', function (done) {
-    //         var templates = [
-    //             {statement: '{{statements.object_statementref}}'},
-    //             {verb: '{{verbs.voided}}'}
-    //         ];
-    //         var data = createFromTemplate(templates);
-    //         data = data.statement;
-    //         data.object.id = voidedId;
-    //         request(helper.getEndpoint())
-    //             .post(helper.getEndpointStatements())
-    //             .headers(helper.addAllHeaders({}))
-    //             .json(data).expect(400).end(function (err, res) {
-    //                 if (err) {
-    //                     done(err);
-    //                 } else {
-    //                     done();
-    //                 }
-    //             });
-    //     });
-    // });
 
-    // describe('Welcome to Option D.  An LRS returns a ContextActivity in an array, even if only a single ContextActivity is returned (4.1.6.2.c, 4.1.6.2.d)', function () {
-    //     var types = ['parent', 'grouping', 'category', 'other'];
-
-        // types.forEach(function (type) {
-        //     it('should return array for statement context "' + type + '"  when single ContextActivity is passed', function (done) {
-        //         var templates = [
-        //             {statement: '{{statements.context}}'},
-        //             {context: '{{contexts.' + type + '}}'}
-        //         ];
-        //         var data = createFromTemplate(templates);
-        //         data = data.statement;
-        //         data.id = helper.generateUUID();
-        //
-        //         request(helper.getEndpoint())
-        //             .post(helper.getEndpointStatements())
-        //             .headers(helper.addAllHeaders({}))
-        //             .json(data)
-        //             .expect(200)
-        //             .end()
-        //             .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-        //             .headers(helper.addAllHeaders({}))
-        //             .expect(200)
-        //             .end(function (err, res) {
-        //                 if (err) {
-        //                     done(err);
-        //                 } else {
-        //                     var statement = parse(res.body, done);
-        //                     expect(statement).to.have.property('context').to.have.property('contextActivities');
-        //                     expect(statement.context.contextActivities).to.have.property(type);
-        //                     expect(statement.context.contextActivities[type]).to.be.an('array');
-        //                     done();
-        //                 }
-        //             });
-        //     });
-        // });
-
-    //     types.forEach(function (type) {
-    //         it('should return array for statement substatement context "' + type + '"  when single ContextActivity is passed', function (done) {
-    //             var templates = [
-    //                 {statement: '{{statements.object_substatement}}'},
-    //                 {object: '{{substatements.context}}'},
-    //                 {context: '{{contexts.' + type + '}}'}
-    //             ];
-    //             var data = createFromTemplate(templates);
-    //             data = data.statement;
-    //             data.id = helper.generateUUID();
-    //
-    //             request(helper.getEndpoint())
-    //                 .post(helper.getEndpointStatements())
-    //                 .headers(helper.addAllHeaders({}))
-    //                 .json(data)
-    //                 .expect(200)
-    //                 .end()
-    //                 .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-    //                 .headers(helper.addAllHeaders({}))
-    //                 .expect(200)
-    //                 .end(function (err, res) {
-    //                     if (err) {
-    //                         done(err);
-    //                     } else {
-    //                         var statement = parse(res.body, done);
-    //                         expect(statement).to.have.property('object').to.have.property('context').to.have.property('contextActivities');
-    //                         expect(statement.object.context.contextActivities).to.have.property(type);
-    //                         expect(statement.object.context.contextActivities[type]).to.be.an('array');
-    //                         done();
-    //                     }
-    //                 });
-    //         });
-    //     });
-    // });
-    //
-    // describe('Will these three tests now show up??', function () {
-    //
-    //     it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, 4.2.table1.row1.c)', function (done) {
-    //         // JSON parser validates this
-    //         done();
-    //     });
-    //
-    //     it('A "more" property\'s referenced container object follows the same rules as the original GET request, originating with a single "statements" property and a single "more" property (4.2.table1.row1.b)', function (done) {
-    //         // JSON parser validates this
-    //         done();
-    //     });
-    //
-    //     it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
-    //         // Using requirement: An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**
-    //         done();
-    //     });
-    // });
 
 
     function createFromTemplate(templates) {

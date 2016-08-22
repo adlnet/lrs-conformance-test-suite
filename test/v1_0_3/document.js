@@ -1782,6 +1782,75 @@
             return sendRequest('post', helper.getEndpointStatements(), parameters, body, 400);
         });
 
+        describe('blarney An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile, Communication#3.1)', function () {
+
+            it('When responding to a GET request, include an ETag HTTP header in the response', function () {
+                var templates = [
+                    {statement: '{{statements.default}}'}
+                ];
+                var data = createFromTemplate(templates);
+                var statement = data.statement;
+                var parameters = {
+                    activityId: data.statement.object.id
+                }
+                console.log(statement);
+                console.log(parameters);
+                return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
+                    .then(function () {
+                        return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
+                        .then(function(res) {
+                            console.log(res.body);
+                            console.log(Object.keys(res.req), res.req._hasBody, res.req.output);
+                            console.log(res.req._headers, res.request);
+                            console.log(Object.keys(res));
+                            console.log(res.headers, res.domain);
+                        })
+                    });
+            });
+
+            it('When returning an ETag header, the value should be calculated as a SHA1 hexadecimal value', function (done) {
+                done();
+            });
+
+            it('When responding to a GET Request the Etag header must be enclosed in quotes', function (done) {
+                done();
+            });
+
+            it('When responding to a PUT request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag', function (done) {
+                done();
+            });
+
+            it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains “*”', function (done) {
+                done();
+            });
+
+            describe('If Header precondition in PUT Requests for RFC2616 fail', function () {
+
+                it('Return HTTP 412 (Precondition Failed)', function (done) {
+                    done();
+                });
+
+                it('Do not modify the resource', function (done) {
+                    done();
+                });
+            });
+
+            describe('If put request is received without either header for a resource that already exists', function () {
+
+                it('Return 409 conflict', function (done) {
+                    done();
+                });
+
+                it('Return plaintext body explaining the situation', function (done) {
+                    done();
+                });
+
+                it('Do not modify the resource', function (done) {
+                    done();
+                });
+            });
+
+        });
 
 
     });
