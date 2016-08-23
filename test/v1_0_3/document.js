@@ -1793,17 +1793,17 @@
                 var parameters = {
                     activityId: data.statement.object.id
                 }
-                console.log(statement);
-                console.log(parameters);
+                // console.log(statement);
+                // console.log(parameters);
                 return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
                     .then(function () {
                         return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
                         .then(function(res) {
-                            console.log(res.body);
-                            console.log(Object.keys(res.req), res.req._hasBody, res.req.output);
-                            console.log(res.req._headers, res.request);
-                            console.log(Object.keys(res));
-                            console.log(res.headers, res.domain);
+                            // console.log(res.body);
+                            // console.log(Object.keys(res.req), res.req._hasBody, res.req.output);
+                            // console.log(res.req._headers, res.request);
+                            // console.log(Object.keys(res));
+                            // console.log(res.headers, res.domain);
                         })
                     });
             });

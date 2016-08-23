@@ -234,7 +234,7 @@
             data = createFromTemplate(templates);
             data = data.statement;
 
-            attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+            attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
         });
 
         it('should succeed when attachment uses "fileUrl" and request content-type is "application/json"', function (done) {
