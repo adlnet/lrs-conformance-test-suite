@@ -1784,40 +1784,89 @@
 
         describe('blarney An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile, Communication#3.1)', function () {
 
-            it('When responding to a GET request, include an ETag HTTP header in the response', function () {
-                var templates = [
-                    {statement: '{{statements.default}}'}
-                ];
-                var data = createFromTemplate(templates);
-                var statement = data.statement;
-                var parameters = {
-                    activityId: data.statement.object.id
-                }
-                // console.log(statement);
-                // console.log(parameters);
-                return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
-                    .then(function () {
-                        return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
-                        .then(function(res) {
-                            // console.log(res.body);
-                            // console.log(Object.keys(res.req), res.req._hasBody, res.req.output);
-                            // console.log(res.req._headers, res.request);
-                            // console.log(Object.keys(res));
-                            // console.log(res.headers, res.domain);
-                        })
+            it('When responding to a GET request to State resource, include an ETag HTTP header in the response', function () {
+                var parameters = helper.buildState(),
+                    document = helper.buildDocument();
+
+                return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
+                    .then(function(res) {
+                        expect(res.headers).to.have.property('etag');
+                    })
+                });
+            });
+
+            it('When responding to a GET request to Agent Profile resource, include an ETag HTTP header in the response', function () {
+                var parameters = helper.buildAgentProfile(),
+                    document = helper.buildDocument();
+
+                return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
+                    .then(function(res) {
+                        expect(res.headers).to.have.property('etag');
+                    })
+                });
+            });
+
+            it('When responding to a GET request to Activities Profile resource, include an ETag HTTP header in the response', function () {
+                var parameters = helper.buildActivityProfile(),
+                    document = helper.buildDocument();
+
+                return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
+                    .then(function(res) {
+                        expect(res.headers).to.have.property('etag');
+                    })
+                });
+            });
+
+            it('When returning an ETag header, the value should be calculated as a SHA1 hexadecimal value', function () {
+                var parameters = helper.buildState(),
+                    document = helper.buildDocument();
+
+                return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
+                    .then(function (res) {
+                        expect(res.headers.etag).to.be.ok;
+                        expect(res.headers.etag).to.match(/\b[0-9a-f]{40}\b/);
                     });
+                });
             });
 
-            it('When returning an ETag header, the value should be calculated as a SHA1 hexadecimal value', function (done) {
-                done();
+            it('When responding to a GET Request the Etag header must be enclosed in quotes', function () {
+                var parameters = helper.buildAgentProfile(),
+                    document = helper.buildDocument();
+
+                return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
+                    .then(function (res) {
+                        expect(res.headers.etag).to.be.ok;
+                        expect(res.headers.etag[0]).to.eql('"');
+                        expect(res.headers.etag[41]).to.eql('"');
+                    });
+                });
             });
 
-            it('When responding to a GET Request the Etag header must be enclosed in quotes', function (done) {
-                done();
-            });
+            it('When responding to a PUT request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag', function () {
+                var parameters = helper.buildAgentProfile(),
+                    document = helper.buildDocument();
 
-            it('When responding to a PUT request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag', function (done) {
-                done();
+                return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
+                .then(function () {
+                    return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
+                    .then(function (res) {
+                        console.log("agent", res.headers);
+                        expect(res.headers.etag).to.be.ok;
+                        // expect(res.headers.etag).to.match(/\b[0-9a-f]{40}\b/);
+                        expect(res.headers.etag[0]).to.eql('"');
+                        expect(res.headers.etag[41]).to.eql('"');
+                    });
+                });
             });
 
             it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains “*”', function (done) {
