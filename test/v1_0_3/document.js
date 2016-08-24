@@ -1857,30 +1857,110 @@
                     document = helper.buildDocument();
 
                 return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-                .then(function () {
-                    return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
-                    .then(function (res) {
-                        console.log("agent", res.headers);
-                        expect(res.headers.etag).to.be.ok;
-                        // expect(res.headers.etag).to.match(/\b[0-9a-f]{40}\b/);
-                        expect(res.headers.etag[0]).to.eql('"');
-                        expect(res.headers.etag[41]).to.eql('"');
-                    });
-                });
+                .then(function (res) {
+                    return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, document, 200).then(function (res) {
+                        var etag = res.headers.etag;
+
+                        var reqUrl = parameters ? (helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointAgentsProfile();
+                        var data = {'If-Match': etag};
+                        var headers = helper.addAllHeaders(data);
+                        var pre = request['put'](reqUrl);
+                        extendRequestWithOauth(pre);
+                        pre.send(document);
+                        pre.set('If-Match', headers['If-Match']);
+                        pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
+                        if (process.env.BASIC_AUTH_ENABLED === 'true') {
+                            pre.set('Authorization', headers['Authorization']);
+                        }
+                        //If we're doing oauth, set it up!
+                        try {
+                            if (global.OAUTH) {
+                                pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+                            }
+                        } catch (e) {
+                            console.log(e);
+                        }
+                        return pre.expect(204)
+                        .then(function (res) {
+                        }); //put
+                    }); // get
+                }); // post
             });
 
-            it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains “*”', function (done) {
-                done();
+            it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains “*”', function () {
+                var parameters = helper.buildActivityProfile(),
+                    document = helper.buildDocument();
+
+                var reqUrl = helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters);
+                var data = {'If-None-Match': "*"};
+                var headers = helper.addAllHeaders(data);
+                var pre = request['put'](reqUrl);
+                extendRequestWithOauth(pre);
+                pre.send(document);
+                pre.set('If-None-Match', headers['If-None-Match']);
+                pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
+                if (process.env.BASIC_AUTH_ENABLED === 'true') {
+                    pre.set('Authorization', headers['Authorization']);
+                }
+                //If we're doing oauth, set it up!
+                try {
+                    if (global.OAUTH) {
+                        pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+                //but I don't expect 400 I was expecting 204
+                return pre.expect(400);
             });
 
             describe('If Header precondition in PUT Requests for RFC2616 fail', function () {
+                var etag;
+                var parameters = helper.buildState(),
+                    document = helper.buildDocument();
 
-                it('Return HTTP 412 (Precondition Failed)', function (done) {
-                    done();
+                before('post the document and get the etag', function() {
+
+                    return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204).then(function (res) {
+                        return sendRequest('get', helper.getEndpointActivitiesState(), parameters, document, 200).then(function (res) {
+                            etag = res.headers.etag;
+                        });
+                    });
                 });
 
-                it('Do not modify the resource', function (done) {
-                    done();
+                it('Return HTTP 412 (Precondition Failed)', function () {
+                    var badTag = '"1111111111111111111111111111111111111111"';
+
+                    var reqUrl = helper.getEndpointActivitiesState() + '?' + helper.getUrlEncoding(parameters);
+                    var data = {'If-Match': badTag};
+
+                    var headers = helper.addAllHeaders(data);
+                    var pre = request['put'](reqUrl);
+                    extendRequestWithOauth(pre);
+
+                    pre.send(document);
+                    pre.set('If-Match', headers['If-Match']);
+                    pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
+
+                    if (process.env.BASIC_AUTH_ENABLED === 'true') {
+                        pre.set('Authorization', headers['Authorization']);
+                    }
+                    //If we're doing oauth, set it up!
+                    try {
+                        if (global.OAUTH) {
+                            pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    return pre.expect(412);
+                });
+
+                it('Do not modify the resource', function () {
+                    return sendRequest('get', helper.getEndpointActivitiesState(), parameters, document, 200).then(function (res) {
+                        var result = res.body;
+                        expect(result).to.eql(document);
+                    });
                 });
             });
 
