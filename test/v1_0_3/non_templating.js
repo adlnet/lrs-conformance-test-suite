@@ -172,7 +172,7 @@
                         done(err);
                     } else {
                         voidingId = res.body[0];
-                        console.log('Void -ed vs -ing', voidedId, voidingId);
+                        //console.log('Void -ed vs -ing', voidedId, voidingId);
                         done();
                     }
                 });
@@ -186,7 +186,7 @@
             var data = createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidedId;
-            console.log('stmt3', data);
+            //console.log('stmt3', data);
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -207,7 +207,7 @@
             var data = createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidingId;
-            console.log('stmt4', data);
+            //console.log('stmt4', data);
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -491,14 +491,20 @@
 
     describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (Format, 6.2.a, 6.2.f, 7.7.f)', function () {
         it('should pass when GET without header "X-Experience-API-Version"', function (done) {
+          var headers = helper.addAllHeaders();
+          delete headers['X-Experience-API-Version'];
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointAbout())
+                .headers(headers)
                 .expect(200, done);
         });
 
         it('should fail when statement GET without header "X-Experience-API-Version"', function (done) {
+          var headers = helper.addAllHeaders();
+          delete headers['X-Experience-API-Version'];
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
+                .headers(headers)
                 .expect(400, done);
         });
 
@@ -508,9 +514,12 @@
             ];
             var data = createFromTemplate(templates);
             data = data.statement;
+            var headers = helper.addAllHeaders();
+            delete headers['X-Experience-API-Version'];
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
+                .headers(headers)
                 .json(data).expect(400, done);
         });
 
@@ -521,8 +530,12 @@
             var data = createFromTemplate(templates);
             data = data.statement;
 
+            var headers = helper.addAllHeaders();
+            delete headers['X-Experience-API-Version'];
+
             request(helper.getEndpointAndAuth())
                 .put(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
+                .headers(headers)
                 .json(data).expect(400, done);
         });
     });
@@ -2076,6 +2089,7 @@
     describe('An LRS\'s Statement API upon processing a successful GET request with neither a "statementId" nor a "voidedStatementId" parameter, returns code 200 OK and a StatementResult Object.  (7.2.3)', function () {
         var statement, substatement, stmtTime;
         this.timeout(0);
+        stmtTime = Date.now();
 
         before('persist statement', function (done) {
             var templates = [
@@ -2112,7 +2126,7 @@
             var data = createFromTemplate(templates);
             substatement = data.statement;
             substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
-            stmtTime = Date.now();
+
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -3609,7 +3623,7 @@
         });
 
         it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
-            // Not concerned with "Content-Type" when use a GET request
+            // Not concerned with "Content-Type" when use a GET request NOT FINISHED
 
             this.timeout(0);
             var header = {'Content-Type': 'application/json; boundary=-------314159265358979323846'}
@@ -3656,7 +3670,6 @@
                   if (err)
                     done(err)
                     else{
-                      console.log(res.body);
                       done();
                     }
 
@@ -3664,10 +3677,11 @@
         });
 
         it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d, 7.2.3.e)', function (done) {
-            // Not concerned with "Content-Type" when use a GET request
+            // Not concerned with "Content-Type" when use a GET request NOT FINISHED
             this.timeout(0);
             var id = helper.generateUUID();
-            var header = {'Content-Type': 'application/json; boundary=-------314159265358979323846'}
+            //var header = {'Content-Type': 'text; boundary=-------314159265358979323846'}
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var templates = [
                 {statement: '{{statements.attachment}}'},
                 {
@@ -3689,8 +3703,9 @@
             attachment = attachment.statement;
             attachment.id = id;
 
+            attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+
             var data = {
-                statementId: id,
                 attachments: false
             };
             var query = helper.getUrlEncoding(data);
@@ -3698,18 +3713,45 @@
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(attachment)
-                .expect(200)
-                .end()
-                .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(stmtTime, '?' + query, id))
                 .headers(helper.addAllHeaders(header))
-                .expect(200, done);
+                .body(attachment)
+                .expect(200)
+                .end(function(err,res){
+                  if (err){
+                    done(err);
+                  }
+                  else{
+                    var results = parse(res.body, done);
+                    //console.log(results[0]);
+                    var data = {
+                        statementId: results[0],
+                        attachments: false
+                    };
+                    var query = helper.getUrlEncoding(data);
+
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + '?' + query)
+                    .wait(genDelay(stmtTime, '?' + query, id))
+                    .headers(helper.addAllHeaders(header))
+                    .expect(200)
+                    .end(function(err,res){
+                      if (err){
+                        //console.log(err);
+                        done(err);
+                      }
+                      else{
+                        //console.log(res.req._headers);
+                        //console.log(res.headers);
+                        done();
+                      }
+                    })
+                  }
+                })
+
         });
 
         it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
-            // RFC 1341: MIME-Version header field is required at the top level of a message. It is not required for each body part of a multipart entity
+            // RFC 1341: MIME-Version header field is required at the top level of a message. It is not required for each body part of a multipart entity NOT FINISHED
 
             var id = helper.generateUUID();
             var templates = [
@@ -3748,10 +3790,11 @@
                 .body(attachment).expect(200)
                 .end(function(err,res){
                   if (err) {
-                    console.log(err);
+                    //console.log(err);
                     done(err);
                   }
                   else{
+                    //console.log(res.headers);
                     done();
                   }
             });
@@ -3769,18 +3812,16 @@
               .body(attachment).expect(400)
               .end(function(err,res){
                 if (err) {
-                  console.log(err);
                   done(err);
                 }
                 else{
-                  //console.log(res.body);
                   done();
                 }
           });
         });
 
         it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done){
-          //not finished. bad attachment is not found. need to figure other ways to break attachment rules
+          //not finished. bad attachment is not found. need to figure other ways to break attachment rules. ambigious and could use clarification what is left to test
 
           var id = helper.generateUUID();
           var header = {'Content-Type': 'application/json; boundary=-------314159265358979323846'}
@@ -3806,36 +3847,35 @@
           attachment.id = id;
 
           var data = {
-              statementId: id,
               attachments: true
           };
           var query = helper.getUrlEncoding(data);
           var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
-              .post(helper.getEndpointStatements())
-              .headers(helper.addAllHeaders({}))
-              .json(attachment)
-              .expect(200)
-              .end()
+              // .post(helper.getEndpointStatements())
+              // .headers(helper.addAllHeaders({}))
+              // .json(attachment)
+              // .expect(200)
+              // .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, '?' + query, id))
+              //.wait(genDelay(stmtTime, '?' + query, id))
               .headers(helper.addAllHeaders(header))
               .expect(200)
               .end(function(err, res){
                   if (err){
-                    console.log(err);
+                    //console.log(err);
                     done(err);
                   }
                   else{
-                    console.log(res.body);
+                    //console.log(res.body);
                     done();
                   }
               })
         });
 
         it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.d)', function (done){
-          // doesn't reject a get request with attachment parameter set to false with attachment raw data
+          // doesn't reject a get request with attachment parameter set to false with attachment raw data NOT FINISHED
           this.timeout(0);
           var id = helper.generateUUID();
           var header = {'Content-Type': 'application/json; boundary=-------314159265358979323846'}
@@ -3861,10 +3901,10 @@
           var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
           myStatement.id = id;
           //myStatement.attachments = attachment;
-          console.log(myStatement.id);
+          //console.log(myStatement.id);
 
           var data = {
-              attachments: false,
+              attachments: true,
               statementId : id
           };
           var query = helper.getUrlEncoding(data);
@@ -3882,11 +3922,11 @@
               .expect(200)
               .end(function(err,res){
                 if (err){
-                  console.log(err);
+                  //console.log(err);
                   done(err);
                 }
                 else{
-                  console.log(res);
+                  //console.log(res);
                   done();
                 }
               });
@@ -3957,7 +3997,7 @@
                   done(err);
                 }
                 else{
-                  console.log(res.body);
+                  //console.log(res.body);
                   done();
                 }
               });
@@ -3975,7 +4015,7 @@
 
 
         it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done){
-          //implicit
+          //implicit what filtering criterion have not been tested yet?
           done();
         });
 
@@ -4033,7 +4073,6 @@
                   }
                   else {
                       var results = parse(res.body, done);
-                      console.log(results.more);
                       expect(results.more).to.exist;
                       done();
                   }
@@ -4083,12 +4122,48 @@
                     .expect(200, done);
         });
 
-        it('An LRS accepts GET requests without Content-Length headers (7.10.a.b)', function (done) {
-                request(helper.getEndpointAndAuth())
-                    .get(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .expect(200, done);
+        it('An Extension\'s structure is that of "key"/"value" pairs (Format, 5.3)' ,function(done){
+
+          var statementTemplates = [
+            {statement: '{{statements.object_substatement}}'},
+            {object: '{{substatements.context}}'},
+            {context: '{{contexts.default}}'},
+            {'extensions': {'http://example.com/ex': {key: 'valid'}}}
+          ];
+
+          var statement1 = createFromTemplate(statementTemplates);
+          statement1 = statement1.statement;
+          var id = helper.generateUUID();
+          statement1.id = id
+
+
+          var query = helper.getUrlEncoding(
+            {statementId : id}
+          );
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(statement1)
+              .expect(200)
+              .end()
+              .get(helper.getEndpointStatements() + '?' + query)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function (err, res) {
+                  if (err) {
+                      done(err);
+                  }
+                  else {
+                      var results = parse(res.body, done);
+                      expect(results.object.context.extensions["http://example.com/ex"].key).to.equal('valid');
+                      done();
+                  }
+              });
         });
+
+
+
 
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
             var returnedID, data, stmtTime;

@@ -1341,7 +1341,7 @@
                 .then(function (res) {
                     var about = res.body;
                     expect(about).to.have.property('version').to.be.an('array');
-                    var validVersions = ['.9', '.95', '1.0', '1.0.0', '1.0.1', '1.0.2'];
+                    var validVersions = ['0.9', '0.95','.9', '.95', '1.0', '1.0.0', '1.0.1', '1.0.2', '1.0.3'];
                     about.version.forEach(function (item) {
                         expect(validVersions).to.include(item);
                     })
@@ -1770,7 +1770,6 @@
             ];
             var data = createFromTemplate(templates);
             data.statement.test = "test";
-            //console.log(data);
             var statement = data.statement;
             var sID = helper.generateUUID();
             var headers = helper.addAllHeaders({});
@@ -1782,7 +1781,7 @@
             return sendRequest('post', helper.getEndpointStatements(), parameters, body, 400);
         });
 
-        describe('blarney An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile, Communication#3.1)', function () {
+        describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile, Communication#3.1)', function () {
 
             it('When responding to a GET request, include an ETag HTTP header in the response', function () {
                 var templates = [
@@ -1793,17 +1792,10 @@
                 var parameters = {
                     activityId: data.statement.object.id
                 }
-                console.log(statement);
-                console.log(parameters);
                 return sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
                     .then(function () {
                         return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
                         .then(function(res) {
-                            console.log(res.body);
-                            console.log(Object.keys(res.req), res.req._hasBody, res.req.output);
-                            console.log(res.req._headers, res.request);
-                            console.log(Object.keys(res));
-                            console.log(res.headers, res.domain);
                         })
                     });
             });
@@ -1852,6 +1844,35 @@
 
         });
 
+        it('An LRS will treat the content of the form parameter named "content" as a UTF-8 String (7.8.c)', function () {
+
+          var templates = [
+              {statement: '{{statements.unicode}}'}
+          ];
+
+          var data = createFromTemplate(templates);
+          var statement = data.statement;
+          var id = helper.generateUUID();
+          statement.id  = id;
+          var formBody = helper.buildFormBody(statement);
+
+          var parameters = {method: 'post'};
+          var parameters2 = {activityId: data.statement.object.id}
+
+          return sendRequest('post', helper.getEndpointStatements(), parameters, formBody, 200)
+          .then(function(){
+              return sendRequest('get', helper.getEndpointActivities(), parameters2, undefined, 200)
+              .then(function(res){
+                  var unicodeConformant = true;
+                  var languages = res.body.definition.name;
+                  for (var key in languages){
+                    if (languages[key] !== statement.object.definition.name[key])
+                      unicodeConformant = false;
+                  }
+                  expect(unicodeConformant).to.be.true;
+              })
+          })
+        });
 
     });
 
