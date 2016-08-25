@@ -597,20 +597,20 @@
         });
     });
 
-    describe('An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**', function () {
+    describe('altoona An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**', function () {
         it('should fail with statement "DELETE"', function (done) {
             var query = helper.getUrlEncoding({statementId: helper.generateUUID()});
-            requestPromise(helper.getEndpoint())
-                .delete(helper.getEndpointStatements() + '?' + query)
-                .set('X-Experience-API-Version', '1.0.1')
+            request(helper.getEndpointAndAuth())
+                .del(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addAllHeaders({}))
                 .expect(405, done);
         });
 
         it('should fail with activities "DELETE"', function (done) {
             var query = helper.getUrlEncoding({activityId: 'http://www.example.com/meetings/occurances/34534'});
-            requestPromise(helper.getEndpoint())
-                .delete(helper.getEndpointActivities() + '?' + query)
-                .set('X-Experience-API-Version', '1.0.1')
+            request(helper.getEndpointAndAuth())
+                .del(helper.getEndpointActivities() + '?' + query)
+                .headers(helper.addAllHeaders({}))
                 .expect(405, done);
         });
 
@@ -637,9 +637,9 @@
             var data = createFromTemplate(templates);
 
             var query = helper.getUrlEncoding(data);
-            requestPromise(helper.getEndpoint())
-                .delete(helper.getEndpointAgents() + '?' + query)
-                .set('X-Experience-API-Version', '1.0.1')
+            request(helper.getEndpointAndAuth())
+                .del(helper.getEndpointAgents() + '?' + query)
+                .headers(helper.addAllHeaders({}))
                 .expect(405, done);
         });
 
@@ -3329,7 +3329,7 @@
               });
         });
 
-        it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
+        it('altoona An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
             // Using requirement: An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**
             var id = helper.generateUUID();
             var statementTemplates = [
@@ -3350,9 +3350,9 @@
                 .expect(200)
                 .end();
                 // console.log("does this work");
-                requestPromise(helper.getEndpoint())
-                .delete(helper.getEndpointStatements() + '?statementId=' + statement.id)
-                .set('X-Experience-API-Version', '1.0.1')
+                request(helper.getEndpointAndAuth())
+                .del(helper.getEndpointStatements() + '?statementId=' + statement.id)
+                .headers(helper.addAllHeaders({}))
                 .expect(405)
                 .end(function(err,res){
                   if (err){
