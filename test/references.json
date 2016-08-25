@@ -6065,4 +6065,8 @@
 		"name": "LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement",
 		"1.0.3_link": ["Data.md#2.6.s4.b3"]
 	}
+    "An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has the \"attachments\" filter attribute set to \"true\"": {
+		"name": "LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement",
+		"1.0.3_link": ["Data.md#32-hosted-metadata"]
+	}
 }
