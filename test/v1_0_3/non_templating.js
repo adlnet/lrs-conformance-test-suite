@@ -597,7 +597,7 @@
         });
     });
 
-    describe('altoona An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**', function () {
+    describe('An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**', function () {
         it('should fail with statement "DELETE"', function (done) {
             var query = helper.getUrlEncoding({statementId: helper.generateUUID()});
             request(helper.getEndpointAndAuth())
@@ -3329,7 +3329,7 @@
               });
         });
 
-        it('altoona An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
+        it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
             // Using requirement: An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**
             var id = helper.generateUUID();
             var statementTemplates = [
