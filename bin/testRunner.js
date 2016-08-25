@@ -123,6 +123,11 @@ class TestRunner extends EventEmitter
 				this.summary.version = version.versionNumber;
 				break;
 
+			case 'data':
+
+				console.log(payload);
+				break;	
+
 			case 'end':
 
 				this.endTime = Date.now();
