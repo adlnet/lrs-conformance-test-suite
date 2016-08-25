@@ -3341,7 +3341,7 @@
             statement.id = id;
             var query = helper.getUrlEncoding({statementId: id});
 
-            console.log("before request", statement);
+            // console.log("before request", statement);
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
@@ -3349,18 +3349,18 @@
                 .json(statement)
                 .expect(200)
                 .end();
-                console.log("does this work");
+                // console.log("does this work");
                 requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointStatements() + '?statementId=' + statement.id)
                 .set('X-Experience-API-Version', '1.0.1')
                 .expect(405)
                 .end(function(err,res){
                   if (err){
-                    console.log(err);
+                    // console.log(err);
                     done(err);
                   }
                   else{
-                    console.log("success", res.body);
+                    // console.log("success", res.body);
                     done();
                   }
                 });
