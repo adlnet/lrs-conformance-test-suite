@@ -1782,7 +1782,7 @@
             return sendRequest('post', helper.getEndpointStatements(), parameters, body, 400);
         });
 
-        describe('blarney An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile, Communication#3.1)', function () {
+        describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile, Communication#3.1)', function () {
 
             it('When responding to a GET request to State resource, include an ETag HTTP header in the response', function () {
                 var parameters = helper.buildState(),
@@ -1846,8 +1846,8 @@
                     return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
                     .then(function (res) {
                         expect(res.headers.etag).to.be.ok;
-                        expect(res.headers.etag[0]).to.eql('"');
-                        expect(res.headers.etag[41]).to.eql('"');
+                        expect(res.headers.etag[0]).to.equal('"');
+                        expect(res.headers.etag[41]).to.equal('"');
                     });
                 });
             });
@@ -1891,7 +1891,7 @@
                 var parameters = helper.buildActivityProfile(),
                     document = helper.buildDocument();
 
-                var reqUrl = helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters);
+                var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
                 var data = {'If-None-Match': "*"};
                 var headers = helper.addAllHeaders(data);
                 var pre = request['put'](reqUrl);
@@ -1910,8 +1910,7 @@
                 } catch (e) {
                     console.log(e);
                 }
-                //but I don't expect 400 I was expecting 204
-                return pre.expect(400);
+                return pre.expect(204)
             });
 
             describe('If Header precondition in PUT Requests for RFC2616 fail', function () {
@@ -1921,7 +1920,8 @@
 
                 before('post the document and get the etag', function() {
 
-                    return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204).then(function (res) {
+                    return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
+                    .then(function (res) {
                         return sendRequest('get', helper.getEndpointActivitiesState(), parameters, document, 200).then(function (res) {
                             etag = res.headers.etag;
                         });
@@ -1965,17 +1965,41 @@
             });
 
             describe('If put request is received without either header for a resource that already exists', function () {
+                var etag;
+                var parameters = helper.buildActivityProfile();
+                var document = helper.buildDocument();
 
-                it('Return 409 conflict', function (done) {
-                    done();
+                before('post the document and get the etag', function () {
+                    return sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
+                    .then(function(res) {
+                        return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, document, 200)
+                        .then(function (res) {
+                            etag = res.headers.etag;
+                        });
+                    });
                 });
 
-                it('Return plaintext body explaining the situation', function (done) {
-                    done();
+                it('Return 409 conflict', function () {
+                    return sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 409);
                 });
 
-                it('Do not modify the resource', function (done) {
-                    done();
+                it('Return plaintext body explaining the situation', function () {
+                    return sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 409)
+                    .then(function (res) {
+                        //testing that the returned text is more than just 'confilct'
+                        expect(res.text).to.have.length.above(10);
+                    });
+                });
+
+                it('Do not modify the resource', function () {
+                    return sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 409)
+                    .then(function (res) {
+                        return sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, document, 200)
+                        .then(function (res) {
+                            var result = res.body;
+                            expect(res.body).to.eql(document);
+                        });
+                    });
                 });
             });
 
