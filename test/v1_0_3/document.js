@@ -1985,8 +1985,8 @@
                 it('Return plaintext body explaining the situation', function () {
                     return sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 409)
                     .then(function (res) {
-                        //testing that the returned text is more than just 'confilct'
-                        expect(res.text).to.have.length.above(10);
+                        expect(res).to.have.property('text');
+                        expect(res.text).to.have.length.above(0);
                     });
                 });
 
