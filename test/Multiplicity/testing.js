@@ -210,6 +210,11 @@
           done();
       });
 
+      it('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t)', function (done) {
+          // JSON parser validates this
+          done();
+      });
+
       it('An Activity Definition uses the "correctResponsesPattern" property at most one time (Multiplicity, 4.1.a)', function (done) {
           // JSON parser validates this
           done();
@@ -418,6 +423,11 @@
       it('A Person Object uses an "account" property at most one time (Multiplicity, 7.6.table1.row6.c)', function (done) {
           // JSON Parser validation
           done();
+      });
+
+      it('An LRS\'s State API can process a DELETE request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function (done){
+        //not a test
+        done();
       });
 
     function createFromTemplate(templates) {

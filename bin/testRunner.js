@@ -12,6 +12,7 @@ class Suite {
 	constructor(title)
 	{
 		var match;
+		this.log = "";
 		this.title = title;
 		if(match = /\(([^\)]*\d[^\)]*)\)/.exec(title))
 		{
@@ -35,6 +36,10 @@ class Suite {
 	addTest(test){
 		this.tests.push(test);
 		test.parent = this;
+	}
+	_log(data)
+	{
+		this.log+=data;
 	}
 }
 
@@ -104,7 +109,9 @@ class TestRunner extends EventEmitter
 	}
 
 	_registerStatusUpdates()
-	{
+	{	
+		
+
 		this.proc.on('message', function(msg)
 		{
 
@@ -120,6 +127,12 @@ class TestRunner extends EventEmitter
 				this.startTime = Date.now();
 				this.summary.version = version.versionNumber;
 				break;
+
+			case 'data':
+
+				if(this.activeTest)
+					this.activeTest._log(payload);
+				break;	
 
 			case 'end':
 
@@ -206,20 +219,38 @@ class TestRunner extends EventEmitter
 			this.emit('message', msg);
 
 		}.bind(this));
+
+		this.proc.on("close", function(w)
+		{		
+			if(this.state == "cancelled" || this.state == "finished")
+			{		
+				return;
+			}	
+			else
+			{
+				this.state = "error";
+				this.emit('message', {action: 'end'});
+				this.emit('close');
+			}
+		}.bind(this));
 	}
 
 	cancel()
 	{
 		if(this.proc)
 		{
-			this.proc.kill();
+			
 			this.endTime = Date.now();
 			this.duration = this.endTime - this.startTime;
 
 			// evaluate all in-progress suites to "cancelled"
 			this.state = 'cancelled';
-			this.activeTest.status = 'cancelled';
-			this.activeTest = this.activeTest.parent;
+			this.proc.kill();
+			if(this.activeTest)
+			{
+				this.activeTest.status = 'cancelled';
+				this.activeTest = this.activeTest.parent;
+			}
 			while(this.activeTest){
 				this.activeTest.status = rollup[this.rollupRule](this.activeTest);
 				this.emit('message', {action: 'suite end', payload: this.activeTest.title});
@@ -272,7 +303,7 @@ class TestRunner extends EventEmitter
 				title: log.title,
 				name: log.name,
 				requirement: log.requirement,
-
+				log:log.log,
 				status: log.status,
 				error: log.error,
 				tests: log.tests.map(cleanLog)
