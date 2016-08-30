@@ -3964,7 +3964,7 @@
                   done(err);
                 }
                 else{
-                  expect(res.headers['x-experience-api-version'] === "1.0.3").to.be.true;
+                  expect(res.headers['x-experience-api-version']).to.equal("1.0.3");
                   done();
                 }
               });

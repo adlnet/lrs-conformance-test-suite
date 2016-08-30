@@ -739,7 +739,7 @@
             invalidTypes.forEach(function (type) {
                 it('Should reject DELETE with "agent" with type ' + type, function () {
                     var parameters = helper.buildState();
-                    parameters.activityId = type;
+                    parameters.agent = type;
                     return sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
                 });
             });
