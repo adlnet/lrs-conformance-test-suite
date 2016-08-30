@@ -210,11 +210,6 @@
           done();
       });
 
-      it('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t)', function (done) {
-          // JSON parser validates this
-          done();
-      });
-
       it('An Activity Definition uses the "correctResponsesPattern" property at most one time (Multiplicity, 4.1.a)', function (done) {
           // JSON parser validates this
           done();

@@ -1783,7 +1783,6 @@
         });
 
 
-
     });
 
     function createFromTemplate(templates) {
