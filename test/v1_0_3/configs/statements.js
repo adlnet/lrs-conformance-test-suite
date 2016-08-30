@@ -157,35 +157,7 @@
                     }
                 ]
             },
-            {
-                name: 'A "stored" property is a TimeStamp (Type, 4.1.2.1.table1.row8.a, 4.1.2.1.table1.row8.b) **Caution: these tests need reworked. They do not test what they are trying to test.**',
-                config: [
-                    {
-                        name: 'statement "stored" invalid string',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {stored: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "stored" invalid date',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {stored: INVALID_DATE}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'test good timestamp data (predict will still be rejected because of "stored" property)',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {stored: '2013-05-18T05:32:34.804Z'}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
+
             {
                 name: 'A "version" property enters the LRS with the value of "1.0.0" or is not used (Vocabulary, 4.1.10.e, 4.1.10.f)',
                 config: [
