@@ -3458,6 +3458,25 @@
         });
     });
 
+    describe('testing An LRS MUST accept statements with the stored property (Data 2.4.8.s3.b2)', function () {
+        it('', function (done) {
+            var storedTime = new Date('July 15, 2011').toISOString();
+            var template = [
+                {statement: '{{statements.default}}'},
+                {stored: storedTime}
+            ];
+            var data = createFromTemplate(template);
+            console.log('Here is what we will send', data, storedTime);
+            done();
+        });
+    });
+
+    describe('testing A stored property must be a TimeStamp (Data 2.4.8.s2)', function () {
+        it('', function (done) {
+            done();
+        });
+    });
+
     describe('Miscellaneous Requirements', function () {
 
         it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
