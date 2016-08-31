@@ -3459,21 +3459,105 @@
     });
 
     describe('testing An LRS MUST accept statements with the stored property (Data 2.4.8.s3.b2)', function () {
-        it('', function (done) {
-            var storedTime = new Date('July 15, 2011').toISOString();
-            var template = [
-                {statement: '{{statements.default}}'},
-                {stored: storedTime}
-            ];
-            var data = createFromTemplate(template);
-            console.log('Here is what we will send', data, storedTime);
-            done();
+        var storedTime = new Date('July 15, 2011').toISOString();
+        var template = [
+            {statement: '{{statements.default}}'},
+            {stored: storedTime}
+        ];
+        var data = createFromTemplate(template).statement;
+        var postId, putId;
+
+        it('using POST', function (done) {
+
+            console.log('This is the statement we are potting', data);
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders())
+            .json(data)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    console.log('Since I know I\'m going to end up here for now, print this to show me we got here - tada!');
+                    done(err);
+                } else {
+                    console.log('This is a string to let me know that I got to the else in this test, which means I win!!!');
+                    console.log(res.body, '\nuse this one\n', helper.generateUUID());
+                    // postId = res.body[0];
+                    done();
+                }
+            });
+        });
+
+        it('using PUT', function (done) {
+            putId = helper.generateUUID();
+            param = '?statementId=' + putId;
+            console.log('This is the statement we are putting', data);
+
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + param)
+            .headers(helper.addAllHeaders())
+            .json(data)
+            .expect(204)
+            .end((err, res) => {
+                if (err) {
+                    console.log('Changing the text to not be completely repetitive, print this to show me we got here - tada!');
+                    done(err);
+                } else {
+                    console.log('Let me know that I got a good answer using put, which means I win!!!');
+                    console.log(res.statusCode);
+                    done();
+                }
+            });
         });
     });
 
     describe('testing A stored property must be a TimeStamp (Data 2.4.8.s2)', function () {
-        it('', function (done) {
-            done();
+        it('retrieve statements test a stored property', (done) => {
+            console.log('Andy Andy Andy Andy');
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders())
+            .expect(200)
+            .end((err, res) => {
+                console.log('malachi');
+                if (err) {
+                    console.log('error', err);
+                    done(err);
+                } else {
+                    console.log('yipee', res.body.length);
+                    var result = parse(res.body);
+                    console.log('result:', Object.keys(result));
+                    var stmts = result.statements;
+                    console.log('statements:', stmts);
+                    console.log('statement 1:\n', stmts[0]);
+                    var milliChecker = (num) => {
+                        expect(stmts[num]).to.have.property('stored');
+                        //formatted iso 8601
+                        // var chkStored =  moment('1971-01-27T11:22:33Z', moment.ISO_8601);
+                        var chkStored =  moment(stmts[num].stored, moment.ISO_8601);
+                        console.log('Our stored time', chkStored.toISOString(), Object.keys(chkStored));
+                        expect(chkStored.isValid()).to.be.true;
+                        //precision to milliseconds or greater
+                        console.log('WhooHoo Guru');
+                        if ((chkStored._pf.parsedDateParts[6] % 10) > 0) {
+                            console.log('we are finished with this test', chkStored._pf.parsedDateParts[6]);
+                            expect(chkStored._pf.parsedDateParts[6]).to.be.above(0);
+                            done();
+                        } else {
+                            console.log('We need to try again');
+                            if (++num < stmts.length) {
+                                milliChecker(num);
+                            } else {
+                                console.log('this is the end of the line and it looks like you have no milliseconds');
+                                expect(chkStored._pf.parsedDateParts[6]).to.be.above(0);
+                                done();
+                            }
+                        }
+                    }; milliChecker(0);
+                    // done();
+                }
+            });
+            // done();
         });
     });
 
