@@ -1782,6 +1782,22 @@
             return sendRequest('post', helper.getEndpointStatements(), parameters, body, 400);
         });
 
+        it('test123 An LRS\'s State API can process a DELETE request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function () {
+            var parameters = helper.buildState(),
+                document = helper.buildDocument();
+            return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
+                .then(function () {
+                  //parameters.since = new Date(Date.now() - 60 * 1000 - helper.getTimeMargin()).toISOString(); // Date 1 minute ago
+                    return sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204);
+                });
+        });
+
+        it('test123 An LRS\'s State API can process a DELETE request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function () {
+            var parameters = helper.buildState();
+            parameters.since = 'not a timestamp';
+            return sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
+        });
+
 
     });
 
