@@ -4064,10 +4064,6 @@
             done();
         });
 
-        it ('An LRS\'s State API can process a DELETE request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)  **Is this valid??**', function(done){
-
-            done();
-        });
 
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
             var returnedID, data, stmtTime;
