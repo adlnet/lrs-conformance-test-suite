@@ -3702,53 +3702,7 @@
 
         it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
             // RFC 1341: MIME-Version header field is required at the top level of a message. It is not required for each body part of a multipart entity
-            /*
-            var id = helper.generateUUID();
-            var templates = [
-                {statement: '{{statements.attachment}}'},
-                {
-                    attachments: [
-                        {
-                            "usageType": "http://example.com/attachment-usage/test",
-                            "display": {"en-US": "A test attachment"},
-                            "description": {"en-US": "A test attachment (description)"},
-                            "contentType": "multipart/mixed",
-                            "length": 27,
-                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
-                            "fileUrl": "http://over.there.com/file.txt"
-                        }
-                    ]
-                }
-            ];
 
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846', "MIME-Version" : "test"};
-            var attachment = createFromTemplate(templates);
-            attachment = attachment.statement;
-            attachment.id = id;
-
-            var data = {
-              contentType: "multipart/mixed",
-                statementId: id,
-                attachments: false
-            };
-            var query = helper.getUrlEncoding(data);
-            var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
-
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders(header))
-                .body(attachment).expect(200)
-                .end(function(err,res){
-                  if (err) {
-                    console.log(err);
-                    done(err);
-                  }
-                  else{
-                    console.log(res.request.req._header);
-                    done();
-                  }
-            });
-            */
             done();
         });
 
@@ -3849,9 +3803,54 @@
         });
 
 
-        it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done){
-          //implicit
-          done();
+        it('test123 The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done){
+          //needs more through testing for all filtering criterion
+          var statementTemplates = [
+              {statement: '{{statements.default}}'},
+              {context: '{{contexts.default}}'}
+          ];
+          var id = helper.generateUUID();
+          var statement = createFromTemplate(statementTemplates);
+          statement = statement.statement;
+          statement.id = id;
+          console.log(statement);
+
+          var data = {
+              limit: 1,
+              agent: statement.actor,
+              verb: statement.verb.id,
+              activity: statement.object.id,
+              registration: statement.context.registration,
+              related_activities: true,
+              related_agents: true
+          };
+
+          var query = helper.getUrlEncoding(data);
+
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(statement)
+              .expect(200)
+              .end()
+              .get(helper.getEndpointStatements() + '?' + query)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function (err, res) {
+                  if (err) {
+                    console.log(err);
+                      done(err);
+                  }
+                  else {
+                      var results = parse(res.body, done);
+                      console.log(results.statements[0]);
+                      expect(results.statements[0].id).to.equal(id);
+                      done();
+                  }
+              });
+
+
         });
 
         it('A "statements" property which is too large for a single page will create a container for each additional page (4.2.table1.row1.b)', function (done){
@@ -3908,8 +3907,28 @@
                   }
                   else {
                       var results = parse(res.body, done);
-                      console.log(results.more);
                       expect(results.more).to.exist;
+                      done();
+                  }
+              });
+        });
+
+        it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, 4.2.table1.row1.c) ', function (done){
+          var query = helper.getUrlEncoding(
+            {limit:1}
+          );
+
+          request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointStatements() + '?' + query)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function (err, res) {
+                  if (err) {
+                      done(err);
+                  }
+                  else {
+                      var results = parse(res.body, done);
+                      expect(results.statements).to.exist;
                       done();
                   }
               });

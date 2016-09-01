@@ -1782,31 +1782,35 @@
             return sendRequest('post', helper.getEndpointStatements(), parameters, body, 400);
         });
 
-        it('test123 An LRS\'s State API can process a DELETE request with "since" as a parameter (multiplicity, 7.4.table2.row4.b, 7.4.table2.row3.b)', function () {
-            var parameters = helper.buildState(),
-                document = helper.buildDocument();
-            return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
-                .then(function () {
-                  //parameters.since = new Date(Date.now() - 60 * 1000 - helper.getTimeMargin()).toISOString(); // Date 1 minute ago
-                    return sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204);
-                });
-        });
+          it('An LRS will treat the content of the form parameter named "content" as a UTF-8 String (7.8.c)', function () {
 
-        it('An LRS\'s State API rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, 7.4.table2.row4.a) ', function () {
-            var parameters = helper.buildState();
-            parameters.since = 'not a timestamp';
-            return sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
-        });
+               var templates = [
+                 {statement: '{{statements.unicode}}'}
+               ];
 
-        it('An LRS will reject a new Request with a form parameter named "content" if "content" is found to be binary data with error code 400 Bad Request (7.8.c)', function () {
-            var parameters = {method: 'post'},
-                formBody = {
-                'X-Experience-API-Version': '1.0.2',
-                'Content-Type': 'application/json',
-                }
-            formBody.content = new Buffer("I'm a string", "binary");
-            return sendRequest('post', helper.getEndpointStatements(), parameters, formBody, 400);
-        });
+               var data = createFromTemplate(templates);
+               var statement = data.statement;
+               var id = helper.generateUUID();
+               statement.id  = id;
+               var formBody = helper.buildFormBody(statement);
+
+               var parameters = {method: 'post'};
+               var parameters2 = {activityId: data.statement.object.id}
+
+              return sendRequest('post', helper.getEndpointStatements(), parameters, formBody, 200)
+              .then(function(){
+                   return sendRequest('get', helper.getEndpointActivities(), parameters2, undefined, 200)
+                   .then(function(res){
+                      var unicodeConformant = true;
+                       var languages = res.body.definition.name;
+                       for (var key in languages){
+                         if (languages[key] !== statement.object.definition.name[key])
+                           unicodeConformant = false;
+                       }
+                       expect(unicodeConformant).to.be.true;
+                   })
+               })
+         });
 
 
     });
