@@ -26,6 +26,7 @@
                 request(helper.getEndpointAndAuth())
                 .get(endP)
                 .headers(helper.addAllHeaders({}))
+                .expect(500)
                 .end(function(err, res)
                 {
                    console.log(err, res.statusCode, res.statusMessage, typeof res.body, res.body.length);
@@ -33,7 +34,8 @@
                     if (err) {
                     //if there was an error, we quit and go home
                         console.log('Error', err);
-                        p.reject();
+                        throw err;
+                        // p.reject();
                     } else {
                         try {
                         //we parse the result into either a single statment or a statements object
@@ -60,13 +62,19 @@
                                 // first time only - we use the provided headers to calculate a maximum wait time
                                 console.log(res.headers);
                                 delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
-                                finish = Date.now() + 10 * delta;
+                                finish = 'delta';
+                                // finish = Date.now() + 10 * delta;
                                 console.log('Setting the max wait time', delta, finish);
+                                if (isNaN(finish)) {
+                                    console.log("you're outta here", finish);
+                                    throw new TypeError("X-Experience-API-Consistent-Through NaN");
+                                    // p.errback();
+                                }
                             }
                             console.log('waiting up to', delta * 10, 'ms\tcompare these', Date.now(), finish);
                             if (Date.now() >= finish) {
                                 console.log('Exceeded the maximum time limit - continue test');
-                                p.resolve()
+                                p.resolve();
                             }
                             console.log('No match No con-thru - wait and check again', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
                             setTimeout(doRequest, 1000);
@@ -99,7 +107,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
+    describe('testing An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
 
         it('should populate authority ', function (done) {
 
@@ -807,7 +815,7 @@
         });
     });
 
-    describe('An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing (7.0.c, **Implicit**)', function () {
+    describe('testing An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing (7.0.c, **Implicit**)', function () {
         it('should not persist any statements on a single failure', function (done) {
             this.timeout(0);
             var templates = [
@@ -1165,7 +1173,7 @@
         });
     });
 
-    describe('A "more" property is an IRL (Format, 4.2.table1.row2.a)', function () {
+    describe('testing A "more" property is an IRL (Format, 4.2.table1.row2.a)', function () {
         it('should return "more" property as an IRL', function (done) {
             this.timeout(0);
             var templates = [
@@ -1417,7 +1425,7 @@
         });
     });
 
-    describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
+    describe('testing An LRS\'s Statement API rejects with error code 400 a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
         var id;
         var stmtTime;
         this.timeout(0);
