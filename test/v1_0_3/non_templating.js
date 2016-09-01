@@ -95,7 +95,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-    describe('testing An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
+    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
 
         it('should populate authority ', function (done) {
 
@@ -803,7 +803,7 @@
         });
     });
 
-    describe('testing An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing (7.0.c, **Implicit**)', function () {
+    describe('An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing (7.0.c, **Implicit**)', function () {
         it('should not persist any statements on a single failure', function (done) {
             this.timeout(0);
             var templates = [
@@ -1161,7 +1161,7 @@
         });
     });
 
-    describe('testing A "more" property is an IRL (Format, 4.2.table1.row2.a)', function () {
+    describe('A "more" property is an IRL (Format, 4.2.table1.row2.a)', function () {
         it('should return "more" property as an IRL', function (done) {
             this.timeout(0);
             var templates = [
@@ -1413,7 +1413,7 @@
         });
     });
 
-    describe('testing An LRS\'s Statement API rejects with error code 400 a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
+    describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (7.2.3.a, 7.2.3.b)', function () {
         var id;
         var stmtTime;
         this.timeout(0);
