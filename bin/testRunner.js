@@ -12,6 +12,7 @@ class Suite {
 	constructor(title)
 	{
 		var match;
+		this.log = "";
 		this.title = title;
 		if(match = /\(([^\)]*\d[^\)]*)\)/.exec(title))
 		{
@@ -35,6 +36,10 @@ class Suite {
 	addTest(test){
 		this.tests.push(test);
 		test.parent = this;
+	}
+	_log(data)
+	{
+		this.log+=data;
 	}
 }
 
@@ -122,6 +127,12 @@ class TestRunner extends EventEmitter
 				this.startTime = Date.now();
 				this.summary.version = version.versionNumber;
 				break;
+
+			case 'data':
+
+				if(this.activeTest)
+					this.activeTest._log(payload);
+				break;	
 
 			case 'end':
 
@@ -292,7 +303,7 @@ class TestRunner extends EventEmitter
 				title: log.title,
 				name: log.name,
 				requirement: log.requirement,
-
+				log:log.log,
 				status: log.status,
 				error: log.error,
 				tests: log.tests.map(cleanLog)
