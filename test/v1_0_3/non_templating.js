@@ -35,17 +35,17 @@
                         throw err;
                     } else {
                         try {
-                        //we parse the result into either a single statment or a statements object
+                        //we parse the result into either a single statement or a statements object
                             result = parse(res.body);
                         } catch (e) {
                             // console.log('res.body did not parse');
                             result = {};
                         }
                         if (id && result.id && (result.id === id)) {
-                        //if we find a single statment and the id we are looking for, then we're good we can continue with the testing
+                        //if we find a single statement and the id we are looking for, then we're good we can continue with the testing
                             p.resolve();
                         } else if (id && result.statements && stmtFound(result.statements, id)) {
-                        //if we find a block of statments and the id we are looking for, then we're good and we can continue with the testing
+                        //if we find a block of statements and the id we are looking for, then we're good and we can continue with the testing
                             p.resolve();
                         } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
                         //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
