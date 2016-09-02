@@ -36,18 +36,18 @@
                         p.reject();
                     } else {
                         try {
-                        //we parse the result into either a single statment or a statements object
+                        //we parse the result into either a single statement or a statements object
                             result = parse(res.body);
                         } catch (e) {
 //                            console.log('res.body did not parse');
                             result = {};
                         }
                         if (id && result.id && (result.id === id)) {
-                        //if we find a single statment and the id we are looking for, then we're good we can continue with the testing
+                        //if we find a single statement and the id we are looking for, then we're good we can continue with the testing
 //                            console.log("Single Statement matched");
                             p.resolve();
                         } else if (id && result.statements && stmtFound(result.statements, id)) {
-                        //if we find a block of statments and the id we are looking for, then we're good and we can continue with the testing
+                        //if we find a block of statements and the id we are looking for, then we're good and we can continue with the testing
 //                            console.log('Statement Object matched');
                             p.resolve();
                         } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
@@ -3458,7 +3458,8 @@
         });
     });
 
-    describe('testing An LRS MUST accept statements with the stored property (Data 2.4.8.s3.b2)', function () {
+    describe('An LRS MUST accept statements with the stored property (Data 2.4.8.s3.b2)', function () {
+        this.timeout(0);
         var storedTime = new Date('July 15, 2011').toISOString();
         var template = [
             {statement: '{{statements.default}}'},
@@ -3468,8 +3469,7 @@
         var postId, putId;
 
         it('using POST', function (done) {
-
-            console.log('This is the statement we are potting', data);
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders())
@@ -3477,13 +3477,27 @@
             .expect(200)
             .end((err, res) => {
                 if (err) {
-                    console.log('Since I know I\'m going to end up here for now, print this to show me we got here - tada!');
                     done(err);
                 } else {
-                    console.log('This is a string to let me know that I got to the else in this test, which means I win!!!');
-                    console.log(res.body, '\nuse this one\n', helper.generateUUID());
-                    // postId = res.body[0];
-                    done();
+                    postId = res.body[0];
+                    var query = '?statementId=' + postId;
+
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + query)
+                    .wait(genDelay(stmtTime, query, postId))
+                    .headers(helper.addAllHeaders())
+                    .expect(200)
+                    .end((err, res) => {
+                        if (err) {
+                            done(err);
+                        } else {
+                            var result = parse(res.body);
+                            expect(result).to.have.property('stored');
+                            var stmtStored = result.stored;
+                            expect(stmtStored).to.not.eql(storedTime);
+                            done();
+                        }
+                    });
                 }
             });
         });
@@ -3491,7 +3505,7 @@
         it('using PUT', function (done) {
             putId = helper.generateUUID();
             param = '?statementId=' + putId;
-            console.log('This is the statement we are putting', data);
+            var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
             .put(helper.getEndpointStatements() + param)
@@ -3500,66 +3514,76 @@
             .expect(204)
             .end((err, res) => {
                 if (err) {
-                    console.log('Changing the text to not be completely repetitive, print this to show me we got here - tada!');
                     done(err);
                 } else {
-                    console.log('Let me know that I got a good answer using put, which means I win!!!');
-                    console.log(res.statusCode);
-                    done();
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + param)
+                    .wait(genDelay(stmtTime, param, putId))
+                    .headers(helper.addAllHeaders())
+                    .expect(200)
+                    .end((err, res) => {
+                        if (err) {
+                            done(err);
+                        } else {
+                            var result = parse(res.body);
+                            expect(result).to.have.property('stored');
+                            var stmtStored = result.stored;
+                            expect(stmtStored).to.not.eql(storedTime);
+                            done();
+                        }
+                    });
                 }
             });
         });
     });
 
-    describe('testing A stored property must be a TimeStamp (Data 2.4.8.s2)', function () {
-        it('retrieve statements test a stored property', (done) => {
-            console.log('Andy Andy Andy Andy');
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders())
-            .expect(200)
-            .end((err, res) => {
-                console.log('malachi');
-                if (err) {
-                    console.log('error', err);
-                    done(err);
-                } else {
-                    console.log('yipee', res.body.length);
-                    var result = parse(res.body);
-                    console.log('result:', Object.keys(result));
-                    var stmts = result.statements;
-                    console.log('statements:', stmts);
-                    console.log('statement 1:\n', stmts[0]);
-                    var milliChecker = (num) => {
-                        expect(stmts[num]).to.have.property('stored');
-                        //formatted iso 8601
-                        // var chkStored =  moment('1971-01-27T11:22:33Z', moment.ISO_8601);
-                        var chkStored =  moment(stmts[num].stored, moment.ISO_8601);
-                        console.log('Our stored time', chkStored.toISOString(), Object.keys(chkStored));
-                        expect(chkStored.isValid()).to.be.true;
-                        //precision to milliseconds or greater
-                        console.log('WhooHoo Guru');
-                        if ((chkStored._pf.parsedDateParts[6] % 10) > 0) {
-                            console.log('we are finished with this test', chkStored._pf.parsedDateParts[6]);
-                            expect(chkStored._pf.parsedDateParts[6]).to.be.above(0);
-                            done();
-                        } else {
-                            console.log('We need to try again');
-                            if (++num < stmts.length) {
-                                milliChecker(num);
-                            } else {
-                                console.log('this is the end of the line and it looks like you have no milliseconds');
-                                expect(chkStored._pf.parsedDateParts[6]).to.be.above(0);
-                                done();
-                            }
-                        }
-                    }; milliChecker(0);
-                    // done();
-                }
-            });
-            // done();
-        });
-    });
+    // describe('testing A stored property must be a TimeStamp (Data 2.4.8.s2)', function () {
+    //     it('retrieve statements, test a stored property', (done) => {
+    //         console.log('Andy Andy Andy Andy');
+    //         request(helper.getEndpointAndAuth())
+    //         .get(helper.getEndpointStatements())
+    //         .headers(helper.addAllHeaders())
+    //         .expect(200)
+    //         .end((err, res) => {
+    //             console.log('malachi');
+    //             if (err) {
+    //                 console.log('error', err);
+    //                 done(err);
+    //             } else {
+    //                 console.log('yipee', res.body.length);
+    //                 var result = parse(res.body);
+    //                 console.log('result:', Object.keys(result));
+    //                 var stmts = result.statements;
+    //                 console.log('statements:', stmts);
+    //                 console.log('statement 1:\n', stmts[0]);
+    //                 var milliChecker = (num) => {
+    //                     expect(stmts[num]).to.have.property('stored');
+    //                     //formatted iso 8601
+    //                     // var chkStored =  moment('1971-01-27T11:22:33Z', moment.ISO_8601);
+    //                     var chkStored =  moment(stmts[num].stored, moment.ISO_8601);
+    //                     console.log('Our stored time', chkStored.toISOString(), Object.keys(chkStored));
+    //                     expect(chkStored.isValid()).to.be.true;
+    //                     //precision to milliseconds or greater
+    //                     console.log('WhooHoo Guru');
+    //                     if ((chkStored._pf.parsedDateParts[6] % 10) > 0) {
+    //                         console.log('we are finished with this test', chkStored._pf.parsedDateParts[6]);
+    //                         expect(chkStored._pf.parsedDateParts[6]).to.be.above(0);
+    //                         done();
+    //                     } else {
+    //                         console.log('We need to try again');
+    //                         if (++num < stmts.length) {
+    //                             milliChecker(num);
+    //                         } else {
+    //                             console.log('this is the end of the line and it looks like you have no milliseconds');
+    //                             expect(chkStored._pf.parsedDateParts[6]).to.be.above(0);
+    //                             done();
+    //                         }
+    //                     }
+    //                 }; milliChecker(0);
+    //             }
+    //         });
+    //     });
+    // });
 
     describe('Miscellaneous Requirements', function () {
 
@@ -4396,7 +4420,7 @@
           .expect(400)
           .end()
           .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
-          .wait(genDelay(stmtTime, '/statmentId=' + correct.id, correct.id))
+          .wait(genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
           .headers(helper.addAllHeaders({}))
           .expect(404, done);
   });
