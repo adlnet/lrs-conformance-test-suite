@@ -3717,9 +3717,71 @@
           done();
         });
 
-        it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.d)', function (done){
+        it ('test123 An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.d)', function (done){
 
-          done();
+          var templates = [
+              {statement: '{{statements.attachment}}'},
+              {
+                  attachments: [
+                      {
+                          "usageType": "http://example.com/attachment-usage/test",
+                          "display": {"en-US": "A test attachment"},
+                          "description": {"en-US": "A test attachment (description)"},
+                          "contentType": "text/plain; charset=ascii",
+                          "length": 27,
+                          "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
+                          "fileUrl": "http://over.there.com/file.txt"
+                      }
+                  ]
+              }
+          ];
+          var data = createFromTemplate(templates);
+          data = data.statement;
+          data.id = helper.generateUUID();
+          id = data.id;
+          stmtTime = Date.now();
+          // request(helper.getEndpointAndAuth())
+          //     .post(helper.getEndpointStatements())
+          //     .headers(helper.addAllHeaders({}))
+          //     .json(data)
+          //     .expect(200, done);
+          //
+              var data = {
+                  attachments: true
+              };
+              var query = helper.getUrlEncoding(data);
+
+              attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+
+              var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+              request(helper.getEndpointAndAuth())
+                  .post(helper.getEndpointStatements())
+                  .headers(helper.addAllHeaders(header))
+                  .body(attachment).expect(200)
+                  .end(function(err,res){
+                    if (err){
+                      console.log(err);
+                      done(err);
+                    }
+                    else{
+
+                      var request = JSON.parse(res.body);
+                      console.log(request[0]);
+                      request(helper.getEndpointAndAuth() + '?' + query)
+                          .get(helper.getEndpointStatements())
+                          .headers(helper.addAllHeaders({}))
+                          .expect(200, done);
+                    }
+                  });
+
+              // var query = helper.getUrlEncoding(data);
+              // request(helper.getEndpointAndAuth())
+              //     .get(helper.getEndpointStatements() + '?' + query)
+              //     .wait(genDelay(stmtTime, '?' + query, id))
+              //     .headers(helper.addAllHeaders({}))
+              //     .expect(200, done);
+
+
         });
 
 
@@ -3803,8 +3865,8 @@
         });
 
 
-        it('test123 The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done){
-          //needs more through testing for all filtering criterion
+        it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done){
+          //tests most of the filtering criteria, can add additional tests for missing criteria if necessary
           var statementTemplates = [
               {statement: '{{statements.default}}'},
               {context: '{{contexts.default}}'}
@@ -3813,7 +3875,6 @@
           var statement = createFromTemplate(statementTemplates);
           statement = statement.statement;
           statement.id = id;
-          console.log(statement);
 
           var data = {
               limit: 1,
@@ -3822,7 +3883,10 @@
               activity: statement.object.id,
               registration: statement.context.registration,
               related_activities: true,
-              related_agents: true
+              related_agents: true,
+              since: '2012-06-01T19:09:13.245Z',
+              format: 'ids',
+              attachments: false
           };
 
           var query = helper.getUrlEncoding(data);
@@ -3844,7 +3908,7 @@
                   }
                   else {
                       var results = parse(res.body, done);
-                      console.log(results.statements[0]);
+                      //console.log(results.statements[0]);
                       expect(results.statements[0].id).to.equal(id);
                       done();
                   }
@@ -4081,6 +4145,62 @@
         it ('An LRS implements all of the Statement, State, Agent, and Activity Profile sub-APIs **Implicit**', function(done){
             //large test that should be covered by other tests
             done();
+        });
+
+        it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including 7.3.e)', function(done){
+          id = helper.generateUUID();
+          var templates = [
+              {statement: '{{statements.default}}'}
+          ];
+          var templates2 = [
+              {statement: '{{statements.result}}'}
+          ];
+
+          var statement = createFromTemplate(templates);
+          statement = statement.statement;
+          statement.id = id;
+
+          var statement2 = createFromTemplate(templates2);
+          statement2 = statement2.statement;
+          //console.log(statement2);
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(statement)
+              .expect(200)
+              .end()
+              .put(helper.getEndpointStatements() + '?statementId=' + id)
+              .headers(helper.addAllHeaders({}))
+              .json(statement2)
+              .expect(409||204)
+              .end(function(err, res){
+                if (err){
+                  console.log(err);
+                  done(err);
+                }
+                else{
+                  console.log(res.body);
+                }
+              })
+              .get(helper.getEndpointStatements() + '?statementId=' + id)
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function(err, res){
+                if (err){
+                  console.log(err);
+                  done(err);
+                }
+                else{
+                  var result = JSON.parse(res.body);
+                  //console.log(statement,"---\n");
+                  //console.log(result);
+                  expect(statement.actor).to.eql(result.actor);
+                  expect(statement.verb).to.eql(result.verb);
+                  expect(statement.object).to.eql(result.object);
+                  done();
+                }
+              });
         });
 
 
