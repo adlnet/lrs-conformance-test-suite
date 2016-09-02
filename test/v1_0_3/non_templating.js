@@ -4290,7 +4290,7 @@
           .expect(400)
           .end()
           .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
-          .wait(genDelay(stmtTime, '?statmentId=' + correct.id, correct.id))
+          .wait(genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
           .headers(helper.addAllHeaders({}))
           .expect(404, done);
   });
