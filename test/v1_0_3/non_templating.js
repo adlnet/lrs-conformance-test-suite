@@ -4030,7 +4030,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              //.wait(genDelay(stmtTime, '?' + query, id))
+              .wait(genDelay(stmtTime, '?' + query, id))
               .headers(helper.addAllHeaders(header))
               .expect(200)
               .end(function(err,res){
@@ -4137,6 +4137,9 @@
           statement = statement.statement;
           statement.id = id;
 
+          var stmtTime = Date.now();
+          this.timeout(0);
+
           var data = {
               limit: 1,
               agent: statement.actor,
@@ -4159,6 +4162,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4214,12 +4218,16 @@
         });
 
         it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "more" property (Multiplicity, Format, 4.2.table1.row2.c)', function (done){
+          var stmtTime = Date.now();
+          this.timeout(0);
+
           var query = helper.getUrlEncoding(
             {limit:1}
           );
 
           request(helper.getEndpointAndAuth())
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4235,12 +4243,16 @@
         });
 
         it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, 4.2.table1.row2.c)', function (done){
+          var stmtTime = Date.now();
+          this.timeout(0);
+
           var query = helper.getUrlEncoding(
             {limit:1}
           );
 
           request(helper.getEndpointAndAuth())
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4300,6 +4312,9 @@
 
         it('An Extension\'s structure is that of "key"/"value" pairs (Format, 5.3)' ,function(done){
 
+          var stmtTime = Date.now();
+          this.timeout(0);
+
           var statementTemplates = [
             {statement: '{{statements.object_substatement}}'},
             {object: '{{substatements.context}}'},
@@ -4324,6 +4339,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, id))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4438,6 +4454,10 @@
         });
 
         it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including 7.3.e)', function(done){
+
+          var stmtTime = Date.now();
+          this.timeout(0);
+
           id = helper.generateUUID();
           var templates = [
               {statement: '{{statements.default}}'}
@@ -4454,31 +4474,32 @@
           statement2 = statement2.statement;
 
           request(helper.getEndpointAndAuth())
-               .post(helper.getEndpointStatements())
-               .headers(helper.addAllHeaders({}))
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
               .json(statement)
-               .expect(200)
-               .end()
+              .expect(200)
+              .end()
               .put(helper.getEndpointStatements() + '?statementId=' + id)
               .headers(helper.addAllHeaders({}))
               .json(statement2)
               .expect(409||204)
               .end()
               .get(helper.getEndpointStatements() + '?statementId=' + id)
+              .wait(genDelay(stmtTime, '?' + query, id))
               .headers(helper.addAllHeaders({}))
-               .expect(200)
-               .end(function(err, res){
-                if (err){
-                  done(err);
-                }
-                else{
-                  var result = JSON.parse(res.body);
-                  expect(statement.actor).to.eql(result.actor);
-                  expect(statement.verb).to.eql(result.verb);
-                  expect(statement.object).to.eql(result.object);
-                  done();
-                }
-               });
+              .expect(200)
+              .end(function(err, res){
+                  if (err){
+                      done(err);
+                  }
+                  else{
+                      var result = JSON.parse(res.body);
+                      expect(statement.actor).to.eql(result.actor);
+                      expect(statement.verb).to.eql(result.verb);
+                      expect(statement.object).to.eql(result.object);
+                      done();
+                  }
+              });
          });
 
 
