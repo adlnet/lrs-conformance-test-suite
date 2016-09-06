@@ -3717,37 +3717,19 @@
           done();
         });
 
-        it ('test123 An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.d)', function (done){
+        it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.d)', function (done){
+          // in progress
 
-          var templates = [
-              {statement: '{{statements.attachment}}'},
-              {
-                  attachments: [
-                      {
-                          "usageType": "http://example.com/attachment-usage/test",
-                          "display": {"en-US": "A test attachment"},
-                          "description": {"en-US": "A test attachment (description)"},
-                          "contentType": "text/plain; charset=ascii",
-                          "length": 27,
-                          "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
-                          "fileUrl": "http://over.there.com/file.txt"
-                      }
-                  ]
-              }
-          ];
-          var data = createFromTemplate(templates);
-          data = data.statement;
-          data.id = helper.generateUUID();
-          id = data.id;
-          stmtTime = Date.now();
           // request(helper.getEndpointAndAuth())
           //     .post(helper.getEndpointStatements())
           //     .headers(helper.addAllHeaders({}))
           //     .json(data)
           //     .expect(200, done);
           //
+          var id;
               var data = {
-                  attachments: true
+                  attachments: false,
+                  limit: 1
               };
               var query = helper.getUrlEncoding(data);
 
@@ -3765,12 +3747,31 @@
                     }
                     else{
 
+                        var request = JSON.parse(res.body);
+                        console.log(request[0]);
+                        id = request[0];
+                        data = {
+                            statementId: id,
+                            attachments: true
+                        };
+                        query = helper.getUrlEncoding(data);
+                    }
+                  })
+                  .get(helper.getEndpointStatements()+ '?' + query)
+                  .headers(helper.addAllHeaders(header))
+                  .expect(200)
+                  .end(function(err,res){
+                    if (err){
+                      console.log(err);
+                      done(err);
+                    }
+                    else{
+
                       var request = JSON.parse(res.body);
-                      console.log(request[0]);
-                      request(helper.getEndpointAndAuth() + '?' + query)
-                          .get(helper.getEndpointStatements())
-                          .headers(helper.addAllHeaders({}))
-                          .expect(200, done);
+                      console.log(request.statements[0].attachments);
+                      console.log(request.statements[0].id);
+                      console.log(id);
+                      done();
                     }
                   });
 
@@ -4092,7 +4093,7 @@
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
-                    .json(scale).expect(200, done); // should be 400
+                    .json(scale).expect(400, done); // should be 400
             });
 
             it ('Activity Definition uses source without "interactionType" property',function(done){
@@ -4107,7 +4108,7 @@
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
-                    .json(source).expect(200, done); // should be 400
+                    .json(source).expect(400, done); // should be 400
             });
 
             it ('Activity Definition uses target without "interactionType" property',function(done){
@@ -4122,7 +4123,7 @@
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
-                    .json(target).expect(200, done); // should be 400
+                    .json(target).expect(400, done); // should be 400
             });
 
             it ('Activity Definition uses steps without "interactionType" property',function(done){
@@ -4137,7 +4138,7 @@
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointStatements())
                     .headers(helper.addAllHeaders({}))
-                    .json(steps).expect(200, done); // should be 400
+                    .json(steps).expect(400, done); // should be 400
             });
 
         });
