@@ -19,56 +19,53 @@
                 endP += query;
             }
             var delta, finish;
-//            console.log('\n\nAllowing for consistency', helper.getEndpointAndAuth(), helper.getEndpointStatements(), query, time, id);
+
             function doRequest()
             {
                 var result;
                 request(helper.getEndpointAndAuth())
                 .get(endP)
                 .headers(helper.addAllHeaders({}))
+                //we don't expect anything, we just want a response
                 .end(function(err, res)
                 {
-//                    console.log(err, res.statusCode, res.statusMessage, typeof res.body, res.body.length);
-
                     if (err) {
                     //if there was an error, we quit and go home
-//                        console.log('Error', err);
-                        p.reject();
+                        // console.log('Error', err);
+                        throw err;
                     } else {
                         try {
-                        //we parse the result into either a single statment or a statements object
+                        //we parse the result into either a single statement or a statements object
                             result = parse(res.body);
                         } catch (e) {
-//                            console.log('res.body did not parse');
+                            // console.log('res.body did not parse');
                             result = {};
                         }
                         if (id && result.id && (result.id === id)) {
-                        //if we find a single statment and the id we are looking for, then we're good we can continue with the testing
-//                            console.log("Single Statement matched");
+                        //if we find a single statement and the id we are looking for, then we're good we can continue with the testing
                             p.resolve();
                         } else if (id && result.statements && stmtFound(result.statements, id)) {
-                        //if we find a block of statments and the id we are looking for, then we're good and we can continue with the testing
-//                            console.log('Statement Object matched');
+                        //if we find a block of statements and the id we are looking for, then we're good and we can continue with the testing
                             p.resolve();
                         } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
                         //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
-//                            console.log('X-Experience-API-Consistent-Through header GOOD - continue test', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
                             p.resolve();
                         } else {
                         //otherwise we give the lrs a second to catch up and try again
                             if (!delta) {
                                 // first time only - we use the provided headers to calculate a maximum wait time
-//                                console.log(res.headers);
                                 delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
                                 finish = Date.now() + 10 * delta;
-//                                console.log('Setting the max wait time', delta, finish);
+
+                                if (isNaN(finish)) {
+                                    throw new TypeError("X-Experience-API-Consistent-Through header was missing or not a number.");
+                                }
                             }
-//                            console.log('waiting up to', delta * 10, 'ms\tcompare these', Date.now(), finish);
+                            // console.log('waiting up to', delta * 10, 'ms\tcompare these', Date.now(), finish);
                             if (Date.now() >= finish) {
-//                                console.log('Exceeded the maximum time limit - continue test');
-                                p.resolve()
+                                // console.log('Exceeded the maximum time limit - continue test');
+                                p.resolve();
                             }
-//                            console.log('No match No con-thru - wait and check again', (new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin(), time);
                             setTimeout(doRequest, 1000);
                         }
                     }
@@ -80,15 +77,14 @@
         return delay();
 
         function stmtFound (arr, id) {
-//            console.log('Searching through Statement Object for', id);
             var found = false;
             arr.forEach (function (s) {
                 if (s.id === id) {
-//                    console.log('Found', s.id, id);
+                    // console.log('Found', s.id, id);
                     found = true;
                 }
             });
-            //if (!found) console.log(id, 'Not found - please continue');
+            // if (!found) console.log(id, 'Not found - please continue');
             return found;
         }
     }
@@ -3458,6 +3454,121 @@
         });
     });
 
+    describe('An LRS MUST accept statements with the stored property (Data 2.4.8.s3.b2)', function () {
+        this.timeout(0);
+        var storedTime = new Date('July 15, 2011').toISOString();
+        var template = [
+            {statement: '{{statements.default}}'},
+            {stored: storedTime}
+        ];
+        var data = createFromTemplate(template).statement;
+        var postId, putId;
+
+        it('using POST', function (done) {
+            var stmtTime = Date.now();
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders())
+            .json(data)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+                    postId = res.body[0];
+                    var query = '?statementId=' + postId;
+
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + query)
+                    .wait(genDelay(stmtTime, query, postId))
+                    .headers(helper.addAllHeaders())
+                    .expect(200)
+                    .end((err, res) => {
+                        if (err) {
+                            done(err);
+                        } else {
+                            var result = parse(res.body);
+                            expect(result).to.have.property('stored');
+                            var stmtStored = result.stored;
+                            expect(stmtStored).to.not.eql(storedTime);
+                            done();
+                        }
+                    });
+                }
+            });
+        });
+
+        it('using PUT', function (done) {
+            putId = helper.generateUUID();
+            param = '?statementId=' + putId;
+            var stmtTime = Date.now();
+
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + param)
+            .headers(helper.addAllHeaders())
+            .json(data)
+            .expect(204)
+            .end((err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + param)
+                    .wait(genDelay(stmtTime, param, putId))
+                    .headers(helper.addAllHeaders())
+                    .expect(200)
+                    .end((err, res) => {
+                        if (err) {
+                            done(err);
+                        } else {
+                            var result = parse(res.body);
+                            expect(result).to.have.property('stored');
+                            var stmtStored = result.stored;
+                            expect(stmtStored).to.not.eql(storedTime);
+                            done();
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+    describe('A stored property must be a TimeStamp (Data 2.4.8.s2)', function () {
+        it('retrieve statements, test a stored property', (done) => {
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders())
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = parse(res.body);
+                    var stmts = result.statements;
+                    var milliChecker = (num) => {
+                        expect(stmts[num]).to.have.property('stored');
+                        //formatted iso 8601
+                        var chkStored =  moment(stmts[num].stored, moment.ISO_8601);
+                        expect(chkStored.isValid()).to.be.true;
+                        expect(isNaN(chkStored._pf.parsedDateParts[6])).to.be.false;
+                        //precision to milliseconds
+                        if ((chkStored._pf.parsedDateParts[6] % 10) > 0) {
+                            expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                            done();
+                        } else {
+                            if (++num < stmts.length) {
+                                milliChecker(num);
+                            } else {
+                                expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                                done();
+                            }
+                        }
+                    }; milliChecker(0);
+                }
+            });
+        });
+    });
+
     describe('Miscellaneous Requirements', function () {
 
         it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
@@ -3705,7 +3816,7 @@
             attachment = attachment.statement;
             attachment.id = id;
 
-            attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+            attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
 
             var data = {
                 attachments: false
@@ -3900,7 +4011,7 @@
           ];
           var myStatement = createFromTemplate(templates);
          myStatement = myStatement.statement;
-          var attachment = fs.readFileSync('test/v1_0_2/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+          var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
           myStatement.id = id;
           //myStatement.attachments = attachment;
           //console.log(myStatement.id);
@@ -3919,7 +4030,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              //.wait(genDelay(stmtTime, '?' + query, id))
+              .wait(genDelay(stmtTime, '?' + query, id))
               .headers(helper.addAllHeaders(header))
               .expect(200)
               .end(function(err,res){
@@ -4016,8 +4127,55 @@
 
 
         it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done){
-          //implicit what filtering criterion have not been tested yet?
-          done();
+                    //tests most of the filtering criteria, can add additional tests for missing criteria if necessary
+          var statementTemplates = [
+              {statement: '{{statements.default}}'},
+              {context: '{{contexts.default}}'}
+          ];
+          var id = helper.generateUUID();
+          var statement = createFromTemplate(statementTemplates);
+          statement = statement.statement;
+          statement.id = id;
+
+          var stmtTime = Date.now();
+          this.timeout(0);
+
+          var data = {
+              limit: 1,
+              agent: statement.actor,
+              verb: statement.verb.id,
+              activity: statement.object.id,
+              registration: statement.context.registration,
+              related_activities: true,
+              related_agents: true,
+              since: '2012-06-01T19:09:13.245Z',
+              format: 'ids',
+              attachments: false
+          };
+
+          var query = helper.getUrlEncoding(data);
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(statement)
+              .expect(200)
+              .end()
+              .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function (err, res) {
+                  if (err) {
+                      done(err);
+                  }
+                  else {
+                      var results = parse(res.body, done);
+                      //console.log(results.statements[0]);
+                      expect(results.statements[0].id).to.equal(id);
+                      done();
+                  }
+              });
         });
 
         it('A "statements" property which is too large for a single page will create a container for each additional page (4.2.table1.row1.b)', function (done){
@@ -4060,12 +4218,16 @@
         });
 
         it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "more" property (Multiplicity, Format, 4.2.table1.row2.c)', function (done){
+          var stmtTime = Date.now();
+          this.timeout(0);
+
           var query = helper.getUrlEncoding(
             {limit:1}
           );
 
           request(helper.getEndpointAndAuth())
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4075,6 +4237,31 @@
                   else {
                       var results = parse(res.body, done);
                       expect(results.more).to.exist;
+                      done();
+                  }
+              });
+        });
+
+        it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, 4.2.table1.row2.c)', function (done){
+          var stmtTime = Date.now();
+          this.timeout(0);
+
+          var query = helper.getUrlEncoding(
+            {limit:1}
+          );
+
+          request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function (err, res) {
+                  if (err) {
+                      done(err);
+                  }
+                  else {
+                      var results = parse(res.body, done);
+                      expect(results.statements).to.exist;
                       done();
                   }
               });
@@ -4125,6 +4312,9 @@
 
         it('An Extension\'s structure is that of "key"/"value" pairs (Format, 5.3)' ,function(done){
 
+          var stmtTime = Date.now();
+          this.timeout(0);
+
           var statementTemplates = [
             {statement: '{{statements.object_substatement}}'},
             {object: '{{substatements.context}}'},
@@ -4149,6 +4339,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, id))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4163,7 +4354,153 @@
               });
         });
 
+            describe('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t) **Implicit**', function (){
+          // talk to lou about whether its okay to post without an interactiontype property https://github.com/adlnet/xAPI-Spec/blob/1.0.3/xAPI-Data.md#interactionacts
+                it ('Activity Definition uses correctResponsesPattern without "interactionType" property',function(done){
+                      id = helper.generateUUID();
+                      var correctResponsesPatterntemplates = [
+                          {statement: '{{statements.default}}'},
+                          {object: '{{activities.other}}'}
+                      ];
+                      correctResponsesPattern = createFromTemplate(correctResponsesPatterntemplates);
+                      correctResponsesPattern = correctResponsesPattern.statement;
+                      delete correctResponsesPattern.object.definition.interactionType;
+                      request(helper.getEndpointAndAuth())
+                          .post(helper.getEndpointStatements())
+                          .headers(helper.addAllHeaders({}))
+                          .json(correctResponsesPattern).expect(400, done); // should be 400
+                });
 
+                it ('Activity Definition uses choices without "interactionType" property',function(done){
+                    id = helper.generateUUID();
+                    var choicetemplates = [
+                        {statement: '{{statements.default}}'},
+                        {object: '{{activities.choice}}'}
+                    ];
+                    choice = createFromTemplate(choicetemplates);
+                    choice = choice.statement;
+                    delete choice.object.definition.interactionType;
+                    request(helper.getEndpointAndAuth())
+                        .post(helper.getEndpointStatements())
+                        .headers(helper.addAllHeaders({}))
+                        .json(choice).expect(400, done); // should be 400
+                });
+
+                it ('Activity Definition uses scale without "interactionType" property',function(done){
+                  id = helper.generateUUID();
+                  var scaletemplates = [
+                      {statement: '{{statements.default}}'},
+                      {object: '{{activities.likert}}'}
+                  ];
+                  scale = createFromTemplate(scaletemplates);
+                  scale = scale.statement;
+                  delete scale.object.definition.interactionType;
+                  request(helper.getEndpointAndAuth())
+                      .post(helper.getEndpointStatements())
+                      .headers(helper.addAllHeaders({}))
+                      .json(scale).expect(400, done); // should be 400
+              });
+
+                it ('Activity Definition uses source without "interactionType" property',function(done){
+                  id = helper.generateUUID();
+                  var sourcetemplates = [
+                      {statement: '{{statements.default}}'},
+                      {object: '{{activities.matching}}'}
+                  ];
+                  source = createFromTemplate(sourcetemplates);
+                  source = source.statement;
+                  delete source.object.definition.interactionType;
+                  request(helper.getEndpointAndAuth())
+                      .post(helper.getEndpointStatements())
+                      .headers(helper.addAllHeaders({}))
+                      .json(source).expect(400, done); // should be 400
+              });
+
+              it ('Activity Definition uses target without "interactionType" property',function(done){
+                  id = helper.generateUUID();
+                  var targettemplates = [
+                      {statement: '{{statements.default}}'},
+                      {object: '{{activities.matching_target}}'}
+                  ];
+                  target = createFromTemplate(targettemplates);
+                  target = target.statement;
+                  delete target.object.definition.interactionType;
+                  request(helper.getEndpointAndAuth())
+                      .post(helper.getEndpointStatements())
+                      .headers(helper.addAllHeaders({}))
+                      .json(target).expect(400, done); // should be 400
+              });
+
+              it ('Activity Definition uses steps without "interactionType" property',function(done){
+                  id = helper.generateUUID();
+                  var stepstemplates = [
+                      {statement: '{{statements.default}}'},
+                      {object: '{{activities.performance}}'}
+                  ];
+                  steps = createFromTemplate(stepstemplates);
+                  steps = steps.statement;
+                  delete steps.object.definition.interactionType;
+                  request(helper.getEndpointAndAuth())
+                      .post(helper.getEndpointStatements())
+                      .headers(helper.addAllHeaders({}))
+                      .json(steps).expect(400, done); // should be 400
+              });
+
+          });
+
+        it ('An LRS implements all of the Statement, State, Agent, and Activity Profile sub-APIs **Implicit**', function(done){
+            //large test that should be covered by other tests
+            done();
+        });
+
+        it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including 7.3.e)', function(done){
+
+          var stmtTime = Date.now();
+          this.timeout(0);
+
+          id = helper.generateUUID();
+          var templates = [
+              {statement: '{{statements.default}}'}
+          ];
+          var templates2 = [
+              {statement: '{{statements.result}}'}
+          ];
+
+          var statement = createFromTemplate(templates);
+          statement = statement.statement;
+          statement.id = id;
+
+          var statement2 = createFromTemplate(templates2);
+          statement2 = statement2.statement;
+
+          request(helper.getEndpointAndAuth())
+              .post(helper.getEndpointStatements())
+              .headers(helper.addAllHeaders({}))
+              .json(statement)
+              .expect(200)
+              .end()
+              .put(helper.getEndpointStatements() + '?statementId=' + id)
+              .headers(helper.addAllHeaders({}))
+              .json(statement2)
+              .expect(409||204)
+              .end()
+              .get(helper.getEndpointStatements() + '?statementId=' + id)
+              .wait(genDelay(stmtTime, '?statementId=' + id, id))
+              .headers(helper.addAllHeaders({}))
+              .expect(200)
+              .end(function(err, res){
+                  if (err){
+                      done(err);
+                  }
+                  else{
+                      var result = JSON.parse(res.body);
+                      expect(statement.actor).to.eql(result.actor);
+                      expect(statement.verb).to.eql(result.verb);
+                      expect(statement.object).to.eql(result.object);
+                      done();
+                  }
+              });
+         });
 
 
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
@@ -4294,7 +4631,7 @@
           .expect(400)
           .end()
           .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
-          .wait(genDelay(stmtTime, '/statmentId=' + correct.id, correct.id))
+          .wait(genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
           .headers(helper.addAllHeaders({}))
           .expect(404, done);
   });
