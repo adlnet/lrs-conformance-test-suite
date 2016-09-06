@@ -4485,7 +4485,7 @@
               .expect(409||204)
               .end()
               .get(helper.getEndpointStatements() + '?statementId=' + id)
-              .wait(genDelay(stmtTime, '?' + query, id))
+              .wait(genDelay(stmtTime, '?statementId=' + id, id))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function(err, res){
