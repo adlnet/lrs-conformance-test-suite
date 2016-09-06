@@ -4163,7 +4163,6 @@
               .expect(200)
               .end(function (err, res) {
                   if (err) {
-                    console.log(err);
                       done(err);
                   }
                   else {
@@ -4464,21 +4463,12 @@
               .headers(helper.addAllHeaders({}))
               .json(statement2)
               .expect(409||204)
-              .end(function(err, res){
-                if (err){
-                  console.log(err);
-                  done(err);
-                }
-                else{
-                  console.log(res.body);
-                }
-              })
+              .end()
               .get(helper.getEndpointStatements() + '?statementId=' + id)
               .headers(helper.addAllHeaders({}))
                .expect(200)
                .end(function(err, res){
                 if (err){
-                  console.log(err);
                   done(err);
                 }
                 else{
