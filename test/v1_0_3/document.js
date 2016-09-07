@@ -1839,14 +1839,25 @@
             it('When responding to a GET Request the Etag header must be enclosed in quotes', function () {
                 var parameters = helper.buildAgentProfile(),
                     document = helper.buildDocument();
-
+console.log("outside begin");
                 return sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
                 .then(function () {
+                    console.log('post good continue');
                     return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
                     .then(function (res) {
+                        console.log('get good, what is next');
                         expect(res.headers.etag).to.be.ok;
-                        expect(res.headers.etag[0]).to.equal('"');
-                        expect(res.headers.etag[41]).to.equal('"');
+                        var str = res.headers.etag;
+                        console.log(str);
+                        //test for weak etags
+                        if (str[0] !== '"') {
+                            expect(str[0]).to.equal('W');
+                            expect(str[1]).to.equal('/');
+                            str = str.substring(2)
+                        }
+                        console.log(str);
+                        expect(str[0]).to.equal('"');
+                        expect(str[41]).to.equal('"');
                     });
                 });
             });
