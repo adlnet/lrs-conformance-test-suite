@@ -3790,36 +3790,14 @@
         });
 
         it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d, 7.2.3.e)', function (done) {
-            // Not concerned with "Content-Type" when use a GET request NOT FINISHED
-            this.timeout(0);
-            var id = helper.generateUUID();
-            //var header = {'Content-Type': 'text; boundary=-------314159265358979323846'}
+            //Not concerned with "Content-Type" when use a GET request
+            // response header should be application json if attachment parameter is false
+            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
-            var templates = [
-                {statement: '{{statements.attachment}}'},
-                {
-                    attachments: [
-                        {
-                            "usageType": "http://example.com/attachment-usage/test",
-                            "display": {"en-US": "A test attachment"},
-                            "description": {"en-US": "A test attachment (description)"},
-                            "contentType": "text",
-                            "length": 27,
-                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
-                            "fileUrl": "http://over.there.com/file.txt",
-
-                        }
-                    ]
-                }
-            ];
-            var attachment = createFromTemplate(templates);
-            attachment = attachment.statement;
-            attachment.id = id;
-
-            attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
 
             var data = {
-                attachments: false
+                attachments: false,
+                limit: 1
             };
             var query = helper.getUrlEncoding(data);
             var stmtTime = Date.now();
@@ -3829,38 +3807,20 @@
                 .headers(helper.addAllHeaders(header))
                 .body(attachment)
                 .expect(200)
+                .end()
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(stmtTime, '?' + query, null))
+                .headers(helper.addAllHeaders(header))
+                .expect(200)
                 .end(function(err,res){
-                  if (err){
-                    done(err);
-                  }
-                  else{
-                    var results = parse(res.body, done);
-                    //console.log(results[0]);
-                    var data = {
-                        statementId: results[0],
-                        attachments: false
-                    };
-                    var query = helper.getUrlEncoding(data);
-
-                    request(helper.getEndpointAndAuth())
-                    .get(helper.getEndpointStatements() + '?' + query)
-                    .wait(genDelay(stmtTime, '?' + query, id))
-                    .headers(helper.addAllHeaders(header))
-                    .expect(200)
-                    .end(function(err,res){
-                      if (err){
-                        //console.log(err);
+                    if (err){
                         done(err);
-                      }
-                      else{
-                        //console.log(res.req._headers);
-                        //console.log(res.headers);
+                    }
+                    else{
+                        expect(res.headers['content-type']).to.equal('application/json');
                         done();
-                      }
-                    })
-                  }
-                })
-
+                    }
+                });
         });
 
         it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
@@ -3911,7 +3871,6 @@
                     done();
                   }
             });
-            //done();
         });
 
         it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "Content-Transfer-Encoding" with a value of "binary" (4.1.11.b.c, 4.1.11.b.e)', function (done) {
@@ -3934,116 +3893,77 @@
         });
 
         it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done){
-          //not finished. bad attachment is not found. need to figure other ways to break attachment rules. ambigious and could use clarification what is left to test
+          //not complete. tests if response has raw data but doesn't compare to make sure raw data is the same
 
-          var id = helper.generateUUID();
-          var header = {'Content-Type': 'application/json; boundary=-------314159265358979323846'}
-          var templates = [
-              {statement: '{{statements.attachment}}'},
-              {
-                  attachments: [
-                      {
-                          "usageType": "http://example.com/attachment-usage/test",
-                          "display": {"en-US": "A test attachment"},
-                          "description": {"en-US": "A test attachment (description)"},
-                          "contentType": "none",
-                          "length": 1,
-                          "sha2": "1",
-                          "fileUrl": "http://over.there.com/file.txt",
-
-                      }
-                  ]
-              }
-          ];
-          var attachment = createFromTemplate(templates);
-          attachment = attachment.statement;
-          attachment.id = id;
-
-          var data = {
-              attachments: true
-          };
-          var query = helper.getUrlEncoding(data);
-          var stmtTime = Date.now();
-
-          request(helper.getEndpointAndAuth())
-              // .post(helper.getEndpointStatements())
-              // .headers(helper.addAllHeaders({}))
-              // .json(attachment)
-              // .expect(200)
-              // .end()
-              .get(helper.getEndpointStatements() + '?' + query)
-              //.wait(genDelay(stmtTime, '?' + query, id))
-              .headers(helper.addAllHeaders(header))
-              .expect(200)
-              .end(function(err, res){
-                  if (err){
-                    //console.log(err);
-                    done(err);
-                  }
-                  else{
-                    //console.log(res.body);
-                    done();
-                  }
-              })
-        });
-
-        it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.d)', function (done){
-          // doesn't reject a get request with attachment parameter set to false with attachment raw data NOT FINISHED
-          this.timeout(0);
-          var id = helper.generateUUID();
-          var header = {'Content-Type': 'application/json; boundary=-------314159265358979323846'}
-          var templates = [
-              {statement: '{{statements.attachment}}'},
-              {
-                  attachments: [
-                      {
-                          "usageType": "http://example.com/attachment-usage/test",
-                          "display": {"en-US": "A test attachment"},
-                          "description": {"en-US": "A test attachment (description)"},
-                          "contentType": "text",
-                          "length": 27,
-                          "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
-                          "fileUrl": "http://over.there.com/file.txt",
-
-                      }
-                  ]
-              }
-          ];
-          var myStatement = createFromTemplate(templates);
-         myStatement = myStatement.statement;
           var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
-          myStatement.id = id;
-          //myStatement.attachments = attachment;
-          //console.log(myStatement.id);
+          var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
           var data = {
               attachments: true,
-              statementId : id
+              limit: 1
           };
           var query = helper.getUrlEncoding(data);
           var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
-              .headers(helper.addAllHeaders({}))
-              .json(myStatement)
+              .headers(helper.addAllHeaders(header))
+              .body(attachment)
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, '?' + query, id))
+              .wait(genDelay(stmtTime, '?' + query, undefined))
               .headers(helper.addAllHeaders(header))
               .expect(200)
-              .end(function(err,res){
-                if (err){
-                  //console.log(err);
-                  done(err);
-                }
-                else{
-                  //console.log(res);
-                  done();
-                }
-              });
-          //done();
+              .end(function(err, res){
+                  if (err){
+                    done(err);
+                  }
+                  else{
+                      try {
+                        JSON.parse(res.body)
+                        done("has no raw data");
+                      } catch (e) {
+                        done();
+                      }
+                  }
+              })
+        });
+
+        it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.d)', function (done){
+
+            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+
+            var data = {
+                attachments: false,
+                limit: 1
+            };
+            var query = helper.getUrlEncoding(data);
+            var stmtTime = Date.now();
+
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders(header))
+                .body(attachment)
+                .expect(200)
+                .end()
+
+
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(stmtTime, '?' + query, null))
+                .headers(helper.addAllHeaders(header))
+                .expect(200)
+                .end(function(err,res){
+                    if (err){
+                        done(err);
+                    }
+                    else{
+                        expect(res.headers['content-type']).to.equal('application/json')
+                        JSON.parse(res.body);
+                        done();
+                    }
+                });
         });
 
 

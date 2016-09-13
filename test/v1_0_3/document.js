@@ -1845,8 +1845,15 @@
                     return sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
                     .then(function (res) {
                         expect(res.headers.etag).to.be.ok;
-                        expect(res.headers.etag[0]).to.equal('"');
-                        expect(res.headers.etag[41]).to.equal('"');
+                        var str = res.headers.etag;
+                        //test for weak etags
+                        if (str[0] !== '"') {
+                            expect(str[0]).to.equal('W');
+                            expect(str[1]).to.equal('/');
+                            str = str.substring(2)
+                        }
+                        expect(str[0]).to.equal('"');
+                        expect(str[41]).to.equal('"');
                     });
                 });
             });
