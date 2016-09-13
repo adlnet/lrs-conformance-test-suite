@@ -3920,15 +3920,12 @@
                     done(err);
                   }
                   else{
-                    // expect(JSON.parse(res.body)).to.not.exist;
-                    // console.log(res.body);
-                    try {
-                      JSON.parse(res.body)
-                      done("has no raw data");
-                    } catch (e) {
-                      console.log(e);
-                      done();
-                    }
+                      try {
+                        JSON.parse(res.body)
+                        done("has no raw data");
+                      } catch (e) {
+                        done();
+                      }
                   }
               })
         });
@@ -3951,6 +3948,8 @@
                 .body(attachment)
                 .expect(200)
                 .end()
+
+
                 .get(helper.getEndpointStatements() + '?' + query)
                 .wait(genDelay(stmtTime, '?' + query, null))
                 .headers(helper.addAllHeaders(header))
