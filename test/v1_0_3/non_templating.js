@@ -3430,7 +3430,7 @@
                 });
         });
 
-        it('should return StatementRef and voiding statement when not using "since", "until", "limit"', function (done) {
+        it('should return StatementRef when not using "since", "until", "limit"', function (done) {
             var query = helper.getUrlEncoding({
                 verb: verb
             });
@@ -3445,9 +3445,8 @@
                     } else {
                         var results = parse(res.body, done);
                         expect(results).to.have.property('statements');
-                        expect(results.statements).to.have.length(2);
+                        expect(results.statements).to.have.length(1);
                         expect(results.statements[0]).to.have.property('id').to.equal(statementRefId);
-                        expect(results.statements[1]).to.have.property('id').to.equal(voidingId);
                         done();
                     }
                 });
