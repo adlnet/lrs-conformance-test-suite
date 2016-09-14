@@ -1,1 +1,3 @@
-* text=false
+* text=auto
+
+*.part text eol=crlf
