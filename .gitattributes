@@ -1,1 +1,1 @@
-test/v1_0_3/templates/attachments/*.part eol=crlf
+*.part text eol=crlf
