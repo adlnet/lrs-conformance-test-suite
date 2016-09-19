@@ -3683,21 +3683,23 @@
 
         it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
 
+            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+
             var data = {
                 attachments: true,
                 limit: 1
             };
             var query = helper.getUrlEncoding(data);
-
-            attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(200)
                 .end()
-                .get(helper.getEndpointStatements()+ '?' + query)
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(stmtTime, '?' + query, null))
                 .headers(helper.addAllHeaders(header))
                 .expect(200)
                 .end(function(err,res){
@@ -3709,25 +3711,28 @@
                         done();
                     }
                 });
-        });
+              });
 
         it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d, 7.2.3.e)', function (done) {
+            //Not concerned with "Content-Type" when use a GET request
+            // response header should be application json if attachment parameter is false
+            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
             var data = {
                 attachments: false,
                 limit: 1
             };
             var query = helper.getUrlEncoding(data);
-
-            attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
                 .body(attachment).expect(200)
                 .end()
-                .get(helper.getEndpointStatements()+ '?' + query)
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(stmtTime, '?' + query, null))
                 .headers(helper.addAllHeaders(header))
                 .expect(200)
                 .end(function(err,res){
@@ -3754,14 +3759,15 @@
 
         it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done){
           //incomplete- should compare raw data between request and response
+          var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+          var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+          var stmtTime = Date.now();
+
           var data = {
               attachments: true,
               limit: 1
           };
           var query = helper.getUrlEncoding(data);
-
-          attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
-          var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3769,6 +3775,7 @@
               .body(attachment).expect(200)
               .end()
               .get(helper.getEndpointStatements()+ '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders(header))
               .expect(200)
               .end(function(err,res){
@@ -3798,6 +3805,7 @@
 
               attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
               var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+              var stmtTime = Date.now();
 
               request(helper.getEndpointAndAuth())
                   .post(helper.getEndpointStatements())
@@ -3805,6 +3813,7 @@
                   .body(attachment).expect(200)
                   .end()
                   .get(helper.getEndpointStatements()+ '?' + query)
+                  .wait(genDelay(stmtTime, '?' + query, null))
                   .headers(helper.addAllHeaders(header))
                   .expect(200)
                   .end(function(err,res){
@@ -3941,12 +3950,16 @@
         });
 
         it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "more" property (Multiplicity, Format, 4.2.table1.row2.c)', function (done){
+          var stmtTime = Date.now();
+          this.timeout(0);
+
           var query = helper.getUrlEncoding(
             {limit:1}
           );
 
           request(helper.getEndpointAndAuth())
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -3961,13 +3974,17 @@
               });
         });
 
-        it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, 4.2.table1.row1.c) ', function (done){
+        it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, 4.2.table1.row2.c)', function (done){
+          var stmtTime = Date.now();
+          this.timeout(0);
+
           var query = helper.getUrlEncoding(
             {limit:1}
           );
 
           request(helper.getEndpointAndAuth())
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4135,7 +4152,6 @@
               });
         });
 
-
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
             var returnedID, data, stmtTime;
 
@@ -4267,7 +4283,7 @@
           .wait(genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
           .headers(helper.addAllHeaders({}))
           .expect(404, done);
-  });
+        });
 
       it ('An LRS generates the "id" property of a Statement if none is provided (Modify, 4.1.1.a)', function (done){
         this.timeout(0);
@@ -4288,9 +4304,6 @@
             .wait(genDelay(stmtTime, null, null))
             .headers(helper.addAllHeaders({}))
             .end(function (err, res) {
-
-
-
                 if (err) {
                     done(err);
                 } else {

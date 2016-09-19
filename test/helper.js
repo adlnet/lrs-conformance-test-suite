@@ -224,8 +224,8 @@ if (!process.env.EB_NODE_COMMAND) {
                                 if (Date.now() >= finish) {
                                    console.log('Exceeded the maximum time limit (' + delta * 10 + ')- continue test');
                                     p.resolve()
-                                }
-                                setTimeout(doRequest, 1000);
+                                }else //must be careful to never restart this timer if the promise is resolved;
+                                    setTimeout(doRequest, 1000);
                             }
                         }
                     });
