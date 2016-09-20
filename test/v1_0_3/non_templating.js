@@ -6,7 +6,7 @@
  *
  */
 
-(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
+(function (module, fs, extend, moment, request, requestPromise, chai, liburl, helper, multipartParser, redirect, validator) {
     // "use strict";
 
     function genDelay(time, query, id)
@@ -1186,7 +1186,17 @@
                     } else {
                         var result = parse(res.body, done);
                         expect(result).to.have.property('more');
-                        Joi.assert(result.more, Joi.string().regex(/(\/[\w\.\-]+)+\/?/));
+                        expect(validator.isURL(result.more, {
+                            protocols: [],
+                            require_tld: false,
+                            require_protocol: false,
+                            require_host: false,
+                            require_valid_protocol: false,
+                            allow_underscores: true,
+                            host_whitelist: false,
+                            host_blacklist: false,
+                            allow_trailing_dot: false,
+                            allow_protocol_relative_urls: true })).to.be.truthy;
                         done();
                     }
                 });
@@ -1225,7 +1235,17 @@
                     } else {
                         var result = parse(res.body, done);
                         expect(result).to.have.property('more');
-                        Joi.assert(result.more, Joi.string().regex(/(\/[\w\.\-]+)+\/?/));
+                        expect(validator.isURL(result.more, {
+                            protocols: [],
+                            require_tld: false,
+                            require_protocol: false,
+                            require_host: false,
+                            require_valid_protocol: false,
+                            allow_underscores: true,
+                            host_whitelist: false,
+                            host_blacklist: false,
+                            allow_trailing_dot: false,
+                            allow_protocol_relative_urls: true })).to.be.truthy;
                         done();
                     }
                 });
@@ -3430,7 +3450,7 @@
                 });
         });
 
-        it('should return StatementRef when not using "since", "until", "limit"', function (done) {
+        it('should return StatementRef and voiding statement when not using "since", "until", "limit"', function (done) {
             var query = helper.getUrlEncoding({
                 verb: verb
             });
@@ -3445,8 +3465,9 @@
                     } else {
                         var results = parse(res.body, done);
                         expect(results).to.have.property('statements');
-                        expect(results.statements).to.have.length(1);
+                        expect(results.statements).to.have.length(2);
                         expect(results.statements[0]).to.have.property('id').to.equal(statementRefId);
+                        expect(results.statements[1]).to.have.property('id').to.equal(voidingId);
                         done();
                     }
                 });
@@ -4607,4 +4628,4 @@
         return parsed;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('validator')));
