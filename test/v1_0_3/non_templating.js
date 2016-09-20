@@ -168,7 +168,6 @@
                         done(err);
                     } else {
                         voidingId = res.body[0];
-                        //console.log('Void -ed vs -ing', voidedId, voidingId);
                         done();
                     }
                 });
@@ -182,7 +181,6 @@
             var data = createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidedId;
-            //console.log('stmt3', data);
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -203,7 +201,6 @@
             var data = createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidingId;
-            //console.log('stmt4', data);
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -487,20 +484,14 @@
 
     describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (Format, 6.2.a, 6.2.f, 7.7.f)', function () {
         it('should pass when GET without header "X-Experience-API-Version"', function (done) {
-          var headers = helper.addAllHeaders();
-          delete headers['X-Experience-API-Version'];
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointAbout())
-                .headers(headers)
                 .expect(200, done);
         });
 
         it('should fail when statement GET without header "X-Experience-API-Version"', function (done) {
-          var headers = helper.addAllHeaders();
-          delete headers['X-Experience-API-Version'];
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
-                .headers(headers)
                 .expect(400, done);
         });
 
@@ -510,12 +501,9 @@
             ];
             var data = createFromTemplate(templates);
             data = data.statement;
-            var headers = helper.addAllHeaders();
-            delete headers['X-Experience-API-Version'];
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
-                .headers(headers)
                 .json(data).expect(400, done);
         });
 
@@ -526,12 +514,8 @@
             var data = createFromTemplate(templates);
             data = data.statement;
 
-            var headers = helper.addAllHeaders();
-            delete headers['X-Experience-API-Version'];
-
             request(helper.getEndpointAndAuth())
                 .put(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
-                .headers(headers)
                 .json(data).expect(400, done);
         });
     });
@@ -2085,7 +2069,6 @@
     describe('An LRS\'s Statement API upon processing a successful GET request with neither a "statementId" nor a "voidedStatementId" parameter, returns code 200 OK and a StatementResult Object.  (7.2.3)', function () {
         var statement, substatement, stmtTime;
         this.timeout(0);
-        stmtTime = Date.now();
 
         before('persist statement', function (done) {
             var templates = [
@@ -2122,7 +2105,7 @@
             var data = createFromTemplate(templates);
             substatement = data.statement;
             substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
-
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
@@ -3695,99 +3678,37 @@
               });
         });
 
-        it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
-            // Using requirement: An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**
-            var id = helper.generateUUID();
-            var statementTemplates = [
-                {statement: '{{statements.default}}'}
-            ];
-
-            var statement = createFromTemplate(statementTemplates);
-            statement = statement.statement;
-            statement.id = id;
-            var query = helper.getUrlEncoding({statementId: id});
-
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(statement)
-                .expect(200)
-                .end();
-                // console.log("does this work");
-                request(helper.getEndpointAndAuth())
-                .del(helper.getEndpointStatements() + '?statementId=' + statement.id)
-                .headers(helper.addAllHeaders({}))
-                .expect(405)
-                .end(function(err,res){
-                  if (err){
-                    // console.log(err);
-                    done(err);
-                  }
-                  else{
-                    // console.log("success", res.body);
-                    done();
-                  }
-                });
-        });
-
-        it('A POST request is defined as a "pure" POST, as opposed to a GET taking on the form of a POST (7.2.2.e)', function (done) {
-            // All of these "defined" aren't really tests, rather ways to disambiguate future tests.
-            done();
-        });
-
         it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
-            // Not concerned with "Content-Type" when use a GET request NOT FINISHED
 
-            this.timeout(0);
-            var header = {'Content-Type': 'application/json; boundary=-------314159265358979323846'}
-            var id = helper.generateUUID();
-            var templates = [
-                {statement: '{{statements.attachment}}'},
-                {
-                    attachments: [
-                        {
-                            "usageType": "http://example.com/attachment-usage/test",
-                            "display": {"en-US": "A test attachment"},
-                            "description": {"en-US": "A test attachment (description)"},
-                            "contentType": "application/json",
-                            "length": 27,
-                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
-                            "fileUrl": "http://over.there.com/file.txt",
-
-                        }
-                    ]
-                }
-            ];
-            var attachment = createFromTemplate(templates);
-            attachment = attachment.statement;
-            attachment.id = id;
+            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
             var data = {
-                statementId: id,
-                attachments: true
+                attachments: true,
+                limit: 1
             };
             var query = helper.getUrlEncoding(data);
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(attachment)
-                .expect(200)
+                .headers(helper.addAllHeaders(header))
+                .body(attachment).expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(stmtTime, '?' + query, id))
+                .wait(genDelay(stmtTime, '?' + query, null))
                 .headers(helper.addAllHeaders(header))
                 .expect(200)
-                .end(function(err, res){
-                  if (err)
-                    done(err)
-                    else{
-                      done();
+                .end(function(err,res){
+                    if (err){
+                        done(err);
                     }
-
-                })
-        });
+                    else{
+                        expect(res.headers['content-type']).to.have.string('multipart/mixed');
+                        done();
+                    }
+                });
+              });
 
         it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d, 7.2.3.e)', function (done) {
             //Not concerned with "Content-Type" when use a GET request
@@ -3805,8 +3726,7 @@
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
-                .body(attachment)
-                .expect(200)
+                .body(attachment).expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
                 .wait(genDelay(stmtTime, '?' + query, null))
@@ -3823,147 +3743,86 @@
                 });
         });
 
-        it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
-            // RFC 1341: MIME-Version header field is required at the top level of a message. It is not required for each body part of a multipart entity NOT FINISHED
-
-            var id = helper.generateUUID();
-            var templates = [
-                {statement: '{{statements.attachment}}'},
-                {
-                    attachments: [
-                        {
-                            "usageType": "http://example.com/attachment-usage/test",
-                            "display": {"en-US": "A test attachment"},
-                            "description": {"en-US": "A test attachment (description)"},
-                            "contentType": "multipart/mixed",
-                            "length": 27,
-                            "sha2": "495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a",
-                            "fileUrl": "http://over.there.com/file.txt"
-                        }
-                    ]
-                }
-            ];
-
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846', "MIME-Version" : "test"};
-            var attachment = createFromTemplate(templates);
-            attachment = attachment.statement;
-            attachment.id = id;
-
-            var data = {
-                statementId: id,
-                attachments: false
-            };
-            var query = helper.getUrlEncoding(data);
-            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
-
-
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders(header))
-                .body(attachment).expect(200)
-                .end(function(err,res){
-                  if (err) {
-                    //console.log(err);
-                    done(err);
-                  }
-                  else{
-                    //console.log(res.headers);
-                    done();
-                  }
-            });
-        });
-
         it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "Content-Transfer-Encoding" with a value of "binary" (4.1.11.b.c, 4.1.11.b.e)', function (done) {
-          // each attachment part should have should have 'binary' as Content-Transfer-Encoding
+
+          var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_content_transfer_encoding.part', {encoding: 'binary'});
           var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
-          var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_no_content_transfer_encoding.part', {encoding: 'binary'});
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
               .headers(helper.addAllHeaders(header))
-              .body(attachment).expect(400)
-              .end(function(err,res){
-                if (err) {
-                  done(err);
-                }
-                else{
-                  done();
-                }
-          });
+              .body(attachment).expect(400,done);
         });
 
         it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "true" if it does not follow the rest of the attachment rules (7.2.3.d)', function (done){
-          //not complete. tests if response has raw data but doesn't compare to make sure raw data is the same
-
+          //incomplete- should compare raw data between request and response
           var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
           var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+          var stmtTime = Date.now();
 
           var data = {
               attachments: true,
               limit: 1
           };
           var query = helper.getUrlEncoding(data);
-          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
               .headers(helper.addAllHeaders(header))
-              .body(attachment)
-              .expect(200)
+              .body(attachment).expect(200)
               .end()
-              .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, '?' + query, undefined))
+              .get(helper.getEndpointStatements()+ '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders(header))
               .expect(200)
-              .end(function(err, res){
+              .end(function(err,res){
                   if (err){
-                    done(err);
+                      done(err);
                   }
                   else{
                       try {
-                        JSON.parse(res.body)
-                        done("has no raw data");
+                          var request = JSON.parse(res.body);
+                          done("Contains raw data");
                       } catch (e) {
-                        done();
+                          expect(res.headers['content-type']).to.have.string('multipart/mixed');
+                          done();
                       }
+
                   }
-              })
+              });
         });
 
         it ('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" if it includes attachment raw data (7.2.3.d)', function (done){
 
-            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+              var data = {
+                  attachments: false,
+                  limit: 1
+              };
+              var query = helper.getUrlEncoding(data);
 
-            var data = {
-                attachments: false,
-                limit: 1
-            };
-            var query = helper.getUrlEncoding(data);
-            var stmtTime = Date.now();
+              attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+              var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+              var stmtTime = Date.now();
 
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders(header))
-                .body(attachment)
-                .expect(200)
-                .end()
-
-
-                .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(stmtTime, '?' + query, null))
-                .headers(helper.addAllHeaders(header))
-                .expect(200)
-                .end(function(err,res){
-                    if (err){
-                        done(err);
-                    }
-                    else{
-                        expect(res.headers['content-type']).to.equal('application/json')
-                        JSON.parse(res.body);
-                        done();
-                    }
-                });
+              request(helper.getEndpointAndAuth())
+                  .post(helper.getEndpointStatements())
+                  .headers(helper.addAllHeaders(header))
+                  .body(attachment).expect(200)
+                  .end()
+                  .get(helper.getEndpointStatements()+ '?' + query)
+                  .wait(genDelay(stmtTime, '?' + query, null))
+                  .headers(helper.addAllHeaders(header))
+                  .expect(200)
+                  .end(function(err,res){
+                      if (err){
+                          done(err);
+                      }
+                      else{
+                          var request = JSON.parse(res.body);
+                          expect(res.headers['content-type']).to.equal('application/json');
+                          done();
+                      }
+                  });
         });
 
 
@@ -4001,53 +3860,8 @@
               });
         });
 
-        it ('An LRS rejects a Statement due to size if the Statement exceeds the size limit the LRS is configured to with error code 413 Request Entity Too Large (7.1)', function (done){
-          //limit depends on LRS -- not implemented
-          this.timeout(0);
-          var id = helper.generateUUID();
-          var statementTemplates = [
-              {statement: '{{statements.default}}'}
-          ];
-
-          var statement = createFromTemplate(statementTemplates);
-          statement = statement.statement;
-          statement.id = id;
-          var query = helper.getUrlEncoding({statementId: id});
-          var stmtTime = Date.now();
-
-          request(helper.getEndpointAndAuth())
-              .post(helper.getEndpointStatements())
-              .headers(helper.addAllHeaders({}))
-              .json(statement)
-              .expect(200)
-              .end()
-              .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, '?' + query, id))
-              .headers(helper.addAllHeaders({}))
-              .expect(200)
-              .end(function(err,res){
-                if (err){
-                  done(err);
-                }
-                else{
-                  done();
-                }
-              });
-        });
-
-        it('An LRS rejects a Statement due to network/server issues with an error code of 500 Internal Server Error (7.1)', function (done){
-          //not implemented
-          done();
-        });
-
-        it('An LRS\'s Statement API, upon receiving a Get request, had a field in the header with name "Content-Type" ***Assumed?***', function (done){
-          //Implicit, does not test --move to document
-          done();
-        });
-
-
         it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done){
-                    //tests most of the filtering criteria, can add additional tests for missing criteria if necessary
+          //tests most of the filtering criteria, can add additional tests for missing criteria if necessary
           var statementTemplates = [
               {statement: '{{statements.default}}'},
               {context: '{{contexts.default}}'}
@@ -4057,9 +3871,6 @@
           statement = statement.statement;
           statement.id = id;
 
-          var stmtTime = Date.now();
-          this.timeout(0);
-
           var data = {
               limit: 1,
               agent: statement.actor,
@@ -4067,7 +3878,6 @@
               activity: statement.object.id,
               registration: statement.context.registration,
               related_activities: true,
-              related_agents: true,
               since: '2012-06-01T19:09:13.245Z',
               format: 'ids',
               attachments: false
@@ -4082,7 +3892,6 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4091,7 +3900,6 @@
                   }
                   else {
                       var results = parse(res.body, done);
-                      //console.log(results.statements[0]);
                       expect(results.statements[0].id).to.equal(id);
                       done();
                   }
@@ -4132,6 +3940,7 @@
                   else {
                       var results = parse(res.body, done);
                       expect(results.statements).to.exist;
+                      expect(results.more).to.exist;
                       done();
                   }
               });
@@ -4187,41 +3996,6 @@
               });
         });
 
-        it('A "more" property IRL is accessible for at least 24 hours after being returned (4.2.a)', function (done){
-          //impractical to test in real-time
-          done();
-        });
-
-        it('A Document Merge is defined by the merging of an existing document at an endpoint with a document received in a POST request. (7.3)', function (done){
-          //definition. Already covered in document.js (Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3)
-          done();
-        });
-
-        it('A Document Merge de-serializes all Objects represented by each document before making other changes. (7.3.d)', function (done){
-          //definition. Already covered in document.js (Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3)
-          done();
-        });
-
-        it('A Document Merge re-serializes all Objects to finalize a single document (7.3.d)', function (done){
-          //definition. Already covered in document.js (Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3)
-          done();
-        });
-
-        it('In 1.0.3, the IRI requires a scheme, but does not in 1.0.2, thus we only test type String in this version', function (done){
-          //update test once version 1.0.3 is released
-          done();
-        });
-
-        it('NOTE: **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**', function (done){
-          //not a test
-          done();
-        });
-
-        it('A Cross Origin Request is defined as this POST request as described in the previous requirement (definition)', function (done){
-          //definition
-          done();
-        });
-
         it('An LRS accepts HEAD requests without Content-Length headers (7.10.a.b)', function (done) {
 
                 request(helper.getEndpointAndAuth())
@@ -4230,154 +4004,108 @@
                     .expect(200, done);
         });
 
-        it('An Extension\'s structure is that of "key"/"value" pairs (Format, 5.3)' ,function(done){
-
-          var stmtTime = Date.now();
-          this.timeout(0);
-
-          var statementTemplates = [
-            {statement: '{{statements.object_substatement}}'},
-            {object: '{{substatements.context}}'},
-            {context: '{{contexts.default}}'},
-            {'extensions': {'http://example.com/ex': {key: 'valid'}}}
-          ];
-
-          var statement1 = createFromTemplate(statementTemplates);
-          statement1 = statement1.statement;
-          var id = helper.generateUUID();
-          statement1.id = id
-
-
-          var query = helper.getUrlEncoding(
-            {statementId : id}
-          );
-
-          request(helper.getEndpointAndAuth())
-              .post(helper.getEndpointStatements())
-              .headers(helper.addAllHeaders({}))
-              .json(statement1)
-              .expect(200)
-              .end()
-              .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, '?' + query, id))
-              .headers(helper.addAllHeaders({}))
-              .expect(200)
-              .end(function (err, res) {
-                  if (err) {
-                      done(err);
-                  }
-                  else {
-                      var results = parse(res.body, done);
-                      expect(results.object.context.extensions["http://example.com/ex"].key).to.equal('valid');
-                      done();
-                  }
-              });
+        it('An LRS accepts GET requests without Content-Length headers (7.10.a.b)', function (done) {
+                request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200, done);
         });
 
-            describe('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t) **Implicit**', function (){
-          // talk to lou about whether its okay to post without an interactiontype property https://github.com/adlnet/xAPI-Spec/blob/1.0.3/xAPI-Data.md#interactionacts
-                it ('Activity Definition uses correctResponsesPattern without "interactionType" property',function(done){
-                      id = helper.generateUUID();
-                      var correctResponsesPatterntemplates = [
-                          {statement: '{{statements.default}}'},
-                          {object: '{{activities.other}}'}
-                      ];
-                      correctResponsesPattern = createFromTemplate(correctResponsesPatterntemplates);
-                      correctResponsesPattern = correctResponsesPattern.statement;
-                      delete correctResponsesPattern.object.definition.interactionType;
-                      request(helper.getEndpointAndAuth())
-                          .post(helper.getEndpointStatements())
-                          .headers(helper.addAllHeaders({}))
-                          .json(correctResponsesPattern).expect(400, done); // should be 400
-                });
+        describe('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t) **Implicit**', function (){
 
-                it ('Activity Definition uses choices without "interactionType" property',function(done){
-                    id = helper.generateUUID();
-                    var choicetemplates = [
-                        {statement: '{{statements.default}}'},
-                        {object: '{{activities.choice}}'}
-                    ];
-                    choice = createFromTemplate(choicetemplates);
-                    choice = choice.statement;
-                    delete choice.object.definition.interactionType;
-                    request(helper.getEndpointAndAuth())
-                        .post(helper.getEndpointStatements())
-                        .headers(helper.addAllHeaders({}))
-                        .json(choice).expect(400, done); // should be 400
-                });
+            it ('Activity Definition uses correctResponsesPattern without "interactionType" property',function(done){
+                id = helper.generateUUID();
+                var correctResponsesPatterntemplates = [
+                    {statement: '{{statements.default}}'},
+                    {object: '{{activities.other}}'}
+                ];
+                correctResponsesPattern = createFromTemplate(correctResponsesPatterntemplates);
+                correctResponsesPattern = correctResponsesPattern.statement;
+                delete correctResponsesPattern.object.definition.interactionType;
+                request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .json(correctResponsesPattern).expect(400, done);
+            });
 
-                it ('Activity Definition uses scale without "interactionType" property',function(done){
-                  id = helper.generateUUID();
-                  var scaletemplates = [
-                      {statement: '{{statements.default}}'},
-                      {object: '{{activities.likert}}'}
-                  ];
-                  scale = createFromTemplate(scaletemplates);
-                  scale = scale.statement;
-                  delete scale.object.definition.interactionType;
-                  request(helper.getEndpointAndAuth())
-                      .post(helper.getEndpointStatements())
-                      .headers(helper.addAllHeaders({}))
-                      .json(scale).expect(400, done); // should be 400
-              });
+            it ('Activity Definition uses choices without "interactionType" property',function(done){
+                id = helper.generateUUID();
+                var choicetemplates = [
+                    {statement: '{{statements.default}}'},
+                    {object: '{{activities.choice}}'}
+                ];
+                choice = createFromTemplate(choicetemplates);
+                choice = choice.statement;
+                delete choice.object.definition.interactionType;
+                request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .json(choice).expect(400, done);
+            });
 
-                it ('Activity Definition uses source without "interactionType" property',function(done){
-                  id = helper.generateUUID();
-                  var sourcetemplates = [
-                      {statement: '{{statements.default}}'},
-                      {object: '{{activities.matching}}'}
-                  ];
-                  source = createFromTemplate(sourcetemplates);
-                  source = source.statement;
-                  delete source.object.definition.interactionType;
-                  request(helper.getEndpointAndAuth())
-                      .post(helper.getEndpointStatements())
-                      .headers(helper.addAllHeaders({}))
-                      .json(source).expect(400, done); // should be 400
-              });
+            it ('Activity Definition uses scale without "interactionType" property',function(done){
+                id = helper.generateUUID();
+                var scaletemplates = [
+                    {statement: '{{statements.default}}'},
+                    {object: '{{activities.likert}}'}
+                ];
+                scale = createFromTemplate(scaletemplates);
+                scale = scale.statement;
+                delete scale.object.definition.interactionType;
+                request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .json(scale).expect(400, done);
+            });
 
-              it ('Activity Definition uses target without "interactionType" property',function(done){
-                  id = helper.generateUUID();
-                  var targettemplates = [
-                      {statement: '{{statements.default}}'},
-                      {object: '{{activities.matching_target}}'}
-                  ];
-                  target = createFromTemplate(targettemplates);
-                  target = target.statement;
-                  delete target.object.definition.interactionType;
-                  request(helper.getEndpointAndAuth())
-                      .post(helper.getEndpointStatements())
-                      .headers(helper.addAllHeaders({}))
-                      .json(target).expect(400, done); // should be 400
-              });
+            it ('Activity Definition uses source without "interactionType" property',function(done){
+                id = helper.generateUUID();
+                var sourcetemplates = [
+                    {statement: '{{statements.default}}'},
+                    {object: '{{activities.matching}}'}
+                ];
+                source = createFromTemplate(sourcetemplates);
+                source = source.statement;
+                delete source.object.definition.interactionType;
+                request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .json(source).expect(400, done);
+            });
 
-              it ('Activity Definition uses steps without "interactionType" property',function(done){
-                  id = helper.generateUUID();
-                  var stepstemplates = [
-                      {statement: '{{statements.default}}'},
-                      {object: '{{activities.performance}}'}
-                  ];
-                  steps = createFromTemplate(stepstemplates);
-                  steps = steps.statement;
-                  delete steps.object.definition.interactionType;
-                  request(helper.getEndpointAndAuth())
-                      .post(helper.getEndpointStatements())
-                      .headers(helper.addAllHeaders({}))
-                      .json(steps).expect(400, done); // should be 400
-              });
+            it ('Activity Definition uses target without "interactionType" property',function(done){
+                id = helper.generateUUID();
+                var targettemplates = [
+                    {statement: '{{statements.default}}'},
+                    {object: '{{activities.matching_target}}'}
+                ];
+                target = createFromTemplate(targettemplates);
+                target = target.statement;
+                delete target.object.definition.interactionType;
+                request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .json(target).expect(400, done);
+            });
 
-          });
+            it ('Activity Definition uses steps without "interactionType" property',function(done){
+                id = helper.generateUUID();
+                var stepstemplates = [
+                    {statement: '{{statements.default}}'},
+                    {object: '{{activities.performance}}'}
+                ];
+                steps = createFromTemplate(stepstemplates);
+                steps = steps.statement;
+                delete steps.object.definition.interactionType;
+                request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .json(steps).expect(400, done);
+            });
 
-        it ('An LRS implements all of the Statement, State, Agent, and Activity Profile sub-APIs **Implicit**', function(done){
-            //large test that should be covered by other tests
-            done();
         });
 
         it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including 7.3.e)', function(done){
-
-          var stmtTime = Date.now();
-          this.timeout(0);
-
           id = helper.generateUUID();
           var templates = [
               {statement: '{{statements.default}}'}
@@ -4405,23 +4133,21 @@
               .expect(409||204)
               .end()
               .get(helper.getEndpointStatements() + '?statementId=' + id)
-              .wait(genDelay(stmtTime, '?statementId=' + id, id))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function(err, res){
-                  if (err){
-                      done(err);
-                  }
-                  else{
-                      var result = JSON.parse(res.body);
-                      expect(statement.actor).to.eql(result.actor);
-                      expect(statement.verb).to.eql(result.verb);
-                      expect(statement.object).to.eql(result.object);
-                      done();
-                  }
+                if (err){
+                  done(err);
+                }
+                else{
+                  var result = JSON.parse(res.body);
+                  expect(statement.actor).to.eql(result.actor);
+                  expect(statement.verb).to.eql(result.verb);
+                  expect(statement.object).to.eql(result.object);
+                  done();
+                }
               });
-         });
-
+        });
 
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
             var returnedID, data, stmtTime;
@@ -4554,7 +4280,7 @@
           .wait(genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
           .headers(helper.addAllHeaders({}))
           .expect(404, done);
-  });
+        });
 
       it ('An LRS generates the "id" property of a Statement if none is provided (Modify, 4.1.1.a)', function (done){
         this.timeout(0);
@@ -4575,9 +4301,6 @@
             .wait(genDelay(stmtTime, null, null))
             .headers(helper.addAllHeaders({}))
             .end(function (err, res) {
-
-
-
                 if (err) {
                     done(err);
                 } else {
