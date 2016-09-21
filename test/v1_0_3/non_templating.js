@@ -3730,11 +3730,6 @@
                 });
         });
 
-        it('A POST request is defined as a "pure" POST, as opposed to a GET taking on the form of a POST (7.2.2.e)', function (done) {
-            // All of these "defined" aren't really tests, rather ways to disambiguate future tests.
-            done();
-        });
-
         it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (4.1.11.a)', function (done) {
             // Not concerned with "Content-Type" when use a GET request NOT FINISHED
 
@@ -3948,8 +3943,6 @@
                 .body(attachment)
                 .expect(200)
                 .end()
-
-
                 .get(helper.getEndpointStatements() + '?' + query)
                 .wait(genDelay(stmtTime, '?' + query, null))
                 .headers(helper.addAllHeaders(header))
@@ -4034,17 +4027,6 @@
                 }
               });
         });
-
-        it('An LRS rejects a Statement due to network/server issues with an error code of 500 Internal Server Error (7.1)', function (done){
-          //not implemented
-          done();
-        });
-
-        it('An LRS\'s Statement API, upon receiving a Get request, had a field in the header with name "Content-Type" ***Assumed?***', function (done){
-          //Implicit, does not test --move to document
-          done();
-        });
-
 
         it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (7.2.4.b)', function (done){
                     //tests most of the filtering criteria, can add additional tests for missing criteria if necessary
@@ -4187,41 +4169,6 @@
               });
         });
 
-        it('A "more" property IRL is accessible for at least 24 hours after being returned (4.2.a)', function (done){
-          //impractical to test in real-time
-          done();
-        });
-
-        it('A Document Merge is defined by the merging of an existing document at an endpoint with a document received in a POST request. (7.3)', function (done){
-          //definition. Already covered in document.js (Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3)
-          done();
-        });
-
-        it('A Document Merge de-serializes all Objects represented by each document before making other changes. (7.3.d)', function (done){
-          //definition. Already covered in document.js (Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3)
-          done();
-        });
-
-        it('A Document Merge re-serializes all Objects to finalize a single document (7.3.d)', function (done){
-          //definition. Already covered in document.js (Communication.md#2.2.s7.b1, Communication.md#2.2.s7.b2, Communication.md#2.2.s7.b3)
-          done();
-        });
-
-        it('In 1.0.3, the IRI requires a scheme, but does not in 1.0.2, thus we only test type String in this version', function (done){
-          //update test once version 1.0.3 is released
-          done();
-        });
-
-        it('NOTE: **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**', function (done){
-          //not a test
-          done();
-        });
-
-        it('A Cross Origin Request is defined as this POST request as described in the previous requirement (definition)', function (done){
-          //definition
-          done();
-        });
-
         it('An LRS accepts HEAD requests without Content-Length headers (7.10.a.b)', function (done) {
 
                 request(helper.getEndpointAndAuth())
@@ -4275,7 +4222,6 @@
         });
 
             describe('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t) **Implicit**', function (){
-          // talk to lou about whether its okay to post without an interactiontype property https://github.com/adlnet/xAPI-Spec/blob/1.0.3/xAPI-Data.md#interactionacts
                 it ('Activity Definition uses correctResponsesPattern without "interactionType" property',function(done){
                       id = helper.generateUUID();
                       var correctResponsesPatterntemplates = [
@@ -4288,7 +4234,7 @@
                       request(helper.getEndpointAndAuth())
                           .post(helper.getEndpointStatements())
                           .headers(helper.addAllHeaders({}))
-                          .json(correctResponsesPattern).expect(400, done); // should be 400
+                          .json(correctResponsesPattern).expect(400, done);
                 });
 
                 it ('Activity Definition uses choices without "interactionType" property',function(done){
@@ -4303,7 +4249,7 @@
                     request(helper.getEndpointAndAuth())
                         .post(helper.getEndpointStatements())
                         .headers(helper.addAllHeaders({}))
-                        .json(choice).expect(400, done); // should be 400
+                        .json(choice).expect(400, done);
                 });
 
                 it ('Activity Definition uses scale without "interactionType" property',function(done){
@@ -4318,7 +4264,7 @@
                   request(helper.getEndpointAndAuth())
                       .post(helper.getEndpointStatements())
                       .headers(helper.addAllHeaders({}))
-                      .json(scale).expect(400, done); // should be 400
+                      .json(scale).expect(400, done);
               });
 
                 it ('Activity Definition uses source without "interactionType" property',function(done){
@@ -4333,7 +4279,7 @@
                   request(helper.getEndpointAndAuth())
                       .post(helper.getEndpointStatements())
                       .headers(helper.addAllHeaders({}))
-                      .json(source).expect(400, done); // should be 400
+                      .json(source).expect(400, done);
               });
 
               it ('Activity Definition uses target without "interactionType" property',function(done){
@@ -4348,7 +4294,7 @@
                   request(helper.getEndpointAndAuth())
                       .post(helper.getEndpointStatements())
                       .headers(helper.addAllHeaders({}))
-                      .json(target).expect(400, done); // should be 400
+                      .json(target).expect(400, done);
               });
 
               it ('Activity Definition uses steps without "interactionType" property',function(done){
@@ -4363,15 +4309,10 @@
                   request(helper.getEndpointAndAuth())
                       .post(helper.getEndpointStatements())
                       .headers(helper.addAllHeaders({}))
-                      .json(steps).expect(400, done); // should be 400
+                      .json(steps).expect(400, done);
               });
 
           });
-
-        it ('An LRS implements all of the Statement, State, Agent, and Activity Profile sub-APIs **Implicit**', function(done){
-            //large test that should be covered by other tests
-            done();
-        });
 
         it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including 7.3.e)', function(done){
 
