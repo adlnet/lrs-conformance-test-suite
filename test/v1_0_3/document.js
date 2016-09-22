@@ -1336,7 +1336,7 @@
                 });
         });
 
-        it('An LRS\'s About API\'s version property can only have values of ".9", ".95", "1.0.0", or ""1.0." + X" with (7.7.d.a)', function () {
+        it('An LRS\'s About API\'s version property can only have values of ".9", ".95", "1.0.0", or "1.0." + X" with (7.7.d.a)', function () {
             return sendRequest('get', '/about', undefined, undefined, 200)
                 .then(function (res) {
                     var about = res.body;
