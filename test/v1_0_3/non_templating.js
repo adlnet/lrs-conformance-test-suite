@@ -3624,6 +3624,7 @@
                 limit: 1
             };
             var query = helper.getUrlEncoding(data);
+            var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
@@ -3631,6 +3632,7 @@
                 .body(attachment).expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(stmtTime, query, null))
                 .headers(helper.addAllHeaders(header))
                 .expect(200)
                 .end(function(err,res){
@@ -3654,6 +3656,7 @@
                 limit: 1
             };
             var query = helper.getUrlEncoding(data);
+            var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
@@ -3661,6 +3664,7 @@
                 .body(attachment).expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(genDelay(stmtTime, query, null))
                 .headers(helper.addAllHeaders(header))
                 .expect(200)
                 .end(function(err,res){
@@ -3689,6 +3693,7 @@
           //incomplete- should compare raw data between request and response
           var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
           var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+          var stmtTime = Date.now();
 
           var data = {
               attachments: true,
@@ -3702,6 +3707,7 @@
               .body(attachment).expect(200)
               .end()
               .get(helper.getEndpointStatements()+ '?' + query)
+              .wait(genDelay(stmtTime, query, null))
               .headers(helper.addAllHeaders(header))
               .expect(200)
               .end(function(err,res){
@@ -3731,6 +3737,7 @@
 
               attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
               var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+              var stmtTime = Date.now();
 
               request(helper.getEndpointAndAuth())
                   .post(helper.getEndpointStatements())
@@ -3738,6 +3745,7 @@
                   .body(attachment).expect(200)
                   .end()
                   .get(helper.getEndpointStatements()+ '?' + query)
+                  .wait(genDelay(stmtTime, query, null))
                   .headers(helper.addAllHeaders(header))
                   .expect(200)
                   .end(function(err,res){
@@ -3811,6 +3819,7 @@
           };
 
           var query = helper.getUrlEncoding(data);
+          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3819,6 +3828,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
