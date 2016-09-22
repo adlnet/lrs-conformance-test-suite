@@ -62,7 +62,17 @@
           done();
       });
 
+      it('An LRS\'s Statement API rejects with Error Code 400 Bad Request any DELETE request (7.2)', function (done) {
+          //Depends on LRS how to deal with bad DELETE requests, not in spec
+      });
 
+      it('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (4.1.11.b, RFC 1341)', function (done) {
+          // RFC 1341: MIME-Version header field is required at the top level of a message. It is not required for each body part of a multipart entity
+      });
+
+      it ('An LRS rejects a Statement due to size if the Statement exceeds the size limit the LRS is configured to with error code 413 Request Entity Too Large (7.1)', function (done){
+        //limit depends on LRS -- not implemented
+      });
 
     });
 
