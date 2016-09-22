@@ -3538,7 +3538,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, query, null))
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -3549,8 +3549,8 @@
                       var languages = results.statements[0].verb.display;
                       var unicodeConformant = true;
                       for (var key in languages){
-                        if (languages[key] !== unicode.verb.display[key])
-                          unicodeConformant = false;
+                          if (languages[key] !== unicode.verb.display[key])
+                              unicodeConformant = false;
                       }
                       expect(unicodeConformant).to.be.true;
                       done();
@@ -3589,7 +3589,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, query, id2))
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -3598,22 +3598,18 @@
                   }
                   else {
                       var results = parse(res.body, done);
-                          request('')
+                      request('')
                           .get(liburl.resolve(res.request.href, results.more))
                           .headers(helper.addAllHeaders({}))
                           .expect(200)
                           .end(function (err, res) {
                               if (err) {
-                                done(err);
+                                  done(err);
                               }
                               else {
-                              var results2 = parse(res.body, done);
-                              var moreRequest = false;
-                                  if (results2.statements && results2.more){
-                                    moreRequest = true;
-                                  }
-                              expect(moreRequest).to.be.true;
-                              done();
+                                  var results2 = parse(res.body, done);
+                                  expect(results2.statements && results2.more).to.exist;
+                                  done();
                               }
                           });
                   }
@@ -3653,8 +3649,7 @@
               });
 
         it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d, 7.2.3.e)', function (done) {
-            //Not concerned with "Content-Type" when use a GET request
-            // response header should be application json if attachment parameter is false
+
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
@@ -3793,11 +3788,11 @@
               .expect(200)
               .end(function(err,res){
                 if (err){
-                  done(err);
+                    done(err);
                 }
                 else{
-                  expect(res.headers['x-experience-api-version']).to.equal("1.0.3");
-                  done();
+                    expect(res.headers['x-experience-api-version']).to.equal("1.0.3");
+                    done();
                 }
               });
         });
@@ -3826,6 +3821,7 @@
           };
 
           var query = helper.getUrlEncoding(data);
+          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3834,6 +3830,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4045,50 +4042,6 @@
                     .json(steps).expect(400, done);
             });
 
-        });
-
-        it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including 7.3.e)', function(done){
-          id = helper.generateUUID();
-          var templates = [
-              {statement: '{{statements.default}}'}
-          ];
-          var templates2 = [
-              {statement: '{{statements.result}}'}
-          ];
-
-          var statement = createFromTemplate(templates);
-          statement = statement.statement;
-          statement.id = id;
-
-          var statement2 = createFromTemplate(templates2);
-          statement2 = statement2.statement;
-
-          request(helper.getEndpointAndAuth())
-              .post(helper.getEndpointStatements())
-              .headers(helper.addAllHeaders({}))
-              .json(statement)
-              .expect(200)
-              .end()
-              .put(helper.getEndpointStatements() + '?statementId=' + id)
-              .headers(helper.addAllHeaders({}))
-              .json(statement2)
-              .expect(409||204)
-              .end()
-              .get(helper.getEndpointStatements() + '?statementId=' + id)
-              .headers(helper.addAllHeaders({}))
-              .expect(200)
-              .end(function(err, res){
-                if (err){
-                  done(err);
-                }
-                else{
-                  var result = JSON.parse(res.body);
-                  expect(statement.actor).to.eql(result.actor);
-                  expect(statement.verb).to.eql(result.verb);
-                  expect(statement.object).to.eql(result.object);
-                  done();
-                }
-              });
         });
 
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
