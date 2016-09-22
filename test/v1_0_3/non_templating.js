@@ -3538,7 +3538,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, query, null))
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -3580,6 +3580,7 @@
           var query = helper.getUrlEncoding(
             {limit:1}
           );
+          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3588,6 +3589,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -3632,7 +3634,7 @@
                 .body(attachment).expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(stmtTime, query, null))
+                .wait(genDelay(stmtTime, '?' + query, null))
                 .headers(helper.addAllHeaders(header))
                 .expect(200)
                 .end(function(err,res){
@@ -3664,7 +3666,7 @@
                 .body(attachment).expect(200)
                 .end()
                 .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(stmtTime, query, null))
+                .wait(genDelay(stmtTime, '?' + query, null))
                 .headers(helper.addAllHeaders(header))
                 .expect(200)
                 .end(function(err,res){
@@ -3707,7 +3709,7 @@
               .body(attachment).expect(200)
               .end()
               .get(helper.getEndpointStatements()+ '?' + query)
-              .wait(genDelay(stmtTime, query, null))
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders(header))
               .expect(200)
               .end(function(err,res){
@@ -3745,7 +3747,7 @@
                   .body(attachment).expect(200)
                   .end()
                   .get(helper.getEndpointStatements()+ '?' + query)
-                  .wait(genDelay(stmtTime, query, null))
+                  .wait(genDelay(stmtTime, '?' + query, null))
                   .headers(helper.addAllHeaders(header))
                   .expect(200)
                   .end(function(err,res){
@@ -3828,7 +3830,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, query, null))
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
