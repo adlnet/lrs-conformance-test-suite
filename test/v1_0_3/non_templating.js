@@ -6,88 +6,10 @@
  *
  */
 
-(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
+(function (module, fs, extend, moment, request, requestPromise, chai, liburl, helper, multipartParser, redirect, validator) {
     // "use strict";
 
-    function genDelay(time, query, id)
-    {
-        var delay = function(val)
-        {
-            var p = new comb.Promise();
-            var endP = helper.getEndpointStatements();
-            if (query) {
-                endP += query;
-            }
-            var delta, finish;
-
-            function doRequest()
-            {
-                var result;
-                request(helper.getEndpointAndAuth())
-                .get(endP)
-                .headers(helper.addAllHeaders({}))
-                //we don't expect anything, we just want a response
-                .end(function(err, res)
-                {
-                    if (err) {
-                    //if there was an error, we quit and go home
-                        // console.log('Error', err);
-                        throw err;
-                    } else {
-                        try {
-                        //we parse the result into either a single statement or a statements object
-                            result = parse(res.body);
-                        } catch (e) {
-                            // console.log('res.body did not parse');
-                            result = {};
-                        }
-                        if (id && result.id && (result.id === id)) {
-                        //if we find a single statement and the id we are looking for, then we're good we can continue with the testing
-                            p.resolve();
-                        } else if (id && result.statements && stmtFound(result.statements, id)) {
-                        //if we find a block of statements and the id we are looking for, then we're good and we can continue with the testing
-                            p.resolve();
-                        } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + helper.getTimeMargin() >= time) {
-                        //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
-                            p.resolve();
-                        } else {
-                        //otherwise we give the lrs a second to catch up and try again
-                            if (!delta) {
-                                // first time only - we use the provided headers to calculate a maximum wait time
-                                delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
-                                finish = Date.now() + 10 * delta;
-
-                                if (isNaN(finish)) {
-                                    throw new TypeError("X-Experience-API-Consistent-Through header was missing or not a number.");
-                                }
-                            }
-                            // console.log('waiting up to', delta * 10, 'ms\tcompare these', Date.now(), finish);
-                            if (Date.now() >= finish) {
-                                // console.log('Exceeded the maximum time limit - continue test');
-                                p.resolve();
-                            }
-                            setTimeout(doRequest, 1000);
-                        }
-                    }
-                });
-            }
-            doRequest();
-            return p;
-        }
-        return delay();
-
-        function stmtFound (arr, id) {
-            var found = false;
-            arr.forEach (function (s) {
-                if (s.id === id) {
-                    // console.log('Found', s.id, id);
-                    found = true;
-                }
-            });
-            // if (!found) console.log(id, 'Not found - please continue');
-            return found;
-        }
-    }
+    var genDelay = helper.genDelay;
 
     var comb = require('comb');
     var expect = chai.expect;
@@ -1175,7 +1097,17 @@
                     } else {
                         var result = parse(res.body, done);
                         expect(result).to.have.property('more');
-                        Joi.assert(result.more, Joi.string().regex(/(\/[\w\.\-]+)+\/?/));
+                        expect(validator.isURL(result.more, {
+                            protocols: [],
+                            require_tld: false,
+                            require_protocol: false,
+                            require_host: false,
+                            require_valid_protocol: false,
+                            allow_underscores: true,
+                            host_whitelist: false,
+                            host_blacklist: false,
+                            allow_trailing_dot: false,
+                            allow_protocol_relative_urls: true })).to.be.truthy;
                         done();
                     }
                 });
@@ -1214,7 +1146,17 @@
                     } else {
                         var result = parse(res.body, done);
                         expect(result).to.have.property('more');
-                        Joi.assert(result.more, Joi.string().regex(/(\/[\w\.\-]+)+\/?/));
+                        expect(validator.isURL(result.more, {
+                            protocols: [],
+                            require_tld: false,
+                            require_protocol: false,
+                            require_host: false,
+                            require_valid_protocol: false,
+                            allow_underscores: true,
+                            host_whitelist: false,
+                            host_blacklist: false,
+                            allow_trailing_dot: false,
+                            allow_protocol_relative_urls: true })).to.be.truthy;
                         done();
                     }
                 });
@@ -3601,7 +3543,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, query, null))
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -3612,8 +3554,8 @@
                       var languages = results.statements[0].verb.display;
                       var unicodeConformant = true;
                       for (var key in languages){
-                        if (languages[key] !== unicode.verb.display[key])
-                          unicodeConformant = false;
+                          if (languages[key] !== unicode.verb.display[key])
+                              unicodeConformant = false;
                       }
                       expect(unicodeConformant).to.be.true;
                       done();
@@ -3652,7 +3594,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, query, id2))
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -3661,22 +3603,18 @@
                   }
                   else {
                       var results = parse(res.body, done);
-                          request('')
+                      request('')
                           .get(liburl.resolve(res.request.href, results.more))
                           .headers(helper.addAllHeaders({}))
                           .expect(200)
                           .end(function (err, res) {
                               if (err) {
-                                done(err);
+                                  done(err);
                               }
                               else {
-                              var results2 = parse(res.body, done);
-                              var moreRequest = false;
-                                  if (results2.statements && results2.more){
-                                    moreRequest = true;
-                                  }
-                              expect(moreRequest).to.be.true;
-                              done();
+                                  var results2 = parse(res.body, done);
+                                  expect(results2.statements && results2.more).to.exist;
+                                  done();
                               }
                           });
                   }
@@ -3716,8 +3654,7 @@
               });
 
         it('An LRS\'s Statement API will reject a GET request having the "attachment" parameter set to "false" and the Content-Type field in the header set to anything but "application/json" (7.2.3.d, 7.2.3.e)', function (done) {
-            //Not concerned with "Content-Type" when use a GET request
-            // response header should be application json if attachment parameter is false
+
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
@@ -3856,11 +3793,11 @@
               .expect(200)
               .end(function(err,res){
                 if (err){
-                  done(err);
+                    done(err);
                 }
                 else{
-                  expect(res.headers['x-experience-api-version']).to.equal("1.0.3");
-                  done();
+                    expect(res.headers['x-experience-api-version']).to.equal("1.0.3");
+                    done();
                 }
               });
         });
@@ -3889,6 +3826,7 @@
           };
 
           var query = helper.getUrlEncoding(data);
+          var stmtTime = Date.now();
 
           request(helper.getEndpointAndAuth())
               .post(helper.getEndpointStatements())
@@ -3897,6 +3835,7 @@
               .expect(200)
               .end()
               .get(helper.getEndpointStatements() + '?' + query)
+              .wait(genDelay(stmtTime, '?' + query, null))
               .headers(helper.addAllHeaders({}))
               .expect(200)
               .end(function (err, res) {
@@ -4110,50 +4049,6 @@
 
         });
 
-        it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including 7.3.e)', function(done){
-          id = helper.generateUUID();
-          var templates = [
-              {statement: '{{statements.default}}'}
-          ];
-          var templates2 = [
-              {statement: '{{statements.result}}'}
-          ];
-
-          var statement = createFromTemplate(templates);
-          statement = statement.statement;
-          statement.id = id;
-
-          var statement2 = createFromTemplate(templates2);
-          statement2 = statement2.statement;
-
-          request(helper.getEndpointAndAuth())
-              .post(helper.getEndpointStatements())
-              .headers(helper.addAllHeaders({}))
-              .json(statement)
-              .expect(200)
-              .end()
-              .put(helper.getEndpointStatements() + '?statementId=' + id)
-              .headers(helper.addAllHeaders({}))
-              .json(statement2)
-              .expect(409||204)
-              .end()
-              .get(helper.getEndpointStatements() + '?statementId=' + id)
-              .headers(helper.addAllHeaders({}))
-              .expect(200)
-              .end(function(err, res){
-                if (err){
-                  done(err);
-                }
-                else{
-                  var result = JSON.parse(res.body);
-                  expect(statement.actor).to.eql(result.actor);
-                  expect(statement.verb).to.eql(result.verb);
-                  expect(statement.object).to.eql(result.object);
-                  done();
-                }
-              });
-        });
-
         describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
             var returnedID, data, stmtTime;
 
@@ -4336,4 +4231,4 @@
         return parsed;
     }
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('validator')));

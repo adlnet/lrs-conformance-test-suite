@@ -197,16 +197,16 @@ if (!process.env.EB_NODE_COMMAND) {
                     {
                         if (err) {
                         //if there was an error, we quit and go home
-                            p.reject();
+                            throw err;
                         } else {
                             try {
-                            //we parse the result into either a single statment or a statements object
+                            //we parse the result into either a single statement or a statements object
                                 result = parse(res.body);
                             } catch (e) {
                                 result = {};
                             }
                             if (id && result.id && (result.id === id)) {
-                            //if we find a single statment and the id we are looking for, then we're good we can continue with the testing
+                            //if we find a single statement and the id we are looking for, then we're good we can continue with the testing
                                 p.resolve();
                             } else if (id && result.statements && stmtFound(result.statements, id)) {
                             //if we find a block of statments and the id we are looking for, then we're good and we can continue with the testing
@@ -220,6 +220,10 @@ if (!process.env.EB_NODE_COMMAND) {
                                     // first time only - we use the provided headers to calculate a maximum wait time
                                     delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
                                     finish = Date.now() + 10 * delta;
+                                    if (isNaN(finish)) 
+                                    {
+                                        throw new TypeError("X-Experience-API-Consistent-Through header was missing or not a number.");
+                                    }
                                 }
                                 if (Date.now() >= finish) {
                                    console.log('Exceeded the maximum time limit (' + delta * 10 + ')- continue test');
