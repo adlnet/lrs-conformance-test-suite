@@ -1341,7 +1341,7 @@
                 .then(function (res) {
                     var about = res.body;
                     expect(about).to.have.property('version').to.be.an('array');
-                    var validVersions = ['.9', '.95', '1.0', '1.0.0', '1.0.1', '1.0.2'];
+                    var validVersions = ['.9', '.95', '1.0.0', '1.0.1', '1.0.2', '1.0.3'];
                     about.version.forEach(function (item) {
                         expect(validVersions).to.include(item);
                     })

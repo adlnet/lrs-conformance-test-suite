@@ -193,7 +193,7 @@
                 });
         });
 
-        it('should fail when "StatementRef" points to a voiding statement', function (done) {
+        it('should not void a voiding statement', function (done) {
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -204,10 +204,15 @@
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
-                .json(data).expect(400).end(function (err, res) {
+                .end(function (err, res) {
                     if (err) {
                         done(err);
                     } else {
+                        var query = '?statementId=' + voidingId;
+                        request(helper.getEndpointAndAuth())
+                            .get(helper.getEndpointStatements() + query)
+                            .headers(helper.addAllHeaders({}))
+                            .expect(200)
                         done();
                     }
                 });
