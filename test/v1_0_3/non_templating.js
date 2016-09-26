@@ -115,7 +115,8 @@
                 });
         });
 
-        it('should fail when "StatementRef" points to a voiding statement', function (done) {
+        it('should not void a voiding statement', function (done) {
+            this.timeout(0);
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -123,13 +124,20 @@
             var data = createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidingId;
+            var stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
-                .json(data).expect(400).end(function (err, res) {
+                .json(data).end(function (err, res) {
                     if (err) {
                         done(err);
                     } else {
+                        var query = '?statementId=' + voidingId;
+                        request(helper.getEndpointAndAuth())
+                            .get(helper.getEndpointStatements() + query)
+                            .headers(helper.addAllHeaders({}))
+                            .wait(genDelay(stmtTime, query, voidingId))
+                            .expect(200)
                         done();
                     }
                 });
@@ -3279,8 +3287,9 @@
                 .json(statementRef)
                 .expect(200, done)
         });
-
-        it('should only return Object StatementRef when using "since"', function (done) {
+        
+        // reworded the test to be more generic, shouldn't have to stay in here
+        it('should only return statements stored after designated "since" timestamp when using "since" parameter', function (done) {
             // Need to use statementRefId verb b/c initial voided statement comes before voidingTime
             var query = helper.getUrlEncoding({
                 verb: verb,
@@ -3303,7 +3312,8 @@
                 });
         });
 
-        it('should only return voiding statement when using "until"', function (done) {
+        // reworded the test to be more generic, shouldn't have to stay in here
+        it('should only return statements stored at or before designated "before" timestamp when using "until" parameter', function (done) {
             var query = helper.getUrlEncoding({
                 verb: "http://adlnet.gov/expapi/verbs/voided",
                 until: untilVoidingTime
@@ -3332,7 +3342,8 @@
                 });
         });
 
-        it('should only return Object StatementRef when using "limit"', function (done) {
+        // reworded the test to be more generic, shouldn't have to stay in here
+        it('should return the number of statements listed in "limit" parameter', function (done) {
             var query = helper.getUrlEncoding({
                 verb: verb,
                 limit: 1
@@ -3355,6 +3366,7 @@
                 });
         });
 
+        // i think this can be removed
         it('should return StatementRef and voiding statement when not using "since", "until", "limit"', function (done) {
             var query = helper.getUrlEncoding({
                 verb: verb
