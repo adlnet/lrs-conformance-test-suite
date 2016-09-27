@@ -20,6 +20,9 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
     //Data 2.4.4.1
     templatingSelection.createTemplate("activities.js");
 
+    /**
+     * Note: Consider rewriting these tests into a templated config file
+     */
     describe('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, Data 2.4.4.1.s8) **Implicit**', function (){
 
         it ('Activity Definition uses correctResponsesPattern without "interactionType" property',function(done){
