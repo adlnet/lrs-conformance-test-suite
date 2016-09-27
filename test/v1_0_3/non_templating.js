@@ -3815,100 +3815,6 @@
                     .expect(200, done);
         });
 
-        describe('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, 4.1.4.1.t) **Implicit**', function (){
-
-            it ('Activity Definition uses correctResponsesPattern without "interactionType" property',function(done){
-                id = helper.generateUUID();
-                var correctResponsesPatterntemplates = [
-                    {statement: '{{statements.default}}'},
-                    {object: '{{activities.other}}'}
-                ];
-                correctResponsesPattern = createFromTemplate(correctResponsesPatterntemplates);
-                correctResponsesPattern = correctResponsesPattern.statement;
-                delete correctResponsesPattern.object.definition.interactionType;
-                request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .json(correctResponsesPattern).expect(400, done);
-            });
-
-            it ('Activity Definition uses choices without "interactionType" property',function(done){
-                id = helper.generateUUID();
-                var choicetemplates = [
-                    {statement: '{{statements.default}}'},
-                    {object: '{{activities.choice}}'}
-                ];
-                choice = createFromTemplate(choicetemplates);
-                choice = choice.statement;
-                delete choice.object.definition.interactionType;
-                request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .json(choice).expect(400, done);
-            });
-
-            it ('Activity Definition uses scale without "interactionType" property',function(done){
-                id = helper.generateUUID();
-                var scaletemplates = [
-                    {statement: '{{statements.default}}'},
-                    {object: '{{activities.likert}}'}
-                ];
-                scale = createFromTemplate(scaletemplates);
-                scale = scale.statement;
-                delete scale.object.definition.interactionType;
-                request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .json(scale).expect(400, done);
-            });
-
-            it ('Activity Definition uses source without "interactionType" property',function(done){
-                id = helper.generateUUID();
-                var sourcetemplates = [
-                    {statement: '{{statements.default}}'},
-                    {object: '{{activities.matching}}'}
-                ];
-                source = createFromTemplate(sourcetemplates);
-                source = source.statement;
-                delete source.object.definition.interactionType;
-                request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .json(source).expect(400, done);
-            });
-
-            it ('Activity Definition uses target without "interactionType" property',function(done){
-                id = helper.generateUUID();
-                var targettemplates = [
-                    {statement: '{{statements.default}}'},
-                    {object: '{{activities.matching_target}}'}
-                ];
-                target = createFromTemplate(targettemplates);
-                target = target.statement;
-                delete target.object.definition.interactionType;
-                request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .json(target).expect(400, done);
-            });
-
-            it ('Activity Definition uses steps without "interactionType" property',function(done){
-                id = helper.generateUUID();
-                var stepstemplates = [
-                    {statement: '{{statements.default}}'},
-                    {object: '{{activities.performance}}'}
-                ];
-                steps = createFromTemplate(stepstemplates);
-                steps = steps.statement;
-                delete steps.object.definition.interactionType;
-                request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .json(steps).expect(400, done);
-            });
-
-        });
-
         it('An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group and consists of non-O-Auth Agents (4.1.9.a)', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'},
@@ -3995,35 +3901,6 @@
           .headers(helper.addAllHeaders({}))
           .expect(404, done);
         });
-
-      it ('An LRS generates the "id" property of a Statement if none is provided (Modify, 4.1.1.a)', function (done){
-        this.timeout(0);
-        var templates = [
-            {statement: '{{statements.default}}'}
-        ];
-        data = createFromTemplate(templates);
-        data = data.statement;
-        var stmtTime = Date.now();
-
-        request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .expect(200)
-            .end()
-            .get(helper.getEndpointStatements() + '?limit=1')
-            .wait(genDelay(stmtTime, null, null))
-            .headers(helper.addAllHeaders({}))
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var results = parse(res.body, done);
-                    expect(results.statements[0].id).to.not.be.undefined;
-                    done();
-                }
-            });
-      });
 
     });
 
