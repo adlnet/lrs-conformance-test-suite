@@ -415,9 +415,9 @@ if (!process.env.EB_NODE_COMMAND) {
             files.forEach(function(file){
                 if (file === fileName)
                     fileExists = true;
-                });
+            });
 
-            if (!fileExists){
+            if (!fileExists) {
                 throw (new Error('Invalid configuration "missing name": ' + fileName));
                 return false;
             }
@@ -792,6 +792,18 @@ if (!process.env.EB_NODE_COMMAND) {
             //return the new constructor
             return authRequest;
 
+        },
+        /**
+         * 
+         */
+        parse: function(string, done) {
+            var parsed;
+            try {
+                parsed = JSON.parse(string);
+            } catch (error) {
+                done(error);
+            }
+            return parsed;
         },
         // return a buffer containing the statement and signature in multipart format
         signStatement: function(statement, options)
