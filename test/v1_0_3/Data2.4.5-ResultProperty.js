@@ -13,20 +13,9 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-    before("Before all tests are run", function (done) {
-        console.log("Setting up\nAccounting for time differential between test suite and lrs");
-        helper.setTimeMargin(done);
-    });
+describe('Result Property Requirements (Data 2.4.5)', () => {
 
-describe('Formatting Requirements (Data 2.2)', () => {
-
-    templatingSelection.createTemplate('statements.js');
-
-    //testing all templating tests, will be removed as we go
-    templatingSelection.createTemplate('attachments.js');
-    templatingSelection.createTemplate('authorities.js');
-    templatingSelection.createTemplate('extensions.js');
-    templatingSelection.createTemplate('languages.js');
+    templatingSelection.createTemplate('results.js');
 
 });
 
