@@ -126,6 +126,16 @@ if (!process.env.EB_NODE_COMMAND) {
             return templates;
         },
         /**
+         *
+         */
+        createFromTemplate: (templates) => {
+            // convert template mapping to JSON objects
+            var converted = module.exports.convertTemplate(templates);
+            // this handles if no override
+            var mockObject = module.exports.createTestObject(converted);
+            return mockObject;
+        },
+        /**
          * Iterates through array of objects.  Each value in array needs to be a JSON
          * object with one key / value.  This will merge all JSONs into one object
          * and return the result.
@@ -177,6 +187,7 @@ if (!process.env.EB_NODE_COMMAND) {
             // console.log("Checking LRS for Consistency");
             var comb = require('comb'),
                 request = require('super-request');
+
             var delay = function(val)
             {
                 var p = new comb.Promise();
@@ -185,6 +196,7 @@ if (!process.env.EB_NODE_COMMAND) {
                     endP += query;
                 }
                 var delta, finish;
+
                 function doRequest()
                 {
                     if(global.OAUTH)
@@ -193,6 +205,7 @@ if (!process.env.EB_NODE_COMMAND) {
                     request(module.exports.getEndpointAndAuth())
                     .get(endP)
                     .headers(module.exports.addAllHeaders({}))
+                    //we don't expect anything, we just want a response
                     .end(function(err, res)
                     {
                         if (err) {
@@ -209,7 +222,7 @@ if (!process.env.EB_NODE_COMMAND) {
                             //if we find a single statement and the id we are looking for, then we're good we can continue with the testing
                                 p.resolve();
                             } else if (id && result.statements && stmtFound(result.statements, id)) {
-                            //if we find a block of statments and the id we are looking for, then we're good and we can continue with the testing
+                            //if we find a block of statements and the id we are looking for, then we're good and we can continue with the testing
                                 p.resolve();
                             } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + module.exports.getTimeMargin() >= time) {
                             //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
@@ -220,15 +233,16 @@ if (!process.env.EB_NODE_COMMAND) {
                                     // first time only - we use the provided headers to calculate a maximum wait time
                                     delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
                                     finish = Date.now() + 10 * delta;
-                                    if (isNaN(finish)) 
-                                    {
+
+                                    if (isNaN(finish)) {
                                         throw new TypeError("X-Experience-API-Consistent-Through header was missing or not a number.");
                                     }
                                 }
+
                                 if (Date.now() >= finish) {
-                                   console.log('Exceeded the maximum time limit (' + delta * 10 + ')- continue test');
+                                //    console.log('Exceeded the maximum time limit (' + delta * 10 + ')- continue test');
                                     p.resolve()
-                                }else //must be careful to never restart this timer if the promise is resolved;
+                                } else //must be careful to never restart this timer if the promise is resolved;
                                     setTimeout(doRequest, 1000);
                             }
                         }
@@ -250,8 +264,6 @@ if (!process.env.EB_NODE_COMMAND) {
                 return found;
             }
         },
-
-
         /**
          * Generates an RFC4122 compliant uuid.
          * http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
@@ -394,11 +406,87 @@ if (!process.env.EB_NODE_COMMAND) {
             return list;
         },
         /**
+         * Creates test configuration object from one configuration file
+         *
+         */
+        getSingleTestConfiguration: function (fileName) {
+            var files = fs.readdirSync(CONFIG_FOLDER);
+            var fileExists = false;
+            files.forEach(function(file){
+                if (file === fileName)
+                    fileExists = true;
+                });
+
+            if (!fileExists){
+                throw (new Error('Invalid configuration "missing name": ' + fileName));
+                return false;
+            }
+
+            var configFile = require(CONFIG_FOLDER_RELATIVE + '/' + fileName);
+            var config = configFile.config();
+
+            return config;
+        },
+        /**
          * Make the TIME_MARGIN available to tests
          * @returns {integer}
         */
         getTimeMargin: function () {
                 return TIME_MARGIN;
+        },
+        /**
+         * Sends an HTTP request using supertest
+         * @param {string} type ex. GET, POST, PUT, DELETE and HEAD
+         * @param {string} url url to send request too
+         * @param {json} params query params to append onto url. Params get urlencoded
+         * @param body
+         * @param {number} expect the result of the request
+         * @returns {*} promise
+         */
+        sendRequest: function (type, url, params, body, expect) {
+            var request = require('supertest-as-promised');
+            request = request(module.exports.getEndpointAndAuth())
+            var reqUrl = params ? (url + '?' + module.exports.getUrlEncoding(params)) : url;
+
+            var headers = module.exports.addAllHeaders({});
+            var pre = request[type](reqUrl);
+            //Add the .sign function to the request
+            module.exports.extendRequestWithOauth(pre);
+            if (body) {
+                pre.send(body);
+            }
+            pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
+            if (process.env.BASIC_AUTH_ENABLED === 'true') {
+                pre.set('Authorization', headers['Authorization']);
+            }
+            //If we're doing oauth, set it up!
+            try {
+                if (global.OAUTH) {
+                    pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+                }
+            } catch (e) {
+                console.log(e);
+            }
+            return pre.expect(expect);
+        },
+        //extend the super-test-as-promised with a function to write the oauth headers
+         extendRequestWithOauth: function(pre)
+        {
+            //the sign functions
+            pre.sign = function(oa, token, secret) {
+                var additionalData = {}; //TODO: deal with body params that need to be encoded into the hash (when the data is a form....)
+                additionalData = JSON.parse(JSON.stringify(additionalData));
+                additionalData['oauth_verifier'] = global.OAUTH.verifier; //Not sure why the lib does not do is, is required. Jam the verifier in
+                var params = oa._prepareParameters(
+                    token, secret, pre.method, pre.url, additionalData // XXX: what if there's query and body? merge?
+                );
+
+                //Never is Echo, I think?
+                var header = oa._isEcho ? 'X-Verify-Credentials-Authorization' : 'Authorization';
+                var signature = oa._buildAuthorizationHeaders(params);
+                //Set the auth header
+                pre.set('Authorization', signature);
+            }
         },
         /*
          * Calculates the difference between the lrs time and the suite time and sets a variable for use with since and until requests.
@@ -422,30 +510,30 @@ if (!process.env.EB_NODE_COMMAND) {
                 request = module.exports.OAuthRequest(request);
 
             request(module.exports.getEndpointAndAuth())
-                .post(module.exports.getEndpointStatements())
-                .headers(module.exports.addAllHeaders({}))
-                .json(stmt)
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        request(module.exports.getEndpointAndAuth())
-                        .get(module.exports.getEndpointStatements() + '?' + query)
-                        .headers(module.exports.addAllHeaders({}))
-                        .expect(200)
-                        .end(function (err, res) {
-                            if (err) {
-                                done(err);
-                                return err;
-                            } else {
-                                lrsTime = new Date(res.headers.date);
-                                TIME_MARGIN = suiteTime - lrsTime;
-                                done(err, TIME_MARGIN);
-                            }
-                        });
-                    }
-                });
+            .post(module.exports.getEndpointStatements())
+            .headers(module.exports.addAllHeaders({}))
+            .json(stmt)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    request(module.exports.getEndpointAndAuth())
+                    .get(module.exports.getEndpointStatements() + '?' + query)
+                    .headers(module.exports.addAllHeaders({}))
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            done(err);
+                            return err;
+                        } else {
+                            lrsTime = new Date(res.headers.date);
+                            TIME_MARGIN = suiteTime - lrsTime;
+                            done(err, TIME_MARGIN);
+                        }
+                    });
+                }
+            });
         },
         /**
          * Returns query string (does not work for Date object which needs toISOString()).
@@ -591,7 +679,6 @@ if (!process.env.EB_NODE_COMMAND) {
         clone: function (obj) {
             return JSON.parse(JSON.stringify(obj));
         },
-
         //a wrapper for the super-test suite that deals the oauth
         //the request module deep under the hood can do the signing, but we need to access it.
         //because of the chaining of methods, this can get a bit tricky.
@@ -706,8 +793,6 @@ if (!process.env.EB_NODE_COMMAND) {
             return authRequest;
 
         },
-
-
         // return a buffer containing the statement and signature in multipart format
         signStatement: function(statement, options)
         {
@@ -809,7 +894,6 @@ if (!process.env.EB_NODE_COMMAND) {
             // return a buffer containing the statement and signature in multipart format
             return body;
         },
-
         verifyStatement: function(statement)
         {
             var publicKey = [
