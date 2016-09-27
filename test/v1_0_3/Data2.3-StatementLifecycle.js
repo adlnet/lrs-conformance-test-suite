@@ -48,7 +48,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
                     if (err) {
                         done(err);
                     } else {
-                        var results = parse(res.body, done);
+                        var results = helper.parse(res.body, done);
                         delete results.id;
                         delete results.authority;
                         delete results.timestamp;
@@ -109,7 +109,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
                     if (err) {
                         done(err);
                     } else {
-                        var statement = parse(res.body, done);
+                        var statement = helper.parse(res.body, done);
                         expect(statement.id).to.equal(voidedId);
                         done();
                     }
@@ -213,15 +213,5 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
     });
 
 });
-
-    function parse(string, done) {
-        var parsed;
-        try {
-            parsed = JSON.parse(string);
-        } catch (error) {
-            done(error);
-        }
-        return parsed;
-    }
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));

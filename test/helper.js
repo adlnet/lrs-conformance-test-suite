@@ -793,6 +793,18 @@ if (!process.env.EB_NODE_COMMAND) {
             return authRequest;
 
         },
+        /**
+         * 
+         */
+        parse: function(string, done) {
+            var parsed;
+            try {
+                parsed = JSON.parse(string);
+            } catch (error) {
+                done(error);
+            }
+            return parsed;
+        },
         // return a buffer containing the statement and signature in multipart format
         signStatement: function(statement, options)
         {
