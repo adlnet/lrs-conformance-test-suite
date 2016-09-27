@@ -52,98 +52,6 @@
         });
     });
 
-    describe('A Voiding Statement cannot Target another Voiding Statement (4.3)', function () {
-        var voidedId, voidingId;
-
-        before('persist voided statement', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = createFromTemplate(templates);
-            data = data.statement;
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data).expect(200).end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        voidedId = res.body[0];
-                        done();
-                    }
-                });
-        });
-
-        before('persist voiding statement', function (done) {
-            var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
-            ];
-            var data = createFromTemplate(templates);
-            data = data.statement;
-            data.object.id = voidedId;
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data).expect(200).end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        voidingId = res.body[0];
-                        done();
-                    }
-                });
-        });
-
-        it('should fail when "StatementRef" points to a voided statement', function (done) {
-            var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
-            ];
-            var data = createFromTemplate(templates);
-            data = data.statement;
-            data.object.id = voidedId;
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data).expect(400).end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        done();
-                    }
-                });
-        });
-
-        it('should not void a voiding statement', function (done) {
-            this.timeout(0);
-            var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
-            ];
-            var data = createFromTemplate(templates);
-            data = data.statement;
-            data.object.id = voidingId;
-            var stmtTime = Date.now();
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data).end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        var query = '?statementId=' + voidingId;
-                        request(helper.getEndpointAndAuth())
-                            .get(helper.getEndpointStatements() + query)
-                            .headers(helper.addAllHeaders({}))
-                            .wait(genDelay(stmtTime, query, voidingId))
-                            .expect(200)
-                        done();
-                    }
-                });
-        });
-    });
-
     describe('An LRS returns a ContextActivity in an array, even if only a single ContextActivity is returned (4.1.6.2.c, 4.1.6.2.d)', function () {
         var types = ['parent', 'grouping', 'category', 'other'];
         this.timeout(0);
@@ -1160,61 +1068,6 @@
                             host_blacklist: false,
                             allow_trailing_dot: false,
                             allow_protocol_relative_urls: true })).to.be.truthy;
-                        done();
-                    }
-                });
-        });
-    });
-
-    describe('A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS (4.2.c)', function () {
-        var voidedId = helper.generateUUID();
-        var stmtTime;
-
-        before('persist voided statement', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var voided = createFromTemplate(templates);
-            voided = voided.statement;
-            voided.id = voidedId;
-
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(voided)
-                .expect(200, done);
-        });
-
-        before('persist voiding statement', function (done) {
-            var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
-            ];
-            var voiding = createFromTemplate(templates);
-            voiding = voiding.statement;
-            voiding.object.id = voidedId;
-            stmtTime = Date.now();
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(voiding)
-                .expect(200, done);
-        });
-
-        it('should return a voided statement when using GET "voidedStatementId"', function (done) {
-            this.timeout(0);
-            var query = helper.getUrlEncoding({voidedStatementId: voidedId});
-            request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .wait(genDelay(stmtTime, '?' + query, voidedId))
-                .headers(helper.addAllHeaders({}))
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        var statement = parse(res.body, done);
-                        expect(statement.id).to.equal(voidedId);
                         done();
                     }
                 });
@@ -3287,7 +3140,7 @@
                 .json(statementRef)
                 .expect(200, done)
         });
-        
+
         // reworded the test to be more generic, shouldn't have to stay in here
         it('should only return statements stored after designated "since" timestamp when using "since" parameter', function (done) {
             // Need to use statementRefId verb b/c initial voided statement comes before voidingTime
@@ -4054,52 +3907,6 @@
                     .json(steps).expect(400, done);
             });
 
-        });
-
-        describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (4.1.12.d, Varies)', function (){
-            var returnedID, data, stmtTime;
-
-            before('persist statement', function (done) {
-                var templates = [
-                    {statement: '{{statements.default}}'}
-                ];
-                data = createFromTemplate(templates);
-                data = data.statement;
-                stmtTime = Date.now();
-                request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .json(data).expect(200).end(function (err, res) {
-                        if (err) {
-                            done(err);
-                        } else {
-                            returnedID = res.body[0];
-                            done();
-                        }
-                    });
-            });
-
-            it('statement values should be the same', function (done) {
-                this.timeout(0);
-                request(helper.getEndpointAndAuth())
-                    .get(helper.getEndpointStatements() + '?statementId=' + returnedID)
-                    .wait(genDelay(stmtTime, '?statementId=' + returnedID, returnedID))
-                    .headers(helper.addAllHeaders({}))
-                    .expect(200).end(function (err, res) {
-                        if (err) {
-                            done(err);
-                        } else {
-                            var results = parse(res.body, done);
-                            delete results.id;
-                            delete results.authority;
-                            delete results.timestamp;
-                            delete results.stored;
-                            delete results.version;
-                            expect(results).to.have.all.keys(Object.keys(data));
-                            done();
-                        }
-                    });
-            });
         });
 
         it('An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group and consists of non-O-Auth Agents (4.1.9.a)', function (done) {

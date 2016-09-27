@@ -415,9 +415,9 @@ if (!process.env.EB_NODE_COMMAND) {
             files.forEach(function(file){
                 if (file === fileName)
                     fileExists = true;
-                });
+            });
 
-            if (!fileExists){
+            if (!fileExists) {
                 throw (new Error('Invalid configuration "missing name": ' + fileName));
                 return false;
             }

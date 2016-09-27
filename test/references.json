@@ -4876,7 +4876,6 @@
         ]
     },
     "An LRS rejects a new Request in the same way for violating rules of this document as it would a normal Request": {
-    /*"An LRS rejects a new Request in the same way for violating rules of this document as it would a normal Request **Implicit**": {*/
         "name": "An LRS rejects a new Request in the same way for violating rules of this document as it would a normal Request **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 1.3, Implicit",
