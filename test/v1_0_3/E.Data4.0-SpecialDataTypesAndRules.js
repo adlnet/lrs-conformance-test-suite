@@ -13,14 +13,12 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-    before("Before all tests are run", function (done) {
-        console.log("Setting up\nAccounting for time differential between test suite and lrs");
-        helper.setTimeMargin(done);
-    });
+describe('Special Data Types and Rules (Data 4.0)', () => {
 
-describe('Formatting Requirements (Data 2.2)', () => {
-
-    templatingSelection.createTemplate('statements.js');
+    //Data 4.1
+    templatingSelection.createTemplate("extensions.js");
+    //Data 4.2
+    templatingSelection.createTemplate("languages.js");
 
 });
 

@@ -3235,21 +3235,6 @@
               });
         });
 
-        it('An LRS accepts HEAD requests without Content-Length headers (7.10.a.b)', function (done) {
-
-                request(helper.getEndpointAndAuth())
-                    .head(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .expect(200, done);
-        });
-
-        it('An LRS accepts GET requests without Content-Length headers (7.10.a.b)', function (done) {
-                request(helper.getEndpointAndAuth())
-                    .get(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .expect(200, done);
-        });
-
         if(!global.OAUTH)
         {
             //This test appears to only make sense in the case of http basic Auth. Should we have additional tests for bad OAUTH, which is more complicated?
