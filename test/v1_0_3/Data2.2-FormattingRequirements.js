@@ -23,8 +23,6 @@ describe('Formatting Requirements (Data 2.2)', () => {
     templatingSelection.createTemplate('statements.js');
 
     //testing all templating tests, will be removed as we go
-    templatingSelection.createTemplate('attachments.js');
-    templatingSelection.createTemplate('authorities.js');
     templatingSelection.createTemplate('extensions.js');
     templatingSelection.createTemplate('languages.js');
 
