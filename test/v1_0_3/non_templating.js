@@ -2961,50 +2961,6 @@
               .expect(400, done)
         });
 
-        it('All Strings are encoded and interpreted as UTF-8 (6.1.a)', function (done) {
-          this.timeout(0);
-          var verbTemplate = 'http://adlnet.gov/expapi/test/unicode/target/';
-          var verb = verbTemplate + helper.generateUUID();
-          var unicodeTemplates = [
-              {statement: '{{statements.unicode}}'}
-          ];
-
-          var unicode = createFromTemplate(unicodeTemplates);
-          unicode = unicode.statement;
-          unicode.verb.id = verb;
-
-          var query = helper.getUrlEncoding({
-              verb: verb
-          });
-          var stmtTime = Date.now();
-
-          request(helper.getEndpointAndAuth())
-              .post(helper.getEndpointStatements())
-              .headers(helper.addAllHeaders({}))
-              .json(unicode)
-              .expect(200)
-              .end()
-              .get(helper.getEndpointStatements() + '?' + query)
-              .wait(genDelay(stmtTime, '?' + query, null))
-              .headers(helper.addAllHeaders({}))
-              .expect(200)
-              .end(function (err, res) {
-                  if (err) {
-                      done(err);
-                  } else {
-                      var results = parse(res.body, done);
-                      var languages = results.statements[0].verb.display;
-                      var unicodeConformant = true;
-                      for (var key in languages){
-                          if (languages[key] !== unicode.verb.display[key])
-                              unicodeConformant = false;
-                      }
-                      expect(unicodeConformant).to.be.true;
-                      done();
-                  }
-              });
-        });
-
         it('A "more" property\'s referenced container object follows the same rules as the original GET request, originating with a single "statements" property and a single "more" property (4.2.table1.row1.b)', function (done) {
 
           this.timeout(0);
