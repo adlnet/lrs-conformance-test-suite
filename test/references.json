@@ -5174,10 +5174,11 @@
     },
     "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has a discrepancy in the number of Attachments vs. the number of fileURL members": {
         "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has a discrepancy in the number of Attachments vs. the number of fileURL members",
-        "1.0.2_ref_text": "4.1.11.a",
-        "1.0.2_ref": "4.1.11.a",
-        "1.0.3_ref": "Communication 1.5.1.s1.b2",
-        "1.0.3_link": ["Communication.md#1.5.1.s1.b2"]
+        "1.0.3_ref": "Data 2.4.11, Communication 1.5.1.s1.b2",
+        "1.0.3_link": [
+                "Data 2.4.11",
+                "Communication 1.5.1.s1.b2"
+            ]
     },
     "should fail when passing statement attachments and missing attachment\"s binary": {
         "name": "should fail when passing statement attachments and missing attachment\"s binary"
@@ -5196,8 +5197,11 @@
         "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have a body header named \"boundary\"",
         "1.0.2_ref_text": "4.1.11.b, RFC 1341",
         "1.0.2_ref": "4.1.11.b, RFC 1341",
-        "1.0.3_ref": ["Communication 1.5.2.s2.b2"],
-        "1.0.3_link": ["Communication.md#1.5.2.s2.b2"]
+        "1.0.3_ref": "Data 2.4.11, Communication 1.5.2.s2.b2",
+        "1.0.3_link": [
+                "Data 2.4.11",
+                "Communication 1.5.2.s2.b2"
+            ]
     },
     "should fail if boundary not provided in body": {
         "name": "should fail if boundary not provided in body"
@@ -5206,8 +5210,11 @@
         "name": "A Boundary is defined as the value of the body header named \"boundary\"",
         "1.0.2_ref_text": "Definition, 4.1.11.b, RFC 1341",
         "1.0.2_ref": "4.1.11.b, RFC 1341",
-        "1.0.3_ref": ["Communication 1.5.2.s2.b2"],
-        "1.0.3_link": ["Communication.md#1.5.2.s2.b2"]
+        "1.0.3_ref": "Data 2.4.11, Communication 1.5.2.s2.b2",
+        "1.0.3_link": [
+                "Data 2.4.11",
+                "Communication 1.5.2.s2.b2"
+            ]
     },
     "should fail if boundary not provided in header": {
         "name": "should fail if boundary not provided in header"
@@ -5216,22 +5223,31 @@
         "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have a Boundary before each \"Content-Type\" header",
         "1.0.2_ref_text": "4.1.11.b, RFC 1341",
         "1.0.2_ref": "4.1.11.b, RFC 1341",
-        "1.0.3_ref": ["Communication 1.5.2.s2.b2"],
-        "1.0.3_link": ["Communication.md#1.5.2.s2.b2"]
+        "1.0.3_ref": "Data 2.4.11, Communication 1.5.2.s2.b2",
+        "1.0.3_link": [
+                "Data 2.4.11",
+                "Communication 1.5.2.s2.b2"
+            ]
     },
     "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not the first document part with a \"Content-Type\" header with a value of \"application/json\"": {
         "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not the first document part with a \"Content-Type\" header with a value of \"application/json\"",
         "1.0.2_ref_text": "RFC 1341, 4.1.11.b.a",
         "1.0.2_ref": "RFC 1341, 4.1.11.b.a",
-        "1.0.3_ref": ["Communication 1.5.2.s2.b2.b1"],
-        "1.0.3_link": ["Communication.md#1.5.2.s2.b2.b1"]
+        "1.0.3_ref": "Data 2.4.11, Communication 1.5.2.s2.b1",
+        "1.0.3_link": [
+                "Data 2.4.11",
+                "Communication 1.5.2.s2.b1"
+            ]
     },
     "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have all of the Statements in the first document part": {
         "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have all of the Statements in the first document part",
         "1.0.2_ref_text": "RFC 1341, 4.1.11.b.a",
         "1.0.2_ref": "RFC 1341, 4.1.11.b.a",
-        "1.0.3_ref": ["Communication 1.5.2.s2.b2.b1"],
-        "1.0.3_link": ["Communication.md#1.5.2.s2.b2.b1"]
+        "1.0.3_ref": "Data 2.4.11, Communication 1.5.2.s2.b1",
+        "1.0.3_link": [
+                "Data 2.4.11",
+                "Communication 1.5.2.s2.b1"
+            ]
     },
     "should fail when statements separated into multiple parts": {
         "name": "should fail when statements separated into multiple parts"
@@ -5240,8 +5256,12 @@
         "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and for any part except the first does not have a Header named \"X-Experience-API-Hash\" with a value of one of those found in a \"sha2\" property of a Statement in the first part of this document",
         "1.0.2_ref_text": "4.1.11.b.c, 4.1.11.b.d",
         "1.0.2_ref": "4.1.11.b.c, 4.1.11.b.d",
-        "1.0.3_ref": ["Communication 1.5.2.s2.b2.b3", "Communication 1.5.2.s1.b4"],
-        "1.0.3_link": ["Communication.md#1.5.2.s2.b2.b3", "Communication.md#1.5.2.s1.b4"]
+        "1.0.3_ref": "Data 2.4.11, Communication 1.5.2.s2.b2.b3, Communication 1.5.2.s1.b4",
+        "1.0.3_link": [
+                "Data 2.4.11",
+                "Communication 1.5.2.s2.b2.b3",
+                "Communication 1.5.2.s1.b4"
+            ]
     },
     "should fail when attachments missing header \"X-Experience-API-Hash\"": {
         "name": "should fail when attachments missing header \"X-Experience-API-Hash\""

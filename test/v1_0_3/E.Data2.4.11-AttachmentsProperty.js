@@ -91,7 +91,7 @@ describe('Attachments Property Requirements (Data 2.4.11)', () => {
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content-Type" header with value "application/json", and has a discrepancy in the number of Attachments vs. the number of fileURL members (Data 2.4.11)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content-Type" header with value "application/json", and has a discrepancy in the number of Attachments vs. the number of fileURL members (Data 2.4.11, Communication 1.5.1.s1.b2)', function () {
         it('should fail when passing statement attachments and missing attachment"s binary', function (done) {
             var templates = [
                 {statement: '{{statements.attachment}}'},
@@ -127,7 +127,7 @@ describe('Attachments Property Requirements (Data 2.4.11)', () => {
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "boundary" (Data 2.4.11, RFC 1341)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "boundary" (Data 2.4.11, RFC 1341, Communication 1.5.2.s2.b2)', function () {
         it('should fail if boundary not provided in body', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_first_part_no_boundary.part', {encoding: 'binary'});
@@ -139,7 +139,7 @@ describe('Attachments Property Requirements (Data 2.4.11)', () => {
         });
     });
 
-    describe('A Boundary is defined as the value of the body header named "boundary" (Definition, Data 2.4.11, RFC 1341)', function () {
+    describe('A Boundary is defined as the value of the body header named "boundary" (Definition, Data 2.4.11, RFC 1341, Communication 1.5.2.s2.b2)', function () {
         it('should fail if boundary not provided in header', function (done) {
             var header = {'Content-Type': 'multipart/mixed;'};
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
@@ -151,7 +151,7 @@ describe('Attachments Property Requirements (Data 2.4.11)', () => {
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a Boundary before each "Content-Type" header (Data 2.4.11, RFC 1341)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a Boundary before each "Content-Type" header (Data 2.4.11, RFC 1341, Communication 1.5.2.s2.b2)', function () {
         it('should fail if boundary not provided in body', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_first_part_no_boundary.part', {encoding: 'binary'});
@@ -163,7 +163,7 @@ describe('Attachments Property Requirements (Data 2.4.11)', () => {
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not the first document part with a "Content-Type" header with a value of "application/json" (RFC 1341, Data 2.4.11)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not the first document part with a "Content-Type" header with a value of "application/json" (RFC 1341, Data 2.4.11, Communication 1.5.2.s2.b2.b1)', function () {
         it('should fail when attachment is raw data and first part content type is not "application/json"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_first_part_content_type.part', {encoding: 'binary'});
@@ -175,7 +175,7 @@ describe('Attachments Property Requirements (Data 2.4.11)', () => {
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have all of the Statements in the first document part (RFC 1341, Data 2.4.11)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have all of the Statements in the first document part (RFC 1341, Data 2.4.11, Communication 1.5.2.s2.b2.b1)', function () {
         it('should fail when statements separated into multiple parts', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_statement_parts.part', {encoding: 'binary'});
@@ -187,7 +187,7 @@ describe('Attachments Property Requirements (Data 2.4.11)', () => {
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "X-Experience-API-Hash" with a value of one of those found in a "sha2" property of a Statement in the first part of this document (Data 2.4.11)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and for any part except the first does not have a Header named "X-Experience-API-Hash" with a value of one of those found in a "sha2" property of a Statement in the first part of this document (Data 2.4.11, Communication 1.5.2.s2.b2.b3", Communication 1.5.2.s1.b4)', function () {
         it('should fail when attachments missing header "X-Experience-API-Hash"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_no_x_experience_api_hash.part', {encoding: 'binary'});
