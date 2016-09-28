@@ -5172,6 +5172,17 @@
     "should fail when attachment is raw data and request content-type is \"multipart/form-data\"": {
         "name": "should fail when attachment is raw data and request content-type is \"multipart/form-data\""
     },
+    "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has a discrepancy in the number of Attachments vs. the number of fileURL members": {
+        "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has a discrepancy in the number of Attachments vs. the number of fileURL members",
+        "1.0.3_ref": "Data 2.4.11, Communication 1.5.1.s1.b2",
+        "1.0.3_link": [
+                "Data 2.4.11",
+                "Communication 1.5.1.s1.b2"
+            ]
+    },
+    "should fail when passing statement attachments and missing attachment\"s binary": {
+        "name": "should fail when passing statement attachments and missing attachment\"s binary"
+    },
     "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have a body header named \"Content-Type\" with value \"multipart/mixed\"": {
         "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have a body header named \"Content-Type\" with value \"multipart/mixed\"",
         "1.0.2_ref_text": "RFC 1341",
@@ -6311,16 +6322,5 @@
         "name": "An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data",
         "1.0.3_ref": "Communication 3.1",
         "1.0.3_link": "Communication.md#3.1"
-    },
-    "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has a discrepancy in the number of Attachments vs. the number of fileURL members": {
-        "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has a discrepancy in the number of Attachments vs. the number of fileURL members",
-        "1.0.3_ref": "Data 2.4.11, Communication 1.5.1.s1.b2",
-        "1.0.3_link": [
-                "Data 2.4.11",
-                "Communication 1.5.1.s1.b2"
-            ]
-    },
-    "should fail when passing statement attachments and missing attachment\"s binary": {
-        "name": "should fail when passing statement attachments and missing attachment\"s binary"
     }
 }
