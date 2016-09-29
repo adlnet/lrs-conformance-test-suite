@@ -96,7 +96,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             it('Should State API reject a PUT request with activityId type ' + type, function () {
                 var parameters = helper.buildState(),
                     document = helper.buildDocument();
-                delete parameters.activityId;
+                parameters.activityId = type;
                 return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
             });
         });
