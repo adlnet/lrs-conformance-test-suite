@@ -448,6 +448,17 @@
                 .put(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
                 .json(data).expect(400, done);
         });
+
+        // it('shouldr fail when state PUT without header "X-Experience-API-Version"', function (done) {
+        //     var parameters = helper.buildState(),
+        //         doc = helper.buildDocument();
+        //     return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);            
+
+        //     request(helper.getEndpointAndAuth())
+        //         .post(helper.getEndpointActivitiesState() + '?' + parameters)
+        //         .json(doc).expect(400, done);
+        // });
+
     });
 
     describe('An LRS MUST set the X-Experience-API-Version header to the latest patch version (Communication 3.3.b2)', function () {
@@ -981,7 +992,7 @@
                     } else if (res.statusCode === 409 || res.statusCode === 204) {
                         done();
                     } else {
-                        done(new Error('Missing: no update status code using POST'))
+                        done(new Error('LRS did not respond with either the 409 or 204 status code'))
                     }
                 });
         });
@@ -1009,7 +1020,7 @@
                     } else if (res.statusCode === 409 || res.statusCode === 204) {
                         done();
                     } else {
-                        done(new Error('Missing: no update status code using PUT'))
+                        done(new Error('LRS did not respond with either the 409 or 204 status code'))
                     }
                 });
         });
