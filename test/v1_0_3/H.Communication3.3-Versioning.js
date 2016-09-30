@@ -101,7 +101,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
                     if (err) {
                         done(err);
                     } else {
-                        var statement = parse(res.body, done);
+                        var statement = helper.parse(res.body, done);
                         expect(helper.isEqual(data.actor, statement.actor)).to.be.true;
                         expect(helper.isEqual(data.object, statement.object)).to.be.true;
                         expect(helper.isEqual(data.verb, statement.verb)).to.be.true;

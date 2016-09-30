@@ -357,22 +357,24 @@ describe('State Resource Requirements (Communication 2.3)', () => {
     it('An LRS\'s State API can process a DELETE request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
+console.log('Hooray!!\n', parameters, document);
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
             .then(function () {
                 return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204);
             });
     });
 
-    describe('An LRS\'s State API rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication.md#2.3.s3.table1.row4)', function () {
-        var invalidTypes = [1, true];
-        invalidTypes.forEach(function (type) {
-            it('Should reject DELETE with "since" with type ' + type, function () {
-                var parameters = helper.buildState();
-                parameters.since = type;
-                return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
-            });
-        });
-    });
+// No 'since' property with DELETE in the State Resource
+    // describe('An LRS\'s State API rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication.md#2.3.s3.table1.row4)', function () {
+    //     var invalidTypes = [1, true];
+    //     invalidTypes.forEach(function (type) {
+    //         it('Should reject DELETE with "since" with type ' + type, function () {
+    //             var parameters = helper.buildState();
+    //             parameters.since = type;
+    //             return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
+    //         });
+    //     });
+    // });
 
     //+* NOTE:  **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**
     it('An LRS\'s State API upon processing a successful GET request without "stateId" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK (Communication 2.3.s4)', function () {

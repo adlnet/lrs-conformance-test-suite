@@ -32,6 +32,55 @@ describe('Alternate Request Syntax Requirements (Communication 1.3)', () => {
         return helper.sendRequest('post', helper.getEndpointStatements(), parameters, undefined, 400);
     });
 
+    it('An LRS will reject a Cross Origin Request or new Request which contains any extra information with error code 400 Bad Request (**Implicit**, Communication 1.3.s3.b4)', function () {
+        var templates = [
+            {statement: '{{statements.default}}'}
+        ];
+        var data = helper.createFromTemplate(templates);
+        data.statement.test = "test";
+
+        var statement = data.statement;
+        var sID = helper.generateUUID();
+        var headers = helper.addAllHeaders({});
+        var auth = headers['Authorization']
+        var parameters = {
+            method: 'PUT'
+        }
+        var body = 'statementId='+sID+'&content='+JSON.stringify(statement)+'&Content-Type=application/json&X-Experience-API-Version=1.0.2&Authorization='+auth
+        return helper.sendRequest('post', helper.getEndpointStatements(), parameters, body, 400);
+    });
+
+
+    it('An LRS will treat the content of the form parameter named "content" as a UTF-8 String (Communication 1.3.s3.b4, Communication 1.3.s3.b5)', function () {
+
+           var templates = [
+             {statement: '{{statements.unicode}}'}
+           ];
+
+           var data = helper.createFromTemplate(templates);
+           var statement = data.statement;
+           var id = helper.generateUUID();
+           statement.id  = id;
+           var formBody = helper.buildFormBody(statement);
+
+           var parameters = {method: 'post'};
+           var parameters2 = {activityId: data.statement.object.id}
+
+          return helper.sendRequest('post', helper.getEndpointStatements(), parameters, formBody, 200)
+          .then(function(){
+               return helper.sendRequest('get', helper.getEndpointActivities(), parameters2, undefined, 200)
+               .then(function(res){
+                  var unicodeConformant = true;
+                   var languages = res.body.definition.name;
+                   for (var key in languages){
+                     if (languages[key] !== statement.object.definition.name[key])
+                       unicodeConformant = false;
+                   }
+                   expect(unicodeConformant).to.be.true;
+               })
+           })
+    });
+
     it('An LRS will reject a new Request with a form parameter named "content" if "content" is found to be binary data with error code 400 Bad Request (Communication 1.3.s3.b5)', function () {
         var parameters = {method: 'post'},
             formBody = {
