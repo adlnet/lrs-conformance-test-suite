@@ -135,6 +135,45 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 400);
     });
 
+    //Type "String" tests likely to be reworded or removed
+    describe('An LRS\'s Activity Profile API rejects a PUT request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2)', function () {
+      var document = helper.buildDocument(),
+          invalidTypes = [1, true, { key: 'value'}];
+      invalidTypes.forEach(function (type) {
+          it('Should reject PUT with "profileId" with type ' + type, function () {
+              var parameters = helper.buildActivityProfile();
+              parameters.agent = type;
+              return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+          });
+      });
+    });
+
+    //Type "String" tests likely to be reworded or removed
+    describe('An LRS\'s Activity Profile API rejects a POST request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2)', function () {
+      var document = helper.buildDocument(),
+          invalidTypes = [1, true, { key: 'value'}];
+      invalidTypes.forEach(function (type) {
+          it('Should reject POST with "profileId" with type ' + type, function () {
+              var parameters = helper.buildActivityProfile();
+              parameters.agent = type;
+              return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+          });
+      });
+    });
+
+    //Type "String" tests likely to be reworded or removed
+    describe('An LRS\'s Activity Profile API rejects a GET request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2)', function () {
+      var document = helper.buildDocument(),
+          invalidTypes = [1, true, { key: 'value'}];
+      invalidTypes.forEach(function (type) {
+          it('Should reject GET with "profileId" with type ' + type, function () {
+              var parameters = helper.buildActivityProfile();
+              parameters.agent = type;
+              return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+          });
+      });
+    });
+
     describe('An LRS\'s Activity Profile API rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row1, Communication 2.7.s4.table1.row1)', function () {
         var invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {

@@ -42,6 +42,27 @@ describe('Agents Resource Requirements (Communication 2.4)', () => {
             });
     });
 
+    it('An LRS\'s Agent API upon processing a successful GET request returns a Person Object if the "agent" parameter can be found in the LRS and code 200 OK (Communication 2.4.s2.table1.row1)', function () {
+        var templates = [
+          {statement: '{{statements.default}}'}
+        ];
+        var data = helper.createFromTemplate(templates);
+        var statement = data.statement;
+
+        return helper.sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
+        .then(function () {
+            var parameters = {
+                agent: statement.actor
+            }
+            return helper.sendRequest('get', helper.getEndpointAgents(), parameters, undefined, 200)
+                .then(function (res) {
+                    expect(res.body.objectType).to.eql("Person");
+                    expect(res.body).to.be.an('object');
+                });
+        });
+    });
+
+
     it('An LRS\'s Agents API rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.4.s2.table1.row1)', function () {
         return helper.sendRequest('get', helper.getEndpointAgents(), undefined, undefined, 400);
     });

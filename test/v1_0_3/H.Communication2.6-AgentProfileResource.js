@@ -131,6 +131,15 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
         });
     });
 
+    it('An LRS\'s Agent Profile API rejects a GET request with "agent" as a parameter if it is a valid (in structure) Agent with error code 400 Bad Request (multiplicity, Communication 2.6.s4.table1.row1, Communication 2.6.s3.table1.row1)', function () {
+        var parameters = helper.buildAgentProfile(),
+            document = helper.buildDocument();
+        parameters.agent = {
+            "objectType": "Agent"
+        };
+        return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, document, 400);
+    });
+
     it('An LRS\'s Agent Profile API rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.6.s3.table1.row2)', function () {
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
