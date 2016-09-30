@@ -357,7 +357,6 @@ describe('State Resource Requirements (Communication 2.3)', () => {
     it('An LRS\'s State API can process a DELETE request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
-console.log('Hooray!!\n', parameters, document);
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
             .then(function () {
                 return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204);
