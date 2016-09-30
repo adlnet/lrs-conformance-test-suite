@@ -753,6 +753,15 @@
             "Data.md#2.4.4.s2"
         ]
     },
+    "An LRS generates the \"id\" property of a Statement if none is provided": {
+        "name": "An LRS generates the \"id\" property of a Statement if none is provided",
+        "1.0.2_ref_text": "Modify, 4.1.4.a",
+        "1.0.2_ref": "4.1.4.a",
+        "1.0.3_ref": "Data 2.4.1.s2.b1",
+        "1.0.3_link": [
+            "Data.md#2.4.1.s2.b1"
+        ]
+    },
     "statement activity without \"objectType\" is valid": {
         "name": "statement activity without \"objectType\" is valid"
     },
@@ -3528,6 +3537,20 @@
             "Data.md#2.4.4.3.s8.b3"
         ]
     },
+    "An LRS MUST accept statements with the stored property": {
+        "name": "An LRS MUST accept statements with the stored property",
+        "1.0.3_ref": "Data 2.4.8.s3.b2",
+        "1.0.3_link": [
+            "Data.md#2.4.8.s3.b2"
+        ]
+    },
+    "A stored property must be a TimeStamp": {
+        "name": "A stored property must be a TimeStamp",
+        "1.0.3_ref": "Data 2.4.8.s2",
+        "1.0.3_link": [
+            "Data.md#2.4.8.s2"
+        ]
+    },
     "substatement invalid with property \"stored\"": {
         "name": "substatement invalid with property \"stored\""
     },
@@ -3710,7 +3733,11 @@
         "1.0.2_ref": "7.3.table1.row2.b, 7.3.table1.row2.c",
         "1.0.3_ref": "Communication 2.2.table2.row2.a, Communication 2.2.table2.row2.c",
         "1.0.3_link": ["Communication.md#2.2.table2.row2.a", "Communication.md#2.2.table2.row2.c"]
-
+    },
+    "An Activity Definition uses the \"interactionType\" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used": {
+        "name": "An Activity Definition uses the \"interactionType\" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used",
+        "1.0.3_ref": "Data 2.4.4.1.s8",
+        "1.0.3_link": ["Data.md#2.4.4.1.s8"]
     },
     "An LRS has an Agents API with endpoint \"base IRI\" + /agents\"": {
         "name": "An LRS has an Agents API with endpoint \"base IRI\" + /agents\"",
@@ -4430,6 +4457,21 @@
         "1.0.3_ref": "format, Communication 2.7.s3.table1.row1",
         "1.0.3_link": ["Communication.md#2.7.s3.table1.row1"]
     },
+    "An LRS's Activity Profile API rejects a PUT request without \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a PUT request without \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+        "1.0.3_ref": "format, Communication 2.7.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row2"]
+    },
+    "An LRS's Activity Profile API rejects a POST request without \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a POST request without \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+        "1.0.3_ref": "format, Communication 2.7.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row2"]
+    },
+    "An LRS's Activity Profile API rejects a GET request without \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile API rejects a GET request without \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+        "1.0.3_ref": "format, Communication 2.7.s3.table1.row2",
+        "1.0.3_link": ["Communication.md#2.7.s3.table1.row2"]
+    },
     "An LRS's Activity Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request": {
         "name": "An LRS's Activity Profile API rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
         "1.0.2_ref_text": "multiplicity, 7.5.table2.row1.c",
@@ -4830,8 +4872,8 @@
             "Communication.md#2.8.s5.b1.b1"
         ]
     },
-    "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0\", \"1.0.0\", or \"\"1.0.\" + X\" with": {
-        "name": "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0\", \"1.0.0\", or \"\"1.0.\" + X\" with",
+    "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0.0\", or \"\"1.0.\" + X\" with": {
+        "name": "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0.0\", or \"\"1.0.\" + X\" with",
         "1.0.2_ref_text": "7.7.d.a",
         "1.0.2_ref": "7.7.d.a",
         "1.0.3_ref": "Communication 2.8.s5.b1.b1",
@@ -4892,6 +4934,20 @@
             "Communication.md#1.3.s3.b4"
         ]
     },
+    "An LRS will treat the content of the form parameter named \"content\" as a UTF-8 String": {
+        "name": "An LRS will treat the content of the form parameter named \"content\" as a UTF-8 String",
+        "1.0.3_ref": "Communication 1.3.s3.b4, Communication 1.3.s3.b5",
+        "1.0.3_link": [
+            "Communication.md#1.3.s3.b4","Communication.md#1.3.s3.b5"
+        ]
+    },
+    "An LRS will reject a Cross Origin Request or new Request which contains any extra information with error code 400 Bad Request": {
+        "name": "An LRS will reject a Cross Origin Request or new Request which contains any extra information with error code 400 Bad Request",
+        "1.0.3_ref": "Communication 1.3.s3.b4",
+        "1.0.3_link": [
+            "Communication.md#1.3.s3.b4"
+        ]
+    },
     "An LRS will reject a new Request with a form parameter named \"content\" if \"content\" is found to be binary data with error code 400 Bad Request": {
         "name": "An LRS will reject a new Request with a form parameter named \"content\" if \"content\" is found to be binary data with error code 400 Bad Request",
         "1.0.2_ref_text": "7.8.c",
@@ -4912,6 +4968,24 @@
     },
     "An LRS accepts HEAD requests": {
         "name": "An LRS accepts HEAD requests",
+        "1.0.2_ref_text": "7.10.a",
+        "1.0.2_ref": "7.10.a",
+        "1.0.3_ref": "Communication 1.1",
+        "1.0.3_link": [
+            "Communication.md#1.1"
+        ]
+    },
+    "An LRS accepts HEAD requests without Content-Length headers": {
+        "name": "An LRS accepts HEAD requests without Content-Length headers",
+        "1.0.2_ref_text": "7.10.a",
+        "1.0.2_ref": "7.10.a",
+        "1.0.3_ref": "Communication 1.1",
+        "1.0.3_link": [
+            "Communication.md#1.1"
+        ]
+    },
+    "An LRS accepts GET requests without Content-Length headers": {
+        "name": "An LRS accepts GET requests without Content-Length headers",
         "1.0.2_ref_text": "7.10.a",
         "1.0.2_ref": "7.10.a",
         "1.0.3_ref": "Communication 1.1",
@@ -4977,6 +5051,13 @@
         "1.0.3_ref": "Communication 2.4.s2",
         "1.0.3_link": [
             "Communication.md#2.4.s2"
+        ]
+    },
+    "An LRS's Agent API upon processing a successful GET request returns a Person Object if the \"agent\" parameter can be found in the LRS and code 200 OK": {
+        "name": "An LRS's Agent API upon processing a successful GET request returns a Person Object if the \"agent\" parameter can be found in the LRS and code 200 OK",
+        "1.0.3_ref": "Communication 2.4.s2.table1.row1",
+        "1.0.3_link": [
+            "Communication.md#2.4.s2.table1.row1"
         ]
     },
     "A Person Object's \"objectType\" property is a String and is \"Person\"": {
@@ -5295,6 +5376,11 @@
         "1.0.3_ref": "Communication 3.3.s3.b2",
         "1.0.3_link": ["Communication.md#3.3.s3.b2"]
     },
+    "An LRS sends a header response with \"X-Experience-API-Version\" as the name and \"1.0.3\" as the value": {
+        "name": "An LRS sends a header response with \"X-Experience-API-Version\" as the name and \"1.0.3\" as the value",
+        "1.0.3_ref": "Communication 3.3.s3.b1, Communication 3.3.s3.b2",
+        "1.0.3_link": ["Communication.md#3.3.s3.b1","Communication.md#3.3.s3.b2"]
+    },
     "should respond with header \"version\" set to \"1.0.2\"": {
         "name": "should respond with header \"version\" set to \"1.0.2\""
     },
@@ -5599,6 +5685,88 @@
         "1.0.2_ref": "7.2.3",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row2",
         "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row2"]
+    },
+    "An LRS's Statement API can process a GET request with \"agent\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"agent\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row3",
+        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row3"
+    },
+    "An LRS's Statement API can process a GET request with \"verb\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"verb\" as a parameter",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row4",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row4"]
+    },
+    "An LRS's Statement API can process a GET request with \"activity\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"activity\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row5",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row5"]
+    },
+    "An LRS's Statement API can process a GET request with \"registration\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"registration\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row6",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row6"]
+    },
+    "An LRS's Statement API can process a GET request with \"related_activities\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"related_activities\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row7",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row7"]
+    },
+    "An LRS's Statement API can process a GET request with \"related_agents\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"related_agents\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row8",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row8"]
+    },
+    "An LRS's Statement API can process a GET request with \"since\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"since\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row9",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row9"]
+    },
+    "An LRS's Statement API can process a GET request with \"until\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"until\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row10",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row10"]
+    },
+    "An LRS's Statement API can process a GET request with \"limit\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"limit\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row11",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row11"]
+    },
+    "An LRS's Statement API can process a GET request with \"format\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"format\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row12",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row12"]
+    },
+    "An LRS's Statement API can process a GET request with \"attachments\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"attachments\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row13",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row13"]
+    },
+    "An LRS's Statement API can process a GET request with \"ascending\" as a parameter": {
+        "name": "An LRS's Statement API can process a GET request with \"ascending\" as a parameter",
+        "1.0.2_ref_text": "7.2.3",
+        "1.0.2_ref": "7.2.3",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row14",
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row14"]
     },
     "should process using GET with \"voidedStatementId\"": {
         "name": "should process using GET with \"voidedStatementId\""
@@ -5935,6 +6103,21 @@
     "should return valid \"X-Experience-API-Consistent-Through\" using GET": {
         "name": "should return valid \"X-Experience-API-Consistent-Through\" using GET"
     },
+    "The Statements within the \"statements\" property will correspond to the filtering criterion sent in with the GET request **Implicit**": {
+        "name": "The Statements within the \"statements\" property will correspond to the filtering criterion sent in with the GET request **Implicit**",
+        "1.0.3_ref": "Data 2.5.s1, Communication 2.1.3.s1",
+        "1.0.3_link": ["Data.md#2.5.s1","Communication.md#2.1.3.s1"]
+    },
+    "A \"statements\" property which is too large for a single page will create a container for each additional page": {
+        "name": "A \"statements\" property which is too large for a single page will create a container for each additional page",
+        "1.0.3_ref": "Data 2.5.s2.table1.row1",
+        "1.0.3_link": ["Data.md#2.5.s2.table1.row1"]
+    },
+    "A \"more\" property's referenced container object follows the same rules as the original GET request, originating with a single \"statements\" property and a single \"more\" property": {
+        "name": "A \"more\" property's referenced container object follows the same rules as the original GET request, originating with a single \"statements\" property and a single \"more\" property",
+        "1.0.3_ref": "Data.md#2.5.s2.table1.row2",
+        "1.0.3_link": ["Data.md#2.5.s2.table1.row2"]
+    },
     "A \"statements\" property is an Array of Statements": {
         "name": "A \"statements\" property is an Array of Statements",
         "1.0.2_ref_text": "Type, 4.2.table1.row1.a",
@@ -6113,6 +6296,33 @@
             "Communication.md#2.1.2.s2.b2"
         ]
     },
+    "An LRS makes no modifications to stored data for any rejected request": {
+        "name": "An LRS makes no modifications to stored data for any rejected request",
+        "1.0.2_ref_text": "7.2.3, 7.2.2.e",
+        "1.0.2_ref": "7.2.3, 7.2.2.e",
+        "1.0.3_ref": "Communication 2.1.2.s2.b4",
+        "1.0.3_link": [
+            "Communication.md#2.1.2.s2.b4"
+        ]
+    },
+    "An LRS's Statement API, upon processing a successful GET request, will return a single \"statements\" property": {
+        "name": "An LRS's Statement API, upon processing a successful GET request, will return a single \"statements\" property",
+        "1.0.2_ref_text": "7.2.3, 7.2.2.e",
+        "1.0.2_ref": "7.2.3, 7.2.2.e",
+        "1.0.3_ref": "Communication 2.1.3.s1",
+        "1.0.3_link": [
+            "Communication.md#2.1.3.s1"
+        ]
+    },
+    "An LRS's Statement API, upon processing a successful GET request, will return a single \"more\" property": {
+        "name": "An LRS's Statement API, upon processing a successful GET request, will return a single \"more\" property",
+        "1.0.2_ref_text": "7.2.3, 7.2.2.e",
+        "1.0.2_ref": "7.2.3, 7.2.2.e",
+        "1.0.3_ref": "Communication 2.1.3.s1",
+        "1.0.3_link": [
+            "Communication.md#2.1.3.s1"
+        ]
+    },
 	"LRS must validate and store statement signatures if they are provided": {
 		"name": "LRS must validate and store statement signatures if they are provided",
 		"1.0.3_ref": ["Data 2.6"],
@@ -6138,11 +6348,31 @@
 		"1.0.3_ref": ["Data 2.6.s4.b3"],
 		"1.0.3_link": ["Data.md#2.6.s4.b3"]
 	},
+    "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and for any part except the first does not have a Header named \"Content-Transfer-Encoding\" with a value of \"binary\"": {
+    "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and for any part except the first does not have a Header named \"Content-Transfer-Encoding\" with a value of \"binary\"",
+    "1.0.3_ref": "Data 2.4.11",
+    "1.0.3_link": ["Data.md#2.4.11"]
+    },
     "An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has the \"attachments\" filter attribute set to \"true\"": {
 		"name": "LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement",
 		"1.0.3_ref": ["Data 3.2"],
 		"1.0.3_link": ["Data.md#3.2"]
 	},
+  "An LRS's Statement API will reject a GET request having the \"attachment\" parameter set to \"false\" and the Content-Type field in the header set to anything but \"application/json\"": {
+  "name": "An LRS's Statement API will reject a GET request having the \"attachment\" parameter set to \"false\" and the Content-Type field in the header set to anything but \"application/json\"",
+  "1.0.3_ref": "Data 2.4.11",
+  "1.0.3_link": ["Data.md#2.4.11"]
+  },
+  "An LRS's Statement API will reject a GET request having the \"attachment\" parameter set to \"true\" if it does not follow the rest of the attachment rules": {
+  "name": "An LRS's Statement API will reject a GET request having the \"attachment\" parameter set to \"true\" if it does not follow the rest of the attachment rules",
+  "1.0.3_ref": ["Data 2.4.11"],
+  "1.0.3_link": ["Data.md#2.4.11"]
+  },
+  "An LRS's Statement API will reject a GET request having the \"attachment\" parameter set to \"false\" if it includes attachment raw data": {
+  "name": "An LRS's Statement API will reject a GET request having the \"attachment\" parameter set to \"false\" if it includes attachment raw data",
+  "1.0.3_ref": ["Data 2.4.11"],
+  "1.0.3_link": ["Data.md#2.4.11"]
+  },
     "Formatting Requirements": {
         "name": "Formatting Requirements",
         "1.0.3_ref": ["Data 2.2"],
@@ -6316,11 +6546,11 @@
     "All Strings are encoded and interpreted as UTF-8": {
         "name": "All Strings are encoded and interpreted as UTF-8",
         "1.0.3_ref": "Communication 1.4.s1.b1",
-        "1.0.3_link": "Communication.md#1.4.s1.b1"
+        "1.0.3_link": ["Communication.md#1.4.s1.b1"]
     },
     "An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data": {
         "name": "An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data",
         "1.0.3_ref": "Communication 3.1",
-        "1.0.3_link": "Communication.md#3.1"
+        "1.0.3_link": ["Communication.md#3.1"]
     }
 }
