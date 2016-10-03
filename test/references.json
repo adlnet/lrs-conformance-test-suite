@@ -4872,7 +4872,7 @@
             "Communication.md#2.8.s5.b1.b1"
         ]
     },
-    "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0.0\", or \"\"1.0.\" + X\" with": {
+    "An LRS's About API's version property can only have values of \"0.9\", \"0.95\", \"1.0.0\", or \"\"1.0.\" + X\" with": {
         "name": "An LRS's About API's version property can only have values of \".9\", \".95\", \"1.0.0\", or \"\"1.0.\" + X\" with",
         "1.0.2_ref_text": "7.7.d.a",
         "1.0.2_ref": "7.7.d.a",
@@ -5686,88 +5686,6 @@
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row2",
         "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row2"]
     },
-    "An LRS's Statement API can process a GET request with \"agent\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"agent\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row3",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row3"
-    },
-    "An LRS's Statement API can process a GET request with \"verb\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"verb\" as a parameter",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row4",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row4"]
-    },
-    "An LRS's Statement API can process a GET request with \"activity\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"activity\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row5",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row5"]
-    },
-    "An LRS's Statement API can process a GET request with \"registration\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"registration\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row6",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row6"]
-    },
-    "An LRS's Statement API can process a GET request with \"related_activities\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"related_activities\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row7",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row7"]
-    },
-    "An LRS's Statement API can process a GET request with \"related_agents\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"related_agents\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row8",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row8"]
-    },
-    "An LRS's Statement API can process a GET request with \"since\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"since\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row9",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row9"]
-    },
-    "An LRS's Statement API can process a GET request with \"until\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"until\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row10",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row10"]
-    },
-    "An LRS's Statement API can process a GET request with \"limit\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"limit\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row11",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row11"]
-    },
-    "An LRS's Statement API can process a GET request with \"format\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"format\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row12",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row12"]
-    },
-    "An LRS's Statement API can process a GET request with \"attachments\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"attachments\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row13",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row13"]
-    },
-    "An LRS's Statement API can process a GET request with \"ascending\" as a parameter": {
-        "name": "An LRS's Statement API can process a GET request with \"ascending\" as a parameter",
-        "1.0.2_ref_text": "7.2.3",
-        "1.0.2_ref": "7.2.3",
-        "1.0.3_ref": "Communication 2.1.3.s1.table1.row14",
-        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row14"]
-    },
     "should process using GET with \"voidedStatementId\"": {
         "name": "should process using GET with \"voidedStatementId\""
     },
@@ -5821,7 +5739,7 @@
         "name": "An LRS's Statement API can process a GET request with \"agent\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row3",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row3"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row3"]
     },
     "should process using GET with \"agent\"": {
         "name": "should process using GET with \"agent\""
@@ -5830,7 +5748,7 @@
         "name": "An LRS's Statement API can process a GET request with \"verb\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row4",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row4"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row4"]
     },
     "should process using GET with \"verb\"": {
         "name": "should process using GET with \"verb\""
@@ -5839,7 +5757,7 @@
         "name": "An LRS's Statement API can process a GET request with \"activity\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row5",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row5"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row5"]
     },
     "should process using GET with \"activity\"": {
         "name": "should process using GET with \"activity\""
@@ -5848,7 +5766,7 @@
         "name": "An LRS's Statement API can process a GET request with \"registration\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row6",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row6"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row6"]
     },
     "should process using GET with \"registration\"": {
         "name": "should process using GET with \"registration\""
@@ -5857,7 +5775,7 @@
         "name": "An LRS's Statement API can process a GET request with \"related_activities\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row7",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row7"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row7"]
     },
     "should process using GET with \"related_activities\"": {
         "name": "should process using GET with \"related_activities\""
@@ -5866,7 +5784,7 @@
         "name": "An LRS's Statement API can process a GET request with \"related_agents\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row8",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row8"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row8"]
     },
     "should process using GET with \"related_agents\"": {
         "name": "should process using GET with \"related_agents\""
@@ -5875,7 +5793,7 @@
         "name": "An LRS's Statement API can process a GET request with \"since\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row9",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row9"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row9"]
     },
     "should process using GET with \"since\"": {
         "name": "should process using GET with \"since\""
@@ -5884,7 +5802,7 @@
         "name": "An LRS's Statement API can process a GET request with \"until\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row10",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row10"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row10"]
     },
     "should process using GET with \"until\"": {
         "name": "should process using GET with \"until\""
@@ -5893,7 +5811,7 @@
         "name": "An LRS's Statement API can process a GET request with \"limit\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row11",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row11"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row11"]
     },
     "should process using GET with \"limit\"": {
         "name": "should process using GET with \"limit\""
@@ -5902,7 +5820,7 @@
         "name": "An LRS's Statement API can process a GET request with \"format\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row12",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row12"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row12"]
     },
     "should process using GET with \"format\"": {
         "name": "should process using GET with \"format\""
@@ -5911,7 +5829,7 @@
         "name": "An LRS's Statement API can process a GET request with \"attachments\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row13",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row13"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row13"]
     },
     "should process using GET with \"attachments\"": {
         "name": "should process using GET with \"attachments\""
@@ -5920,7 +5838,7 @@
         "name": "An LRS's Statement API can process a GET request with \"ascending\" as a parameter  **Implicit**",
         "1.0.2_ref": "Implicit",
         "1.0.3_ref": "Communication 2.1.3.s1.table1.row14",
-        "1.0.3_link": "Communication.md#2.1.3.s1.table1.row14"
+        "1.0.3_link": ["Communication.md#2.1.3.s1.table1.row14"]
     },
     "should process using GET with \"ascending\"": {
         "name": "should process using GET with \"ascending\""
