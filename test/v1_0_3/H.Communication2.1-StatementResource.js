@@ -15,7 +15,7 @@
 
 describe('Statement Resource Requirements (Communication 2.1)', () => {
 
-    describe('An LRS has a Statement API with endpoint "base IRI"+"/statements" (Communication 2.1)', function () {
+    describe('An LRS has a Statement Resource with endpoint "base IRI"+"/statements" (Communication 2.1)', function () {
         it('should allow "/statements" POST', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
@@ -54,7 +54,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API accepts PUT requests (Communication 2.1.1.s1)', function () {
+    describe('An LRS\'s Statement Resource accepts PUT requests (Communication 2.1.1.s1)', function () {
         it('should persist statement using "PUT"', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
@@ -71,7 +71,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a successful PUT request returns code 204 No Content (Communication 2.1.1.s1)', function () {
+    describe('An LRS\'s Statement Resource upon processing a successful PUT request returns code 204 No Content (Communication 2.1.1.s1)', function () {
         it('should persist statement and return status 204', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
@@ -88,7 +88,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API accepts PUT requests only if it contains a "statementId" parameter (Multiplicity, Communication 2.1.1.s1.table1.row1)', function () {
+    describe('An LRS\'s Statement Resource accepts PUT requests only if it contains a "statementId" parameter (Multiplicity, Communication 2.1.1.s1.table1.row1)', function () {
         it('should persist statement using "statementId" parameter', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
@@ -120,7 +120,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API accepts PUT requests only if the "statementId" parameter is a String (Type, Communication 2.1.1.s1.table1.row1)', function () {
+    describe('An LRS\'s Statement Resource accepts PUT requests only if the "statementId" parameter is a String (Type, Communication 2.1.1.s1.table1.row1)', function () {
         it('should fail statement using "statementId" parameter as boolean', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
@@ -230,7 +230,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API rejects with error code 409 Conflict any Statement with the "statementID" parameter equal to a Statement in the LRS already **Implicit** (Communication 2.1.1.s2.b2)', function () {
+    describe('An LRS\'s Statement Resource rejects with error code 409 Conflict any Statement with the "statementID" parameter equal to a Statement in the LRS already **Implicit** (Communication 2.1.1.s2.b2)', function () {
         it('should return 409 or 204 when statement ID already exists on POST', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
@@ -288,7 +288,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API accepts POST requests (Communication 2.1.2.s1)', function () {
+    describe('An LRS\'s Statement Resource accepts POST requests (Communication 2.1.2.s1)', function () {
         it('should persist statement using "POST"', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
@@ -304,7 +304,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit** (Communication 2.1.2.s1)', function () {
+    describe('An LRS\'s Statement Resource upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit** (Communication 2.1.2.s1)', function () {
         it('should persist statement using "POST" and return array of IDs', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
@@ -373,7 +373,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         .expect(404, done);
     });
 
-    describe('LRS\'s Statement API accepts GET requests (Communication 2.1.3.s1)', function () {
+    describe('LRS\'s Statement Resource accepts GET requests (Communication 2.1.3.s1)', function () {
         it('should return using GET', function (done) {
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements())
@@ -382,7 +382,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a successful GET request with a "statementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (Communication 2.1.3.s1)', function () {
+    describe('An LRS\'s Statement Resource upon processing a successful GET request with a "statementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (Communication 2.1.3.s1)', function () {
         var id, stmtTime;
 
         before('persist statement', function (done) {
@@ -420,7 +420,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a successful GET request with a "voidedStatementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (Communication 2.1.3.s1)', function () {
+    describe('An LRS\'s Statement Resource upon processing a successful GET request with a "voidedStatementId" parameter, returns code 200 OK and a single Statement with the corresponding "id".  (Communication 2.1.3.s1)', function () {
         var voidedId = helper.generateUUID();
         var stmtTime;
 
@@ -476,7 +476,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a successful GET request with neither a "statementId" nor a "voidedStatementId" parameter, returns code 200 OK and a StatementResult Object.  (Communication 2.1.3.s1)', function () {
+    describe('An LRS\'s Statement Resource upon processing a successful GET request with neither a "statementId" nor a "voidedStatementId" parameter, returns code 200 OK and a StatementResult Object.  (Communication 2.1.3.s1)', function () {
         var statement, substatement, stmtTime;
         this.timeout(0);
 
@@ -793,7 +793,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
 
     });
 
-    it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, Communication 2.1.3.s1)', function (done){
+    it('An LRS\'s Statement Resource, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, Communication 2.1.3.s1)', function (done){
 
         var query = helper.getUrlEncoding(
             {limit:1}
@@ -815,7 +815,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    it('An LRS\'s Statement API, upon processing a successful GET request, will return a single "more" property (Multiplicity, Format, Communication 2.1.3.s1)', function (done){
+    it('An LRS\'s Statement Resource, upon processing a successful GET request, will return a single "more" property (Multiplicity, Format, Communication 2.1.3.s1)', function (done){
 
         var query = helper.getUrlEncoding(
             {limit:1}
@@ -837,7 +837,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "statementId" as a parameter (Communication 2.1.3.s1.table1.row1)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "statementId" as a parameter (Communication 2.1.3.s1.table1.row1)', function () {
         it('should process using GET with "statementId"', function (done) {
             this.timeout(0);
             var templates = [
@@ -862,7 +862,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "voidedStatementId" as a parameter  (Communication 2.1.3.s1.table1.row2)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "voidedStatementId" as a parameter  (Communication 2.1.3.s1.table1.row2)', function () {
         var voidedId = helper.generateUUID();
         var stmtTime;
 
@@ -909,7 +909,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "agent" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row3)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "agent" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row3)', function () {
         it('should process using GET with "agent"', function (done) {
             var templates = [
                 {agent: '{{agents.default}}'}
@@ -924,7 +924,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "verb" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row4)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "verb" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row4)', function () {
         it('should process using GET with "verb"', function (done) {
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
             request(helper.getEndpointAndAuth())
@@ -934,7 +934,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "activity" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row5)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "activity" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row5)', function () {
         it('should process using GET with "activity"', function (done) {
             var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
             request(helper.getEndpointAndAuth())
@@ -944,7 +944,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "registration" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row6)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "registration" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row6)', function () {
         it('should process using GET with "registration"', function (done) {
             var query = helper.getUrlEncoding({registration: helper.generateUUID()});
             request(helper.getEndpointAndAuth())
@@ -954,7 +954,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "related_activities" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row7)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "related_activities" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row7)', function () {
         var statement, stmtTime;
 
         before('persist statement', function (done) {
@@ -993,7 +993,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "related_agents" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row8)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "related_agents" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row8)', function () {
         var statement, stmtTime;
 
         before('persist statement', function (done) {
@@ -1032,7 +1032,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "since" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row9)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "since" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row9)', function () {
         it('should process using GET with "since"', function (done) {
             var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
@@ -1042,7 +1042,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "until" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row10)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "until" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row10)', function () {
         it('should process using GET with "until"', function (done) {
             var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
             request(helper.getEndpointAndAuth())
@@ -1052,7 +1052,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "limit" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row11)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "limit" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row11)', function () {
         it('should process using GET with "limit"', function (done) {
             var query = helper.getUrlEncoding({limit: 1});
             request(helper.getEndpointAndAuth())
@@ -1062,7 +1062,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "format" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row12)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "format" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row12)', function () {
         it('should process using GET with "format"', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
@@ -1072,7 +1072,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "attachments" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row13)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "attachments" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row13)', function () {
         it('should process using GET with "attachments"', function (done) {
             var query = helper.getUrlEncoding({attachments: true});
             request(helper.getEndpointAndAuth())
@@ -1082,7 +1082,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API can process a GET request with "ascending" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row14)', function () {
+    describe('An LRS\'s Statement Resource can process a GET request with "ascending" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row14)', function () {
         it('should process using GET with "ascending"', function (done) {
             var query = helper.getUrlEncoding({ascending: true});
             request(helper.getEndpointAndAuth())
@@ -1092,7 +1092,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (Communication 2.1.3.s2.b2)', function () {
+    describe('An LRS\'s Statement Resource rejects with error code 400 a GET request with both "statementId" and anything other than "attachments" or "format" as parameters (Communication 2.1.3.s2.b2)', function () {
         var id;
         var stmtTime;
         this.timeout(0);
@@ -1284,7 +1284,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API rejects with error code 400 a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (Communication 2.1.3.s2.b2)', function () {
+    describe('An LRS\'s Statement Resource rejects with error code 400 a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters (Communication 2.1.3.s2.b2)', function () {
         var voidedId = helper.generateUUID();
         var stmtTime;
         this.timeout(0);
@@ -1539,7 +1539,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API upon processing a GET request, returns a header with name "X-Experience-API-Consistent-Through" regardless of the code returned. (Communication 2.1.3.s2.b5)', function () {
+    describe('An LRS\'s Statement Resource upon processing a GET request, returns a header with name "X-Experience-API-Consistent-Through" regardless of the code returned. (Communication 2.1.3.s2.b5)', function () {
         it('should return "X-Experience-API-Consistent-Through" using GET', function (done) {
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements())
@@ -2091,7 +2091,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request (Communication 2.1.4.s1.b1)', function () {
+    describe('An LRS\'s Statement Resource, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request (Communication 2.1.4.s1.b1)', function () {
         var voidedId = helper.generateUUID();
         var stmtTime;
 
@@ -2138,7 +2138,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement API, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it (Communication 2.1.4.s1.b2)', function () {
+    describe('An LRS\'s Statement Resource, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it (Communication 2.1.4.s1.b2)', function () {
         this.timeout(0);
         var verbTemplate = 'http://adlnet.gov/expapi/test/voided/target/';
         var verb = verbTemplate + helper.generateUUID();

@@ -15,15 +15,15 @@
 
 describe('About Resource Requirements (Communication 2.8)', () => {
 
-    it('An LRS has an About API with endpoint "base IRI"+"/about" (Communication 2.8)', function () {
+    it('An LRS has an About Resource with endpoint "base IRI"+"/about" (Communication 2.8)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200);
     });
 
-    it('An LRS\'s About API accepts GET requests (Communication 2.8)', function () {
+    it('An LRS\'s About Resource accepts GET requests (Communication 2.8)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200);
     });
 
-    it('An LRS\'s About API upon processing a successful GET request returns a version property and code 200 OK (multiplicity, Communication 2.8.s4)', function () {
+    it('An LRS\'s About Resource upon processing a successful GET request returns a version property and code 200 OK (multiplicity, Communication 2.8.s4)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
@@ -31,7 +31,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
             });
     });
 
-    it('An LRS\'s About API\'s version property is an array of strings (format, Communication 2.8.s4.table1.row1)', function () {
+    it('An LRS\'s About Resource\'s version property is an array of strings (format, Communication 2.8.s4.table1.row1)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
@@ -40,7 +40,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
     });
 
     //moving this over for now, string value will need updated
-    it('An LRS\'s About API\'s version property contains at least one string of "1.0.1" (Communication 2.8.s5.b1.b1)', function () {
+    it('An LRS\'s About Resource\'s version property contains at least one string of "1.0.1" (Communication 2.8.s5.b1.b1)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
@@ -56,7 +56,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
             });
     });
 
-    it('An LRS\'s About API\'s version property can only have values of "0.9", "0.95", "1.0.0", or ""1.0." + X" with (Communication 2.8.s5.b1.b1)', function () {
+    it('An LRS\'s About Resource\'s version property can only have values of "0.9", "0.95", "1.0.0", or ""1.0." + X" with (Communication 2.8.s5.b1.b1)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
@@ -69,7 +69,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
     });
 
 // This is a bad test.  Extensions property is option in the spec.
-//     it('An LRS\'s About API upon processing a successful GET request can return an Extension with code 200 OK (multiplicity, Communication 2.8.s4.table1.row2)', function () {
+//     it('An LRS\'s About Resource upon processing a successful GET request can return an Extension with code 200 OK (multiplicity, Communication 2.8.s4.table1.row2)', function () {
 //         return helper.sendRequest('get', helper.getEndpointAbout(), undefined, undefined, 200)
 //             .then(function (res) {
 //                 var about = res.body;

@@ -15,7 +15,7 @@
 
 describe('Activities Resource Requirements (Communication 2.5)', () => {
 
-    it('An LRS has an Activities API with endpoint "base IRI" + /activities" (Communication 2.5, Implicit) **Implicit** (in that it is not named this by the spec)', function () {
+    it('An LRS has an Activities Resource with endpoint "base IRI" + /activities" (Communication 2.5, Implicit) **Implicit** (in that it is not named this by the spec)', function () {
         var templates = [
             {statement: '{{statements.default}}'}
         ];
@@ -30,7 +30,7 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
             });
     });
 
-    it('An LRS\'s Activities API accepts GET requests (Communication 2.5)', function () {
+    it('An LRS\'s Activities Resource accepts GET requests (Communication 2.5)', function () {
         var templates = [
             {statement: '{{statements.default}}'}
         ];
@@ -45,7 +45,7 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
             });
     });
 
-    it('An LRS\'s Activities API upon processing a successful GET request returns the complete Activity Object (Communication 2.5.s1)', function () {
+    it('An LRS\'s Activities Resource upon processing a successful GET request returns the complete Activity Object (Communication 2.5.s1)', function () {
         var templates = [
             {statement: '{{statements.object_activity}}'},
             {object: '{{activities.default}}'}
@@ -68,13 +68,13 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
         });
     });
 
-    it('An LRS\'s Activities API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication.md#2.5.s1.table1.row1)', function () {
+    it('An LRS\'s Activities Resource rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication.md#2.5.s1.table1.row1)', function () {
         return helper.sendRequest('get', helper.getEndpointActivities(), undefined, undefined, 400);
     });
 
     //Note: tests focusing on type "String" as a parameter are likely to be stricken or reworded before final release.
     //Also note: using an it over and it nullifies the inner its, consider using a describe.
-    it('An LRS\'s Activities API rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.5.s1.table1.row1)', function () {
+    it('An LRS\'s Activities Resource rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.5.s1.table1.row1)', function () {
         var invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
             it('Should reject GET with "activityId" with type ' + type, function () {

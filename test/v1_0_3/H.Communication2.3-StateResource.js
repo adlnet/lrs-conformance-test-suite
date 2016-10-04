@@ -15,19 +15,19 @@
 
 describe('State Resource Requirements (Communication 2.3)', () => {
 
-    it('An LRS\'s State API accepts PUT requests (Communication 2.3)', function () {
+    it('An LRS\'s State Resource accepts PUT requests (Communication 2.3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 204);
     });
 
-    it('An LRS\'s State API accepts POST requests (Communication 2.3)', function () {
+    it('An LRS\'s State Resource accepts POST requests (Communication 2.3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
     });
 
-    it('An LRS\'s State API accepts GET requests (Communication 2.3)', function () {
+    it('An LRS\'s State Resource accepts GET requests (Communication 2.3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -40,7 +40,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    it('An LRS\'s State API accepts DELETE requests (Communication 2.3)', function () {
+    it('An LRS\'s State Resource accepts DELETE requests (Communication 2.3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -49,19 +49,19 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    it('An LRS\'s State API upon processing a successful PUT request returns code 204 No Content (Communication 2.3.s3)', function () {
+    it('An LRS\'s State Resource upon processing a successful PUT request returns code 204 No Content (Communication 2.3.s3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 204);
     });
 
-    it('An LRS\'s State API upon processing a successful POST request returns code 204 No Content (Communication 2.3.s3)', function () {
+    it('An LRS\'s State Resource upon processing a successful POST request returns code 204 No Content (Communication 2.3.s3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
     });
 
-    it('An LRS\'s State API upon processing a successful GET request with a valid "stateId" as a parameter returns the document satisfying the requirements of the GET and code 200 OK (Communication 2.3.s3)', function () {
+    it('An LRS\'s State Resource upon processing a successful GET request with a valid "stateId" as a parameter returns the document satisfying the requirements of the GET and code 200 OK (Communication 2.3.s3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -74,7 +74,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    it('An LRS\'s State API upon processing a successful DELETE request with a valid "stateId" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content (Communication 2.3.s3)', function () {
+    it('An LRS\'s State Resource upon processing a successful DELETE request with a valid "stateId" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content (Communication 2.3.s3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -83,17 +83,17 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    it('An LRS\'s State API rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
+    it('An LRS\'s State Resource rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.activityId;
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    describe('An LRS\'s State API rejects a PUT request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
+    describe('An LRS\'s State Resource rejects a PUT request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
         var invalidTypes = [{ key: 'value'}, 1, true, undefined];
         invalidTypes.forEach(function (type) {
-            it('Should State API reject a PUT request with activityId type ' + type, function () {
+            it('Should State Resource reject a PUT request with activityId type ' + type, function () {
                 var parameters = helper.buildState(),
                     document = helper.buildDocument();
                 parameters.activityId = type;
@@ -102,14 +102,14 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
+    it('An LRS\'s State Resource rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.activityId;
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    describe('An LRS\'s State API rejects a POST request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
+    describe('An LRS\'s State Resource rejects a POST request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}, undefined];
         invalidTypes.forEach(function (type) {
@@ -121,13 +121,13 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
+    it('An LRS\'s State Resource rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
         var parameters = helper.buildState();
         delete parameters.activityId;
         return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
     });
 
-    describe('An LRS\'s State API rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
+    describe('An LRS\'s State Resource rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
         var invalidTypes = [1, true, { key: 'value'}, undefined];
         invalidTypes.forEach(function (type) {
             it('Should reject GET with "activityId" with type ' + type, function () {
@@ -138,13 +138,13 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
+    it('An LRS\'s State Resource rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
         var parameters = helper.buildState();
         delete parameters.activityId;
         return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
     });
 
-    describe('An LRS\'s State API rejects a DELETE request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
+    describe('An LRS\'s State Resource rejects a DELETE request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
         var invalidTypes = [1, true, { key: 'value'}, undefined];
         invalidTypes.forEach(function (type) {
             it('Should reject DELETE with "activityId" with type ' + type, function () {
@@ -156,28 +156,28 @@ describe('State Resource Requirements (Communication 2.3)', () => {
     });
 
     //+* In 1.0.3, the IRI requires a scheme, but does not in 1.0.2, thus we only test type String in this version**
-    it('An LRS\'s State API rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
+    it('An LRS\'s State Resource rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.agent;
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    it('An LRS\'s State API rejects a PUT request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2)', function () {
+    it('An LRS\'s State Resource rejects a PUT request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         parameters.agent = 'not JSON';
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    it('An LRS\'s State API rejects a POST request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
+    it('An LRS\'s State Resource rejects a POST request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.agent;
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    describe('An LRS\'s State API rejects a POST request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2)', function () {
+    describe('An LRS\'s State Resource rejects a POST request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, 'not JSON', undefined];
         invalidTypes.forEach(function (type) {
@@ -189,13 +189,13 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
+    it('An LRS\'s State Resource rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
         var parameters = helper.buildState();
         delete parameters.agent;
         return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
     });
 
-    describe('An LRS\'s State API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2)', function () {
+    describe('An LRS\'s State Resource rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2)', function () {
         var invalidTypes = [1, true, 'not JSON', undefined];
         invalidTypes.forEach(function (type) {
             it('Should reject GET with "agent" with type ' + type, function () {
@@ -206,13 +206,13 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API rejects a DELETE request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
+    it('An LRS\'s State Resource rejects a DELETE request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
         var parameters = helper.buildState();
         delete parameters.agent;
         return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
     });
 
-    describe('An LRS\'s State API rejects a DELETE request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2)', function () {
+    describe('An LRS\'s State Resource rejects a DELETE request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2)', function () {
         var invalidTypes = [1, true, 'not JSON', undefined];
         invalidTypes.forEach(function (type) {
             it('Should reject DELETE with "agent" with type ' + type, function () {
@@ -223,14 +223,14 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API can process a PUT request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
+    it('An LRS\'s State Resource can process a PUT request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 204);
     });
 
-    describe('An LRS\'s State API rejects a PUT request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request(format, Communication 2.3.s3.table1.row3)', function () {
+    describe('An LRS\'s State Resource rejects a PUT request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request(format, Communication 2.3.s3.table1.row3)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, 'not UUID'];
         invalidTypes.forEach(function (type) {
@@ -242,14 +242,14 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API can process a POST request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
+    it('An LRS\'s State Resource can process a POST request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
     });
 
-    describe('An LRS\'s State API rejects a POST request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, Communication 2.3.s3.table1.row3)', function () {
+    describe('An LRS\'s State Resource rejects a POST request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, Communication 2.3.s3.table1.row3)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, 'not UUID'];
         invalidTypes.forEach(function (type) {
@@ -261,7 +261,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API can process a GET request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
+    it('An LRS\'s State Resource can process a GET request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
@@ -275,7 +275,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    describe('An LRS\'s State API rejects a GET request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, Communication 2.3.s3.table1.row3)', function () {
+    describe('An LRS\'s State Resource rejects a GET request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, Communication 2.3.s3.table1.row3)', function () {
         var invalidTypes = [1, true, 'not UUID'];
         invalidTypes.forEach(function (type) {
             it('Should reject GET with "registration" with type ' + type, function () {
@@ -286,7 +286,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API can process a DELETE request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
+    it('An LRS\'s State Resource can process a DELETE request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
@@ -296,7 +296,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    describe('An LRS\'s State API rejects a DELETE request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, Communication 2.3.s3.table1.row3)', function () {
+    describe('An LRS\'s State Resource rejects a DELETE request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, Communication 2.3.s3.table1.row3)', function () {
         var invalidTypes = [1, true, 'not UUID'];
         invalidTypes.forEach(function (type) {
             it('Should reject DELETE with "registration" with type ' + type, function () {
@@ -307,21 +307,21 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State API rejects a PUT request without "stateId" as a parameter with error code 400 Bad Request(multiplicity, Communication 2.3.s3.table1.row4)', function () {
+    it('An LRS\'s State Resource rejects a PUT request without "stateId" as a parameter with error code 400 Bad Request(multiplicity, Communication 2.3.s3.table1.row4)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.stateId;
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    it('An LRS\'s State API rejects a POST request without "stateId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row4)', function () {
+    it('An LRS\'s State Resource rejects a POST request without "stateId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row4)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.stateId;
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    it('An LRS\'s State API can process a GET request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4)', function () {
+    it('An LRS\'s State Resource can process a GET request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -334,7 +334,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    it('An LRS\'s State API can process a GET request with "since" as a parameter (multiplicity, Communication 2.3.s4.table1.row4)', function () {
+    it('An LRS\'s State Resource can process a GET request with "since" as a parameter (multiplicity, Communication 2.3.s4.table1.row4)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -348,13 +348,13 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    it('An LRS\'s State API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication 2.3.s4.table1.row4)', function () {
+    it('An LRS\'s State Resource rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication 2.3.s4.table1.row4)', function () {
         var parameters = helper.buildState();
         parameters.since = 'not a timestamp';
         return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
     });
 
-    it('An LRS\'s State API can process a DELETE request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4)', function () {
+    it('An LRS\'s State Resource can process a DELETE request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -364,7 +364,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
     });
 
 // No 'since' property with DELETE in the State Resource
-    // describe('An LRS\'s State API rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication.md#2.3.s3.table1.row4)', function () {
+    // describe('An LRS\'s State Resource rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication.md#2.3.s3.table1.row4)', function () {
     //     var invalidTypes = [1, true];
     //     invalidTypes.forEach(function (type) {
     //         it('Should reject DELETE with "since" with type ' + type, function () {
@@ -376,7 +376,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
     // });
 
     //+* NOTE:  **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**
-    it('An LRS\'s State API upon processing a successful GET request without "stateId" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK (Communication 2.3.s4)', function () {
+    it('An LRS\'s State Resource upon processing a successful GET request without "stateId" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK (Communication 2.3.s4)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -410,7 +410,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
     });
 
     //+* NOTE:  **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**
-    it('An LRS\'s State API upon processing a successful DELETE request without "stateId" as a parameter deletes documents satisfying the requirements of the DELETE and code 204 No Content (Communication 2.3.s5)', function () {
+    it('An LRS\'s State Resource upon processing a successful DELETE request without "stateId" as a parameter deletes documents satisfying the requirements of the DELETE and code 204 No Content (Communication 2.3.s5)', function () {
         var parameters = helper.buildState();
         parameters.activityId = parameters.activityId + helper.generateUUID();
 

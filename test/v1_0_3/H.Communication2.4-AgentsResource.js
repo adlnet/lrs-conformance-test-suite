@@ -15,7 +15,7 @@
 
 describe('Agents Resource Requirements (Communication 2.4)', () => {
 
-    it('An LRS has an Agents API with endpoint "base IRI" + /agents" (Communication 2.4) **Implicit** (in that it is not named this by the spec)', function () {
+    it('An LRS has an Agents Resource with endpoint "base IRI" + /agents" (Communication 2.4) **Implicit** (in that it is not named this by the spec)', function () {
         var templates = [
             {statement: '{{statements.default}}'}
         ];
@@ -30,7 +30,7 @@ describe('Agents Resource Requirements (Communication 2.4)', () => {
             });
     });
 
-    it('An LRS\'s Agents API accepts GET requests (Communication 2.4.s2)', function () {
+    it('An LRS\'s Agents Resource accepts GET requests (Communication 2.4.s2)', function () {
         return helper.sendRequest('get', helper.getEndpointAgents(), helper.buildAgent(), undefined, 200);
     });
 
@@ -42,7 +42,7 @@ describe('Agents Resource Requirements (Communication 2.4)', () => {
             });
     });
 
-    it('An LRS\'s Agent API upon processing a successful GET request returns a Person Object if the "agent" parameter can be found in the LRS and code 200 OK (Communication 2.4.s2.table1.row1)', function () {
+    it('An LRS\'s Agent Resource upon processing a successful GET request returns a Person Object if the "agent" parameter can be found in the LRS and code 200 OK (Communication 2.4.s2.table1.row1)', function () {
         var templates = [
           {statement: '{{statements.default}}'}
         ];
@@ -63,7 +63,7 @@ describe('Agents Resource Requirements (Communication 2.4)', () => {
     });
 
 
-    it('An LRS\'s Agents API rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.4.s2.table1.row1)', function () {
+    it('An LRS\'s Agents Resource rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.4.s2.table1.row1)', function () {
         return helper.sendRequest('get', helper.getEndpointAgents(), undefined, undefined, 400);
     });
 

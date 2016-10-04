@@ -15,7 +15,7 @@
 
 describe('Error Codes Requirements (Communication 3.2)', () => {
 
-    it('An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter not recognized by the LRS (Communication 3.2.s2.b1)', function (done) {
+    it('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter not recognized by the LRS (Communication 3.2.s2.b1)', function (done) {
         request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?foo=bar')
             .headers(helper.addAllHeaders({}))
@@ -33,7 +33,7 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
         });
     }
 
-    describe('An LRS rejects with error code 405 Method Not Allowed to any request to an API which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior** (Communication 3.2.s3.b1)', function () {
+    describe('An LRS rejects with error code 405 Method Not Allowed to any request to an Resource which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior** (Communication 3.2.s3.b1)', function () {
 
         it('should fail with statement "DELETE"', function (done) {
             var query = helper.getUrlEncoding({statementId: helper.generateUUID()});
@@ -107,7 +107,7 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter with differing case (Communication 3.2.s3.b8)', function () {
+    describe('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter with differing case (Communication 3.2.s3.b8)', function () {
 
         it('should fail on PUT statement when not using "statementId"', function (done) {
             var templates = [

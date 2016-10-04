@@ -31,7 +31,7 @@
 
 describe('Concurrency Requirements (Communication 3.1)', () => {
 
-    describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile, Communication 3.1)', function () {
+    describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling Resources where PUT may overwrite existing data (State, Agent Profile, and Activity Profile, Communication 3.1)', function () {
 
         it('When responding to a GET request to State resource, include an ETag HTTP header in the response', function () {
             var parameters = helper.buildState(),

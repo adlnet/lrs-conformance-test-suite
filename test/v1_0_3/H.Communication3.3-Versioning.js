@@ -111,7 +111,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (Format, Communication 3.3.s4.b1, Communication 3.3.s3.b7, Communication 2.8.s5.b4)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any Resource except the About Resource (Format, Communication 3.3.s4.b1, Communication 3.3.s3.b7, Communication 2.8.s5.b4)', function () {
 
         it('should pass when About GET without header "X-Experience-API-Version"', function (done) {
             request(helper.getEndpointAndAuth())

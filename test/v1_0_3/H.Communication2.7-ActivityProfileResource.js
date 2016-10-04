@@ -15,24 +15,24 @@
 
 describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
 
-    it('An LRS\'s Activity Profile API accepts PUT requests (Communication 2.7)', function () {
+    it('An LRS\'s Activity Profile Resource accepts PUT requests (Communication 2.7)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 204);
     });
 
-    it('An LRS\'s Activity Profile API accepts POST requests (Communication 2.7)', function () {
+    it('An LRS\'s Activity Profile Resource accepts POST requests (Communication 2.7)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204);
     });
 
-    it('An LRS\'s Activity Profile API accepts DELETE requests (Communication 2.7)', function () {
+    it('An LRS\'s Activity Profile Resource accepts DELETE requests (Communication 2.7)', function () {
         var parameters = helper.buildActivityProfile();
         return helper.sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, undefined, 204);
     });
 
-    it('An LRS\'s Activity Profile API accepts GET requests (Communication 2.7)', function () {
+    it('An LRS\'s Activity Profile Resource accepts GET requests (Communication 2.7)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
@@ -41,24 +41,24 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             });
     });
 
-    it('An LRS\'s Activity Profile API upon processing a successful PUT request returns code 204 No Content (Communication 2.7.s2)', function () {
+    it('An LRS\'s Activity Profile Resource upon processing a successful PUT request returns code 204 No Content (Communication 2.7.s2)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 204);
     });
 
-    it('An LRS\'s Activity Profile API upon processing a successful POST request returns code 204 No Content (Communication 2.7.s2)', function () {
+    it('An LRS\'s Activity Profile Resource upon processing a successful POST request returns code 204 No Content (Communication 2.7.s2)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204);
     });
 
-    it('An LRS\'s Activity Profile API upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content (Communication 2.7.s2)', function () {
+    it('An LRS\'s Activity Profile Resource upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content (Communication 2.7.s2)', function () {
         var parameters = helper.buildActivityProfile();
         return helper.sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, '', 204);
     });
 
-    it('An LRS\'s Activity Profile API upon processing a successful GET request with a valid "profileId" as a parameter returns the document satisfying the requirements of the GET and code 200 OK (Communication 2.7.s3)', function () {
+    it('An LRS\'s Activity Profile Resource upon processing a successful GET request with a valid "profileId" as a parameter returns the document satisfying the requirements of the GET and code 200 OK (Communication 2.7.s3)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
@@ -71,7 +71,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             });
     });
 
-    it('An LRS\'s Activity Profile API rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1)', function () {
+    it('An LRS\'s Activity Profile Resource rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         delete parameters.activityId;
@@ -79,7 +79,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
     });
 
     //likely to be changed or removed
-    describe('An LRS\'s Activity Profile API API rejects a PUT request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row1)', function () {
+    describe('An LRS\'s Activity Profile Resource rejects a PUT request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row1)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
@@ -91,7 +91,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         });
     });
 
-    it('An LRS\'s Activity Profile API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1)', function () {
+    it('An LRS\'s Activity Profile Resource rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         delete parameters.activityId;
@@ -99,7 +99,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
     });
 
     //likely to be changed or removed
-    describe('An LRS\'s Activity Profile API rejects a POST request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row1)', function () {
+    describe('An LRS\'s Activity Profile Resource rejects a POST request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row1)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
@@ -111,14 +111,14 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         });
     });
 
-    it('An LRS\'s Activity Profile API rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1)', function () {
+    it('An LRS\'s Activity Profile Resource rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1)', function () {
         var parameters = helper.buildActivityProfile();
         delete parameters.activityId;
         return helper.sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, undefined, 400);
     });
 
     //likely to be changed or removed
-    describe('An LRS\'s Activity Profile API rejects a DELETE request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row1)', function () {
+    describe('An LRS\'s Activity Profile Resource rejects a DELETE request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row1)', function () {
         var invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
             it('Should reject DELETE with "activityId" with type ' + type, function () {
@@ -129,14 +129,14 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         });
     });
 
-    it('An LRS\'s Activity Profile API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1, Communication 2.7.s4.table1.row1)', function () {
+    it('An LRS\'s Activity Profile Resource rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1, Communication 2.7.s4.table1.row1)', function () {
         var parameters = helper.buildActivityProfile();
         delete parameters.activityId;
         return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 400);
     });
 
     //Type "String" tests likely to be reworded or removed
-    describe('An LRS\'s Activity Profile API rejects a PUT request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2)', function () {
+    describe('An LRS\'s Activity Profile Resource rejects a PUT request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2)', function () {
       var document = helper.buildDocument(),
           invalidTypes = [1, true, { key: 'value'}];
       invalidTypes.forEach(function (type) {
@@ -149,7 +149,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
     });
 
     //Type "String" tests likely to be reworded or removed
-    describe('An LRS\'s Activity Profile API rejects a POST request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2)', function () {
+    describe('An LRS\'s Activity Profile Resource rejects a POST request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2)', function () {
       var document = helper.buildDocument(),
           invalidTypes = [1, true, { key: 'value'}];
       invalidTypes.forEach(function (type) {
@@ -162,7 +162,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
     });
 
     //Type "String" tests likely to be reworded or removed
-    describe('An LRS\'s Activity Profile API rejects a GET request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2)', function () {
+    describe('An LRS\'s Activity Profile Resource rejects a GET request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2)', function () {
       var document = helper.buildDocument(),
           invalidTypes = [1, true, { key: 'value'}];
       invalidTypes.forEach(function (type) {
@@ -174,7 +174,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
       });
     });
 
-    describe('An LRS\'s Activity Profile API rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row1, Communication 2.7.s4.table1.row1)', function () {
+    describe('An LRS\'s Activity Profile Resource rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row1, Communication 2.7.s4.table1.row1)', function () {
         var invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
             it('Should reject GET with "activityId" with type ' + type, function () {
@@ -185,27 +185,27 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         });
     });
 
-    it('An LRS\'s Activity Profile API rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row2)', function () {
+    it('An LRS\'s Activity Profile Resource rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row2)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         delete parameters.profileId;
         return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 400);
     });
 
-    it('An LRS\'s Activity Profile API rejects a POST request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row2)', function () {
+    it('An LRS\'s Activity Profile Resource rejects a POST request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row2)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         delete parameters.profileId;
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 400);
     });
 
-    it('An LRS\'s Activity Profile API rejects a DELETE request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row2)', function () {
+    it('An LRS\'s Activity Profile Resource rejects a DELETE request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row2)', function () {
         var parameters = helper.buildActivityProfile();
         delete parameters.profileId;
         return helper.sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, undefined, 400);
     });
 
-    it('An LRS\'s Activity Profile API upon processing a successful GET request without "profileId" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK (Communication 2.7.s4)', function () {
+    it('An LRS\'s Activity Profile Resource upon processing a successful GET request without "profileId" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK (Communication 2.7.s4)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         parameters.activityId = parameters.activityId + helper.generateUUID();
@@ -221,7 +221,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             });
     });
 
-    it('An LRS\'s Activity Profile API can process a GET request with "since" as a parameter (multiplicity, Communication 2.7.s4.table1.row2)', function () {
+    it('An LRS\'s Activity Profile Resource can process a GET request with "since" as a parameter (multiplicity, Communication 2.7.s4.table1.row2)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
@@ -231,7 +231,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             });
     });
 
-    describe('An LRS\'s Activity Profile API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication 2.7.s4.table1.row2)', function () {
+    describe('An LRS\'s Activity Profile Resource rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication 2.7.s4.table1.row2)', function () {
         var invalidTypes = [1, true, 'not Timestamp'];
         invalidTypes.forEach(function (type) {
             it('Should reject GET with "since" with type ' + type, function () {
