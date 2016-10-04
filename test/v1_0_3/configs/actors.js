@@ -24,7 +24,7 @@
     module.exports.config = function () {
         return [
             {
-                name: 'An "objectType" property is a String (Type, 4.1.2.1.table1.row1.a)',
+                name: 'An "objectType" property is a String (Type, Data 2.4.2.1.s2.table1.row1)',
                 config: [
                     {
                         name: 'statement actor "objectType" should fail numeric',
@@ -145,7 +145,7 @@
                 ]
             },
             {
-                name: 'A "name" property is a String (Type, 4.1.2.1.table1.row2.a)',
+                name: 'A "name" property is a String (Type, Data 2.4.2.1.s2.table1.row2)',
                 config: [
                     {
                         name: 'statement actor "name" should fail numeric',
@@ -266,7 +266,7 @@
                 ]
             },
             {
-                name: 'An "actor" property with "objectType" as "Agent" uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, 4.1.2.1.a)',
+                name: 'An "actor" property with "objectType" as "Agent" uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, Data 2.4.2.1.s2.b1)',
                 config: [
                     {
                         name: 'statement actor without "account", "mbox", "mbox_sha1sum", "openid" should fail',
@@ -525,7 +525,7 @@
                 ]
             },
             {
-                name: 'An "mbox" property is an IRI (Type, 4.1.2.3.table1.row1.a)',
+                name: 'An "mbox" property is an IRI (Type, Data 2.4.2.3.s3.table1.row1)',
                 config: [
                     {
                         name: 'statement actor "agent mbox" not IRI',
@@ -667,7 +667,7 @@
                 ]
             },
             {
-                name: 'An "mbox" property has the form "mailto:email address" (Syntax, 4.1.2.3.table1.row1.b)',
+                name: 'An "mbox" property has the form "mailto:email address" (Syntax, Data 2.4.2.3.s3.table1.row1)',
                 config: [
                     {
                         name: 'statement actor "agent mbox" not mailto:email address',
@@ -809,7 +809,7 @@
                 ]
             },
             {
-                name: 'An "mbox_sha1sum" property is a String (Type, 4.1.2.3.table1.row2.a)',
+                name: 'An "mbox_sha1sum" property is a String (Type, Data 2.4.2.3.s3.table1.row2)',
                 config: [
                     {
                         name: 'statement actor "agent mbox_sha1sum" not string',
@@ -951,7 +951,7 @@
                 ]
             },
             {
-                name: 'An "openid" property is a URI (Type, 4.1.2.3.table1.row3.a)',
+                name: 'An "openid" property is a URI (Type, Data 2.4.2.3.s3.table1.row3)',
                 config: [
                     {
                         name: 'statement actor "agent openid" not URI',
@@ -1093,7 +1093,7 @@
                 ]
             },
             {
-                name: 'An Account Object is the "account" property of a Group or Agent (Definition, 4.1.2.4)',
+                name: 'An Account Object is the "account" property of a Group or Agent (Definition, Data 2.4.2.4)',
                 config: [
                     {
                         name: 'statement actor "agent account" property exists',
@@ -1221,7 +1221,7 @@
                 ]
             },
             {
-                name: 'An Account Object uses the "homePage" property (Multiplicity, 4.1.2.4.table1.row1.b)',
+                name: 'An Account Object uses the "homePage" property (Multiplicity, Data 2.4.2.4.s2.table1.row1)',
                 config: [
                     {
                         name: 'statement actor "agent" account "homePage" property exists',
@@ -1349,7 +1349,7 @@
                 ]
             },
             {
-                name: 'An Account Object\'s "homePage" property is an IRL (Type, 4.1.2.4.table1.row1.a)',
+                name: 'An Account Object\'s "homePage" property is an IRL (Type, Data 2.4.2.4.s2.table1.row1)',
                 config: [
                     {
                         name: 'statement actor "agent" account "homePage property is IRL',
@@ -1491,7 +1491,7 @@
                 ]
             },
             {
-                name: 'An Account Object uses the "name" property (Multiplicity, 4.1.2.4.table1.row2.b)',
+                name: 'An Account Object uses the "name" property (Multiplicity, Data 2.4.2.4.s2.table1.row2)',
                 config: [
                     {
                         name: 'statement actor "agent" account "name" property exists',
@@ -1619,7 +1619,7 @@
                 ]
             },
             {
-                name: 'An Account Object "name" property is a String (Type, 4.1.2.4.table1.row1.a)',
+                name: 'An Account Object "name" property is a String (Type, Data 2.4.2.4.s2.table1.row2)',
                 config: [
                     {
                         name: 'statement actor "agent" account "name" property is string',

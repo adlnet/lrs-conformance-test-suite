@@ -38,7 +38,7 @@
                 ]
             },
             {
-                name: 'A "verb" property contains an "id" property (Multiplicity, 4.1.3.table1.row1.b)',
+                name: 'A "verb" property contains an "id" property (Multiplicity, Data 2.4.3.s3.table1.row1)',
                 config: [
                     {
                         name: 'statement verb missing "id"',
@@ -60,7 +60,7 @@
                 ]
             },
             {
-                name: 'A "verb" property\'s "id" property is an IRI (Type, 4.1.3.table1.row1.a)',
+                name: 'A "verb" property\'s "id" property is an IRI (Type, Data 2.4.3.s3.table1.row1)',
                 config: [
                     {
                         name: 'statement verb "id" not IRI',
@@ -83,7 +83,7 @@
                 ]
             },
             {
-                name: 'A Voiding Statement is defined as a Statement whose "verb" property\'s "id" property\'s IRI ending with "voided" (4.3)',
+                name: 'A Voiding Statement is defined as a Statement whose "verb" property\'s "id" property\'s IRI ending with "voided" (Data 2.3.2)',
                 config: [
                     {
                         name: 'statement verb voided IRI ends with "voided" (WARNING: this applies "Upon receiving a Statement that voids another, the LRS SHOULD NOT* reject the request on the grounds of the Object of that voiding Statement not being present")',
@@ -96,7 +96,7 @@
                 ]
             },
             {
-                name: 'A Voiding Statement\'s "objectType" field has a value of "StatementRef" (Format, 4.3.a)',
+                name: 'A Voiding Statement\'s "objectType" field has a value of "StatementRef" (Format, Data 2.3.2.s2.b1)',
                 config: [
                     {
                         name: 'statement verb voided uses substatement with "StatementRef"',
@@ -117,7 +117,7 @@
                 ]
             },
             {
-                name: 'A "verb" property\'s "display" property is a Language Map (Type, 4.1.3.table1.row2.a)',
+                name: 'A "verb" property\'s "display" property is a Language Map (Type, Data 2.4.3.s3.table1.row2)',
                 config: [
                     {
                         name: 'statement verb "display" not language',

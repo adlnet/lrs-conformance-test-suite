@@ -98,7 +98,7 @@
                 ]
             },
             {
-                name: 'An "object" property\'s "objectType" property is either "Activity", "Agent", "Group", "SubStatement", or "StatementRef" (Vocabulary, 4.1.4.b)',
+                name: 'An "object" property\'s "objectType" property is either "Activity", "Agent", "Group", "SubStatement", or "StatementRef" (Vocabulary, Data 2.4.4.s2)',
                 config: [
                     {
                         name: 'statement activity should fail on "activity"',

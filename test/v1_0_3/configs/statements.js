@@ -38,7 +38,7 @@
                 ]
             },
             {
-                name: 'A Statement contains an "actor" property (Multiplicity, 4.1.b)',
+                name: 'A Statement contains an "actor" property (Multiplicity, Data 2.2.s2.b3)',
                 config: [
                     {
                         name: 'statement "actor" missing',
@@ -50,7 +50,7 @@
                 ]
             },
             {
-                name: 'A Statement contains a "verb" property (Multiplicity, 4.1.b)',
+                name: 'A Statement contains a "verb" property (Multiplicity, Data 2.2.s2.b3)',
                 config: [
                     {
                         name: 'statement "verb" missing',
@@ -62,7 +62,7 @@
                 ]
             },
             {
-                name: 'A Statement contains an "object" property (Multiplicity, 4.1.b)',
+                name: 'A Statement contains an "object" property (Multiplicity, Data 2.2.s2.b3)',
                 config: [
                     {
                         name: 'statement "object" missing',
@@ -74,7 +74,7 @@
                 ]
             },
             {
-                name: 'A Statement\'s "id" property is a String (Type, 4.1.1.description.a)',
+                name: 'A Statement\'s "id" property is a String (Type, Data 2.4.1.s1)',
                 config: [
                     {
                         name: 'statement "id" invalid numeric',
@@ -95,7 +95,7 @@
                 ]
             },
             {
-                name: 'A Statement\'s "id" property is a UUID following RFC 4122 (Syntax, RFC 4122)',
+                name: 'A Statement\'s "id" property is a UUID following RFC 4122 (Syntax, Data 2.4.1.s1, RFC 4122)',
                 config: [
                     {
                         name: 'statement "id" invalid UUID with too many digits',
@@ -116,7 +116,7 @@
                 ]
             },
             {
-                name: 'A TimeStamp is defined as a Date/Time formatted according to ISO 8601 (Format, ISO8601)',
+                name: 'A TimeStamp is defined as a Date/Time formatted according to ISO 8601 (Format, Data 4.5.s1.b1, ISO8601)',
                 config: [
                     {
                         name: 'statement "template" invalid string',
@@ -137,7 +137,7 @@
                 ]
             },
             {
-                name: 'A "timestamp" property is a TimeStamp (Type, 4.1.2.1.table1.row7.a, 4.1.2.1.table1.row7.b)',
+                name: 'A "timestamp" property is a TimeStamp (Type, Data 2.4.s1.table1.row7)',
                 config: [
                     {
                         name: 'statement "template" invalid string',
@@ -157,9 +157,8 @@
                     }
                 ]
             },
-
             {
-                name: 'A "version" property enters the LRS with the value of "1.0.0" or is not used (Vocabulary, 4.1.10.e, 4.1.10.f)',
+                name: 'A "version" property enters the LRS with the value of "1.0.0" or is not used (Vocabulary, Data 2.4.4.1.s5.b3)',
                 config: [
                     {
                         name: 'statement "version" invalid string',
@@ -180,7 +179,7 @@
                 ]
             },
             {
-                name: 'An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to "null", except in an "extensions" property (4.1.12.d.a)',
+                name: 'An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to "null", except in an "extensions" property (Data 2.2.s4.b1.b1)',
                 config: [
                     {
                         name: 'statement actor should fail on "null"',
@@ -278,7 +277,7 @@
                 ]
             },
             {
-                name: 'An LRS rejects with error code 400 Bad Request, a Request which uses "version" and has the value set to anything but "1.0" or "1.0.x", where x is the semantic versioning number (Format, 4.1.10.b, 6.2.c, 6.2.f)',
+                name: 'An LRS rejects with error code 400 Bad Request, a Request which uses "version" and has the value set to anything but "1.0" or "1.0.x", where x is the semantic versioning number (Format, Data 2.4.10.s2.b1, Data 2.4.10.s3.b1, Communication 3.3.s3.b3, Communication 3.3.s3.b6)',
                 config: [
                     {
                         name: 'statement "version" valid 1.0',
@@ -315,7 +314,7 @@
                 ]
             },
             {
-                name: 'An LRS rejects with error code 400 Bad Request, a Request which the "X-Experience-API-Version" header\'s value is anything but "1.0" or "1.0.x", where x is the semantic versioning number to any API except the About API (Format, 6.2.d, 6.2.e, 6.2.f, 7.7.f)',
+                name: 'An LRS rejects with error code 400 Bad Request, a Request which the "X-Experience-API-Version" header\'s value is anything but "1.0" or "1.0.x", where x is the semantic versioning number to any Resource except the About Resource (Format, Communication 3.3.s3.b4, Communication 3.3.s3.b6)',
                 config: [
                     {
                         name: 'statement "version" valid 1.0',
@@ -352,7 +351,7 @@
                 ]
             },
             {
-                name: 'An LRS rejects with error code 400 Bad Request any Statement violating a Statement Requirement. (4.1.12, Varies)',
+                name: 'An LRS rejects with error code 400 Bad Request any Statement violating a Statement Requirement. (Data 2.2.s4, Varies)',
                 config: [
                     {
                         name: 'statement "actor" missing reply 400',

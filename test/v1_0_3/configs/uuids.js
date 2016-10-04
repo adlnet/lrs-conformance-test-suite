@@ -18,7 +18,7 @@
     module.exports.config = function () {
         return [
             {
-                name: 'All UUID types follow requirements of RFC4122 (Type, 4.1.1)',
+                name: 'All UUID types follow requirements of RFC4122 (Type, Data 2.4.1.s1)',
                 config: [
                     {
                         name: 'statement "id" invalid UUID with too many digits',
@@ -93,7 +93,7 @@
                 ]
             },
             {
-                name: 'All UUID types are in standard String form (Type, 4.1.1)',
+                name: 'All UUID types are in standard String form (Type, Data 2.4.1.s1)',
                 config: [
                     {
                         name: 'statement "id" invalid numeric',

@@ -44,7 +44,7 @@
                 ]
             },
             {
-                name: 'A "registration" property is a UUID (Type, 4.1.6.table1.row1.a)',
+                name: 'A "registration" property is a UUID (Type, Data 2.4.6.s3.table1.row1)',
                 config: [
                     {
                         name: 'statement context "registration" is object',
@@ -87,7 +87,7 @@
                 ]
             },
             {
-                name: 'An "instructor" property is an Agent (Type, 4.1.6.table1.row2.a)',
+                name: 'An "instructor" property is an Agent (Type, Data 2.4.6.s3.table1.row2)',
                 config: [
                     {
                         name: 'statement context "instructor" is object',
@@ -130,7 +130,7 @@
                 ]
             },
             {
-                name: 'An "team" property is a Group (Type, 4.1.6.table1.row3.a)',
+                name: 'An "team" property is a Group (Type, Data 2.4.6.s3.table1.row3)',
                 config: [
                     {
                         name: 'statement context "team" is agent',
@@ -192,7 +192,7 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property is an Object (Type, 4.1.5.table1.row4.a)',
+                name: 'A "contextActivities" property is an Object (Type, Data 2.4.6.s3.table1.row4)',
                 config: [
                     {
                         name: 'statement context "contextActivities" is string',
@@ -216,7 +216,7 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property contains one or more key/value pairs (Format, 4.1.a, 4.1.6.2.b)',
+                name: 'A "contextActivities" property contains one or more key/value pairs (Format, Data 2.4.6.2.s4.b2)',
                 config: [
                     {
                         name: 'statement context "contextActivities" is empty',
@@ -240,7 +240,7 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property\'s "key" has a value of "parent", "grouping", "category", or "other" (Format, 4.1.6.2.a)',
+                name: 'A "contextActivities" property\'s "key" has a value of "parent", "grouping", "category", or "other" (Format, Data 2.4.6.2.s4.b1)',
                 config: [
                     {
                         name: 'statement context "contextActivities" is "parent"',
@@ -313,7 +313,7 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property\'s "value" is an Activity (Format, 4.1.6.2.a)',
+                name: 'A "contextActivities" property\'s "value" is an Activity (Format, Data 2.4.6.2.s4.b2)',
                 config: [
                     {
                             name: 'statement context "contextActivities parent" value is activity array',
@@ -426,7 +426,7 @@
                 ]
             },
             {
-                name: 'A ContextActivity is defined as a single Activity of the "value" of the "contextActivities" property (definition)',
+                name: 'A ContextActivity is defined as a single Activity of the "value" of the "contextActivities" property (definition, Data 2.4.6.2.s4.b2)',
                 config: [
                     {
                         name: 'statement context "contextActivities parent" value is activity',
@@ -499,7 +499,7 @@
                 ]
             },
             {
-                name: 'A "revision" property is a String (Type, 4.1.6.table1.row5.a)',
+                name: 'A "revision" property is a String (Type, Data 2.4.6.s3.table1.row5)',
                 config: [
                     {
                         name: 'statement context "revision" is numeric',
@@ -542,7 +542,7 @@
                 ]
             },
             {
-                name: 'A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (4.1.6.a)',
+                name: 'A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (Data 2.4.6.s4.b1)',
                 config: [
                     {
                         name: 'statement context "revision" is invalid with object agent',
@@ -606,7 +606,7 @@
                 ]
             },
             {
-                name: 'A "platform" property is a String (Type, 4.1.6.table1.row6.a)',
+                name: 'A "platform" property is a String (Type, Data 2.4.6.s3.table1.row6)',
                 config: [
                     {
                         name: 'statement context "platform" is numeric',
@@ -649,7 +649,7 @@
                 ]
             },
             {
-                name: 'A Statement cannot contain both a "platform" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (4.1.6.b)',
+                name: 'A Statement cannot contain both a "platform" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (Data 2.4.6.s4.b2)',
                 config: [
                     {
                         name: 'statement context "platform" is invalid with object agent',
@@ -713,7 +713,7 @@
                 ]
             },
             {
-                name: 'A "language" property is a String (Type, 4.1.6.table1.row7.a)',
+                name: 'A "language" property is a String (Type, Data 2.4.6.s3.table1.row7)',
                 config: [
                     {
                         name: 'statement context "language" is numeric',
@@ -756,7 +756,7 @@
                 ]
             },
             {
-                name: 'A "language" property follows RFC5646 (Format, 4.1.6.table1.row7.a, RFC5646)',
+                name: 'A "language" property follows RFC5646 (Format, Data 2.4.6.s3.table1.row7, RFC5646)',
                 config: [
                     {
                         name: 'statement context "language" is is invalid language',
@@ -780,7 +780,7 @@
                 ]
             },
             {
-                name: 'A "statement" property is a Statement Reference (Type, 4.1.6.table1.row8.a)',
+                name: 'A "statement" property is a Statement Reference (Type, Data 2.4.6.s3.table1.row8)',
                 config: [
                     {
                         name: 'statement context "statement" invalid with "statementref"',

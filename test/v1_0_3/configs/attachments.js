@@ -65,7 +65,7 @@
     module.exports.config = function () {
         return [
             {
-                name: 'A Statement\'s "attachments" property is an array of Attachments (4.1.2.1.table1.row11.a)',
+                name: 'A Statement\'s "attachments" property is an array of Attachments (Data 2.4.s1.table1.row11)',
                 config: [
                     {
                         name: 'statement "attachments" not an array',
@@ -78,7 +78,7 @@
                 ]
             },
             {
-                name: 'An Attachment is an Object (Definition, 4.1.11)',
+                name: 'An Attachment is an Object (Definition, Data 2.4.11)',
                 config: [
                     {
                         name: 'statement "attachment" invalid numeric',
@@ -99,7 +99,7 @@
                 ]
             },
             {
-                name: 'A "usageType" property is an IRI (Multiplicity, 4.1.11.table1.row1.b)',
+                name: 'A "usageType" property is an IRI (Multiplicity, Data 2.4.11.s2.table1.row1)',
                 config: [
                     {
                         name: 'statement "usageType" invalid string',
@@ -112,7 +112,7 @@
                 ]
             },
             {
-                name: 'A "contentType" property is an Internet Media/MIME type (Format, 4.1.11.table1.row4.a, IETF.org)',
+                name: 'A "contentType" property is an Internet Media/MIME type (Format, Data 2.4.11.s2.table1.row4)',
                 config: [
                     {
                         name: 'statement "contentType" invalid string',
@@ -125,7 +125,7 @@
                 ]
             },
             {
-                name: 'A "length" property is an Integer (Format, 4.1.11.table1.row5.a)',
+                name: 'A "length" property is an Integer (Format, Data 2.4.11.s2.table1.row5)',
                 config: [
                     {
                         name: 'statement "length" invalid string',
@@ -138,7 +138,7 @@
                 ]
             },
             {
-                name: 'A "sha2" property is a String (Format, 4.1.11.table1.row6.a)',
+                name: 'A "sha2" property is a String (Format, Data 2.4.11.s2.table1.row6)',
                 config: [
                     {
                         name: 'statement "sha2" invalid string',
@@ -151,7 +151,7 @@
                 ]
             },
             {
-                name: 'A "fileUrl" property is an IRL (Format, 4.1.11.table1.row7.a)',
+                name: 'A "fileUrl" property is an IRL (Format, Data 2.4.11.s2.table1.row7)',
                 config: [
                     {
                         name: 'statement "fileUrl" invalid string',
@@ -164,7 +164,7 @@
                 ]
             },
             {
-                name: 'A "display" property is a Language Map (Type, 4.1.3.table1.row1.a, 4.1.11.table1.row2.a)',
+                name: 'A "display" property is a Language Map (Type, Data 2.4.11.s2.table1.row2)',
                 config: [
                     {
                         name: 'statement attachment "description" language map numeric',

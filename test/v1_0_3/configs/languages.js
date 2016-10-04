@@ -280,7 +280,7 @@
                 ]
             },
             {
-                name: 'A Language Map follows RFC5646 (Format, 5.2.a, RFC5646)',
+                name: 'A Language Map follows RFC5646 (Format, Data 4.2.s1, RFC5646)',
                 config: [
                     {
                         name: 'statement verb "display" language map invalid',

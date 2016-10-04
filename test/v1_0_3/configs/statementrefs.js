@@ -36,7 +36,7 @@
                 ]
             },
             {
-                name: 'A Statement Reference is defined by the "objectType" of an "object" with value "StatementRef" (4.1.4.2.a)',
+                name: 'A Statement Reference is defined by the "objectType" of an "object" with value "StatementRef" (Data 2.4.4.3.s4.b1)',
                 config: [
                     {
                         name: 'statementref invalid when not "StatementRef"',
@@ -58,7 +58,7 @@
                 ]
             },
             {
-                name: 'A Statement Reference contains an "id" property (Multiplicity, 4.1.4.3.table1.row2.b)',
+                name: 'A Statement Reference contains an "id" property (Multiplicity, Data 2.4.4.3.s4.table1.row2)',
                 config: [
                     {
                         name: 'statementref invalid when missing "id"',
@@ -78,7 +78,7 @@
                 ]
             },
             {
-                name: 'A Statement Reference\'s "id" property is a UUID (Type, 4.1.4.3.table1.row2.a)',
+                name: 'A Statement Reference\'s "id" property is a UUID (Type, Data 2.4.4.3.s4.table1.row2)',
                 config: [
                     {
                         name: 'statementref "id" not "uuid"',

@@ -33,7 +33,7 @@
     module.exports.config = function () {
         return [
             {
-                name: 'An "authority" property is an Agent or Group (Type, 4.1.2.1.table1.row9.a, 4.1.2.1.table1.row9.b, 4.1.9.a)',
+                name: 'An "authority" property is an Agent or Group (Type, Data 2.4.s1.table1.row9)',
                 config: [
                     {
                         name: 'should pass statement authority agent template',
@@ -95,7 +95,7 @@
                 ]
             },
             {
-                name: 'An "authority" property which is also a Group contains exactly two Agents (Type, 4.1.2.1.table1.row9.a, 4.1.2.1.table1.row9.b, 4.1.9.a)',
+                name: 'An "authority" property which is also a Group contains exactly two Agents (Type, Data 2.4.9.s3.b1)',
                 config: [
                     {
                         name: 'statement "authority" invalid one member',
@@ -118,7 +118,7 @@
                 ]
             },
             {
-                name: 'An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group of more than two Agents (Format, 4.1.9.a)',
+                name: 'An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group of more than two Agents (Format, Data 2.4.9.s3.b1)',
                 config: [
                     {
                         name: 'statement "authority" invalid three member',

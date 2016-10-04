@@ -43,7 +43,7 @@
                 ]
             },
             {
-                name: 'A "score" property is an Object (Type, 4.1.5.table.row1.a)',
+                name: 'A "score" property is an Object (Type, Data 2.4.5.1)',
                 config: [
                     {
                         name: 'statement result score numeric',
@@ -86,7 +86,7 @@
                 ]
             },
             {
-                name: 'A "score" Object\'s "scaled" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row1.a, SCORM 2004 4Ed)',
+                name: 'A "score" Object\'s "scaled" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row1)',
                 config: [
                     {
                         name: 'statement result "scaled" accepts seven significant decimal',
@@ -110,7 +110,7 @@
                 ]
             },
             {
-                name: 'A "score" Object\'s "raw" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row2.a, SCORM 2004 4Ed)',
+                name: 'A "score" Object\'s "raw" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row2)',
                 config: [
                     {
                         name: 'statement result "raw" accepts seven significant decimal',
@@ -134,7 +134,7 @@
                 ]
             },
             {
-                name: 'A "score" Object\'s "min" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row3.a, SCORM 2004 4Ed)',
+                name: 'A "score" Object\'s "min" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row3)',
                 config: [
                     {
                         name: 'statement result "min" accepts seven significant decimal',
@@ -158,7 +158,7 @@
                 ]
             },
             {
-                name: 'A "score" Object\'s "max" property is a Decimal accurate to seven significant decimal figures (Type, 4.1.5.1.table1.row4.a, SCORM 2004 4Ed)',
+                name: 'A "score" Object\'s "max" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row4)',
                 config: [
                     {
                         name: 'statement result "max" accepts seven significant decimal',
@@ -182,7 +182,7 @@
                 ]
             },
             {
-                name: 'A "success" property is a Boolean (Type, 4.1.5.table1.row2.a)',
+                name: 'A "success" property is a Boolean (Type, ata 2.4.5.s2.table1.row1)',
                 config: [
                     {
                         name: 'statement result "success" property is string "true"',
@@ -225,7 +225,7 @@
                 ]
             },
             {
-                name: 'A "completion" property is a Boolean (Type, 4.1.5.table1.row3.a)',
+                name: 'A "completion" property is a Boolean (Type, Data 2.4.5.s2.table1.row2)',
                 config: [
                     {
                         name: 'statement result "completion" property is string "true"',
@@ -268,7 +268,7 @@
                 ]
             },
             {
-                name: 'A "response" property is a String (Type, 4.1.5.table1.row3.a)',
+                name: 'A "response" property is a String (Type, Data 2.4.5.s2.table1.row3)',
                 config: [
                     {
                         name: 'statement result "response" property is numeric',
@@ -311,7 +311,7 @@
                 ]
             },
             {
-                name: 'A "duration" property is a formatted to ISO 8601 (Type, 4.1.5.table1.row3.a)',
+                name: 'A "duration" property is a formatted to ISO 8601 (Type, Data 2.4.5.s2.table1.row4)',
                 config: [
                     {
                         name: 'statement result "duration" property is invalid',
@@ -335,7 +335,7 @@
                 ]
             },
             {
-                name: 'A "duration" property keeps at least 0.01 seconds of precision (Type, 4.1.5.table1.row3.a)',
+                name: 'A "duration" property keeps at least 0.01 seconds of precision (Type, Data 2.4.5.s2.table1.row4)',
                 config: [
                     {
                         name: 'statement result "duration" property is invalid',
@@ -359,7 +359,7 @@
                 ]
             },
             {
-                name: 'An "extensions" property is an Object (Type, 4.1.5.table1.row3.a)',
+                name: 'An "extensions" property is an Object (Type, Data 2.4.5.s2.table1.row6)',
                 config: [
                     {
                         name: 'statement result "extensions" property is numeric',
@@ -402,7 +402,7 @@
                 ]
             },
             {
-                name: 'An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (4.1.12.d.a)',
+                name: 'An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (Data 2.2.s4.b3)',
                 config: [
                     {
                         name: 'statement result "extensions" property is numeric',

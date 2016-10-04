@@ -94,7 +94,7 @@
                 ]
             },
             {
-                name: 'A Group is defined by "objectType" of an "actor" property or "object" property with value "Group" (4.1.2.2.table1.row2, 4.1.4.2.a)',
+                name: 'A Group is defined by "objectType" of an "actor" property or "object" property with value "Group" (Data 2.4.2.2.s2.table2.row1)',
                 config: [
                     {
                         name: 'statement actor "objectType" accepts "Group"',
@@ -170,7 +170,7 @@
                 ]
             },
             {
-                name: 'An Anonymous Group is defined by "objectType" of an "actor" or "object" with value "Group" and by none of "mbox", "mbox_sha1sum", "openid", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table1)',
+                name: 'An Anonymous Group is defined by "objectType" of an "actor" or "object" with value "Group" and by none of "mbox", "mbox_sha1sum", "openid", or "account" being used (Data 2.4.2.2.s2.table1.row1)',
                 config: [
                     {
                         name: 'statement actor does not require functional identifier',
@@ -246,7 +246,7 @@
                 ]
             },
             {
-                name: 'An Anonymous Group uses the "member" property (Multiplicity, 4.1.2.2.table1.row3.b)',
+                name: 'An Anonymous Group uses the "member" property (Multiplicity, Data 2.4.2.2.s2.table1.row3)',
                 config: [
                     {
                         name: 'statement actor anonymous group missing member',
@@ -329,7 +329,7 @@
                 ]
             },
             {
-                name: 'The "member" property is an array of Objects following Agent requirements (4.1.2.2.table1.row3.a)',
+                name: 'The "member" property is an array of Objects following Agent requirements (Data 2.4.2.2.s2.table2.row3)',
                 config: [
                     {
                         name: 'statement actor requires member type "array"',
@@ -413,7 +413,7 @@
                 ]
             },
             {
-                name: 'Statement authority shall only be an anonymous group with two members',
+                name: 'Statement authority shall only be an anonymous group with two members (Data 2.4.9.s3.b1)',
                 config: [
                     {
                         name: 'statement authority identified group is rejected',
@@ -442,7 +442,7 @@
                 ]
             },
             {
-                name: 'An Identified Group is defined by "objectType" of an "actor" or "object" with value "Group" and by one of "mbox", "mbox_sha1sum", "openid", or "account" being used (4.1.2.2.table1.row2, 4.1.2.2.table2)',
+                name: 'An Identified Group is defined by "objectType" of an "actor" or "object" with value "Group" and by one of "mbox", "mbox_sha1sum", "openid", or "account" being used (Data 2.4.2.2.s2.table2.row1)',
                 config: [
                     {
                         name: 'statement actor identified group accepts "mbox"',
@@ -699,7 +699,7 @@
                 ]
             },
             {
-                name: 'An Identified Group uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, 4.1.2.1.a)',
+                name: 'An Identified Group uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, Data 2.4.2.2.s2.table2.row4)',
                 config: [
                     {
                         name: 'statement actor identified group accepts "mbox"',
@@ -956,7 +956,7 @@
                 ]
             },
             {
-                name: 'An Identified Group does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, 4.1.2.1.b)',
+                name: 'An Identified Group does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, Data 2.4.2.2.s5.b1)',
                 config: [
                     {
                         name: 'statement actor "mbox" cannot be used with "account"',
@@ -1198,7 +1198,7 @@
                 ]
             },
             {
-                name: 'An Identified Group does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, 4.1.2.1.b)',
+                name: 'An Identified Group does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, Data 2.4.2.2.s5.b1)',
                 config: [
                     {
                         name: 'statement actor "mbox_sha1sum" cannot be used with "account"',
@@ -1430,7 +1430,7 @@
                 ]
             },
             {
-                name: 'An Identified Group does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, 4.1.2.1.b)',
+                name: 'An Identified Group does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, Data 2.4.2.2.s5.b1)',
                 config: [
                     {
                         name: 'statement actor "openid" cannot be used with "account',
@@ -1672,7 +1672,7 @@
                 ]
             },
             {
-                name: 'An Identified Group does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, 4.1.2.1.b)',
+                name: 'An Identified Group does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, Data 2.4.2.2.s5.b1)',
                 config: [
                     {
                         name: 'statement actor "account" cannot be used with "mbox"',

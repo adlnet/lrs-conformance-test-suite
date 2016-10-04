@@ -188,7 +188,7 @@
                 ]
             },
             {
-                name: 'An "object" property uses the "id" property exactly one time (Multiplicity, 4.1.4.1.table1.row2.b)',
+                name: 'An "object" property uses the "id" property exactly one time (Multiplicity, Data 2.4.4.1.table1.row2)',
                 config: [
                     {
                         name: 'statement activity "id" not provided',
@@ -210,7 +210,7 @@
                 ]
             },
             {
-                name: 'An "object" property\'s "id" property is an IRI (Type, 4.1.4.1.table1.row2.a)',
+                name: 'An "object" property\'s "id" property is an IRI (Type, Data 2.2.4.4.1.table1.row2)',
                 config: [
                     {
                         name: 'statement activity "id" not IRI',
@@ -251,7 +251,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition is defined as the contents of a "definition" property object of an Activity (Format, 4.1.4.1.table2)',
+                name: 'An Activity Definition is defined as the contents of a "definition" property object of an Activity (Format, Data 2.4.4.1.s1.table1.row3)',
                 config: [
                     {
                         name: 'statement activity "definition" not object',
@@ -275,7 +275,7 @@
                 ]
             },
             {
-                name: 'An Activity\'s "definition" property is an Object (Type, 4.1.4.1.table1.row3.a)',
+                name: 'An Activity\'s "definition" property is an Object (Type, Data 2.4.4.1.s1.table1.row3)',
                 config: [
                     {
                         name: 'statement activity "definition" not object',
@@ -299,7 +299,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition contains at least one of the following properties: name, description, type, moreInfo, interactionType, or extensions (Format, 4.1.4.1.table2, 4.1.4.1.table3)',
+                name: 'An Activity Definition contains at least one of the following properties: name, description, type, moreInfo, interactionType, or extensions (Format, Data 2.4.4.1.s2)',
                 config: [
                     {
                         name: 'statement activity "definition" missing all properties',
@@ -437,7 +437,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "name" property is a Language Map (Type, 4.1.4.1.table2.row1.a)',
+                name: 'An Activity Definition\'s "name" property is a Language Map (Type, Data 2.4.4.1.s2.table1.row1)',
                 config: [
                     {
                         name: 'statement object "name" language map is numeric',
@@ -480,7 +480,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "description" property is a Language Map (Type, 4.1.4.1.table2.row2.a)',
+                name: 'An Activity Definition\'s "description" property is a Language Map (Type, Data 2.4.4.1.s2.table1.row2)',
                 config: [
                     {
                         name: 'statement object "description" language map is numeric',
@@ -523,7 +523,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "type" property is an IRI (Type, 4.1.4.1.table2.row3.a)',
+                name: 'An Activity Definition\'s "type" property is an IRI (Type, Data 2.4.4.1.s2.table1.row3)',
                 config: [
                     {
                         name: 'statement activity "type" not IRI',
@@ -547,7 +547,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "moreinfo" property is an IRL (Type, 4.1.4.1.table2.row4.a)',
+                name: 'An Activity Definition\'s "moreinfo" property is an IRL (Type, Data 2.4.4.1.s2.table1.row4)',
                 config: [
                     {
                         name: 'statement activity "moreInfo" not IRI',
@@ -571,7 +571,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "interactionType" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other” (4.1.4.1.table3.row1.a, SCORM 2004 4th Edition RTE Book)',
+                name: 'An Activity Definition\'s "interactionType" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other” (Data 2.4.4.1.s8.table1.row1)',
                 config: [
                     {
                         name: 'statement activity "interactionType" can be used with "true-false"',
@@ -746,7 +746,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "correctResponsesPattern" property is an array of Strings (4.1.4.1.table3.row2.a)',
+                name: 'An Activity Definition\'s "correctResponsesPattern" property is an array of Strings (Data 2.4.4.1.s8.table1.row2)',
                 config: [
                     {
                         name: 'statement activity "correctResponsesPattern" is an array of strings',
@@ -825,7 +825,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "choices" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
+                name: 'An Activity Definition\'s "choices" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
                 config: [
                     {
                         name: 'statement activity "choices" uses choice is an array of interaction components',
@@ -1016,7 +1016,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "scale" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
+                name: 'An Activity Definition\'s "scale" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
                 config: [
                     {
                         name: 'statement activity "scale" uses likert is an array of interaction components',
@@ -1114,7 +1114,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "source" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
+                name: 'An Activity Definition\'s "source" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
                 config: [
                     {
                         name: 'statement activity "source" uses matching is an array of interaction components',
@@ -1212,7 +1212,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "target" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
+                name: 'An Activity Definition\'s "target" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
                 config: [
                     {
                         name: 'statement activity "target" uses matching is an array of interaction components',
@@ -1310,7 +1310,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "steps" property is an array of Interaction Components (4.1.4.1.table3.row3.a)',
+                name: 'An Activity Definition\'s "steps" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
                 config: [
                     {
                         name: 'statement activity "steps" uses performance is an array of interaction components',
@@ -1408,7 +1408,7 @@
                 ]
             },
             {
-                name: 'An Interaction Component is an Object (4.1.4.1.table4)',
+                name: 'An Interaction Component is an Object (Data 2.4.4.1.s14)',
                 config: [
                     {
                         name: 'statement activity "choice choices" is not an object',
@@ -1527,7 +1527,7 @@
                 ]
             },
             {
-                name: 'Interaction Component contains an "id" property (Multiplicity, 4.1.4.1.table4.row1.b)',
+                name: 'Interaction Component contains an "id" property (Multiplicity, Data 2.4.4.1.s15.table1.row1)',
                 config: [
                     {
                         name: 'statement activity "choice choices" missing "id"',
@@ -1646,7 +1646,7 @@
                 ]
             },
             {
-                name: 'An Interaction Component\'s "id" property is a String (Type, 4.1.4.1.table4.row1.a)',
+                name: 'An Interaction Component\'s "id" property is a String (Type, Data 2.4.4.1.s15.table1.row1)',
                 config: [
                     {
                         name: 'statement activity "choice choices id" not a string',
@@ -1765,7 +1765,7 @@
                 ]
             },
             {
-                name: 'Within an array of Interaction Components, the "id" property is unique (Multiplicty, 4.1.4.1.w)',
+                name: 'Within an array of Interaction Components, the "id" property is unique (Multiplicty, Data 2.4.4.1.s16.b1)',
                 config: [
                     {
                         name: 'statement activity choice "choices" cannot use same "id"',
@@ -1884,7 +1884,7 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "extension" property is an Object (Type, 4.1.4.1.table2.row1.a)',
+                name: 'An Activity Definition\'s "extension" property is an Object (Type, Data 2.4.4.1.s2.table1.row5)',
                 config: [
                     {
                         name: 'statement activity "extension" invalid string',
@@ -1908,7 +1908,7 @@
                 ]
             },
             {
-                name: 'An LRS generates an "objectType" property of "Activity" to any "object" property if none is provided (Modify, 4.1.4.a)',
+                name: 'An LRS generates an "objectType" property of "Activity" to any "object" property if none is provided (Modify, Data 2.4.4.s2)',
                 config: [
                     {
                         name: 'statement activity without "objectType" is valid',

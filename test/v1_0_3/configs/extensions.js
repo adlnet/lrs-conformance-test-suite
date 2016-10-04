@@ -20,7 +20,7 @@
     module.exports.config = function () {
         return [
             {
-                name: 'An Extension is defined as an Object of any "extensions" property (Multiplicity, 5.3)',
+                name: 'An Extension is defined as an Object of any "extensions" property (Multiplicity, Data 4.1.s2)',
                 config: [
                     {
                         name: 'statement activity extensions valid boolean',
@@ -253,7 +253,7 @@
                 ]
             },
             {
-                name: 'An Extension can be empty (Format, 5.3)',
+                name: 'An Extension can be empty (Format, Data 4.1)',
                 config: [
                     {
                         name: 'statement activity extensions can be empty',
@@ -315,7 +315,7 @@
                 ]
             },
             {
-                name: 'An Extension "key" is an IRI (Format, 5.3.a)',
+                name: 'An Extension "key" is an IRI (Format, Data 4.1.s3.b1)',
                 config: [
                     {
                         name: 'statement activity extensions key is not an IRI',

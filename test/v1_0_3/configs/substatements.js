@@ -25,7 +25,7 @@
                 ]
             },
             {
-                name: 'A Sub-Statement is defined by the "objectType" of an "object" with value "SubStatement" (4.1.4.3.d)',
+                name: 'A Sub-Statement is defined by the "objectType" of an "object" with value "SubStatement" (Data 2.4.4.3.s8.b1)',
                 config: [
                     {
                         name: 'substatement invalid when not "SubStatement"',
@@ -39,7 +39,7 @@
                 ]
             },
             {
-                name: 'A Sub-Statement follows the requirements of all Statements (4.1.4.3.e)',
+                name: 'A Sub-Statement follows the requirements of all Statements (Data 2.4.4.3.s8.b2)',
                 config: [
                     {
                         name: 'substatement requires actor',
@@ -112,7 +112,7 @@
                 ]
             },
             {
-                name: 'A Sub-Statement cannot have a Sub-Statement (4.1.4.2.g)',
+                name: 'A Sub-Statement cannot have a Sub-Statement (Data 2.4.4.3.s8.b4)',
                 config: [
                     {
                         name: 'substatement invalid nested "SubStatement"',
@@ -126,7 +126,7 @@
                 ]
             },
             {
-                name: 'A Sub-Statement cannot use the "id" property at the Statement level (4.1.4.2.f)',
+                name: 'A Sub-Statement cannot use the "id" property at the Statement level (Data 2.4.4.3.s8.b3)',
                 config: [
                     {
                         name: 'substatement invalid with property "id"',
@@ -140,7 +140,7 @@
                 ]
             },
             {
-                name: 'A Sub-Statement cannot use the "stored" property (4.1.4.2.f)',
+                name: 'A Sub-Statement cannot use the "stored" property (Data 2.4.4.3.s8.b3)',
                 config: [
                     {
                         name: 'substatement invalid with property "stored"',
@@ -154,7 +154,7 @@
                 ]
             },
             {
-                name: 'A Sub-Statement cannot use the "version" property (4.1.4.2.f)',
+                name: 'A Sub-Statement cannot use the "version" property (Data 2.4.4.3.s8.b3)',
                 config: [
                     {
                         name: 'substatement invalid with property "version"',
@@ -168,7 +168,7 @@
                 ]
             },
             {
-                name: 'A Sub-Statement cannot use the "authority" property (4.1.4.2.f)',
+                name: 'A Sub-Statement cannot use the "authority" property (Data 2.4.4.3.s8.b3)',
                 config: [
                     {
                         name: 'substatement invalid with property "authority"',
