@@ -188,7 +188,10 @@
                 ]
             },
             {
-                name: 'An "object" property uses the "id" property exactly one time (Multiplicity, Data 2.4.4.1.table1.row2)',
+            /**  XAPI-00047, Data 2.4.4.1 when the objectType is activity
+             * An "object" property uses the "id" property exactly one time. The LRS must reject with 404 Bad Request an otherwise legal statement if the object's objectType is Activity and the object's “id” is not an IRI or the object’s “id” is absent
+             */
+                name: 'An "object" property uses the "id" property exactly one time (Multiplicity, Data 2.4.4.1.table1.row2, XAPI-00047)',
                 config: [
                     {
                         name: 'statement activity "id" not provided',
@@ -275,7 +278,10 @@
                 ]
             },
             {
-                name: 'An Activity\'s "definition" property is an Object (Type, Data 2.4.4.1.s1.table1.row3)',
+            /**  XAPI-00048, Data 2.4.4.1 when objectType is activity
+             * An "object" property uses the "definition" property at most one time. The LRS rejects with 400 Bad Request an otherwise legal statement if the object's “definition” property is an invalid object.
+             */
+                name: 'An Activity\'s "definition" property is an Object (Type, Data 2.4.4.1.s1.table1.row3, XAPI-00048)',
                 config: [
                     {
                         name: 'statement activity "definition" not object',
@@ -437,7 +443,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "name" property is a Language Map (Type, Data 2.4.4.1.s2.table1.row1)',
+            /**  XAPI-00056, Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "name" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Activity Definition's "name" property is present and is an invalid Language Map.
+             */
+                name: 'An Activity Definition\'s "name" property is a Language Map (Type, Data 2.4.4.1.s2.table1.row1, XAPI-00056)',
                 config: [
                     {
                         name: 'statement object "name" language map is numeric',
@@ -571,7 +580,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "interactionType" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other” (Data 2.4.4.1.s8.table1.row1)',
+            /** XAPI-00049, Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "interactionType" property is a String with a value of either true-false, choice, fill-in, long-fill-in, matching, performance, sequencing, likert, numeric or other. An LRS rejects with 400 Bad Request an Activity Definition's "interactionType" property if it is not a string value of true-false, choice, fill-in, long-fill-in, matching, performance, sequencing, likert, numeric or other.
+             */
+                name: 'An Activity Definition\'s "interactionType" property is a String with a value of either “true-false”, “choice”, “fill-in”, “long-fill-in”, “matching”, “performance”, “sequencing”, “likert”, “numeric” or “other” (Data 2.4.4.1.s8.table1.row1, XAPI-00049)',
                 config: [
                     {
                         name: 'statement activity "interactionType" can be used with "true-false"',
@@ -746,7 +758,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "correctResponsesPattern" property is an array of Strings (Data 2.4.4.1.s8.table1.row2)',
+            /**  XAPI-00050,  Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "correctResponsesPattern" property is an array of Strings. An LRS rejects with 400 Bad Request an Activity Definition's "correctResponsesPattern" property if present, and if it is not a valid array of strings.
+             */
+                name: 'An Activity Definition\'s "correctResponsesPattern" property is an array of Strings (Data 2.4.4.1.s8.table1.row2, XAPI-00050)',
                 config: [
                     {
                         name: 'statement activity "correctResponsesPattern" is an array of strings',
@@ -825,7 +840,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "choices" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
+            /**  XAPI-00055, Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "choices" property is an array of Interaction Components. An LRS rejects with 400 Bad Request if an Activity Definition's "choices" property if present, and is not a valid array of Interaction Components.
+             */
+                name: 'An Activity Definition\'s "choices" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3, XAPI-00055)',
                 config: [
                     {
                         name: 'statement activity "choices" uses choice is an array of interaction components',
@@ -1016,7 +1034,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "scale" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
+            /**  XAPI-00054, Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "scale" property is an array of Interaction Components, An LRS rejects with 400 Bad Request if an Activity Definition's "scale" property if present, and is not a valid array of Interaction Components.
+             */
+                name: 'An Activity Definition\'s "scale" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3, XAPI-00054)',
                 config: [
                     {
                         name: 'statement activity "scale" uses likert is an array of interaction components',
@@ -1114,7 +1135,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "source" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
+            /**  XAPI-00053, Data 2.4.4.1 when the objectType is activity
+             * An Activity Definition's "source" property is an array of Interaction Components. An LRS rejects with 400 Bad Request if an Activity Definition's "source" property if present, and is not a valid array of Interaction Components.
+             */
+                name: 'An Activity Definition\'s "source" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3, XAPI-00053)',
                 config: [
                     {
                         name: 'statement activity "source" uses matching is an array of interaction components',
@@ -1212,7 +1236,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "target" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
+            /**  XAPI-00052,  Data 2.4.4.1 when the objectType is activity
+             * An Activity Definition's "target" property is an array of Interaction Components. An LRS rejects with 400 Bad Request if an Activity Definition's "target" property if present, and is not a valid array of Interaction Components.
+             */
+                name: 'An Activity Definition\'s "target" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3, XAPI-00052)',
                 config: [
                     {
                         name: 'statement activity "target" uses matching is an array of interaction components',
@@ -1310,7 +1337,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "steps" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3)',
+            /**  XAPI-00051,  Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "steps" property is an array of Interaction Components. An LRS rejects with 400 Bad Request if an Activity Definition's "steps" property if present, and is not a valid array of Interaction Components.
+             */
+                name: 'An Activity Definition\'s "steps" property is an array of Interaction Components (Data 2.4.4.1.s8.table1.row3, XAPI-00051)',
                 config: [
                     {
                         name: 'statement activity "steps" uses performance is an array of interaction components',
