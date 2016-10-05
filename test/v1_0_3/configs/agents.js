@@ -78,7 +78,10 @@
                 ]
             },
             {
-                name: 'An "actor" property\'s "objectType" property is either "Agent" or "Group" (Vocabulary, Data 2.4.2.1, Data 2.4.2.2)',
+            /** XAPI-00031, Data 2.4.2 Actor
+             * An "actor" property's "objectType" property is either "Agent" or "Group" An LRS rejects with 400 Bad Request an actor with an “objectType” which is not “Agent” or “Group”
+             */
+                name: 'An "actor" property\'s "objectType" property is either "Agent" or "Group" (Vocabulary, Data 2.4.2.1, Data 2.4.2.2, XAPI-00031)',
                 config: [
                     {
                         name: 'statement actor "objectType" should fail when not "Agent"',

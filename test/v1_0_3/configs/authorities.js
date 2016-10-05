@@ -33,6 +33,9 @@
     module.exports.config = function () {
         return [
             {
+            /**  XAPI-00024,  Data 2.4 Statement Properties
+             * An "authority" property is an Agent or Group. An LRS rejects with 400 Bad Request a statement which has an “authority” property which is not Agent or Group.
+             */
                 name: 'An "authority" property is an Agent or Group (Type, Data 2.4.s1.table1.row9)',
                 config: [
                     {

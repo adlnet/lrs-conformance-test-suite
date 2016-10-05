@@ -402,7 +402,10 @@
                 ]
             },
             {
-                name: 'An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (Data 2.2.s4.b3)',
+            /**  XAPI-00002, 2.2 Formatting Requirements
+             * An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754
+             */
+                name: 'An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (Data 2.2.s4.b3, XAPI-00002)',
                 config: [
                     {
                         name: 'statement result "extensions" property is numeric',

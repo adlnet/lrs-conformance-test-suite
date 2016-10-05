@@ -246,7 +246,10 @@
                 ]
             },
             {
-                name: 'An Anonymous Group uses the "member" property (Multiplicity, Data 2.4.2.2.s2.table1.row3)',
+            /**  XAPI-00035, 2.4.2.2 when the actor objectType is group
+             * A Group uses the "member" property. An LRS rejects with 400 Bad Request if the “member” property is present anywhere but in a group object (Actor or team).
+             */
+                name: 'An Anonymous Group uses the "member" property (Multiplicity, Data 2.4.2.2.s2.table1.row3, XAPI-00035)',
                 config: [
                     {
                         name: 'statement actor anonymous group missing member',
@@ -329,7 +332,10 @@
                 ]
             },
             {
-                name: 'The "member" property is an array of Objects following Agent requirements (Data 2.4.2.2.s2.table2.row3)',
+            /**  XAPI-00036, Data 2.4.2.2 when the actor objectType is group
+             * The "member" property is an array of Objects following Agent requirements. An LRS rejects with 400 Bad Request any group object which has a member property with anything other than a valid array of Agents as a value
+             */
+                name: 'The "member" property is an array of Objects following Agent requirements (Data 2.4.2.2.s2.table2.row3, XAPI-00036)',
                 config: [
                     {
                         name: 'statement actor requires member type "array"',
@@ -442,7 +448,14 @@
                 ]
             },
             {
-                name: 'An Identified Group is defined by "objectType" of an "actor" or "object" with value "Group" and by one of "mbox", "mbox_sha1sum", "openid", or "account" being used (Data 2.4.2.2.s2.table2.row1)',
+            /**  XAPI-00037,  Data 2.4.2.2 when actor objectType is group
+             * An "actor" property with "objectType" as "Group" uses exactly one of the following Inverse Functional Identifier properties: "mbox", "mbox_sha1sum", "openid", "account" or a member property with at least one Agent. An LRS rejects with 400 Bad Request any group object with:
+                - no IFI and no member property
+                - more than one IFI
+                - an invalid IFI value
+             * The remaining 6 suites take care of XAPI-00037
+             */
+                name: 'An Identified Group is defined by "objectType" of an "actor" or "object" with value "Group" and by one of "mbox", "mbox_sha1sum", "openid", or "account" being used (Data 2.4.2.2.s2.table2.row1, XAPI-00037)',
                 config: [
                     {
                         name: 'statement actor identified group accepts "mbox"',
@@ -698,8 +711,8 @@
                     }
                 ]
             },
-            {
-                name: 'An Identified Group uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, Data 2.4.2.2.s2.table2.row4)',
+            {   //see above
+                name: 'An Identified Group uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, Data 2.4.2.2.s2.table2.row4, XAPI-00037)',
                 config: [
                     {
                         name: 'statement actor identified group accepts "mbox"',
@@ -955,8 +968,8 @@
                     }
                 ]
             },
-            {
-                name: 'An Identified Group does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, Data 2.4.2.2.s5.b1)',
+            {   //see above
+                name: 'An Identified Group does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, Data 2.4.2.2.s5.b1, XAPI-00037)',
                 config: [
                     {
                         name: 'statement actor "mbox" cannot be used with "account"',
@@ -1197,8 +1210,8 @@
                     }
                 ]
             },
-            {
-                name: 'An Identified Group does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, Data 2.4.2.2.s5.b1)',
+            {   //see above
+                name: 'An Identified Group does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, Data 2.4.2.2.s5.b1, XAPI-00037)',
                 config: [
                     {
                         name: 'statement actor "mbox_sha1sum" cannot be used with "account"',
@@ -1429,8 +1442,8 @@
                     }
                 ]
             },
-            {
-                name: 'An Identified Group does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, Data 2.4.2.2.s5.b1)',
+            {   //see above
+                name: 'An Identified Group does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, Data 2.4.2.2.s5.b1, XAPI-00037)',
                 config: [
                     {
                         name: 'statement actor "openid" cannot be used with "account',
@@ -1671,8 +1684,8 @@
                     }
                 ]
             },
-            {
-                name: 'An Identified Group does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, Data 2.4.2.2.s5.b1)',
+            {   //see above
+                name: 'An Identified Group does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, Data 2.4.2.2.s5.b1, XAPI-00037)',
                 config: [
                     {
                         name: 'statement actor "account" cannot be used with "mbox"',

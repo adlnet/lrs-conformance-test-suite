@@ -15,6 +15,14 @@
 
 describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00016 - here, may need adjusted
+ * XAPI-00017 - is this covered by XAPI-00020?? which sends a voiding statements with no StatementRef property expecting 400
+ * XAPI-00018 - no match found yet, keep your eyes open
+ * XAPI-00019 - in verbs.js
+ * XAPI-00020 - in verbs.js
+ */
+
     describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (Data 2.3.1, Varies)', function (){
         var returnedID, data, stmtTime;
 
@@ -117,6 +125,12 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
         });
     });
 
+/**  XAPI-00016, 2.3.2 Voiding
+ * A Voiding Statement cannot Target another Voiding Statement.
+ * LRS behavior this new VOIDING statement MAY be rejected.
+ * If the LRS accepts that statement, the violating VOIDING statement SHOULD be ignored.
+ * Adjust this test accordingly
+ */
     describe('A Voiding Statement cannot Target another Voiding Statement (Data 2.3.2.s2.b7)', function () {
         var voidedId, voidingId;
 

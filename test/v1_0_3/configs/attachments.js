@@ -65,6 +65,9 @@
     module.exports.config = function () {
         return [
             {
+            /**  XAPI-00025,  Data 2.4 Statement Properties
+             * A Statement's "attachments" property is an array of Attachments. An LRS rejects with 400 Bad Request a statement which has an “attachments” property which is not an array of attachments.
+             */
                 name: 'A Statement\'s "attachments" property is an array of Attachments (Data 2.4.s1.table1.row11)',
                 config: [
                     {

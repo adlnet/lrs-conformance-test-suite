@@ -15,6 +15,9 @@
 
 describe('Encoding Requirements (Communication 1.4)', () => {
 
+/**  XAPI-00015,  2.2. Formatting Requirements
+ * All Strings are encoded and interpreted as UTF-8
+ */
     it('All Strings are encoded and interpreted as UTF-8 (Communication 1.4.s1.b1)', function (done) {
         this.timeout(0);
         var verbTemplate = 'http://adlnet.gov/expapi/test/unicode/target/';

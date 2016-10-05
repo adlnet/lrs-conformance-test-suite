@@ -15,6 +15,9 @@
 
 describe('Miscellaneous Requirements', () => {
 
+/**  XAPI-00014  2.2 Formatting Requirements
+ * All Objects are well-created JSON Objects (Nature of Binding)
+ */
     it('All Objects are well-created JSON Objects (Nature of binding) **Implicit**', function (done) {
       var verbTemplate = 'http://adlnet.gov/expapi/test/unicode/target/';
       var verb = verbTemplate + helper.generateUUID();

@@ -6,6 +6,15 @@
  *
  */
 
+/**  As there is no Data 2.4 file, I will match them up here
+ * Matchup with Conformance Requirements Document
+ * XAPI-00021 - these are all in Multiple folder, the community said this won't be a problem and do not test it
+ * XAPI-00022 - not found yet
+ * XAPI-00023 - in Data 2.4.8 Stored Property
+ * XAPI-00024 - in authorities.js
+ * XAPI-00025 - in attachments.js
+ */
+
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, templatingSelection) {
     // "use strict";
 
@@ -13,11 +22,22 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
+/** Matchup with Conformance Requirements Document
+ * XAPI-00026 - found below
+ * XAPI-00027 - in uuids.js
+ * XAPI-00028 - in uuids.js
+ * XAPI-00029 - this looks the same as XAPI-00028 to me
+ * XAPI-00030 - this looks the same as XAPI-00027 to me
+ */
+
 describe('Id Property Requirements (Data 2.4.1)', () => {
 
     templatingSelection.createTemplate('uuids.js');
 
-    describe ('An LRS generates the "id" property of a Statement if none is provided (Modify, Data 2.4.1.s2.b1)', function (){
+/**  XAPI-00026,  Data 2.4.1 Id
+ * An LRS generates the "id" property of a Statement if none is provided (Modify, 4.1.1.a)
+ */
+    describe ('An LRS generates the "id" property of a Statement if none is provided (Modify, Data 2.4.1.s2.b1, XAPI-00026)', function (){
 
         it('should complete an empty id property', (done) => {
             this.timeout(0);

@@ -38,7 +38,10 @@
                 ]
             },
             {
-                name: 'A Statement contains an "actor" property (Multiplicity, Data 2.2.s2.b3)',
+            /**  XAPI-00003, 2.2 Formatting Requirements
+             * An LRS rejects with error code 400 Bad Request a Statement which does not contain an "actor" property
+             */
+                name: 'A Statement contains an "actor" property (Multiplicity, Data 2.2.s2.b3, XAPI-00003)',
                 config: [
                     {
                         name: 'statement "actor" missing',
@@ -50,7 +53,10 @@
                 ]
             },
             {
-                name: 'A Statement contains a "verb" property (Multiplicity, Data 2.2.s2.b3)',
+            /**  XAPI-00004, 2.2 Formatting Requirements
+             * An LRS rejects with error code 400 Bad Request a Statement which does not contain a "verb" property
+             */
+                name: 'A Statement contains a "verb" property (Multiplicity, Data 2.2.s2.b3, XAPI-00004)',
                 config: [
                     {
                         name: 'statement "verb" missing',
@@ -62,7 +68,10 @@
                 ]
             },
             {
-                name: 'A Statement contains an "object" property (Multiplicity, Data 2.2.s2.b3)',
+            /**  XAPI-00005, 2.2 Formatting Requirements
+             * An LRS rejects with error code 400 Bad Request a Statement which does not contain an "object" property
+             */
+                name: 'A Statement contains an "object" property (Multiplicity, Data 2.2.s2.b3, XAPI-00005)',
                 config: [
                     {
                         name: 'statement "object" missing',
@@ -179,7 +188,10 @@
                 ]
             },
             {
-                name: 'An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to "null", except in an "extensions" property (Data 2.2.s4.b1.b1)',
+            /**  XAPI-00001, 2.2 Formatting Requirements
+             * An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to "null", an empty object, or has no value, except in an "extensions" property
+             */
+                name: 'An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to "null", except in an "extensions" property (Data 2.2.s4.b1.b1, XAPI-00001)',
                 config: [
                     {
                         name: 'statement actor should fail on "null"',

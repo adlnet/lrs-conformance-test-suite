@@ -94,6 +94,9 @@ describe('Stored Property Requirements (Data 2.4.8)', () => {
         });
     });
 
+/**  XAPI-00023,  2.4 Statement Properties
+ * A "stored" property is a TimeStamp, per section 4.5. An LRS assigns the “stored” property upon receipt with a valid TimeStamp.
+ */
     describe('A stored property must be a TimeStamp (Data 2.4.8.s2)', function () {
         it('retrieve statements, test a stored property', (done) => {
             request(helper.getEndpointAndAuth())

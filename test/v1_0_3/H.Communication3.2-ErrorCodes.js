@@ -107,7 +107,11 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
         });
     });
 
-    describe('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter with differing case (Communication 3.2.s3.b8)', function () {
+/**  XAPI-00008, 2.2 Formatting Requirements
+ * An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification.
+ * Does this also cover XAPI-00009??
+ */
+    describe('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter with differing case (Communication 3.2.s3.b8, XAPI-00008)', function () {
 
         it('should fail on PUT statement when not using "statementId"', function (done) {
             var templates = [

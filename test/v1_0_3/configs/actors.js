@@ -24,7 +24,10 @@
     module.exports.config = function () {
         return [
             {
-                name: 'An "objectType" property is a String (Type, Data 2.4.2.1.s2.table1.row1)',
+            /**  XAPI-00032, Data 2.4.2.1 when the actor objectType is agent
+             * An "objectType" property is a String. If present, the LRS must validate and reject with 400 Bad Request if invalid
+             */
+                name: 'An "objectType" property is a String (Type, Data 2.4.2.1.s2.table1.row1, XAPI-00032)',
                 config: [
                     {
                         name: 'statement actor "objectType" should fail numeric',
@@ -145,7 +148,10 @@
                 ]
             },
             {
-                name: 'A "name" property is a String (Type, Data 2.4.2.1.s2.table1.row2)',
+            /**  XAPI-00033, Data 2.4.2.1 when the actor objectType is agent
+             * A "name" property is a String. If present, the LRS must validate and reject with 400 Bad Request if invalid.
+             */
+                name: 'A "name" property is a String (Type, Data 2.4.2.1.s2.table1.row2, XAPI-00033)',
                 config: [
                     {
                         name: 'statement actor "name" should fail numeric',
@@ -266,7 +272,13 @@
                 ]
             },
             {
-                name: 'An "actor" property with "objectType" as "Agent" uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, Data 2.4.2.1.s2.b1)',
+            /**  XAPI-00034, Data 2.4.2.1 when the actor objectType is agent
+             * An "actor" property with "objectType" as "Agent" uses exactly one of the following Inverse Functional Identifier properties: "mbox", "mbox_sha1sum", "openid", "account". An LRS rejects with 400 Bad Request any agent object:
+                - Where the IFI property is absent
+                - Where the IFI value is invalid
+                - With more than one IFI
+             */
+                name: 'An "actor" property with "objectType" as "Agent" uses one of the following properties: "mbox", "mbox_sha1sum", "openid", "account" (Multiplicity, Data 2.4.2.1.s2.b1, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor without "account", "mbox", "mbox_sha1sum", "openid" should fail',
@@ -525,7 +537,10 @@
                 ]
             },
             {
-                name: 'An "mbox" property is an IRI (Type, Data 2.4.2.3.s3.table1.row1)',
+            /**  XAPI-00038, Data 2.4.2.3 Inverse Functional Identifier
+             * An "mbox" property has the form "mailto:email address" and is an IRI. An LRS rejects with 400 Bad Request if a statement that uses the “mbox” IFI is an invalid form.
+             */
+                name: 'An "mbox" property is an IRI (Type, Data 2.4.2.3.s3.table1.row1, XAPI-00038)',
                 config: [
                     {
                         name: 'statement actor "agent mbox" not IRI',
@@ -666,8 +681,8 @@
                     }
                 ]
             },
-            {
-                name: 'An "mbox" property has the form "mailto:email address" (Syntax, Data 2.4.2.3.s3.table1.row1)',
+            {   //see above
+                name: 'An "mbox" property has the form "mailto:email address" (Syntax, Data 2.4.2.3.s3.table1.row1, XAPI-00038)',
                 config: [
                     {
                         name: 'statement actor "agent mbox" not mailto:email address',
@@ -809,7 +824,10 @@
                 ]
             },
             {
-                name: 'An "mbox_sha1sum" property is a String (Type, Data 2.4.2.3.s3.table1.row2)',
+            /**  XAPI-00039, Data 2.4.2.3 Inverse Functional Identifier
+             * An "mbox_sha1sum" property is a String An LRS rejects with 400 Bad Request if a statement uses the “mbox_sha1sum” IFI and it is not a valid string.
+             */
+                name: 'An "mbox_sha1sum" property is a String (Type, Data 2.4.2.3.s3.table1.row2, XAPI-00039)',
                 config: [
                     {
                         name: 'statement actor "agent mbox_sha1sum" not string',
@@ -951,7 +969,10 @@
                 ]
             },
             {
-                name: 'An "openid" property is a URI (Type, Data 2.4.2.3.s3.table1.row3)',
+            /**  XAPI-00040, Data 2.4.2.3 Inverse Functional Identifier
+             * An "openid" property is a URI. An LRS rejects with 400 Bad Request if a statement uses the “openID” IFI and the URI is invalid.
+             */
+                name: 'An "openid" property is a URI (Type, Data 2.4.2.3.s3.table1.row3, XAPI-00040)',
                 config: [
                     {
                         name: 'statement actor "agent openid" not URI',
@@ -1093,7 +1114,11 @@
                 ]
             },
             {
-                name: 'An Account Object is the "account" property of a Group or Agent (Definition, Data 2.4.2.4)',
+            /**  XAPI-00041,  Data 2.4.2.3 Inverse Functional Identifier
+             * An “account” property is an object. An LRS rejects with 400 Bad Request if a statement uses an invalid Account Object. A valid account is defined by the requirements listed in XAPI-I-63 and XAPI-I-66
+             * Covers next suite
+             */
+                name: 'An Account Object is the "account" property of a Group or Agent (Definition, Data 2.4.2.4, XAPI-00041)',
                 config: [
                     {
                         name: 'statement actor "agent account" property exists',
@@ -1220,7 +1245,7 @@
                     }
                 ]
             },
-            {
+            {   //see above
                 name: 'An Account Object uses the "homePage" property (Multiplicity, Data 2.4.2.4.s2.table1.row1)',
                 config: [
                     {
@@ -1349,7 +1374,10 @@
                 ]
             },
             {
-                name: 'An Account Object\'s "homePage" property is an IRL (Type, Data 2.4.2.4.s2.table1.row1)',
+            /**  XAPI-00042, 2.4.2.4 Account Object
+             * An Account Object's homePage" property is an IRL. An LRS rejects with 400 Bad Request if a statement uses the “account” IFI and the “homePage” property is absent or has an invalid IRL.
+             */
+                name: 'An Account Object\'s "homePage" property is an IRL (Type, Data 2.4.2.4.s2.table1.row1, XAPI-00042)',
                 config: [
                     {
                         name: 'statement actor "agent" account "homePage property is IRL',
@@ -1491,7 +1519,11 @@
                 ]
             },
             {
-                name: 'An Account Object uses the "name" property (Multiplicity, Data 2.4.2.4.s2.table1.row2)',
+            /**  XAPI-00043, 2.4.2.4 Acoont Object
+             * An Account Object "name" property is a String. An LRS rejects with 400 Bad Request if a statement uses the “account” IFI and the “name” property is absent or has an invalid string.
+             * Covers next suite
+             */
+                name: 'An Account Object uses the "name" property (Multiplicity, Data 2.4.2.4.s2.table1.row2, XAPI-00043)',
                 config: [
                     {
                         name: 'statement actor "agent" account "name" property exists',
@@ -1618,8 +1650,8 @@
                     }
                 ]
             },
-            {
-                name: 'An Account Object "name" property is a String (Type, Data 2.4.2.4.s2.table1.row2)',
+            {   //see above
+                name: 'An Account Object "name" property is a String (Type, Data 2.4.2.4.s2.table1.row2, XAPI-00043)',
                 config: [
                     {
                         name: 'statement actor "agent" account "name" property is string',

@@ -83,7 +83,10 @@
                 ]
             },
             {
-                name: 'A Voiding Statement is defined as a Statement whose "verb" property\'s "id" property\'s IRI ending with "voided" (Data 2.3.2)',
+            /**  XAPI-00019,  2.3.2 Voiding
+             * A Voiding Statement is defined as a Statement whose "verb" property's "id" property's IRI ending with "voided"
+             */
+                name: 'A Voiding Statement is defined as a Statement whose "verb" property\'s "id" property\'s IRI ending with "voided" (Data 2.3.2, XAPI-00019)',
                 config: [
                     {
                         name: 'statement verb voided IRI ends with "voided" (WARNING: this applies "Upon receiving a Statement that voids another, the LRS SHOULD NOT* reject the request on the grounds of the Object of that voiding Statement not being present")',
@@ -96,7 +99,11 @@
                 ]
             },
             {
-                name: 'A Voiding Statement\'s "objectType" field has a value of "StatementRef" (Format, Data 2.3.2.s2.b1)',
+            /**  XAPI-00020,  2.3.2 Voiding
+             * A Voiding Statement's "objectType" field has a value of "StatementRef"
+             ??  does this also cover XAPI-00017?? - An LRS rejects a Voiding Statement with 400 Bad Request if the "objectType" field does not have a value of "StatementRef"
+             */
+                name: 'A Voiding Statement\'s "objectType" field has a value of "StatementRef" (Format, Data 2.3.2.s2.b1, XAPI-00020)',
                 config: [
                     {
                         name: 'statement verb voided uses substatement with "StatementRef"',
