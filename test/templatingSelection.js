@@ -13,13 +13,18 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-    describe('Conformance Requirements using Templating', function () {
+        module.exports = {
+            /**
+             * select template to be run
+             * @returns {Object}
+             */
 
-        var configurations = helper.getTestConfiguration();
+    createTemplate: function(templateName) {
+
+        var configurations = helper.getSingleTestConfiguration(templateName);
 
         configurations.forEach(function(configuration) {
             describe(configuration.name, function () {
-
                 configuration.config.forEach(function(test) {
                     it(test.name, function (done) {
                         if (!test.templates && !test.json) {
@@ -54,6 +59,7 @@
                 });
             });
         });
-    });
+    }
+  };
 
-}(module, process, require('super-request'), require('should'), require('./../helper')));
+}(module, process, require('super-request'), require('should'), require('./helper')));
