@@ -43,6 +43,9 @@
                 ]
             },
             {
+            /**  XAPI-00079, Data 2.4.5.1 score
+             * A "score" property is an Object. The LRS rejects with 400 Bad Request a “score” property which is not a valid object.
+             */
                 name: 'A "score" property is an Object (Type, Data 2.4.5.1)',
                 config: [
                     {
@@ -86,7 +89,10 @@
                 ]
             },
             {
-                name: 'A "score" Object\'s "scaled" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row1)',
+            /**  XAPI-00083, Data 2.4.5.1 score
+             * If the "score" Object uses the "scaled" property, the value must be a decimal number between -1 and 1. The LRS rejects with 400 Bad Request a statement with a Result Object using the “scaled” property (if it is present) which is not a decimal number or is greater than 1 or less than -1.
+             */
+                name: 'A "score" Object\'s "scaled" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row1, XAPI-00083)',
                 config: [
                     {
                         name: 'statement result "scaled" accepts seven significant decimal',
@@ -110,7 +116,10 @@
                 ]
             },
             {
-                name: 'A "score" Object\'s "raw" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row2)',
+            /**  XAPI-00082, Data 2.4.5.1 score
+             * If the "score" Object uses the "raw" property, the value must be a decimal number between the "min" and "max", if they are present. If they are not present "raw" can be any number. The LRS rejects with 400 Bad Request a statement with a Result Object using the “raw” property (if it is present) which is not a decimal number or is greater than the value of the “max” property, if it is present, or lesser than the value of the “min” property, if it is present.
+             */
+                name: 'A "score" Object\'s "raw" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row2, XAPI-00082)',
                 config: [
                     {
                         name: 'statement result "raw" accepts seven significant decimal',
@@ -134,7 +143,10 @@
                 ]
             },
             {
-                name: 'A "score" Object\'s "min" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row3)',
+            /** XAPI-00081, Data 2.4.5.1 score
+             * If the "score" Object uses the "min" property, the value must be a decimal number less than the "max" property, if it is present. If "max" is not present "min" can be any number. The LRS rejects with 400 Bad Request a statement with a Result Object using the “min” property (if it is present) which is not a decimal number or is greater than the value of the “max” property, if it is present.
+             */
+                name: 'A "score" Object\'s "min" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row3, XAPI-00081)',
                 config: [
                     {
                         name: 'statement result "min" accepts seven significant decimal',
@@ -158,7 +170,11 @@
                 ]
             },
             {
-                name: 'A "score" Object\'s "max" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row4)',
+            /**  XAPI-00080, Data 2.4.5.1 score
+             * If the "score" Object uses the "max" property, the value must be a decimal number more than the "min" property, if it is present. If "min" is not present "max" can be any number. The LRS rejects with 400 Bad Request a statement with a Result Object using the “max” property (if it is present) which is not a decimal number or is lesser than the value of the “min” property, if it is present.
+             * If this is the test, this will need to be moved, so that the result can be checked, oh no now that i read closer, no get and check it needed just a couple more tests sending in particular configurations of min and max and expecting 400's or 200's
+             */
+                name: 'A "score" Object\'s "max" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row4, XAPI-00080)',
                 config: [
                     {
                         name: 'statement result "max" accepts seven significant decimal',
@@ -182,7 +198,10 @@
                 ]
             },
             {
-                name: 'A "success" property is a Boolean (Type, ata 2.4.5.s2.table1.row1)',
+            /**  XAPI-00074, Data 2.4.5 result
+             * A "success" property is a Boolean. The LRS rejects with 400 Bad Request a Statement which has a Result Object with a “success” property which does not have a valid Boolean value, if present.
+             */
+                name: 'A "success" property is a Boolean (Type, ata 2.4.5.s2.table1.row1, XAPI-00074)',
                 config: [
                     {
                         name: 'statement result "success" property is string "true"',
@@ -225,7 +244,10 @@
                 ]
             },
             {
-                name: 'A "completion" property is a Boolean (Type, Data 2.4.5.s2.table1.row2)',
+            /**  XAPI-00075, Data 2.4.5 result
+             * A "completion" property is a Boolean. The LRS rejects with 400 Bad Request a Statement which has a Result Object with a “completion” property which does not have a valid Boolean value, if present.
+             */
+                name: 'A "completion" property is a Boolean (Type, Data 2.4.5.s2.table1.row2, XAPI-00075)',
                 config: [
                     {
                         name: 'statement result "completion" property is string "true"',
@@ -268,7 +290,10 @@
                 ]
             },
             {
-                name: 'A "response" property is a String (Type, Data 2.4.5.s2.table1.row3)',
+            /**  XAPI-00076, Data 2.4.5 result
+             * A "response" property is a String. The LRS rejects with 400 Bad Request a Statement which has a Result Object with a “response” property which does not have a valid String value, if present.
+             */
+                name: 'A "response" property is a String (Type, Data 2.4.5.s2.table1.row3, XAPI-00076)',
                 config: [
                     {
                         name: 'statement result "response" property is numeric',
@@ -311,7 +336,10 @@
                 ]
             },
             {
-                name: 'A "duration" property is a formatted to ISO 8601 (Type, Data 2.4.5.s2.table1.row4)',
+            /**  XAPI-00077, Data 2.4.5 result
+             * A "duration" property is a formatted to ISO 8601 durations (see part 3, section 4.6). The LRS rejects with 400 Bad Request a Statement which has a Result Object with a “duration” property which does not have a valid ISO 8601 value, if present.
+             */
+                name: 'A "duration" property is a formatted to ISO 8601 (Type, Data 2.4.5.s2.table1.row4, XAPI-00077)',
                 config: [
                     {
                         name: 'statement result "duration" property is invalid',
@@ -334,7 +362,7 @@
                     }
                 ]
             },
-            {
+            {   //see above
                 name: 'A "duration" property keeps at least 0.01 seconds of precision (Type, Data 2.4.5.s2.table1.row4)',
                 config: [
                     {
@@ -359,7 +387,10 @@
                 ]
             },
             {
-                name: 'An "extensions" property is an Object (Type, Data 2.4.5.s2.table1.row6)',
+            /**  XAPI-00078, Data 2.4.5 result
+             * An "extensions" property is an Object. The LRS rejects with 400 Bad Request a Statement which has a Result Object with aa “extensions” property which does not have a valid Extensions Object, if present.
+             */
+                name: 'An "extensions" property is an Object (Type, Data 2.4.5.s2.table1.row6, XAPI-00078)',
                 config: [
                     {
                         name: 'statement result "extensions" property is numeric',

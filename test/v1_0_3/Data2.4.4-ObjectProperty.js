@@ -150,16 +150,16 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
     //Data 2.4.4.3 - when the object is a statement
 /** Matchup with Conformance Requirements Document
  * XAPI-00066 - in substatements.js
- * XAPI-00067 -
- * XAPI-00068 -
- * XAPI-00069 -
- * XAPI-00070 -
- * XAPI-00071 -
- * XAPI-00072 -
- * XAPI-00073 -
+ * XAPI-00067 - in substatements.js
+ * XAPI-00068 - in substatements.js
+ * XAPI-00069 - in substatements.js
+ * XAPI-00070 - in substatements.js
+ * XAPI-00071 - in substatements.js
+ * XAPI-00072 - in statementrefs.js
+ * XAPI-00073 - in statementrefs.js
  */
-    templatingSelection.createTemplate('statementrefs.js')
     templatingSelection.createTemplate('substatements.js')
+    templatingSelection.createTemplate('statementrefs.js')
 
 });
 

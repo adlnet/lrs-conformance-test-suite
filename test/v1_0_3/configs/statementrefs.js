@@ -36,7 +36,10 @@
                 ]
             },
             {
-                name: 'A Statement Reference is defined by the "objectType" of an "object" with value "StatementRef" (Data 2.4.4.3.s4.b1)',
+            /**  XAPI-00073, Data 2.4.4.3 when object is a statement
+             * Statements that have a StatementRef or Sub-Statement as an Object MUST specify an "objectType" property. The LRS rejects with 400 Bad Request if the “objectType” property is absent and the Object is a StatementRef or Sub-Statement.
+             */
+                name: 'A Statement Reference is defined by the "objectType" of an "object" with value "StatementRef" (Data 2.4.4.3.s4.b1, XAPI-00073)',
                 config: [
                     {
                         name: 'statementref invalid when not "StatementRef"',
@@ -58,7 +61,10 @@
                 ]
             },
             {
-                name: 'A Statement Reference contains an "id" property (Multiplicity, Data 2.4.4.3.s4.table1.row2)',
+            /**  XAPI-00072, Data 2.4.4.3 when object is a statement
+            * A Statement Reference's "id" property is a UUID. The LRS rejects with 400 Bad Request a Statement Reference Object with an “id” property which is absent or an invalid UUID.
+            */
+                name: 'A Statement Reference contains an "id" property (Multiplicity, Data 2.4.4.3.s4.table1.row2, XAPI-00072)',
                 config: [
                     {
                         name: 'statementref invalid when missing "id"',
@@ -78,7 +84,7 @@
                 ]
             },
             {
-                name: 'A Statement Reference\'s "id" property is a UUID (Type, Data 2.4.4.3.s4.table1.row2)',
+                name: 'A Statement Reference\'s "id" property is a UUID (Type, Data 2.4.4.3.s4.table1.row2, XAPI-00072)',
                 config: [
                     {
                         name: 'statementref "id" not "uuid"',

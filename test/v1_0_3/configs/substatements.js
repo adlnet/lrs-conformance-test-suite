@@ -115,6 +115,9 @@
                 ]
             },
             {
+            /**  XAPI-00071, Data 2.4.4.3 when object is a statement
+             * A Sub-Statement cannot have a Sub-Statement. The LRS rejects with 400 Bad Request a Statement with a Sub-Statement which contains a Sub-Statement.
+             */
                 name: 'A Sub-Statement cannot have a Sub-Statement (Data 2.4.4.3.s8.b4)',
                 config: [
                     {
@@ -129,6 +132,9 @@
                 ]
             },
             {
+            /**  XAPI-00070, Data 2.4.4.3 when object is a statement
+             * A Sub-Statement cannot use the "id" property at the Statement level The LRS rejects with 400 Bad Request a Statement with a Sub-Statement where the “id” property is present.
+             */
                 name: 'A Sub-Statement cannot use the "id" property at the Statement level (Data 2.4.4.3.s8.b3)',
                 config: [
                     {
@@ -143,7 +149,10 @@
                 ]
             },
             {
-                name: 'A Sub-Statement cannot use the "stored" property (Data 2.4.4.3.s8.b3)',
+            /**  XAPI-00069, Data 2.4.4.3 when object is a statement
+             * A Sub-Statement cannot use the "stored" property. The LRS rejects with 400 Bad Request a Statement with a Sub-Statement where the “stored” property is present.
+             */
+                name: 'A Sub-Statement cannot use the "stored" property (Data 2.4.4.3.s8.b3, XAPI-00069)',
                 config: [
                     {
                         name: 'substatement invalid with property "stored"',
@@ -157,7 +166,10 @@
                 ]
             },
             {
-                name: 'A Sub-Statement cannot use the "version" property (Data 2.4.4.3.s8.b3)',
+            /**  XAPI-00068, Data 2.4.4.3 when object is a statement
+             * A Sub-Statement cannot use the "version" property. The LRS rejects with 400 Bad Request a Statement with a Sub-Statement where the “version” property is present.
+             */
+                name: 'A Sub-Statement cannot use the "version" property (Data 2.4.4.3.s8.b3, XAPI-00068)',
                 config: [
                     {
                         name: 'substatement invalid with property "version"',
@@ -171,7 +183,10 @@
                 ]
             },
             {
-                name: 'A Sub-Statement cannot use the "authority" property (Data 2.4.4.3.s8.b3)',
+            /**  XAPI-00067, Data 2.4.4.3 when object is a statement
+             * A Sub-Statement cannot use the "authority" property. The LRS rejects with 400 Bad Request a Statement with a Sub-Statement where the “authority” property is present.
+             */
+                name: 'A Sub-Statement cannot use the "authority" property (Data 2.4.4.3.s8.b3, XAPI-00067)',
                 config: [
                     {
                         name: 'substatement invalid with property "authority"',
