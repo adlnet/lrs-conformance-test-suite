@@ -39,7 +39,10 @@
                 ]
             },
             {
-                name: 'A Sub-Statement follows the requirements of all Statements (Data 2.4.4.3.s8.b2)',
+            /**  XAPI-00066, Data 2.4.4.3 when object is a statement
+             * A Sub-Statement follows the requirements of all Statements. The LRS rejects with 400 Bad Request a Statement with a Sub-Statement with any invalid statement properties in an otherwise valid sub-statement.
+             */
+                name: 'A Sub-Statement follows the requirements of all Statements (Data 2.4.4.3.s8.b2, XAPI-00066)',
                 config: [
                     {
                         name: 'substatement requires actor',

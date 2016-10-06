@@ -15,13 +15,13 @@
 
 describe('Object Property Requirements (Data 2.4.4)', () => {
 
-    //Data 2.4.4
+    //Data 2.4.4 object
 /**  Matchup with Conformance Requirements Document
  * XAPI-00046 - in objects.js
  */
     templatingSelection.createTemplate('objects.js');
 
-    //Data 2.4.4.1
+    //Data 2.4.4.1 when objectType is activity
 /**  Matchup with Conformance Requirements Document
  * XAPI-00047 - in activities.js
  * XAPI-00048 - in activities.js
@@ -33,13 +33,13 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
  * XAPI-00054 - in activities.js
  * XAPI-00055 - in activities.js
  * XAPI-00056 - in activities.js
- * XAPI-00057 -
- * XAPI-00058 -
- * XAPI-00059 -
- * XAPI-00060 -
- * XAPI-00061 -
- * XAPI-00062 -
- * XAPI-00063 -
+ * XAPI-00057 - in activities.js
+ * XAPI-00058 - in activities.js
+ * XAPI-00059 - in activities.js
+ * XAPI-00060 - in activities.js
+ * XAPI-00061 - in activities.js
+ * XAPI-00062 - not found yet
+ * XAPI-00063 - in activities.js
  * XAPI-00064 - below
  */
     templatingSelection.createTemplate("activities.js");
@@ -142,7 +142,22 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
 
     });
 
-    //Data 2.4.4.3
+    //Data 2.4.4.2 - when the object is an agent or a group
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00065 - not found yet - Statements that use an Agent or Group as an Object MUST specify an "objectType" property. The LRS rejects with 400 Bad Request if the “objectType” property is absent and the Object is an Agent Object or Group Object.
+ */
+
+    //Data 2.4.4.3 - when the object is a statement
+/** Matchup with Conformance Requirements Document
+ * XAPI-00066 - in substatements.js
+ * XAPI-00067 -
+ * XAPI-00068 -
+ * XAPI-00069 -
+ * XAPI-00070 -
+ * XAPI-00071 -
+ * XAPI-00072 -
+ * XAPI-00073 -
+ */
     templatingSelection.createTemplate('statementrefs.js')
     templatingSelection.createTemplate('substatements.js')
 

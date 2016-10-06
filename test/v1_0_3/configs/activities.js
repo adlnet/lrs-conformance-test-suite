@@ -212,7 +212,7 @@
                     }
                 ]
             },
-            {
+            {   //see above
                 name: 'An "object" property\'s "id" property is an IRI (Type, Data 2.2.4.4.1.table1.row2)',
                 config: [
                     {
@@ -489,7 +489,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "description" property is a Language Map (Type, Data 2.4.4.1.s2.table1.row2)',
+            /**  XAPI-00059, Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "description" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Activity Definition's "description" property is present and is an invalid Language Map.
+             */
+                name: 'An Activity Definition\'s "description" property is a Language Map (Type, Data 2.4.4.1.s2.table1.row2, XAPI-00059)',
                 config: [
                     {
                         name: 'statement object "description" language map is numeric',
@@ -532,7 +535,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "type" property is an IRI (Type, Data 2.4.4.1.s2.table1.row3)',
+            /**  XAPI-00060, Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "type" property is an IRI. The LRS rejects with 400 Bad Request an otherwise legal statement if the Activity Definition's "type" property is present and is an invalid IRI.
+             */
+                name: 'An Activity Definition\'s "type" property is an IRI (Type, Data 2.4.4.1.s2.table1.row3, XAPI-00060)',
                 config: [
                     {
                         name: 'statement activity "type" not IRI',
@@ -556,7 +562,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "moreinfo" property is an IRL (Type, Data 2.4.4.1.s2.table1.row4)',
+            /**  XAPI-00061, Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "moreinfo" property is an IRL. The LRS rejects with 400 Bad Request an otherwise legal statement if the Activity Definition's "moreinfo" property is present and is an invalid IRL.
+             */
+                name: 'An Activity Definition\'s "moreinfo" property is an IRL (Type, Data 2.4.4.1.s2.table1.row4, XAPI-00061)',
                 config: [
                     {
                         name: 'statement activity "moreInfo" not IRI',
@@ -1438,7 +1447,10 @@
                 ]
             },
             {
-                name: 'An Interaction Component is an Object (Data 2.4.4.1.s14)',
+            /**  XAPI-00063, Data 2.4.4.1 when objectType is activity
+             * An individual Interaction Component, within the array of Interaction Components, is an Object. The LRS rejects with 400 Bad Request an otherwise legal statement if the Interaction Component is present and is an invalid Object.
+             */
+                name: 'An Interaction Component is an Object (Data 2.4.4.1.s14, XAPI-00063)',
                 config: [
                     {
                         name: 'statement activity "choice choices" is not an object',
@@ -1557,7 +1569,10 @@
                 ]
             },
             {
-                name: 'Interaction Component contains an "id" property (Multiplicity, Data 2.4.4.1.s15.table1.row1)',
+            /**  XAPI-00058, Data 2.4.4.1 when objectType is activity
+             * Within an array of Interaction Components, the "id" property is a string which is required and unique (within the specific interaction array). The LRS rejects with 400 Bad Request an interaction activity with an array of interaction components in which the “id” property is absent, duplicative, or an invalid string.
+             */
+                name: 'Interaction Component contains an "id" property (Multiplicity, Data 2.4.4.1.s15.table1.row1, XAPI-00058)',
                 config: [
                     {
                         name: 'statement activity "choice choices" missing "id"',
@@ -1675,8 +1690,8 @@
                     }
                 ]
             },
-            {
-                name: 'An Interaction Component\'s "id" property is a String (Type, Data 2.4.4.1.s15.table1.row1)',
+            {   //see above
+                name: 'An Interaction Component\'s "id" property is a String (Type, Data 2.4.4.1.s15.table1.row1, XAPI-00058)',
                 config: [
                     {
                         name: 'statement activity "choice choices id" not a string',
@@ -1794,7 +1809,7 @@
                     }
                 ]
             },
-            {
+            {   //see above
                 name: 'Within an array of Interaction Components, the "id" property is unique (Multiplicty, Data 2.4.4.1.s16.b1)',
                 config: [
                     {
@@ -1914,7 +1929,10 @@
                 ]
             },
             {
-                name: 'An Activity Definition\'s "extension" property is an Object (Type, Data 2.4.4.1.s2.table1.row5)',
+            /**  XAPI-00057,  Data 2.4.4.1 when objectType is activity
+             * An Activity Definition's "extension" property is an Object. The LRS rejects with 400 Bad Request an otherwise legal statement if the Activity Definition's "extension" property is present and is an invalid Extension Object.
+             */
+                name: 'An Activity Definition\'s "extension" property is an Object (Type, Data 2.4.4.1.s2.table1.row5, XAPI-00057)',
                 config: [
                     {
                         name: 'statement activity "extension" invalid string',
