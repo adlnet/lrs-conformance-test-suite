@@ -16,9 +16,31 @@
 describe('Context Property Requirements (Data 2.4.6)', () => {
 
     //Data 2.4.6.s3
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00084 - in contexts.js
+ * XAPI-00085 - in contexts.js
+ * XAPI-00086 - in contexts.js
+ * XAPI-00087-1 - in contexts.js
+ * XAPI-00087-2 - in contexts.js
+ * XAPI-00088 - in contexts.js
+ * XAPI-00089 - in contexts.js
+ * XAPI-00090 - in contexts.js
+ * XAPI-00091 - in contexts.js
+ * XAPI-00092 - in contexts.js
+ */
     templatingSelection.createTemplate('contexts.js');
 
-    describe('An LRS returns a ContextActivity in an array, even if only a single ContextActivity is returned (Data 2.4.6.2.s4.b3)', function () {
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00093 - in contexts.js
+ * XAPI-00094 - in contexts.js
+ * XAPI-00095 - in contexts.js
+ * XAPI-00096 - below
+ */
+
+/**  XAPI-00096, Data 2.4.6.2 ContextActivities Property
+ * An LRS's Statement Resource returns a ContextActivity in an array, even if only a single ContextActivity is returned.
+ */
+    describe('An LRS returns a ContextActivity in an array, even if only a single ContextActivity is returned (Data 2.4.6.2.s4.b3, XAPI-00096)', function () {
         var types = ['parent', 'grouping', 'category', 'other'];
         this.timeout(0);
 

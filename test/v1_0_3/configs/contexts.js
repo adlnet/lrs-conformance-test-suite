@@ -44,7 +44,10 @@
                 ]
             },
             {
-                name: 'A "registration" property is a UUID (Type, Data 2.4.6.s3.table1.row1)',
+            /**  XAPI-00087-1, Data 2.4.6 Context
+             * A "registration" property is a UUID. The LRS rejects with 400 Bad Request a statement with a “registration” property which is not a valid UUID.
+             */
+                name: 'A "registration" property is a UUID (Type, Data 2.4.6.s3.table1.row1, XAPI-00087-1)',
                 config: [
                     {
                         name: 'statement context "registration" is object',
@@ -87,7 +90,10 @@
                 ]
             },
             {
-                name: 'An "instructor" property is an Agent (Type, Data 2.4.6.s3.table1.row2)',
+            /**  XAPI-00087-2, Data 2.4.6 Context
+             * An "instructor" property is an Agent. The LRS rejects with 400 Bad Request a statement with an “instructor” property which is not a valid Agent.
+             */
+                name: 'An "instructor" property is an Agent (Type, Data 2.4.6.s3.table1.row2, XAPI-00087-2)',
                 config: [
                     {
                         name: 'statement context "instructor" is object',
@@ -130,6 +136,9 @@
                 ]
             },
             {
+            /**  XAPI-00088, Data 2.4.6 Context
+             * An "team" property is a Group. The LRS rejects with 400 Bad Request a statement with a “team” property which is not a valid Group.
+             */
                 name: 'An "team" property is a Group (Type, Data 2.4.6.s3.table1.row3)',
                 config: [
                     {
@@ -192,7 +201,10 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property is an Object (Type, Data 2.4.6.s3.table1.row4)',
+            /**  XAPI-00086, Data 2.4.6 Context
+             * A "contextActivities" property is an Object. The LRS rejects with 400 Bad Request a statement with a “contextActivities” property which is not a valid object.
+             */
+                name: 'A "contextActivities" property is an Object (Type, Data 2.4.6.s3.table1.row4, XAPI-00086)',
                 config: [
                     {
                         name: 'statement context "contextActivities" is string',
@@ -216,7 +228,10 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property contains one or more key/value pairs (Format, Data 2.4.6.2.s4.b2)',
+            /**  XAPI-00095, Data 2.4.6.2 ContextActivities Property
+             * A "contextActivities" property contains one or more key/value pairs. The LRS rejects with 400 Bad Request a statement which has an empty “contextActivities” property.
+             */
+                name: 'A "contextActivities" property contains one or more key/value pairs (Format, Data 2.4.6.2.s4.b2, XAPI-00095)',
                 config: [
                     {
                         name: 'statement context "contextActivities" is empty',
@@ -240,7 +255,10 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property\'s "key" has a value of "parent", "grouping", "category", or "other" (Format, Data 2.4.6.2.s4.b1)',
+            /**  XAPI-00093, Data 2.4.6.2 ContextActivities Property
+             * A "contextActivities" property's "key" has a value of "parent", "grouping", "category", or "other". The LRS rejects with 400 Bad Request a statement which has a key other than "parent", "grouping", "category", or "other" for the “contextActivities” property
+             */
+                name: 'A "contextActivities" property\'s "key" has a value of "parent", "grouping", "category", or "other" (Format, Data 2.4.6.2.s4.b1, XAPI-00093)',
                 config: [
                     {
                         name: 'statement context "contextActivities" is "parent"',
@@ -313,7 +331,10 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property\'s "value" is an Activity (Format, Data 2.4.6.2.s4.b2)',
+            /**  XAPI-00094, Data 2.4.6.2 ContextActivities Property
+             * A "contextActivities" property's "value" is an Activity. The LRS rejects with 400 Bad Request a statement which has a value which is not an Activity for the “contextActivities” property.
+             */
+                name: 'A "contextActivities" property\'s "value" is an Activity (Format, Data 2.4.6.2.s4.b2, XAPI-00094)',
                 config: [
                     {
                             name: 'statement context "contextActivities parent" value is activity array',
@@ -499,7 +520,10 @@
                 ]
             },
             {
-                name: 'A "revision" property is a String (Type, Data 2.4.6.s3.table1.row5)',
+            /**  XAPI-00089, Data 2.4.6 Context
+             * A "revision" property is a String. The LRS rejects with 400 Bad Request a statement with a “revision” property which is not a valid string.
+             */
+                name: 'A "revision" property is a String (Type, Data 2.4.6.s3.table1.row5, XAPI-00089)',
                 config: [
                     {
                         name: 'statement context "revision" is numeric',
@@ -542,7 +566,10 @@
                 ]
             },
             {
-                name: 'A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (Data 2.4.6.s4.b1)',
+            /**  XAPI-00084, Data 2.4.6 Context
+            * A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property's "objectType" be anything but "Activity". The LRS rejects a statement with 400 Bad Request if contains a "revision" property in its "context" property and does not have an Object with an “objectType” value of “activity” or an Object where the “objectType” property is absent.
+            */
+                name: 'A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (Data 2.4.6.s4.b1, XAPI-00084)',
                 config: [
                     {
                         name: 'statement context "revision" is invalid with object agent',
@@ -606,7 +633,10 @@
                 ]
             },
             {
-                name: 'A "platform" property is a String (Type, Data 2.4.6.s3.table1.row6)',
+            /**  XAPI-00090, Data 2.4.6 Context
+             * A "platform" property is a String. The LRS rejects with 400 Bad Request a statement with a “platform” property which is not a valid string.
+             */
+                name: 'A "platform" property is a String (Type, Data 2.4.6.s3.table1.row6, XAPI-00090)',
                 config: [
                     {
                         name: 'statement context "platform" is numeric',
@@ -649,7 +679,10 @@
                 ]
             },
             {
-                name: 'A Statement cannot contain both a "platform" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (Data 2.4.6.s4.b2)',
+            /**  XAPI-00085, Data 2.4.6 Context
+            * A Statement cannot contain a "platform" property in its "context" property and have the value of the "object" property's "objectType" be anything but "Activity". The LRS rejects a statement with 400 Bad Request if contains a "platform" property in its "context" property and does not have an Object with an “objectType” value of “activity” or an Object where the “objectType” property is absent.
+            */
+                name: 'A Statement cannot contain both a "platform" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (Data 2.4.6.s4.b2, XAPI-00085)',
                 config: [
                     {
                         name: 'statement context "platform" is invalid with object agent',
@@ -713,7 +746,11 @@
                 ]
             },
             {
-                name: 'A "language" property is a String (Type, Data 2.4.6.s3.table1.row7)',
+            /**  XAPI-00091, Data 2.4.6 Context
+             * A "language" property is a String which follows RFC 5646. The LRS rejects with 400 Bad Request a statement with a “language” property which is not a valid RFC 5646 string.
+             * And see below
+             */
+                name: 'A "language" property is a String (Type, Data 2.4.6.s3.table1.row7, XAPI-00091)',
                 config: [
                     {
                         name: 'statement context "language" is numeric',
@@ -759,7 +796,7 @@
             /**  XAPI-00013  2.2 Formatting Requirements
              * The LRS rejects with error code 400 Bad Request a token with does not validate as matching the RFC 5646 standard in the sequence of token lengths for language map keys.
              */
-                name: 'A "language" property follows RFC5646 (Format, Data 2.4.6.s3.table1.row7, RFC5646)',
+                name: 'A "language" property follows RFC5646 (Format, Data 2.4.6.s3.table1.row7, RFC5646, XAPI-00013)',
                 config: [
                     {
                         name: 'statement context "language" is is invalid language',
@@ -783,7 +820,10 @@
                 ]
             },
             {
-                name: 'A "statement" property is a Statement Reference (Type, Data 2.4.6.s3.table1.row8)',
+            /**  XAPI-00092, Data 2.4.6 Context
+             * A "statement" property is a Statement Reference. The LRS rejects with 400 Bad Request a statement with a “statement” property which is not a valid StatementRef.
+             */
+                name: 'A "statement" property is a Statement Reference (Type, Data 2.4.6.s3.table1.row8, XAPI-00092)',
                 config: [
                     {
                         name: 'statement context "statement" invalid with "statementref"',
