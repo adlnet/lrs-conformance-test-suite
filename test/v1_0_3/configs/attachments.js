@@ -102,7 +102,10 @@
                 ]
             },
             {
-                name: 'A "usageType" property is an IRI (Multiplicity, Data 2.4.11.s2.table1.row1)',
+            /**  XAPI-00107, Data 2.4.11 Attachments
+             * A "usageType" property is an IRI. The LRS rejects with 400 Bad Request a statement which does not have a "usageType" property or the "usageType" property value is not a valid IRI in the Attachment Object.
+             */
+                name: 'A "usageType" property is an IRI (Multiplicity, Data 2.4.11.s2.table1.row1, XAPI-00107)',
                 config: [
                     {
                         name: 'statement "usageType" invalid string',
@@ -115,7 +118,10 @@
                 ]
             },
             {
-                name: 'A "contentType" property is an Internet Media/MIME type (Format, Data 2.4.11.s2.table1.row4)',
+            /**  XAPI-00105, Data 2.4.11 Attachment
+             * A "contentType" property is an Internet Media/MIME type. The LRS rejects with 400 Bad Request a statement which does not have a “contentType” property or the “contentType” property value is not Internet Media/MIME in the Attachment Object.
+             */
+                name: 'A "contentType" property is an Internet Media/MIME type (Format, Data 2.4.11.s2.table1.row4, XAPI-00105)',
                 config: [
                     {
                         name: 'statement "contentType" invalid string',
@@ -128,7 +134,10 @@
                 ]
             },
             {
-                name: 'A "length" property is an Integer (Format, Data 2.4.11.s2.table1.row5)',
+            /**  XAPI-00102, Data 2.4.11 Attachments
+             * A "length" property is an Integer. The LRS rejects with 400 Bad Request a statement whichdoes not have a “length” property or the “length” property is not a valid integer in octets in the Attachment Object.
+             */
+                name: 'A "length" property is an Integer (Format, Data 2.4.11.s2.table1.row5, XAPI-00102)',
                 config: [
                     {
                         name: 'statement "length" invalid string',
@@ -141,7 +150,10 @@
                 ]
             },
             {
-                name: 'A "sha2" property is a String (Format, Data 2.4.11.s2.table1.row6)',
+            /**  XAPI-00103, Data 2.4.11 Attachments
+             * A "sha2" property is a String. The LRS rejects with 400 Bad Request a statement which does not have a “sha2” property or the ”sha2” property is not a valid hash in the Attachment Object.
+             */
+                name: 'A "sha2" property is a String (Format, Data 2.4.11.s2.table1.row6, XAPI-00103)',
                 config: [
                     {
                         name: 'statement "sha2" invalid string',
@@ -154,7 +166,10 @@
                 ]
             },
             {
-                name: 'A "fileUrl" property is an IRL (Format, Data 2.4.11.s2.table1.row7)',
+            /**  XAPI-00104, Data 2.4.11 Attachments
+             * A "fileUrl" property is an IRL. The LRS rejects with 400 Bad Request a statement the “fileURL” property if it is present and it is not a valid IRL in the Attachment Object.
+             */
+                name: 'A "fileUrl" property is an IRL (Format, Data 2.4.11.s2.table1.row7, XAPI-00104)',
                 config: [
                     {
                         name: 'statement "fileUrl" invalid string',
@@ -167,7 +182,10 @@
                 ]
             },
             {
-                name: 'A "display" property is a Language Map (Type, Data 2.4.11.s2.table1.row2)',
+            /**  XAPI-00106, Data 2.4.11 Attachments
+             * A "display" property is a Language Map. The LRS rejects with 400 Bad Request a statement which does not have a “display” property or the “display” property value is not a valid Language Map in the Attachment Object.
+             */
+                name: 'A "display" property is a Language Map (Type, Data 2.4.11.s2.table1.row2, XAPI-00106)',
                 config: [
                     {
                         name: 'statement attachment "description" language map numeric',

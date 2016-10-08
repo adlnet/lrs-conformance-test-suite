@@ -15,6 +15,15 @@
 
 describe('Attachments Property Requirements (Data 2.4.11)', () => {
 
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00102 - in attachments.js
+ * XAPI-00103 - in attachments.js
+ * XAPI-00104 - in attachments.js
+ * XAPI-00105 - in attachments.js
+ * XAPI-00106 - in attachments.js
+ * XAPI-00107 - in attachments.js
+ */
+
     templatingSelection.createTemplate('attachments.js');
 
     describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "Content-Type" with value "multipart/mixed" (RFC 1341, Data 2.4.11)', function () {
