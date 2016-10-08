@@ -98,7 +98,10 @@
                 ]
             },
             {
-                name: 'An "authority" property which is also a Group contains exactly two Agents (Type, Data 2.4.9.s3.b1)',
+            /**  XAPI-00098, Data 2.4.9 Authority
+             * An "authority" property which is also a Group contains exactly two Agents. The LRS rejects with 400 Bad Request a statement which has an “authority” property with a “objectType” of “Group” with more or less than two Oauth Agents as values of the “member” property.
+             */
+                name: 'An "authority" property which is also a Group contains exactly two Agents (Type, Data 2.4.9.s3.b1, XAPI-00098)',
                 config: [
                     {
                         name: 'statement "authority" invalid one member',
@@ -120,7 +123,7 @@
                     }
                 ]
             },
-            {
+            {   //see above
                 name: 'An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group of more than two Agents (Format, Data 2.4.9.s3.b1)',
                 config: [
                     {
