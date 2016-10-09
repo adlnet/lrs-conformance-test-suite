@@ -125,7 +125,10 @@
                 ]
             },
             {
-                name: 'A TimeStamp is defined as a Date/Time formatted according to ISO 8601 (Format, Data 4.5.s1.b1, ISO8601)',
+            /**  XAPI-00123, Data 4.5 ISO8601 Timestamps
+             * A Timestamp must conform to ISO 8601 Date format. An LRS rejects a statement with a Timestamp which doesn’t validate to ISO 8601 Extended or ISO 8601 Basic.
+             */
+                name: 'A TimeStamp is defined as a Date/Time formatted according to ISO 8601 (Format, Data 4.5.s1.b1, ISO8601, XAPI-00123)',
                 config: [
                     {
                         name: 'statement "template" invalid string',

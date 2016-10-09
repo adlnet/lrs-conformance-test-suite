@@ -280,7 +280,10 @@
                 ]
             },
             {
-                name: 'A Language Map follows RFC5646 (Format, Data 4.2.s1, RFC5646)',
+            /**  XAPI-00121, Data 4.2 Language Maps
+             * A Language Map follows RFC 5646. The LRS rejects with 400 a statement using a Language Map which doesn’t not validate to RFC 5646.
+             */
+                name: 'A Language Map follows RFC5646 (Format, Data 4.2.s1, RFC5646, XAPI-00121)',
                 config: [
                     {
                         name: 'statement verb "display" language map invalid',

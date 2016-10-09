@@ -20,7 +20,11 @@
     module.exports.config = function () {
         return [
             {
-                name: 'An Extension is defined as an Object of any "extensions" property (Multiplicity, Data 4.1.s2)',
+            /**  XAPI-00120, Data 4.1 Extensions
+             * An Extension's structure is that of "key"/"value" pairs. The LRS rejects with 400 a statement which does not use valid “key”/”value” pairs in the Extension property
+             * These are all 200's, find or make tests for the 400
+             */
+                name: 'An Extension is defined as an Object of any "extensions" property (Multiplicity, Data 4.1.s2, XAPI-00120)',
                 config: [
                     {
                         name: 'statement activity extensions valid boolean',
@@ -253,7 +257,11 @@
                 ]
             },
             {
-                name: 'An Extension can be empty (Format, Data 4.1)',
+            /**  XAPI-00119, Data 4.1 Extensions
+             * An Extension can be null, an empty string, objects with nothing in them. The LRS accepts with 200 if a PUT or 204 if a POST an otherwise valid statement which has any extension value including null, an empty string, or an empty object.
+             * These are all 'empty' and POST, make tests for other emptys and PUT
+             */
+                name: 'An Extension can be empty (Format, Data 4.1, XAPI-00119)',
                 config: [
                     {
                         name: 'statement activity extensions can be empty',
@@ -315,7 +323,10 @@
                 ]
             },
             {
-                name: 'An Extension "key" is an IRI (Format, Data 4.1.s3.b1)',
+            /**  XAPI-00118, Data 4.1 Extensions
+             * An Extension "key" is an IRI. The LRS rejects with 400 a statement which has an extension key which is not a valid IRI, if an extension object is present.
+             */
+                name: 'An Extension "key" is an IRI (Format, Data 4.1.s3.b1, XAPI-00118)',
                 config: [
                     {
                         name: 'statement activity extensions key is not an IRI',
