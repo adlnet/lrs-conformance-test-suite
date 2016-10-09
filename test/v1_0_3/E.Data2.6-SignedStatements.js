@@ -13,6 +13,12 @@
 
 describe('Signed Statements (Data 2.6)', () => {
 
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00115 - not found yet - A Signed Statement MUST include a JSON web signature (JWS) as defined here: http://tools.ietf.org/html/rfc7515 , as an Attachment with a usageType of http://adlnet.gov/expapi/attachments/signature and a contentType of application/octet-stream. The LRS must reject with 400 a statement which has usageType of http://adlnet.gov/expapi/attachments/signature and a contentType of application/octet-stream but does not have a signature attached.
+ * XAPI-00116 - below
+ * XAPI-00117 - below
+ */
+
     describe('LRS must validate and store statement signatures if they are provided (Data 2.6)', function () {
 
         var templates = [
@@ -55,7 +61,10 @@ describe('Signed Statements (Data 2.6)', () => {
                 });
         });
 
-        it("LRS must reject with 400 a signed statement with malformed signature - bad algorithm (Data 2.6.s4.b4)", function (done) {
+/**  XAPI-00117, Data 2.6 Signed Statements
+ * The JWS signature MUST use an algorithm of "RS256", "RS384", or "RS512". The LRS must reject with 400 a statement which does not use one of these algorithms or does not use one of these algorithms correctly.
+ */
+        it("LRS must reject with 400 a signed statement with malformed signature - bad algorithm (Data 2.6.s4.b4, XAPI-00117)", function (done) {
             data.id = helper.generateUUID();
             var options = {algorithm: 'HS256'};
             var body = helper.signStatement(data, options);
@@ -70,7 +79,10 @@ describe('Signed Statements (Data 2.6)', () => {
                 });
         });
 
-        it("LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement (Data 2.6.s4.b3)", function (done) {
+/**  XAPI-00016, Data 2.6 Signed Statements
+ * The JWS signature MUST have a payload of a valid JSON serialization of the complete Statement before the signature was added.The LRS must reject with 400 a statement which does not have a valid JSON serialization.
+ */
+        it("LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement (Data 2.6.s4.b3, XAPI-00016)", function (done) {
             data.id = helper.generateUUID();
             var options = {breakJson: true};
             var body = helper.signStatement(data, options);
