@@ -126,7 +126,10 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
             });
     });
 
-    it('A Document Merge overwrites any duplicate Objects from the previous document with the new document. (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3)', function () {
+/**  XAPI-00184, Communication 2.2 Documents Resources
+ * A Document Merge overwrites any duplicate values from the previous document with the new document.
+ */
+    it('A Document Merge overwrites any duplicate Objects from the previous document with the new document. (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3, XAPI-00184)', function () {
         var parameters = helper.buildState(),
             document = {
                 car: 'MKX'
