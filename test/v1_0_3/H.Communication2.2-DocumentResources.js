@@ -15,6 +15,14 @@
 
 describe('Document Resource Requirements (Communication 2.2)', () => {
 
+/**  Macthup
+ * XAPI-00182 - not found yet - An LRS makes no modifications to stored data for any rejected request.
+ * XAPI-00183 - below
+ * XAPI-00184 - below
+ * XAPI-00185 - not found yet - A Document Merge re-serializes all Objects to finalize a single document
+ * XAPI-00186 - not found yet - A Document Merge de-serializes all Objects represented by each document before making other changes.
+ */
+
     it('An LRS has a State Resource with endpoint "base IRI"+"/activities/state" (Communication 2.2.s3.table1.row1)', function () {
         //Also covers An LRS will accept a POST request to the State Resource
         var parameters = helper.buildState(),
@@ -152,7 +160,10 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
             });
     });
 
-    it('A Document Merge only performs overwrites at one level deep, although the entire object is replaced. (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3)', function () {
+/**  XAPI-00183, Communication 2.2 Documents Resources
+ * A Document Merge only performs overwrites at one level deep, although the entire object is replaced.
+ */
+    it('A Document Merge only performs overwrites at one level deep, although the entire object is replaced. (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3, XAPI-00183)', function () {
         var parameters = helper.buildState(),
             document = {
                 car: {
