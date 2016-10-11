@@ -15,7 +15,15 @@
 
 describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
 
-    it('An LRS accepts HEAD requests (Communication 1.1)', function () {
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00125 - below
+ * XAPI-00126 - below
+ */
+
+/**  XAPI-00126
+ * An LRS accepts HEAD requests.
+ */
+    it('An LRS accepts HEAD requests (Communication 1.1, XAPI-00126)', function () {
 
         it('should succeed GET about with no body', function () {
             return helper.sendRequest('head', helper.getEndpointAbout(), undefined, undefined, 200);
@@ -49,7 +57,10 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
         });
     });
 
-    describe('An LRS responds to a HEAD request in the same way as a GET request, but without the message-body (Communication 1.1.s3.b1) **This means run ALL GET tests with HEAD**', function () {
+/**  XAPI-00125
+ * An LRS responds to a HEAD request in the same way as a GET request, but without the message-body. This means run ALL GET tests with HEAD
+ */
+    describe('An LRS responds to a HEAD request in the same way as a GET request, but without the message-body (Communication 1.1.s3.b1, XAPI-00125) **This means run ALL GET tests with HEAD**', function () {
 
         it('should succeed HEAD about with no body', function () {
             return helper.sendRequest('head', helper.getEndpointAbout(), undefined, undefined, 200)
