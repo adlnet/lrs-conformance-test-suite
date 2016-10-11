@@ -8,8 +8,8 @@
 
 /**  As there is no Data 2.4 file, I will match them up here
  * Matchup with Conformance Requirements Document
- * XAPI-00021 - these are all in Multiple folder, the community said this won't be a problem and do not test it
- * XAPI-00022 - not found yet
+ * XAPI-00021 - these are all in Multiplicity folder, the community said this won't be a problem and do not test it.  some are also covered in templating tests, usually in these cases post and 200 or 400.
+ * XAPI-00022 - in statements.js
  * XAPI-00023 - in Data 2.4.8 Stored Property
  * XAPI-00024 - in authorities.js
  * XAPI-00025 - in attachments.js

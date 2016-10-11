@@ -15,6 +15,10 @@
 
 describe('Stored Property Requirements (Data 2.4.8)', () => {
 
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00097 - below
+ */
+
 /**  XAPI-00097, Data 2.4.8 Stored
  * An LRS MUST assign the "stored" property timestamp upon receiving a statement.
  */

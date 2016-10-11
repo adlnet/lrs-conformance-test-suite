@@ -83,6 +83,9 @@
                 ]
             },
             {
+            /**
+             * Could XAPI-00062 (Interaction Component's description property) be added here??  Or/And in the next following suite too??
+             */
                 name: 'A Language Map is defined as an array of language tag/String pairs has at least 1 entry',
                 config: [
                     {

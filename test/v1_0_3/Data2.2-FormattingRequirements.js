@@ -26,14 +26,14 @@ describe('Formatting Requirements (Data 2.2)', () => {
  * XAPI-00003 - in statements.js
  * XAPI-00004 - in statements.js
  * XAPI-00005 - in statements.js
- * XAPI-00006 - no match found yet
- * XAPI-00007 - no match found yet, somewhat of a catchall category
+ * XAPI-00006 - no match found yet - An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type
+ * XAPI-00007 - no match found yet, somewhat of a catchall category - An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format (such as mailto IRI, UUID, or IRI) is required.
  * XAPI-00008 - in Communication 3.2
  * XAPI-00009 - in Communication 3.2? same tests as XAPI-00008
- * XAPI-00010 - no match found yet
- * XAPI-00011 - no match found yet - is this covered by multiple individual tests, if so should they be grouped together for this req?
- * XAPI-00012 - no match yet - broad catchall again - is this taken care of by many other tests throughout the suite?
- * XAPI-00013 - in context.js from Data 2.4.6
+ * XAPI-00010 - no match found yet - An LRS rejects with error code 400 Bad Request a Statement where a key or value is not allowed by this specification.
+ * XAPI-00011 - no match found yet - is this covered by multiple individual tests, if so should they be grouped together for this req? - An LRS rejects with error code 400 Bad Request a Statement containing IRL or IRI values without a scheme.
+ * XAPI-00012 - no match yet - broad catchall again - is this taken care of by many other tests throughout the suite? - The LRS rejects with error code 400 Bad Request parameter values which do not validate to the same standards required for values of the same types in Statements.
+ * XAPI-00013 - in contexts.js from Data 2.4.6
  * XAPI-00014 - in Miscellaneous Requirements
  * XAPI-00015 - in Communication 1.4
  */

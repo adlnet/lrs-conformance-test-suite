@@ -149,6 +149,9 @@
                 ]
             },
             {
+            /**  XAPI-00022, Data 2.4 Statement Properties
+             * A "timestamp" property is a TimeStamp, per section 4.5. An LRS rejects with 400 Bad Request a statement if it has a TimeStamp and that TimeStamp is invalid.
+             */
                 name: 'A "timestamp" property is a TimeStamp (Type, Data 2.4.s1.table1.row7)',
                 config: [
                     {
@@ -170,6 +173,9 @@
                 ]
             },
             {
+            /**  XAPI-00101, Data 2.4.10 Version
+             * An LRS rejects with error code 400 Bad Request, a Request which uses "version" and has the value set to anything but "1.0" or "1.0.x", where x is the semantic versioning number
+             */
                 name: 'A "version" property enters the LRS with the value of "1.0.0" or is not used (Vocabulary, Data 2.4.4.1.s5.b3)',
                 config: [
                     {

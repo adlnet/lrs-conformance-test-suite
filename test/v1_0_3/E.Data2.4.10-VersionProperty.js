@@ -16,7 +16,7 @@
 describe('Version Property Requirements (Data 2.4.10)', () => {
 
 /**  Matchup with Conformance Requirements Document
- * XAPI-00101 - not found yet
+ * XAPI-00101 - in statements.js
  */
 
 });

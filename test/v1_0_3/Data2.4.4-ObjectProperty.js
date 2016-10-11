@@ -38,7 +38,7 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
  * XAPI-00059 - in activities.js
  * XAPI-00060 - in activities.js
  * XAPI-00061 - in activities.js
- * XAPI-00062 - not found yet
+ * XAPI-00062 - not found yet - An Interaction Component’s "description" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Interaction Component's "description" property is present and is an invalid Language Map.  Could this be added and covered in languages.js??
  * XAPI-00063 - in activities.js
  * XAPI-00064 - below
  */
@@ -145,6 +145,7 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
     //Data 2.4.4.2 - when the object is an agent or a group
 /**  Matchup with Conformance Requirements Document
  * XAPI-00065 - not found yet - Statements that use an Agent or Group as an Object MUST specify an "objectType" property. The LRS rejects with 400 Bad Request if the “objectType” property is absent and the Object is an Agent Object or Group Object.
+ * Think this will have to be added.
  */
 
     //Data 2.4.4.3 - when the object is a statement

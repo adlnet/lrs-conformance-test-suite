@@ -29,12 +29,14 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
  */
     templatingSelection.createTemplate("languages.js");
 
+    //Data 4.5
 /**  Matchup with Conformance Requirements Document
  * XAPI-00122 - not found yet - A Timestamp MUST preserve precision to at least milliseconds (3 decimal points beyond seconds). The LRS accepts a statement with a valid timestamp which has more than 3 decimal points beyond seconds and when recalled it returns at least 3 decimals points beyond seconds.
  * See test in Data2.4.8-StoredProperty
  * XAPI-00123 - in statements.js
  */
 
+    //Data 4.6
 /**  Matchup with Conformance Requirements Document
  * XAPI-00124 - in results.js
  */

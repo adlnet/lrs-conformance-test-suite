@@ -16,9 +16,9 @@
 describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
 /**  Matchup with Conformance Requirements Document
- * XAPI-00016 - here, may need adjusted
+ * XAPI-00016 - below, may need adjusted
  * XAPI-00017 - is this covered by XAPI-00020?? which sends a voiding statements with no StatementRef property expecting 400
- * XAPI-00018 - no match found yet, keep your eyes open
+ * XAPI-00018 - below
  * XAPI-00019 - in verbs.js
  * XAPI-00020 - in verbs.js
  */
@@ -69,6 +69,11 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
         });
     });
 
+/**  XAPI-00018, Data 2.3.2 Voiding
+ * An LRS MUST consider a Statement it contains voided if the Statement is not itself a voiding Statement and the LRS also contains a voiding Statement referring to the first Statement.
+ * Test: Void a statement and then send a GET for that statement which uses “statementId” instead of “voidedStatementId.” The statement should then not be returned in the GET request, which should return a 404.
+ * Consider updating test to check 404 condition
+ */
     describe('A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS (Data 2.3.2.s2.b3)', function () {
         var voidedId = helper.generateUUID();
         var stmtTime;
@@ -125,7 +130,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
         });
     });
 
-/**  XAPI-00016, 2.3.2 Voiding
+/**  XAPI-00016, Data 2.3.2 Voiding
  * A Voiding Statement cannot Target another Voiding Statement.
  * LRS behavior this new VOIDING statement MAY be rejected.
  * If the LRS accepts that statement, the violating VOIDING statement SHOULD be ignored.
