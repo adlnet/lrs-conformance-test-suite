@@ -34,7 +34,7 @@
  * XAPI-00204 - below
  * XAPI-00205 - below
  * XAPI-00206 - below
- * XAPI-00207 - not found yet
+ * XAPI-00207 - below
  * XAPI-00208 - not found yet
  * XAPI-00209 - not found yet
  * XAPI-00210 - not found yet
@@ -132,7 +132,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    it('An LRS\'s State Resource rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
+/**  XAPI-00210, Communication 2.3 State Resource
+ * An LRS's State API rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request
+ */
+    it('An LRS\'s State Resource rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1, XAPI-00210)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.activityId;
@@ -151,7 +154,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State Resource rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
+/**  XAPI-00209, Communication 2.3 State Resource
+ * An LRS's State API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request
+ */
+    it('An LRS\'s State Resource rejects a POST request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1, XAPI-00209)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.activityId;
@@ -170,7 +176,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State Resource rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
+/**  XAPI-00208, Communication 2.3 State Resource
+ * An LRS's State API rejects a GET request without "activityId" as a parameter with error code 400 Bad Request
+ */
+    it('An LRS\'s State Resource rejects a GET request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1, XAPI-00208)', function () {
         var parameters = helper.buildState();
         delete parameters.activityId;
         return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
@@ -187,10 +196,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-/**  XAPI-00207, Communication 2.3 State
+/**  XAPI-00207, Communication 2.3 State Resource
  * An LRS's State API rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request
  */
-    it('An LRS\'s State Resource rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1)', function () {
+    it('An LRS\'s State Resource rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row1, XAPI-00207)', function () {
         var parameters = helper.buildState();
         delete parameters.activityId;
         return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
@@ -207,8 +216,11 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
+/**  XAPI-00215, Communication 2.3 State Resource
+ * An LRS's State API rejects a PUT request without "agent" as a parameter with error code 400 Bad Request
+ */
     //+* In 1.0.3, the IRI requires a scheme, but does not in 1.0.2, thus we only test type String in this version**
-    it('An LRS\'s State Resource rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
+    it('An LRS\'s State Resource rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2, XAPI-00215)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.agent;
@@ -225,6 +237,9 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
+/**  XAPI-00214, Communication 2.3 State Resource
+ * An LRS's State API rejects a POST request without "agent" as a parameter with error code 400 Bad Request
+ */
     it('An LRS\'s State Resource rejects a POST request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
@@ -247,7 +262,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State Resource rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
+/**  XAPI-00213, Communication 2.3 State Resource
+ * An LRS's State API rejects a GET request without "agent" as a parameter with error code 400 Bad Request
+ */
+    it('An LRS\'s State Resource rejects a GET request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2, XAPI-00213)', function () {
         var parameters = helper.buildState();
         delete parameters.agent;
         return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
@@ -267,7 +285,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State Resource rejects a DELETE request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2)', function () {
+/**  XAPI-00212, Communication 2.3 State Resource
+ * An LRS's State API rejects a DELETE request without "agent" as a parameter with error code 400 Bad Request
+ */
+    it('An LRS\'s State Resource rejects a DELETE request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row2, XAPI-00212)', function () {
         var parameters = helper.buildState();
         delete parameters.agent;
         return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
@@ -393,7 +414,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    it('An LRS\'s State Resource rejects a POST request without "stateId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row4)', function () {
+/**  XAPI-00211, Communication 2.3 State Resource
+ * An LRS's State API rejects a POST request without "stateId" as a parameter with error code 400 Bad Request
+ */
+    it('An LRS\'s State Resource rejects a POST request without "stateId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row4, XAPI-00211)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         delete parameters.stateId;
@@ -436,6 +460,9 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
     });
 
+/**  XAPI-00216, Communication 2.3 State Resource
+ * An LRS's State API can process a DELETE request with "stateId" as a parameter
+ */
     it('An LRS\'s State Resource can process a DELETE request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
@@ -500,7 +527,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-/**  XAPI-00194
+/**  XAPI-00194, Communication 2.3 State Resource
  * An LRS's State API upon processing a successful DELETE request without "stateId" as a parameter deletes documents satisfying the requirements of the DELETE and code 204 No Content
  */
     //+* NOTE:  **There is no requirement here that the LRS reacts to the "since" parameter in the case of a GET request with valid "stateId" - this is intentional**
