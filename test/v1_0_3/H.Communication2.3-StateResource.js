@@ -35,13 +35,34 @@
  * XAPI-00205 - below
  * XAPI-00206 - below
  * XAPI-00207 - below
- * XAPI-00208 - not found yet
- * XAPI-00209 - not found yet
- * XAPI-00210 - not found yet
- * XAPI-00211 - not found yet
- * XAPI-00212 - not found yet
- * XAPI-00213 - not found yet
- * XAPI-00214 - not found yet
+ * XAPI-00208 - below
+ * XAPI-00209 - below
+ * XAPI-00210 - below
+ * XAPI-00211 - below
+ * XAPI-00212 - below
+ * XAPI-00213 - below
+ * XAPI-00214 - below
+ * XAPI-00215 - below
+ * XAPI-00216 - below
+ * XAPI-00217 - below
+ * XAPI-00218 - below
+ * XAPI-00219 - below
+ * XAPI-00220 - below
+ * XAPI-00221 - below
+ * XAPI-00222 - not yet found - The State API's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present
+ * XAPI-00223 - below
+ * XAPI-00224 - look in parameter folder - An LRS's State API rejects a DELETE request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ * XAPI-00225 - look in parameters forlder - An LRS's State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ * XAPI-00226 - look in parameters folder - An LRS's State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ * XAPI-00227 - below
+ * XAPI-00228 - look in parameters folder - An LRS's State API rejects a PUT request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ * XAPI-00229 - not found yet - An LRS's State API, rejects a POST request if the document is found and either document is not a valid JSON Object
+ * XAPI-00230 - in Communication2.2-DocumentResources.js
+ * XAPI-00231 - in Communication2.2-DocumentResources.js
+ * XAPI-00232 - in Communication2.2-DocumentResources.js
+ * XAPI-00233 - in Communication2.2-DocumentResources.js
+ * XAPI-00234 - in Communication2.2-DocumentResources.js
+ * XAPI-00235 - not found yet - An LRS must reject with 400 Bad Request a POST request to the State API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json
  */
 
 describe('State Resource Requirements (Communication 2.3)', () => {
@@ -308,7 +329,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State Resource can process a PUT request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
+/**  XAPI-00218, Communication 2.3 State Resource
+ * An LRS's State API can process a PUT request with "registration" as a parameter
+ */
+    it('An LRS\'s State Resource can process a PUT request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3, XAPI-00218)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
@@ -330,6 +354,9 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
+/**  XAPI-00227, Communication 2.3 State Resource
+ * An LRS's State API can process a POST request with "registration" as a parameter
+ */
     it('An LRS\'s State Resource can process a POST request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
@@ -352,7 +379,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State Resource can process a GET request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
+/**  XAPI-00220, Communication 2.3 State Resource
+ * An LRS's State API can process a GET request with "registration" as a parameter
+ */
+    it('An LRS\'s State Resource can process a GET request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3, XAPI-00220)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
@@ -380,7 +410,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-    it('An LRS\'s State Resource can process a DELETE request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
+/**  XAPI-00219, Communication 2.3 State Resource
+ * An LRS's State API can process a DELETE request with "registration" as a parameter
+ */
+    it('An LRS\'s State Resource can process a DELETE request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3, XAPI-00219)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
@@ -424,7 +457,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    it('An LRS\'s State Resource can process a GET request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4)', function () {
+/**  XAPI-00217, Communication 2.3 State Resource
+ * An LRS's State API can process a GET request with "stateId" as a parameter
+ */
+    it('An LRS\'s State Resource can process a GET request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4, XAPI-00217)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -437,7 +473,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             });
     });
 
-    it('An LRS\'s State Resource can process a GET request with "since" as a parameter (multiplicity, Communication 2.3.s4.table1.row4)', function () {
+/**  XAPI-00221, Communication 2.3 State Resource
+ * An LRS's State API can process a GET request with "since" as a parameter. Returning 200 OK and all matching profiles after the date/time of the “since” parameter.
+ */
+    it('An LRS\'s State Resource can process a GET request with "since" as a parameter (multiplicity, Communication 2.3.s4.table1.row4, XAPI-00221)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -463,7 +502,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
 /**  XAPI-00216, Communication 2.3 State Resource
  * An LRS's State API can process a DELETE request with "stateId" as a parameter
  */
-    it('An LRS\'s State Resource can process a DELETE request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4)', function () {
+    it('An LRS\'s State Resource can process a DELETE request with "stateId" as a parameter (multiplicity, Communication 2.3.s3.table1.row4, XAPI-00216)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -476,7 +515,10 @@ describe('State Resource Requirements (Communication 2.3)', () => {
 /**  XAPI-00205, Communication 2.3 State Resource
  * An LRS's State API rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request
  */
-    // describe('An LRS\'s State Resource rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication.md#2.3.s3.table1.row4, XAPI-00205)', function () {
+/**  XAPI-00223, Communication 2.3 State Resource
+ * An LRS's State API can process a DELETE request with "since" as a parameter
+ */
+    // describe('An LRS\'s State Resource rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication.md#2.3.s3.table1.row4, XAPI-00205, XAPI-00223)', function () {
     //     var invalidTypes = [1, true];
     //     invalidTypes.forEach(function (type) {
     //         it('Should reject DELETE with "since" with type ' + type, function () {
