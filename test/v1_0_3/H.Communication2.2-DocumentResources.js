@@ -59,7 +59,10 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204);
     });
 
-    it('An LRS has an Agent Profile Resource with endpoint "base IRI"+"/agents/profile" (Communication 2.2.s3.table2.row3.a, Communication 2.2.table2.row3.c)', function () {
+/**  XAPI-00282, Communication 2.6 Agent Profile Resource
+ * An LRS has an Agent Profile API with endpoint "base IRI"+"/agents/profile"
+ */
+    it('An LRS has an Agent Profile Resource with endpoint "base IRI"+"/agents/profile" (Communication 2.2.s3.table2.row3.a, Communication 2.2.table2.row3.c, XAPI-00282)', function () {
         //Also covers An LRS will accept a POST request to the Agent Profile Resource
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
@@ -67,7 +70,10 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
         return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
     });
 
-    it('An LRS will accept a POST request to the Agent Profile Resource (Communication 2.2.s3.table1.row3.a)', function () {
+/**  XAPI-00283, Communication 2.6 Agent Profile Resource
+ * An LRS will accept a POST request to the Agent Profile API
+ */
+    it('An LRS will accept a POST request to the Agent Profile Resource (Communication 2.2.s3.table1.row3.a, XAPI-00283)', function () {
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
@@ -132,7 +138,10 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
             });
     });
 
-    it('An LRS\'s Agent Profile Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (Communication 2.2.s7)', function () {
+/**  XAPI-00280, Communication 2.6 Agent Profile Resource
+ * An LRS's Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document.Returning 204 No Content
+ */
+    it('An LRS\'s Agent Profile Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (Communication 2.2.s7, XAPI-00280)', function () {
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
@@ -276,7 +285,11 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
             });
     });
 
-    it('An LRS\'s Agent Profile Resource performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3)', function () {
+/**  XAPI-00279, Communication 2.6 Agent Profile Resource
+ * An LRS's Agent Profile API performs a Document Merge if a profileId is found and both it and the document in the POST request have type "application/json" If the merge is successful, the LRS MUST respond with HTTP status code 204 No Content.
+ * not quite, but is this close enough??
+ */
+    it('An LRS\'s Agent Profile Resource performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3, XAPI-00279)', function () {
         var parameters = helper.buildAgentProfile(),
             document = {
                 car: 'Honda'
