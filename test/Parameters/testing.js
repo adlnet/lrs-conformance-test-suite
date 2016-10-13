@@ -85,7 +85,10 @@
 
     describe('These are tests with specific parameters that need to be met', function () {
 
-      describe('An LRS\'s Agent Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
+/**  XAPI-00277, Communication 2.6 Agent Profile Resource
+ * An LRS's Agent Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
+      describe('An LRS\'s Agent Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a, XAPI-00277)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
@@ -97,7 +100,10 @@
         });
       });
 
-      describe('An LRS\'s Agent Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
+/**  XAPI-00276, Communication 2.6 Agent Profile Resource
+ * An LRS's Agent Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
+      describe('An LRS\'s Agent Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a, XAPI-00276)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
