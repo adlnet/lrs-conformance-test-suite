@@ -45,7 +45,10 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
     });
 
-    it('An LRS has an Activity Profile Resource with endpoint "base IRI"+"/activities/profile" (Communication 2.2.s3.table1.row2)', function () {
+/**  XAPI-00311, Communication 2.7 Activity Profile Resource
+ * An LRS has an Activity Profile API with endpoint "base IRI"+"/activities/profile"
+ */
+    it('An LRS has an Activity Profile Resource with endpoint "base IRI"+"/activities/profile" (Communication 2.2.s3.table1.row2, XAPI-00311)', function () {
         //Also covers An LRS will accept a POST request to the Activity Profile Resource
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
@@ -53,7 +56,10 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204);
     });
 
-    it('An LRS will accept a POST request to the Activity Profile Resource (Communication 2.2.s3.table1.row2.a)', function () {
+/**  XAPI-00312, Communication 2.7 Activity Profile Resource
+ * An LRS will accept a POST request to the Activity Profile API
+ */
+    it('An LRS will accept a POST request to the Activity Profile Resource (Communication 2.2.s3.table1.row2.a, XAPI-00312)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204);
@@ -125,7 +131,10 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
             });
     });
 
-    it('An LRS\'s Activity Profile Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (Communication 2.2.s7)', function () {
+/**  XAPI-00310, Communication 2.7 Activity Profile Resource
+ * An LRS's Activity Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document. Returning 204 No Content
+ */
+    it('An LRS\'s Activity Profile Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (Communication 2.2.s7, XAPI-00310)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
@@ -261,7 +270,11 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
             });
     });
 
-    it('An LRS\'s Activity Profile Resource performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3)', function () {
+/**  XAPI-00308, Communication 2.7 Activity Profile Resource
+ * An LRS's Activity Profile API performs a Document Merge if a activityId is found and both it and the document in the POST request have type "application/json" If the merge is successful, the LRS MUST respond with HTTP status code 204 No Content.
+ * activityId??
+ */
+    it('An LRS\'s Activity Profile Resource performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3, XAPI-00308)', function () {
         var parameters = helper.buildActivityProfile(),
             document = {
                 car: 'Honda'
@@ -326,7 +339,10 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
             });
     });
 
-    it('An LRS\'s Activity Profile Resource, rejects a POST request if the document is found and either document\'s type is not "application/json" with error code 400 Bad Request (Communication 2.2.s8.b1)', function () {
+/**  XAPI-00309, Communication 2.7 Activity Profile Resource
+ * An LRS's Activity Profile API, rejects a POST request if the document is found and either document's type is not "application/json" with error code 400 Bad Request
+ */
+    it('An LRS\'s Activity Profile Resource, rejects a POST request if the document is found and either document\'s type is not "application/json" with error code 400 Bad Request (Communication 2.2.s8.b1, XAPI-00309)', function () {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument(),
             anotherDocument = 'abc';

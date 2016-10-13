@@ -161,8 +161,7 @@
       });
 
 /**  XAPI-00224, Communication 2.3 State Resource
- * An LRS's State API rejects a DELETE request with "stateId" as a parameter if it is not type
-"String" with error code 400 Bad Request
+ * An LRS's State API rejects a DELETE request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
  */
 
     });
