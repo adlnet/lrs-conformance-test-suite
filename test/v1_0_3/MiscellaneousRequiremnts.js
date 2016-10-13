@@ -13,6 +13,12 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
+//Communication 4.0 Authentication
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00334 - not found yet - An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized
+ * XAPI-00335 - not found yet - An LRS must support HTTP Basic Authentication
+ */
+
 describe('Miscellaneous Requirements', () => {
 
 /**  XAPI-00014  2.2 Formatting Requirements
