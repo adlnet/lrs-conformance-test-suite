@@ -17,7 +17,48 @@ describe('Version Property Requirements (Data 2.4.10)', () => {
 
 /**  Matchup with Conformance Requirements Document
  * XAPI-00101 - in statements.js
+ * Unnumbered test - came from XAPI-00332
  */
+
+ it ('Statements returned by an LRS MUST retain the version property they are accepted with (Format, Data 2.4.10)', function (done){
+     this.timeout(0);
+     var stmtTime = Date.now();
+
+     var statementTemplates = [
+       {statement: '{{statements.default}}'}
+     ];
+
+     var version = '1.0.3';
+     var id = helper.generateUUID();
+
+     var statement = helper.createFromTemplate(statementTemplates);
+     statement = statement.statement;
+     statement.id = id;
+     statement.version = version;
+
+     var query = helper.getUrlEncoding({statementId: id});
+
+     request(helper.getEndpointAndAuth())
+     .post(helper.getEndpointStatements())
+     .headers(helper.addAllHeaders({}))
+     .json(statement)
+     .expect(200)
+     .end()
+     .get(helper.getEndpointStatements() + '?' + query)
+     .wait(helper.genDelay(stmtTime, '?' + query, id))
+     .headers(helper.addAllHeaders({}))
+     .expect(200)
+     .end(function(err,res){
+         if (err){
+             done(err);
+         }
+         else{
+             var results = helper.parse(res.body);
+             expect(results.version).to.equal(version);
+             done();
+         }
+     });
+ });
 
 });
 

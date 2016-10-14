@@ -166,6 +166,44 @@ describe('Versioning Requirements (Communication 3.3)', () => {
         });
     });
 
+    it ('Statements returned by an LRS MUST retain the header version they are accepted with (Format, Communication 3.3.s3.b1, Communication 3.3.s3.b2, XAPI-00332)', function (done){
+        this.timeout(0);
+        var stmtTime = Date.now();
+
+        var statementTemplates = [
+          {statement: '{{statements.default}}'}
+        ];
+
+        var version = helper.addAllHeaders({})['X-Experience-API-Version'];
+        var id = helper.generateUUID();
+
+        var statement = helper.createFromTemplate(statementTemplates);
+        statement = statement.statement;
+        statement.id = id;
+
+        var query = helper.getUrlEncoding({statementId: id});
+
+        request(helper.getEndpointAndAuth())
+        .post(helper.getEndpointStatements())
+        .headers(helper.addAllHeaders({}))
+        .json(statement)
+        .expect(200)
+        .end()
+        .get(helper.getEndpointStatements() + '?' + query)
+        .wait(helper.genDelay(stmtTime, '?' + query, id))
+        .headers(helper.addAllHeaders({}))
+        .expect(200)
+        .end(function(err,res){
+            if (err){
+                done(err);
+            }
+            else{
+                expect(res.headers['x-experience-api-version']).to.equal(version);
+                done();
+            }
+        });
+    });
+
 });
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
