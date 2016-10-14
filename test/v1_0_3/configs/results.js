@@ -434,52 +434,6 @@
                         expect: [400]
                     }
                 ]
-            },
-            {
-            /**  XAPI-00002, 2.2 Formatting Requirements
-             * An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754
-             */
-                name: 'An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (Data 2.2.s4.b3, XAPI-00002)',
-                config: [
-                    {
-                        name: 'statement result "extensions" property is numeric',
-                        templates: [
-                            {statement: '{{statements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_NUMERIC}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement result "extensions" property is string',
-                        templates: [
-                            {statement: '{{statements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement result "extensions" property is numeric',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_NUMERIC}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement result "extensions" property is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    }
-                ]
             }
         ];
     };

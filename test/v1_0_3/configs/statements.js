@@ -173,30 +173,6 @@
                 ]
             },
             {
-            /**  XAPI-00101, Data 2.4.10 Version
-             * An LRS rejects with error code 400 Bad Request, a Request which uses "version" and has the value set to anything but "1.0" or "1.0.x", where x is the semantic versioning number
-             */
-                name: 'A "version" property enters the LRS with the value of "1.0.0" or is not used (Vocabulary, Data 2.4.4.1.s5.b3)',
-                config: [
-                    {
-                        name: 'statement "version" invalid string',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "version" invalid',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: INVALID_VERSION_0_9_9}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00001, 2.2 Formatting Requirements
              * An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to "null", an empty object, or has no value, except in an "extensions" property
              */
@@ -298,6 +274,9 @@
                 ]
             },
             {
+            /**  XAPI-00101, Data 2.4.10 Version
+             * An LRS rejects with error code 400 Bad Request, a Request which uses "version" and has the value set to anything but "1.0" or "1.0.x", where x is the semantic versioning number
+             */
                 name: 'An LRS rejects with error code 400 Bad Request, a Request which uses "version" and has the value set to anything but "1.0" or "1.0.x", where x is the semantic versioning number (Format, Data 2.4.10.s2.b1, Data 2.4.10.s3.b1, Communication 3.3.s3.b3, Communication 3.3.s3.b6)',
                 config: [
                     {
@@ -315,6 +294,14 @@
                             {version: VALID_VERSION_1_0_9}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement "version" invalid string',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {version: INVALID_STRING}
+                        ],
+                        expect: [400]
                     },
                     {
                         name: 'statement "version" invalid 0.9.9',
@@ -335,37 +322,46 @@
                 ]
             },
             {
-                name: 'An LRS rejects with error code 400 Bad Request, a Request which the "X-Experience-API-Version" header\'s value is anything but "1.0" or "1.0.x", where x is the semantic versioning number to any Resource except the About Resource (Format, Communication 3.3.s3.b4, Communication 3.3.s3.b6)',
+            /**  XAPI-00002, 2.2 Formatting Requirements
+             * An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754
+             */
+                name: 'An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (Data 2.2.s4.b3, XAPI-00002)',
                 config: [
                     {
-                        name: 'statement "version" valid 1.0',
+                        name: 'statement result "extensions" property is numeric',
                         templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: VALID_VERSION_1_0}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement "version" valid 1.0.9',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: VALID_VERSION_1_0_9}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement "version" invalid 0.9.9',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: INVALID_VERSION_0_9_9}
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: INVALID_NUMERIC}
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement "version" invalid 1.1.0',
+                        name: 'statement result "extensions" property is string',
                         templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: INVALID_VERSION_1_1_0}
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: INVALID_STRING}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement result "extensions" property is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: INVALID_NUMERIC}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement result "extensions" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: INVALID_STRING}
                         ],
                         expect: [400]
                     }
