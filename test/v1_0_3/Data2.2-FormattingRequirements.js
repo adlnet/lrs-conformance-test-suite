@@ -27,7 +27,7 @@ describe('Formatting Requirements (Data 2.2)', () => {
  * XAPI-00004 - in statements.js
  * XAPI-00005 - in statements.js
  * XAPI-00006 - in statements.js
- * XAPI-00007 - no match found yet, somewhat of a catchall category - An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format (such as mailto IRI, UUID, or IRI) is required.
+ * XAPI-00007 - in statements.js
  * XAPI-00008 - in Communication 3.2
  * XAPI-00009 - in Communication 3.2? same tests as XAPI-00008
  * XAPI-00010 - no match found yet - An LRS rejects with error code 400 Bad Request a Statement where a key or value is not allowed by this specification.

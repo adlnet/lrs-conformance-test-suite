@@ -18,7 +18,6 @@
     var INVALID_MAIL_TO_IRI = 'http://should.fail.com';
     var INVALID_URI = 'ab=c://should.fail.com';
     var INVALID_ACCOUNT_HOMEPAGE_IRL = {account: {homePage: INVALID_URI}};
-    var INVALID_ACCOUNT_NAME_IRL = {account: {name: INVALID_OBJECT}};
 
     // configures tests
     module.exports.config = function () {
@@ -540,7 +539,7 @@
             /**  XAPI-00038, Data 2.4.2.3 Inverse Functional Identifier
              * An "mbox" property has the form "mailto:email address" and is an IRI. An LRS rejects with 400 Bad Request if a statement that uses the “mbox” IFI is an invalid form.
              */
-                name: 'An "mbox" property is an IRI (Type, Data 2.4.2.3.s3.table1.row1, XAPI-00038)',
+                name: 'An "mbox" property has the form "mailto:email address" and is an IRI (Type, Data 2.4.2.3.s3.table1.row1, XAPI-00038)',
                 config: [
                     {
                         name: 'statement actor "agent mbox" not IRI',
@@ -678,12 +677,7 @@
                             {mbox: INVALID_MAIL_TO_IRI}
                         ],
                         expect: [400]
-                    }
-                ]
-            },
-            {   //see above
-                name: 'An "mbox" property has the form "mailto:email address" (Syntax, Data 2.4.2.3.s3.table1.row1, XAPI-00038)',
-                config: [
+                    },
                     {
                         name: 'statement actor "agent mbox" not mailto:email address',
                         templates: [
@@ -1521,7 +1515,6 @@
             {
             /**  XAPI-00043, 2.4.2.4 Acoont Object
              * An Account Object "name" property is a String. An LRS rejects with 400 Bad Request if a statement uses the “account” IFI and the “name” property is absent or has an invalid string.
-             * Covers next suite
              */
                 name: 'An Account Object uses the "name" property (Multiplicity, Data 2.4.2.4.s2.table1.row2, XAPI-00043)',
                 config: [
@@ -1645,148 +1638,6 @@
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.instructor}}'},
                             {instructor: '{{groups.identified_account_no_name}}'}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {   //see above
-                name: 'An Account Object "name" property is a String (Type, Data 2.4.2.4.s2.table1.row2, XAPI-00043)',
-                config: [
-                    {
-                        name: 'statement actor "agent" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.actor}}'},
-                            {actor: '{{agents.account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement actor "group" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.actor}}'},
-                            {actor: '{{groups.identified_account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement authority "agent" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{agents.account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement authority "group" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement context instructor "agent" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{agents.account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement context instructor "group" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{groups.identified_account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement context team "group" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{groups.identified_account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement as "agent" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.object_actor}}'},
-                            {object: '{{agents.account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement as "group" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.object_actor}}'},
-                            {object: '{{groups.identified_account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement"s "agent" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.actor}}'},
-                            {actor: '{{agents.account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement"s "group" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.actor}}'},
-                            {actor: '{{groups.identified_account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement"s context instructor "agent" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{agents.account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement"s context instructor "group" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{groups.identified_account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement"s context team "group" account "name" property is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{groups.identified_account_no_name}}'},
-                            INVALID_ACCOUNT_NAME_IRL
                         ],
                         expect: [400]
                     }

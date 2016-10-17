@@ -120,13 +120,6 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
         });
     });
 
-/**  XAPI-00008, 2.2 Formatting Requirements
- * An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification.
- * Does this also cover XAPI-00009??
- */
-/**  XAPI-00009, Data 2.2 Formatting Requirements
- * An LRS rejects with error code 400 Bad Request a Statement where the case of a value restricted to enumerated values does not match an enumerated value given in this specification exactly.
- */
 /**  XAPI-00325, Communication 3.2 Error Codes
  * An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter with differing case
  */

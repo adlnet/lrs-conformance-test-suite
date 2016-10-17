@@ -15,11 +15,8 @@
     var INVALID_STRING = 'should fail';
     var INVALID_UUID_TOO_MANY_DIGITS = 'AA97B177-9383-4934-8543-0F91A7A028368';
     var INVALID_UUID_INVALID_LETTER = 'MA97B177-9383-4934-8543-0F91A7A02836';
-    // var INVALID_VERSION_0_9_9 = '0.9.9';
-    // var INVALID_VERSION_1_1_0 = '1.1.0';
     var VALID_EXTENSION = {extensions: {'http://example.com/null': null}};
-    // var VALID_VERSION_1_0 = '1.0';
-    // var VALID_VERSION_1_0_9 = '1.0.9';
+    var INVALID_ACCOUNT_NAME_IRL = {account: {name: INVALID_OBJECT}};
 
     // configures tests
     module.exports.config = function () {
@@ -77,48 +74,6 @@
                         name: 'statement "object" missing',
                         templates: [
                             {statement: '{{statements.no_object}}'}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
-                name: 'A Statement\'s "id" property is a String (Type, Data 2.4.1.s1)',
-                config: [
-                    {
-                        name: 'statement "id" invalid numeric',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {id: INVALID_NUMERIC}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "id" invalid object',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {id: INVALID_OBJECT}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
-                name: 'A Statement\'s "id" property is a UUID following RFC 4122 (Syntax, Data 2.4.1.s1, RFC 4122)',
-                config: [
-                    {
-                        name: 'statement "id" invalid UUID with too many digits',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {id: INVALID_UUID_TOO_MANY_DIGITS}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "id" invalid UUID with non A-F',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {id: INVALID_UUID_INVALID_LETTER}
                         ],
                         expect: [400]
                     }
@@ -274,32 +229,6 @@
                 ]
             },
             {
-                name: 'An LRS rejects with error code 400 Bad Request any Statement violating a Statement Requirement. (Data 2.2.s4, Varies)',
-                config: [
-                    {
-                        name: 'statement "actor" missing reply 400',
-                        templates: [
-                            {statement: '{{statements.no_actor}}'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "verb" missing reply 400',
-                        templates: [
-                            {statement: '{{statements.no_verb}}'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "object" missing reply 400',
-                        templates: [
-                            {statement: '{{statements.no_object}}'}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00006, Data 2.2 Formatting Requirements
              * An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type
              */
@@ -338,6 +267,185 @@
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},
                             {completion: 'false'}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+            /**  XAPI-00007, Data 2.2 Formatting Requirements
+             * An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format (such as mailto IRI, UUID, or IRI) is required.
+             * Additional UUID tests in uuids.js xapi-00027 & 28
+             * IFI's covered in actors.js xapi-0038
+             */
+                name: 'An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format (such as mailto IRI, UUID, or IRI) is required. (Data 2.2.s4.b4)',
+                config: [
+                    {
+                        name: 'statement "id" invalid numeric',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {id: INVALID_NUMERIC}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "id" invalid object',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {id: INVALID_OBJECT}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "id" invalid UUID with too many digits',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {id: INVALID_UUID_TOO_MANY_DIGITS}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "id" invalid UUID with non A-F',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {id: INVALID_UUID_INVALID_LETTER}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement actor "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.actor}}'},
+                            {actor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context instructor "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context team "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement as "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_actor}}'},
+                            {object: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.actor}}'},
+                            {actor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "agent" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{agents.account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context instructor "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement"s context team "group" account "name" property is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.instructor}}'},
+                            {instructor: '{{groups.identified_account_no_name}}'},
+                            INVALID_ACCOUNT_NAME_IRL
                         ],
                         expect: [400]
                     }
