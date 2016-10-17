@@ -68,8 +68,16 @@
             /**  XAPI-00025,  Data 2.4 Statement Properties
              * A Statement's "attachments" property is an array of Attachments. An LRS rejects with 400 Bad Request a statement which has an “attachments” property which is not an array of attachments.
              */
-                name: 'A Statement\'s "attachments" property is an array of Attachments (Data 2.4.s1.table1.row11)',
+                name: 'A Statement\'s "attachments" property is an array of Attachments (Data 2.4.s1.table1.row11, XAPI-00025)',
                 config: [
+                    {
+                        name: 'statement "attachments" is an array',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [VALID_ATTACHMENT]}
+                        ],
+                        expect: [200]
+                    },
                     {
                         name: 'statement "attachments" not an array',
                         templates: [
@@ -87,7 +95,7 @@
                         name: 'statement "attachment" invalid numeric',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_NUMERIC}
+                            {attachments: [INVALID_NUMERIC]}
                         ],
                         expect: [400]
                     },
@@ -95,7 +103,7 @@
                         name: 'statement "attachment" invalid string',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {attachments: INVALID_STRING}
+                            {attachments: [INVALID_STRING]}
                         ],
                         expect: [400]
                     }
@@ -111,7 +119,7 @@
                         name: 'statement "usageType" invalid string',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_USAGE_TYPE}
+                            {attachments: [INVALID_USAGE_TYPE]}
                         ],
                         expect: [400]
                     }
@@ -127,7 +135,7 @@
                         name: 'statement "contentType" invalid string',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_CONTENT_TYPE}
+                            {attachments: [INVALID_CONTENT_TYPE]}
                         ],
                         expect: [400]
                     }
@@ -143,7 +151,7 @@
                         name: 'statement "length" invalid string',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_LENGTH}
+                            {attachments: [INVALID_LENGTH]}
                         ],
                         expect: [400]
                     }
@@ -159,7 +167,7 @@
                         name: 'statement "sha2" invalid string',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_SHA2}
+                            {attachments: [INVALID_SHA2]}
                         ],
                         expect: [400]
                     }
@@ -175,7 +183,7 @@
                         name: 'statement "fileUrl" invalid string',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_FILE_URL}
+                            {attachments: [INVALID_FILE_URL]}
                         ],
                         expect: [400]
                     }

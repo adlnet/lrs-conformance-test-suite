@@ -5,7 +5,7 @@
  * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
  *
  */
-(function (module) {
+(function (module, helper) {
     "use strict";
 
     // defines overwriting data
@@ -17,6 +17,15 @@
     var INVALID_UUID_INVALID_LETTER = 'MA97B177-9383-4934-8543-0F91A7A02836';
     var VALID_EXTENSION = {extensions: {'http://example.com/null': null}};
     var INVALID_ACCOUNT_NAME_IRL = {account: {name: INVALID_OBJECT}};
+    var VALID_ATTACHMENT = {
+        'usageType': 'http://example.com/attachment-usage/test',
+        'display': {'en-US': 'A test attachment'},
+        'description': {'en-US': 'A test attachment (description)'},
+        'contentType': 'text/plain; charset=ascii',
+        'length': 27,
+        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+        'fileUrl': 'http://over.there.com/file.txt'
+    };
 
     // configures tests
     module.exports.config = function () {
@@ -450,7 +459,201 @@
                         expect: [400]
                     }
                 ]
+            },
+            {
+            /**  XAPI-00008, Data 2.2 Formatting Requirements
+             * An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification.
+             */
+                name: 'An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification. (Data 2.2.s4.b1.b5, XAPI-00008)',
+                config: [
+                    {
+                        name: 'should fail when not using "id"',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {iD: helper.generateUUID()}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "actor"',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {Actor: '{{agents.default}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "verb"',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {veRb: '{{verbs.default}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "object"',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {oBject: "{{activities.default}}"}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "result"',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {RESULT: '{{results.default}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "context"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {conText: '{{contexts.default}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "timestamp"',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timeStamp: new Date("July 04, 1776 16:00:45.123456")}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "stored"',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {STOred: new Date("Sep 17, 1787 09:33:32:1111111")}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "authority"',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {auTHORity: '{{agents.default}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "version"',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {Version: '1.0.3'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'should fail when not using "attachments"',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachmentS: [VALID_ATTACHMENT]}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+            /**  XAPI-00009, Data 2.2 Formatting Requirements
+             * An LRS rejects with error code 400 Bad Request a Statement where the case of a value restricted to enumerated values does not match an enumerated value given in this specification exactly.
+             */
+                name: 'An LRS rejects with error code 400 Bad Request a Statement where the case of a value restricted to enumerated values does not match an enumerated value given in this specification exactly. (Data 2.2.s4.b1.b6, XAPI-00009)',
+                config: [
+                    {
+                        name: 'when interactionType is not "true-false"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.true_false}}'},
+                            {definition: {interactionType: "true-faLse"}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'when interactionType is not "choice"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {interactionType: "choiCe"}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'when interactionType is not "fill-in"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.fill_in}}'},
+                            {definition: {interactionType: "fill-iN"}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'when interactionType is not "long-fill-in"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.long_fill_in}}'},
+                            {definition: {interactionType: "long-fiLl-in"}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'when interactionType is not "matching"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {interactionType: "matchIng"}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'when interactionType is not "performance"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {interactionType: "perfOrmance"}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'when interactionType is not "sequencing"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {interactionType: "seqUencing"}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'when interactionType is not "likert"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {interactionType: "liKert"}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'when interactionType is not "numeric"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.numeric}}'},
+                            {definition: {interactionType: "nUmeric"}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'when interactionType is not "other"',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.other}}'},
+                            {definition: {interactionType: "Other"}}
+                        ],
+                        expect: [400]
+                    }
+                ]
             }
         ];
     };
-}(module));
+}(module, require('./../../helper.js')));

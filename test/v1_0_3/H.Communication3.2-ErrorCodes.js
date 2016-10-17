@@ -123,7 +123,7 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
 /**  XAPI-00325, Communication 3.2 Error Codes
  * An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter with differing case
  */
-    describe('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter with differing case (Communication 3.2.s3.b8, XAPI-00008, XAPI-00009, XAPI-00325)', function () {
+    describe('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter with differing case (Communication 3.2.s3.b8, XAPI-00325)', function () {
 
         it('should fail on PUT statement when not using "statementId"', function (done) {
             var templates = [
