@@ -18,7 +18,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
 /**  Matchup with Conformance Requirements Document
  * XAPI-00330 - below
  * XAPI-00331 - below
- * XAPI-00332 - not found yet - Statements returned by an LRS MUST retain the version property they are accepted with. - should this be under Data 2.4.10 version property??
+ * XAPI-00332 - below - additional test created for Data 2.4.10
  * XAPI-00333 - below
  */
 
