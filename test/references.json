@@ -3209,6 +3209,23 @@
             "Data.md#2.2.s4.b3"
         ]
     },
+    "An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type": {
+        "name": "An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type",
+        "1.0.3_ref": "Data 2.2.s4.b1.b2",
+        "1.0.3_link": "Data.md#2.2.s4.b1.b2"
+    },
+    "with strings where numbers are required": {
+        "name": "with strings where numbers are required"
+    },
+    "even if those stings contain numbers": {
+        "name": "even if those stings contain numbers"
+    },
+    "with strings where booleans are required": {
+        "name": "with strings where booleans are required"
+    },
+    "even if thise string contain booleans": {
+        "name": "even if thise string contain booleans"
+    },
     "StatementRefs Verify Templates": {
         "name": "StatementRefs Verify Templates"
     },

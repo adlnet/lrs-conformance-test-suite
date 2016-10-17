@@ -22,11 +22,11 @@ describe('Formatting Requirements (Data 2.2)', () => {
 
 /**  Matchup with Conformance Requirements Document
  * XAPI-00001 - in statements.js
- * XAPI-00002 - in results.js
+ * XAPI-00002 - below
  * XAPI-00003 - in statements.js
  * XAPI-00004 - in statements.js
  * XAPI-00005 - in statements.js
- * XAPI-00006 - no match found yet - An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type
+ * XAPI-00006 - in statements.js
  * XAPI-00007 - no match found yet, somewhat of a catchall category - An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format (such as mailto IRI, UUID, or IRI) is required.
  * XAPI-00008 - in Communication 3.2
  * XAPI-00009 - in Communication 3.2? same tests as XAPI-00008
@@ -40,6 +40,54 @@ describe('Formatting Requirements (Data 2.2)', () => {
 
     templatingSelection.createTemplate('statements.js');
 
+/**  XAPI-00002, 2.2 Formatting Requirements
+ * An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754
+ */
+    describe('An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (Data 2.2.s4.b3, XAPI-00002)', function() {
+        this.timeout(0);
+
+        it('should pass and keep precision', function(done) {
+
+            var templates = [
+                {statement: '{{statements.result}}'},
+                {result: '{{results.default}}'},
+            ],
+                data = helper.createFromTemplate(templates).statement,
+                id = helper.generateUUID(),
+                query = '?statementId=' + id,
+                min = 0.12123434,
+                raw = 12.125,
+                max = 45.45,
+                stmtTime = Date.now();
+
+            data.id = id;
+            data.result.score.min = min;
+            data.result.score.raw = raw;
+            data.result.score.max = max;
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(200)
+            .end()
+            .get(helper.getEndpointStatements() + query)
+            .wait(helper.genDelay(stmtTime, query, id))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+                    var score = helper.parse(res.body).result.score;
+                    expect(score.min).to.eql(min);
+                    expect(score.raw).to.eql(raw);
+                    expect(score.max).to.eql(max);
+                    done();
+                }
+            });
+        });
+    });
 });
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('./../templatingSelection.js')));

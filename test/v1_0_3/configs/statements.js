@@ -15,11 +15,11 @@
     var INVALID_STRING = 'should fail';
     var INVALID_UUID_TOO_MANY_DIGITS = 'AA97B177-9383-4934-8543-0F91A7A028368';
     var INVALID_UUID_INVALID_LETTER = 'MA97B177-9383-4934-8543-0F91A7A02836';
-    var INVALID_VERSION_0_9_9 = '0.9.9';
-    var INVALID_VERSION_1_1_0 = '1.1.0';
+    // var INVALID_VERSION_0_9_9 = '0.9.9';
+    // var INVALID_VERSION_1_1_0 = '1.1.0';
     var VALID_EXTENSION = {extensions: {'http://example.com/null': null}};
-    var VALID_VERSION_1_0 = '1.0';
-    var VALID_VERSION_1_0_9 = '1.0.9';
+    // var VALID_VERSION_1_0 = '1.0';
+    // var VALID_VERSION_1_0_9 = '1.0.9';
 
     // configures tests
     module.exports.config = function () {
@@ -274,100 +274,6 @@
                 ]
             },
             {
-            /**  XAPI-00101, Data 2.4.10 Version
-             * An LRS rejects with error code 400 Bad Request, a Request which uses "version" and has the value set to anything but "1.0" or "1.0.x", where x is the semantic versioning number
-             */
-                name: 'An LRS rejects with error code 400 Bad Request, a Request which uses "version" and has the value set to anything but "1.0" or "1.0.x", where x is the semantic versioning number (Format, Data 2.4.10.s2.b1, Data 2.4.10.s3.b1, Communication 3.3.s3.b3, Communication 3.3.s3.b6)',
-                config: [
-                    {
-                        name: 'statement "version" valid 1.0',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: VALID_VERSION_1_0}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement "version" valid 1.0.9',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: VALID_VERSION_1_0_9}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement "version" invalid string',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "version" invalid 0.9.9',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: INVALID_VERSION_0_9_9}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "version" invalid 1.1.0',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {version: INVALID_VERSION_1_1_0}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
-            /**  XAPI-00002, 2.2 Formatting Requirements
-             * An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754
-             */
-                name: 'An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (Data 2.2.s4.b3, XAPI-00002)',
-                config: [
-                    {
-                        name: 'statement result "extensions" property is numeric',
-                        templates: [
-                            {statement: '{{statements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_NUMERIC}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement result "extensions" property is string',
-                        templates: [
-                            {statement: '{{statements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement result "extensions" property is numeric',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_NUMERIC}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement result "extensions" property is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
                 name: 'An LRS rejects with error code 400 Bad Request any Statement violating a Statement Requirement. (Data 2.2.s4, Varies)',
                 config: [
                     {
@@ -388,6 +294,50 @@
                         name: 'statement "object" missing reply 400',
                         templates: [
                             {statement: '{{statements.no_object}}'}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
+            /**  XAPI-00006, Data 2.2 Formatting Requirements
+             * An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type
+             */
+                name: 'An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type (Data 2.2.s4.b2)',
+                config: [
+                    {
+                        name: 'with strings where numbers are required',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {max: 'one hundred'}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'even if those strings contain numbers',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {max: '100'}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'with strings where booleans are required',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {success: 'We regret to inform you that your effort was unsuccessful.'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'even if those strings contain booleans',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {completion: 'false'}
                         ],
                         expect: [400]
                     }
