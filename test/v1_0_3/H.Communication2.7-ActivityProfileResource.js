@@ -35,7 +35,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
  * XAPI-00301 - below
  * XAPI-00302 - below
  * XAPI-00303 - below
- * XAPI-00304 - not found yet - An LRS's Activity Profile API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table2.row2.a)
+ * XAPI-00304 - *talk about this one* not found yet - An LRS's Activity Profile API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table2.row2.a)
  * XAPI-00305 - not found yet - An LRS's Activity Profile API rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)
  * XAPI-00306 - below
  * XAPI-00307 - below
@@ -356,6 +356,21 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
                     });
             });
     });
+
+    /**  XAPI-00305, Communication 2.7 Activity Profile Resource
+     * An LRS's Activity Profile API rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request
+     */
+        describe('An LRS\'s Activity Profile Resource rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s4.table1.row2, XAPI-00305)', function () {
+          var document = helper.buildDocument(),
+              invalidTypes = [1, true, { key: 'value'}];
+          invalidTypes.forEach(function (type) {
+              it('Should reject DELETE with "activityId" with type ' + type, function () {
+                  var parameters = helper.buildActivityProfile();
+                  parameters.profileId = type;
+                  return helper.sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+              });
+          });
+        });
 
 });
 

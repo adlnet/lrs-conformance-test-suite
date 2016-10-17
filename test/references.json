@@ -6469,5 +6469,21 @@
         "name": "An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling Resources where PUT may overwrite existing data",
         "1.0.3_ref": "Communication 3.1",
         "1.0.3_link": ["Communication.md#3.1"]
+    },
+    "An LRS's Activity Profile Resource rejects a DELETE request with \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request": {
+        "name": "An LRS's Activity Profile Resource rejects a DELETE request with \"profileId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+        "1.0.3_ref": "Communication 2.7",
+        "1.0.3_link": ["Communication.md#2.7"]
+    },
+    "An LRS rejects with error code 400 Bad Request, a Request which does not use a \"X-Experience-API-Version\" header name to any API except the About API": {
+        "name": "An LRS rejects with error code 400 Bad Request, a Request which does not use a \"X-Experience-API-Version\" header name to any API except the About API",
+        "1.0.3_ref": "Communication 2.8",
+        "1.0.3_link": ["Communication.md#2.8"]
+    },
+    "Statements returned by an LRS MUST retain the header version they are accepted with": {
+        "name": "Statements returned by an LRS MUST retain the header version they are accepted with",
+        "1.0.3_ref": "Communication 3.3",
+        "1.0.3_link": ["Communication.md#3.3"]
     }
+
 }
