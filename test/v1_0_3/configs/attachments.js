@@ -14,7 +14,7 @@
     var INVALID_CONTENT_TYPE = {
         'usageType': 'http://example.com/attachment-usage/test',
         'display': {'en-US': 'A test attachment'},
-        'contentType': INVALID_STRING,
+        'contentType': INVALID_NUMERIC,
         'length': 27,
         'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
         'fileUrl': 'http://over.there.com/file.txt'
@@ -132,10 +132,11 @@
                 name: 'A "contentType" property is an Internet Media/MIME type (Format, Data 2.4.11.s2.table1.row4, XAPI-00105)',
                 config: [
                     {
-                        name: 'statement "contentType" invalid string',
+                        name: 'statement "contentType" invalid number',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: [INVALID_CONTENT_TYPE]}
+                            {attachments: [INVALID_CONTENT_TYPE]},
+                            {attachments: {contentType: 999}}
                         ],
                         expect: [400]
                     }

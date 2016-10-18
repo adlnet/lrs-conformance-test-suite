@@ -653,6 +653,23 @@
                         expect: [400]
                     }
                 ]
+            },
+            {
+            /**  XAPI-00013  2.2 Formatting Requirements
+             * The LRS rejects with error code 400 Bad Request a token with does not validate as matching the RFC 5646 standard in the sequence of token lengths for language map keys.
+             */
+                name: 'The LRS rejects with error code 400 Bad Request a token with does not validate as matching the RFC 5646 standard in the sequence of token lengths for language map keys. (Format, Data 2.2.s4.b2, Data 2.4.6.s3.table1.row7, RFC5646, XAPI-00013)',
+                config: [
+                    {
+                        name: 'should pass given two letter language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {context: {language: 'en'}}
+                        ],
+                        expect: [200]
+                    }
+                ]
             }
         ];
     };

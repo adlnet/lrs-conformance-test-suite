@@ -789,15 +789,7 @@
                             {language: INVALID_OBJECT}
                         ],
                         expect: [400]
-                    }
-                ]
-            },
-            {
-            /**  XAPI-00013  2.2 Formatting Requirements
-             * The LRS rejects with error code 400 Bad Request a token with does not validate as matching the RFC 5646 standard in the sequence of token lengths for language map keys.
-             */
-                name: 'A "language" property follows RFC5646 (Format, Data 2.4.6.s3.table1.row7, RFC5646, XAPI-00013)',
-                config: [
+                    },
                     {
                         name: 'statement context "language" is is invalid language',
                         templates: [

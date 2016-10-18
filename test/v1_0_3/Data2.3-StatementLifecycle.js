@@ -181,7 +181,8 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
             });
         });
 
-        it('should fail when "StatementRef" points to a voiding statement', function (done) {
+        it('should not void an already voided statement', function (done) {
+            this.timeout(0);
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -189,15 +190,21 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
             var data = helper.createFromTemplate(templates);
             data = data.statement;
             data.object.id = voidedId;
+            var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders({}))
-            .json(data).expect(400).end(function (err, res) {
+            .json(data).end(function (err, res) {
                 if (err) {
                     done(err);
                 } else {
-                    done();
+                    var query = '?voidedStatementId=' + voidedId;
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements())
+                    .wait(helper.genDelay(stmtTime, query, voidedId))
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200, done);
                 }
             });
         });
