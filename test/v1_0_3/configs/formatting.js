@@ -688,137 +688,137 @@
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given i-enochian (example of a grandfathered tag) language code',
+                        name: 'verb.display should pass given i-enochian (example of a grandfathered tag) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'i-enochian'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'i-enochian'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given three letter ine language code',
+                        name: 'verb.display should pass given three letter ine language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'ine'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'ine'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given zh-Hant (Chinese written using the Traditional Chinese script) language code',
+                        name: 'verb.display should pass given zh-Hant (Chinese written using the Traditional Chinese script) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'zh-Hant'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'zh-Hant'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given sr-Latn (Serbian written using the Latin script) language code',
+                        name: 'verb.display should pass given sr-Latn (Serbian written using the Latin script) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'sr-Latn'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'sr-Latn'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given zh-cmn-Hans-CN (Chinese, Mandarin, Simplified script, as used in China) language code',
+                        name: 'verb.display should pass given zh-cmn-Hans-CN (Chinese, Mandarin, Simplified script, as used in China) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'zh-cmn-Hans-CN'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'zh-cmn-Hans-CN'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given sr-Latn-RS (Serbian written using the Latin script as used in Serbia) language code',
+                        name: 'verb.display should pass given sr-Latn-RS (Serbian written using the Latin script as used in Serbia) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'sr-Latn-RS'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'sr-Latn-RS'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given sl-rozaj-biske (San Giorgio dialect of Resian dialect of Slovenian) language code',
+                        name: 'verb.display should pass given sl-rozaj-biske (San Giorgio dialect of Resian dialect of Slovenian) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'sl-rozaj-biske'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'sl-rozaj-biske'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given de-CH-1901 (German as used in Switzerland using the 1901 variant [orthography]) language code',
+                        name: 'verb.display should pass given de-CH-1901 (German as used in Switzerland using the 1901 variant [orthography]) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'de-CH-1901'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'de-CH-1901'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given hy-Latn-IT-arevela (Eastern Armenian written in Latin script, as used in Italy) language code',
+                        name: 'verb.display should pass given hy-Latn-IT-arevela (Eastern Armenian written in Latin script, as used in Italy) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'hy-Latn-IT-arevela'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'hy-Latn-IT-arevela'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given de-DE (German for Germany) language code',
+                        name: 'verb.display should pass given de-DE (German for Germany) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'de-DE'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'de-DE'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given az-Arab-x-AZE-derbend (private use subtag) language code',
+                        name: 'verb.display should pass given az-Arab-x-AZE-derbend (private use subtag) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'az-Arab-x-AZE-derbend'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'az-Arab-x-AZE-derbend'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should pass given private use registry values: x-whatever (private use using the singleton x) language code',
+                        name: 'verb.display should pass given private use registry values: x-whatever (private use using the singleton x) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'x-whatever'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'x-whatever'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'context.language should fail given de-419-DE invalid (two region tags) language code',
+                        name: 'verb.display should fail given de-419-DE invalid (two region tags) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'de-419-DE'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'de-419-DE'}
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'context.language should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
+                        name: 'verb.display should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'a-DE'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'a-DE'}
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'context.language should fail given ar-a-aaa-b-bbb-a-ccc invalid (two extensions with same single-letter prefix) language code',
+                        name: 'verb.display should fail given ar-a-aaa-b-bbb-a-ccc invalid (two extensions with same single-letter prefix) language code',
                         templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'ar-a-aaa-b-bbb-a-ccc'}
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: 'ar-a-aaa-b-bbb-a-ccc'}
                         ],
                         expect: [400]
                     },
