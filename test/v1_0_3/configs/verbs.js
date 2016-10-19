@@ -103,13 +103,15 @@
                 ]
             },
             {
+            /**  XAPI-00017, Data 2.3.2 Voiding
+             * An LRS rejects a Voiding Statement with 400 Bad Request if the "objectType" field does not have a value of "StatementRef"
+             */
             /**  XAPI-00020,  2.3.2 Voiding
              * A Voiding Statement's "objectType" field has a value of "StatementRef"
-             ??  does this also cover XAPI-00017?? - An LRS rejects a Voiding Statement with 400 Bad Request if the "objectType" field does not have a value of "StatementRef"
              */
-                name: 'A Voiding Statement\'s "objectType" field has a value of "StatementRef" (Format, Data 2.3.2.s2.b1, XAPI-00020)',
+                name: 'A Voiding Statement\'s "objectType" field has a value of "StatementRef" (Format, Data 2.3.2.s2.b1, XAPI-00017, XAPI-00020)',
                 config: [
-                    {
+                    {   //XAPI-00020
                         name: 'statement verb voided uses substatement with "StatementRef"',
                         templates: [
                             {statement: '{{statements.object_statementref}}'},
@@ -117,7 +119,7 @@
                         ],
                         expect: [200]
                     },
-                    {
+                    {   //XAPI-00017
                         name: 'statement verb voided does not use object "StatementRef"',
                         templates: [
                             {statement: '{{statements.verb}}'},

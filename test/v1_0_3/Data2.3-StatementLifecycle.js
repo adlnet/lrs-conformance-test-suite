@@ -16,65 +16,19 @@
 describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
 /**  Matchup with Conformance Requirements Document
- * XAPI-00016 - below, may need adjusted
- * XAPI-00017 - is this covered by XAPI-00020?? which sends a voiding statements with no StatementRef property expecting 400
+ * XAPI-00016 - below
+ * XAPI-00017 - in verbs.js
  * XAPI-00018 - below
  * XAPI-00019 - in verbs.js
  * XAPI-00020 - in verbs.js
  */
 
-    describe('An LRS doesn\'t make any adjustments to incoming Statements that are not specifically mentioned in this section (Data 2.3.1, Varies)', function (){
-        var returnedID, data, stmtTime;
-
-        before('persist statement', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            data = helper.createFromTemplate(templates);
-            data = data.statement;
-            stmtTime = Date.now();
-            request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data).expect(200).end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        returnedID = res.body[0];
-                        done();
-                    }
-                });
-        });
-
-        it('statement values should be the same', function (done) {
-            this.timeout(0);
-            request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?statementId=' + returnedID)
-                .wait(helper.genDelay(stmtTime, '?statementId=' + returnedID, returnedID))
-                .headers(helper.addAllHeaders({}))
-                .expect(200).end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        var results = helper.parse(res.body, done);
-                        delete results.id;
-                        delete results.authority;
-                        delete results.timestamp;
-                        delete results.stored;
-                        delete results.version;
-                        expect(results).to.have.all.keys(Object.keys(data));
-                        done();
-                    }
-                });
-        });
-    });
 
 /**  XAPI-00018, Data 2.3.2 Voiding
  * An LRS MUST consider a Statement it contains voided if the Statement is not itself a voiding Statement and the LRS also contains a voiding Statement referring to the first Statement.
  * Test: Void a statement and then send a GET for that statement which uses “statementId” instead of “voidedStatementId.” The statement should then not be returned in the GET request, which should return a 404.
- * Consider updating test to check 404 condition
  */
-    describe('A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS (Data 2.3.2.s2.b3)', function () {
+    describe('A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS (Data 2.3.2.s2.b3, XAPI-00018)', function () {
         var voidedId = helper.generateUUID();
         var stmtTime;
 
@@ -128,6 +82,25 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
                     }
                 });
         });
+
+        it('should return 404 when using GET with "statementId"', function (done) {
+            this.timeout(0);
+            var query = helper.getUrlEncoding({statementId: voidedId});
+            request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?' + query, voidedId))
+                .headers(helper.addAllHeaders({}))
+                .expect(404, done);
+                // .end(function (err, res) {
+                //     if (err) {
+                //         done(err);
+                //     } else {
+                //         var statement = helper.parse(res.body, done);
+                //         expect(statement.id).to.equal(voidedId);
+                //         done();
+                //     }
+                // });
+        });
     });
 
 /**  XAPI-00016, Data 2.3.2 Voiding
@@ -136,7 +109,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
  * If the LRS accepts that statement, the violating VOIDING statement SHOULD be ignored.
  * Adjust this test accordingly
  */
-    describe('A Voiding Statement cannot Target another Voiding Statement (Data 2.3.2.s2.b7)', function () {
+    describe('A Voiding Statement cannot Target another Voiding Statement (Data 2.3.2.s2.b7, XAPI-00016)', function () {
         var voidedId, voidingId;
 
         before('persist voided statement', function (done) {
