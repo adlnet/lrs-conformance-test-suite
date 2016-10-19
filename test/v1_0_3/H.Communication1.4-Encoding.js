@@ -17,6 +17,7 @@ describe('Encoding Requirements (Communication 1.4)', () => {
 
 /**  XAPI-00015,  2.2. Formatting Requirements
  * All Strings are encoded and interpreted as UTF-8
+ * This req should stay here (Communication 1.4).  This is the only place which mentions UTF-8 in the spec, other than Comm 1.3
  */
     it('All Strings are encoded and interpreted as UTF-8 (Communication 1.4.s1.b1)', function (done) {
         this.timeout(0);

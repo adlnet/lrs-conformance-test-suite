@@ -19,7 +19,25 @@
     var INVALID_ACCOUNT_NAME_IRL = {account: {name: INVALID_OBJECT}};
     var VALID_ATTACHMENT = {
         'usageType': 'http://example.com/attachment-usage/test',
+        'display': {'en-US': 'A test attachment', 'de': 'Eine Testbefestigung'},
+        'description': {'en-US': 'A test attachment (description)', 'de': 'Ein Testansatz (Beschreibung)'},
+        'contentType': 'text/plain; charset=ascii',
+        'length': 27,
+        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+        'fileUrl': 'http://over.there.com/file.txt'
+    };
+    var INVALID_DESCRIPTION_ATTACHMENT = {
+        'usageType': 'http://example.com/attachment-usage/test',
         'display': {'en-US': 'A test attachment'},
+        'description': {'en-US': 'A test attachment (description)', 'de-419-DE': 'Ein Testansatz (Beschreibung)'},
+        'contentType': 'text/plain; charset=ascii',
+        'length': 27,
+        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+        'fileUrl': 'http://over.there.com/file.txt'
+    };
+    var INVALID_DISPLAY_ATTACHMENT = {
+        'usageType': 'http://example.com/attachment-usage/test',
+        'display': {'en-US': 'A test attachment', 'de-419-DE': 'Ein Testbefestigung'},
         'description': {'en-US': 'A test attachment (description)'},
         'contentType': 'text/plain; charset=ascii',
         'length': 27,
@@ -661,13 +679,264 @@
                 name: 'The LRS rejects with error code 400 Bad Request a token with does not validate as matching the RFC 5646 standard in the sequence of token lengths for language map keys. (Format, Data 2.2.s4.b2, Data 2.4.6.s3.table1.row7, RFC5646, XAPI-00013)',
                 config: [
                     {
-                        name: 'should pass given two letter language code',
+                        name: 'context.language should pass given two letter de (German) language code',
                         templates: [
                             {statement: '{{statements.context}}'},
                             {context: '{{contexts.default}}'},
-                            {context: {language: 'en'}}
+                            {language: 'de'}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given i-enochian (example of a grandfathered tag) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'i-enochian'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given three letter ine language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'ine'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given zh-Hant (Chinese written using the Traditional Chinese script) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'zh-Hant'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given sr-Latn (Serbian written using the Latin script) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'sr-Latn'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given zh-cmn-Hans-CN (Chinese, Mandarin, Simplified script, as used in China) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'zh-cmn-Hans-CN'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given sr-Latn-RS (Serbian written using the Latin script as used in Serbia) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'sr-Latn-RS'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given sl-rozaj-biske (San Giorgio dialect of Resian dialect of Slovenian) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'sl-rozaj-biske'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given de-CH-1901 (German as used in Switzerland using the 1901 variant [orthography]) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'de-CH-1901'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given hy-Latn-IT-arevela (Eastern Armenian written in Latin script, as used in Italy) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'hy-Latn-IT-arevela'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given de-DE (German for Germany) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'de-DE'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given az-Arab-x-AZE-derbend (private use subtag) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'az-Arab-x-AZE-derbend'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given private use registry values: x-whatever (private use using the singleton x) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'x-whatever'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should fail given de-419-DE invalid (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'de-419-DE'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'context.language should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'a-DE'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'context.language should fail given ar-a-aaa-b-bbb-a-ccc invalid (two extensions with same single-letter prefix) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'ar-a-aaa-b-bbb-a-ccc'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'context.language should pass given how many characters does it take to fail the language test (50) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'supercalifragilisticexpialidociouswhatabouthhhhhhh'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should pass given how many characters does it take to fail the language test (51) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'supercalifragilisticexpialidociouswhatabouthhhhhhh1'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'verb.display should pass given de language code',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: {de: 'besucht'}}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'verb.display should fail given de-419-DE invalid (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {verb: '{{verbs.default}}'},
+                            {display: {'de-419-DE': 'besucht'}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'substatement verb.display should pass given de language code',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.verb_valid}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'substatement verb.display should fail given de-419-DE invalid (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.verb_invalid}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'attachments.display should pass given de language code',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [VALID_ATTACHMENT]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'attachments.display should fail given de-419-DE invalid (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [INVALID_DISPLAY_ATTACHMENT]}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'attachments.description should pass given de language code',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [VALID_ATTACHMENT]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'attachments.description should fail given de-419-DE invalid (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [INVALID_DESCRIPTION_ATTACHMENT]}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'object.activitydefinition.name should pass given de language code',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.language_maps_valid}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'object.activitydefinition.name should fail given de-419-DE invalid (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.name_invalid}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'object.activitydefinition.description should pass given de language code',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.language_maps_valid}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'object.activitydefinition.description should fail given de-419-DE invalid (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.description_invalid}}'}
+                        ],
+                        expect: [400]
                     }
                 ]
             }
