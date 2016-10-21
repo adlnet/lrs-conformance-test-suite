@@ -19,8 +19,26 @@
     var INVALID_ACCOUNT_NAME_IRL = {account: {name: INVALID_OBJECT}};
     var VALID_ATTACHMENT = {
         'usageType': 'http://example.com/attachment-usage/test',
-        'display': {'en-US': 'A test attachment', 'de': 'Eine Testbefestigung'},
-        'description': {'en-US': 'A test attachment (description)', 'de': 'Ein Testansatz (Beschreibung)'},
+        'display': {'en-US': 'A test attachment'},
+        'description': {'en-US': 'A test attachment (description)'},
+        'contentType': 'text/plain; charset=ascii',
+        'length': 27,
+        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+        'fileUrl': 'http://over.there.com/file.txt'
+    };
+    var VALID_ATTACHMENT_DISPLAY = {
+        'usageType': 'http://example.com/attachment-usage/test',
+        'display': {'en-US': 'A test attachment', 'es': 'Un accesorio de prueba'},
+        'description': {'en-US': 'A test attachment (description)'},
+        'contentType': 'text/plain; charset=ascii',
+        'length': 27,
+        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+        'fileUrl': 'http://over.there.com/file.txt'
+    };
+    var VALID_ATTACHMENT_DESCRIPTION = {
+        'usageType': 'http://example.com/attachment-usage/test',
+        'display': {'en-US': 'A test attachment'},
+        'description': {'en-US': 'A test attachment (description)', 'es-MX': 'Un accesorio de prueba (descripción)'},
         'contentType': 'text/plain; charset=ascii',
         'length': 27,
         'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
@@ -29,7 +47,7 @@
     var INVALID_DESCRIPTION_ATTACHMENT = {
         'usageType': 'http://example.com/attachment-usage/test',
         'display': {'en-US': 'A test attachment'},
-        'description': {'en-US': 'A test attachment (description)', 'de-419-DE': 'Ein Testansatz (Beschreibung)'},
+        'description': {'en-US': 'A test attachment (description)', 'es-MX-PE': 'Un accesorio de prueba (descripción)'},
         'contentType': 'text/plain; charset=ascii',
         'length': 27,
         'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
@@ -37,7 +55,7 @@
     };
     var INVALID_DISPLAY_ATTACHMENT = {
         'usageType': 'http://example.com/attachment-usage/test',
-        'display': {'en-US': 'A test attachment', 'de-419-DE': 'Ein Testbefestigung'},
+        'display': {'en-US': 'A test attachment', 'es-a-aaa-b-bbb-b-ccc': 'Un accesorio de prueba'},
         'description': {'en-US': 'A test attachment (description)'},
         'contentType': 'text/plain; charset=ascii',
         'length': 27,
@@ -679,169 +697,7 @@
                 name: 'The LRS rejects with error code 400 Bad Request a token with does not validate as matching the RFC 5646 standard in the sequence of token lengths for language map keys. (Format, Data 2.2.s4.b2, Data 2.4.6.s3.table1.row7, RFC5646, XAPI-00013)',
                 config: [
                     {
-                        name: 'context.language should pass given two letter de (German) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'de'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given i-enochian (example of a grandfathered tag) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'i-enochian'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given three letter ine language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'ine'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given zh-Hant (Chinese written using the Traditional Chinese script) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'zh-Hant'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given sr-Latn (Serbian written using the Latin script) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'sr-Latn'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given zh-cmn-Hans-CN (Chinese, Mandarin, Simplified script, as used in China) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'zh-cmn-Hans-CN'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given sr-Latn-RS (Serbian written using the Latin script as used in Serbia) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'sr-Latn-RS'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given sl-rozaj-biske (San Giorgio dialect of Resian dialect of Slovenian) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'sl-rozaj-biske'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given de-CH-1901 (German as used in Switzerland using the 1901 variant [orthography]) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'de-CH-1901'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given hy-Latn-IT-arevela (Eastern Armenian written in Latin script, as used in Italy) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'hy-Latn-IT-arevela'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given de-DE (German for Germany) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'de-DE'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given az-Arab-x-AZE-derbend (private use subtag) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'az-Arab-x-AZE-derbend'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given private use registry values: x-whatever (private use using the singleton x) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'x-whatever'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should fail given de-419-DE invalid (two region tags) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'de-419-DE'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'context.language should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'a-DE'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'context.language should fail given ar-a-aaa-b-bbb-a-ccc invalid (two extensions with same single-letter prefix) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'ar-a-aaa-b-bbb-a-ccc'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'context.language should pass given how many characters does it take to fail the language test (50) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'supercalifragilisticexpialidociouswhatabouthhhhhhh'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'context.language should pass given how many characters does it take to fail the language test (51) language code',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {language: 'supercalifragilisticexpialidociouswhatabouthhhhhhh1'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'verb.display should pass given de language code',
+                        name: 'verb.display should pass given de two letter language code only',
                         templates: [
                             {statement: '{{statements.default}}'},
                             {verb: '{{verbs.default}}'},
@@ -859,63 +715,15 @@
                         expect: [400]
                     },
                     {
-                        name: 'substatement verb.display should pass given de language code',
-                        templates: [
-                            {statement: '{{statements.object_substatement_default}}'},
-                            {object: '{{substatements.verb_valid}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'substatement verb.display should fail given de-419-DE invalid (two region tags) language code',
-                        templates: [
-                            {statement: '{{statements.object_substatement_default}}'},
-                            {object: '{{substatements.verb_invalid}}'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'attachments.display should pass given de language code',
-                        templates: [
-                            {statement: '{{statements.attachment}}'},
-                            {attachments: [VALID_ATTACHMENT]}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'attachments.display should fail given de-419-DE invalid (two region tags) language code',
-                        templates: [
-                            {statement: '{{statements.attachment}}'},
-                            {attachments: [INVALID_DISPLAY_ATTACHMENT]}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'attachments.description should pass given de language code',
-                        templates: [
-                            {statement: '{{statements.attachment}}'},
-                            {attachments: [VALID_ATTACHMENT]}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'attachments.description should fail given de-419-DE invalid (two region tags) language code',
-                        templates: [
-                            {statement: '{{statements.attachment}}'},
-                            {attachments: [INVALID_DESCRIPTION_ATTACHMENT]}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'object.activitydefinition.name should pass given de language code',
+                        name: 'object.activitydefinition.name should pass given de-DE language-region code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.language_maps_valid}}'}
+                            {object: '{{activities.language_maps_valid_name}}'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'object.activitydefinition.name should fail given de-419-DE invalid (two region tags) language code',
+                        name: 'object.activitydefinition.name should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.name_invalid}}'}
@@ -923,20 +731,202 @@
                         expect: [400]
                     },
                     {
-                        name: 'object.activitydefinition.description should pass given de language code',
+                        name: 'object.activitydefinition.description should pass given zh-Hant language-script code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.language_maps_valid}}'}
+                            {object: '{{activities.language_maps_valid_description}}'}
                         ],
                         expect: [200]
                     },
                     {
-                        name: 'object.activitydefinition.description should fail given de-419-DE invalid (two region tags) language code',
+                        name: 'object.activitydefinition.description should fail given ar-a-aaa-b-bbb-a-ccc invalid (two extensions with same single-letter prefix) language code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.description_invalid}}'}
                         ],
                         expect: [400]
+                    },
+                    {
+                        name: 'interaction components\' description should pass given sr-Latn-RS language-script-region code',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.likert_valid_language_map}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'interaction components\' description should fail given en-US-GB invalid (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.choice_invalid_language_map}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'context.language should pass given three letter cmn language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'cmn'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'context.language should fail given g-GR invalid (use of a single-character subtag in primary position) language code',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.default}}'},
+                            {language: 'g-GR'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'attachments.display should pass given es two letter language code only',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [VALID_ATTACHMENT_DISPLAY]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'attachments.display should fail given es-a-aaa-b-bbb-b-ccc invalid (two extensions with same single-letter prefix) language code',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [INVALID_DISPLAY_ATTACHMENT]}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'attachments.description should pass given es-MX language-UN region code',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [VALID_ATTACHMENT_DESCRIPTION]}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'attachments.description should fail given es-MX invalid es-MX-PE (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [INVALID_DESCRIPTION_ATTACHMENT]}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'substatement verb.display should pass given sr-Cyrl language-script code',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.verb_valid}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'substatement verb.display should fail given s-RS invalid (use of a single-character subtag in primary position) language code',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.verb_invalid}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'substatement object.activitydefinition.name should pass given zh-Hans-CN language-script-region code',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.activity_definition_name}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'substatement object.activitydefinition.name should fail given zh-z-aaa-z-bbb-c-ccc invalid (two extensions with same single-letter prefix) language code',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.activity_definition_name_invalid}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'substatement object.activitydefinition.description should pass given ase three letter language code',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.activity_definition_description}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'substatement object.activitydefinition.description should fail given ase-GB-US invalid (two region tags) language code',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.activity_definition_description_invalid}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'substatement interaction components\' description should pass given ja two letter language code only',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.interaction_component_valid_language_map}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'substatement interaction components\' description should fail given j-JP invalid (use of a single-character subtag in primary position) language code',
+                        templates: [
+                            {statement: '{{statements.object_substatement_default}}'},
+                            {object: '{{substatements.interaction_component_invalid_language_map}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'substatement context.language should pass given two letter fr-CA language-region code',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context_valid_language_map}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'substatement context.language should fail given fr-f-aaa-b-rrr-f-ccc invalid (two extensions with same single-letter prefix) language code',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context_invalid_language_map}}'}
+                        ],
+                        expect: [400]
+                    // },
+                    // {   //update
+                    //     name: 'substatement attachments.display should pass given az-Latn language-script code',
+                    //     templates: [
+                    //         {statement: '{{statements.object_substatement}}'},
+                    //         {context: '{{contexts.default}}'},
+                    //         {language: 'de-419-DE'}
+                    //     ],
+                    //     expect: [200]
+                    // },
+                    // {   //update
+                    //     name: 'substatement attachments.display should fail given de-419-DE invalid (two region tags) language code',
+                    //     templates: [
+                    //         {statement: '{{statements.object_substatement}}'},
+                    //         {context: '{{contexts.default}}'},
+                    //         {language: 'de-419-DE'}
+                    //     ],
+                    //     expect: [400]
+                    // },
+                    // {   //update
+                    //     name: 'substatement attachments.description should pass given de-419-DE invalid (two region tags) language code',
+                    //     templates: [
+                    //         {statement: '{{statements.object_substatement}}'},
+                    //         {context: '{{contexts.default}}'},
+                    //         {language: 'de-419-DE'}
+                    //     ],
+                    //     expect: [200]
+                    // },
+                    // {   //update
+                    //     name: 'substatement attachments.description should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
+                    //     templates: [
+                    //         {statement: '{{statements.object_substatement}}'},
+                    //         {context: '{{contexts.default}}'},
+                    //         {language: 'de-419-DE'}
+                    //     ],
+                    //     expect: [400]
                     }
                 ]
             }

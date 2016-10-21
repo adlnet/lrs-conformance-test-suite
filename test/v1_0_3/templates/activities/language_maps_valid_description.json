@@ -6,12 +6,12 @@
     "name": {
       "en-GB": "example meeting",
       "en-US": "example meeting",
-      "de": "Beispiel Treffen"
+      "de-DE": "Beispiel Treffen"
     },
     "description": {
       "en-GB": "An example meeting that happened on a specific occasion with certain people present.",
       "en-US": "An example meeting that happened on a specific occasion with certain people present.",
-      "ar-a-aaa-b-bbb-a-ccc": "اجتماع سبيل المثال ما حدث في مناسبة محددة مع بعض الحاضرين."
+      "zh-Hant": "所發生的與目前某些人特定場合的一個例子會議。"
     },
     "moreInfo": "http://virtualmeeting.example.com/345256",
     "extensions": {

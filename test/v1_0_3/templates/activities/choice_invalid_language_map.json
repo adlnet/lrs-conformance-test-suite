@@ -3,40 +3,41 @@
   "id": "http://www.example.com/meetings/categories/teammeeting",
   "definition": {
     "name": {
-      "en": "Likert"
+      "en": "Choice"
     },
     "description": {
-      "en": "How awesome is Experience API?"
+      "en": "Which of these prototypes are available at the beta site?"
     },
     "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
     "moreInfo": "http://virtualmeeting.example.com/345256",
-    "interactionType": "likert",
+    "interactionType": "choice",
     "correctResponsesPattern": [
-      "likert_3"
+      "golf[,]tetris"
     ],
-    "scale": [
+    "choices": [
       {
-        "id": "likert_0",
+        "id": "golf",
         "description": {
-          "en-US": "It's OK"
+          "en-US": "Golf Example",
+          "en-US-GB": "Golf Example"
         }
       },
       {
-        "id": "likert_1",
+        "id": "facebook",
         "description": {
-          "en-US": "It's Pretty Cool"
+          "en-US": "Facebook App"
         }
       },
       {
-        "id": "likert_2",
+        "id": "tetris",
         "description": {
-          "en-US": "It's Damn Cool"
+          "en-US": "Tetris Example"
         }
       },
       {
-        "id": "likert_3",
+        "id": "scrabble",
         "description": {
-          "en-US": "It's Gonna Change the World"
+          "en-US": "Scrabble Example"
         }
       }
     ],

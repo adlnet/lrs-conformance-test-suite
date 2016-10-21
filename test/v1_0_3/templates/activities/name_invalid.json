@@ -6,7 +6,7 @@
     "name": {
       "en-GB": "example meeting",
       "en-US": "example meeting",
-      "de-419-DE": "Beispiel Treffen"
+      "a-DE": "Beispiel Treffen"
     },
     "description": {
       "en-GB": "An example meeting that happened on a specific occasion with certain people present.",

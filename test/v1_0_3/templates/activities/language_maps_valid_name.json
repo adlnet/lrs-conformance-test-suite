@@ -6,12 +6,12 @@
     "name": {
       "en-GB": "example meeting",
       "en-US": "example meeting",
-      "de": "Beispiel Treffen"
+      "de-DE": "Beispiel Treffen"
     },
     "description": {
       "en-GB": "An example meeting that happened on a specific occasion with certain people present.",
       "en-US": "An example meeting that happened on a specific occasion with certain people present.",
-      "de": "Ein Beispiel Sitzung, die auf einem bestimmten Anlass mit bestimmten Personen zufällig anwesend."
+      "de-DE": "Ein Beispiel Sitzung, die auf einem bestimmten Anlass mit bestimmten Personen zufällig anwesend."
     },
     "moreInfo": "http://virtualmeeting.example.com/345256",
     "extensions": {
