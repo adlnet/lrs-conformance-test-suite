@@ -6,7 +6,7 @@
  *
  */
 
-(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
+(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, templatingSelection) {
     // "use strict";
 
     var expect = chai.expect;
@@ -23,6 +23,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
  * XAPI-00020 - in verbs.js
  */
 
+    templatingSelection.createTemplate('voiding.js');
 
 /**  XAPI-00018, Data 2.3.2 Voiding
  * An LRS MUST consider a Statement it contains voided if the Statement is not itself a voiding Statement and the LRS also contains a voiding Statement referring to the first Statement.
@@ -91,15 +92,6 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
                 .wait(helper.genDelay(stmtTime, '?' + query, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .expect(404, done);
-                // .end(function (err, res) {
-                //     if (err) {
-                //         done(err);
-                //     } else {
-                //         var statement = helper.parse(res.body, done);
-                //         expect(statement.id).to.equal(voidedId);
-                //         done();
-                //     }
-                // });
         });
     });
 
@@ -213,4 +205,4 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
 });
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('./../templatingSelection.js')));
