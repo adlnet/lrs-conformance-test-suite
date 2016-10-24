@@ -89,6 +89,7 @@
             {
             /**  XAPI-00045, Data 2.4.3 Verb
              * A "verb" property's "display" property is a Language Map. An LRS rejects with 400 Bad Request if a statement uses the Verb Object’s “display” property and it is not a valid Language Map.
+             * Further verification of language map in Data 2.2 Formatting
              */
                 name: 'A "verb" property\'s "display" property is a Language Map (Type, Data 2.4.3.s3.table1.row2, XAPI-00045)',
                 config: [

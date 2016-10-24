@@ -697,7 +697,7 @@
                 name: 'The LRS rejects with error code 400 Bad Request a token with does not validate as matching the RFC 5646 standard in the sequence of token lengths for language map keys. (Format, Data 2.2.s4.b2, Data 2.4.6.s3.table1.row7, RFC5646, XAPI-00013)',
                 config: [
                     {
-                        name: 'verb.display should pass given de two letter language code only',
+                        name: 'statement verb "display" should pass given de two letter language code only',
                         templates: [
                             {statement: '{{statements.default}}'},
                             {verb: '{{verbs.default}}'},
@@ -706,7 +706,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'verb.display should fail given de-419-DE invalid (two region tags) language code',
+                        name: 'statement verb "display" should fail given de-419-DE invalid (two region tags) language code',
                         templates: [
                             {statement: '{{statements.default}}'},
                             {verb: '{{verbs.default}}'},
@@ -715,7 +715,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'object.activitydefinition.name should pass given de-DE language-region code',
+                        name: 'statement object "name" should pass given de-DE language-region code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.language_maps_valid_name}}'}
@@ -723,7 +723,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'object.activitydefinition.name should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
+                        name: 'statement object "name" should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.name_invalid}}'}
@@ -731,7 +731,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'object.activitydefinition.description should pass given zh-Hant language-script code',
+                        name: 'statement object "description" should pass given zh-Hant language-script code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.language_maps_valid_description}}'}
@@ -739,7 +739,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'object.activitydefinition.description should fail given ar-a-aaa-b-bbb-a-ccc invalid (two extensions with same single-letter prefix) language code',
+                        name: 'statement object "description" should fail given ar-a-aaa-b-bbb-a-ccc invalid (two extensions with same single-letter prefix) language code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.description_invalid}}'}
@@ -781,7 +781,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'attachments.display should pass given es two letter language code only',
+                        name: 'statement attachment "display" should pass given es two letter language code only',
                         templates: [
                             {statement: '{{statements.attachment}}'},
                             {attachments: [VALID_ATTACHMENT_DISPLAY]}
@@ -789,7 +789,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'attachments.display should fail given es-a-aaa-b-bbb-b-ccc invalid (two extensions with same single-letter prefix) language code',
+                        name: 'statement attachment "display" should fail given es-a-aaa-b-bbb-b-ccc invalid (two extensions with same single-letter prefix) language code',
                         templates: [
                             {statement: '{{statements.attachment}}'},
                             {attachments: [INVALID_DISPLAY_ATTACHMENT]}
@@ -797,7 +797,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'attachments.description should pass given es-MX language-UN region code',
+                        name: 'statement attachment "description" should pass given es-MX language-UN region code',
                         templates: [
                             {statement: '{{statements.attachment}}'},
                             {attachments: [VALID_ATTACHMENT_DESCRIPTION]}
@@ -805,7 +805,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'attachments.description should fail given es-MX invalid es-MX-PE (two region tags) language code',
+                        name: 'statement attachment "description" should fail given es-MX invalid es-MX-PE (two region tags) language code',
                         templates: [
                             {statement: '{{statements.attachment}}'},
                             {attachments: [INVALID_DESCRIPTION_ATTACHMENT]}
@@ -813,7 +813,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'substatement verb.display should pass given sr-Cyrl language-script code',
+                        name: 'statement substatement verb "display" should pass given sr-Cyrl language-script code',
                         templates: [
                             {statement: '{{statements.object_substatement_default}}'},
                             {object: '{{substatements.verb_valid}}'}
@@ -821,7 +821,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'substatement verb.display should fail given s-RS invalid (use of a single-character subtag in primary position) language code',
+                        name: 'statement substatement verb "display" should fail given s-RS invalid (use of a single-character subtag in primary position) language code',
                         templates: [
                             {statement: '{{statements.object_substatement_default}}'},
                             {object: '{{substatements.verb_invalid}}'}
@@ -829,7 +829,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'substatement object.activitydefinition.name should pass given zh-Hans-CN language-script-region code',
+                        name: 'statement substatement activity "name" should pass given zh-Hans-CN language-script-region code',
                         templates: [
                             {statement: '{{statements.object_substatement_default}}'},
                             {object: '{{substatements.activity_definition_name}}'}
@@ -837,7 +837,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'substatement object.activitydefinition.name should fail given zh-z-aaa-z-bbb-c-ccc invalid (two extensions with same single-letter prefix) language code',
+                        name: 'statement substatement activity "name" should fail given zh-z-aaa-z-bbb-c-ccc invalid (two extensions with same single-letter prefix) language code',
                         templates: [
                             {statement: '{{statements.object_substatement_default}}'},
                             {object: '{{substatements.activity_definition_name_invalid}}'}
@@ -845,7 +845,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'substatement object.activitydefinition.description should pass given ase three letter language code',
+                        name: 'statement substatement activity "description" should pass given ase three letter language code',
                         templates: [
                             {statement: '{{statements.object_substatement_default}}'},
                             {object: '{{substatements.activity_definition_description}}'}
@@ -853,7 +853,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'substatement object.activitydefinition.description should fail given ase-GB-US invalid (two region tags) language code',
+                        name: 'statement substatement activity "description" should fail given ase-GB-US invalid (two region tags) language code',
                         templates: [
                             {statement: '{{statements.object_substatement_default}}'},
                             {object: '{{substatements.activity_definition_description_invalid}}'}
@@ -891,42 +891,6 @@
                             {object: '{{substatements.context_invalid_language_map}}'}
                         ],
                         expect: [400]
-                    // },
-                    // {   //update
-                    //     name: 'substatement attachments.display should pass given az-Latn language-script code',
-                    //     templates: [
-                    //         {statement: '{{statements.object_substatement}}'},
-                    //         {context: '{{contexts.default}}'},
-                    //         {language: 'de-419-DE'}
-                    //     ],
-                    //     expect: [200]
-                    // },
-                    // {   //update
-                    //     name: 'substatement attachments.display should fail given de-419-DE invalid (two region tags) language code',
-                    //     templates: [
-                    //         {statement: '{{statements.object_substatement}}'},
-                    //         {context: '{{contexts.default}}'},
-                    //         {language: 'de-419-DE'}
-                    //     ],
-                    //     expect: [400]
-                    // },
-                    // {   //update
-                    //     name: 'substatement attachments.description should pass given de-419-DE invalid (two region tags) language code',
-                    //     templates: [
-                    //         {statement: '{{statements.object_substatement}}'},
-                    //         {context: '{{contexts.default}}'},
-                    //         {language: 'de-419-DE'}
-                    //     ],
-                    //     expect: [200]
-                    // },
-                    // {   //update
-                    //     name: 'substatement attachments.description should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
-                    //     templates: [
-                    //         {statement: '{{statements.object_substatement}}'},
-                    //         {context: '{{contexts.default}}'},
-                    //         {language: 'de-419-DE'}
-                    //     ],
-                    //     expect: [400]
                     }
                 ]
             }
