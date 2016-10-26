@@ -83,7 +83,7 @@
                     }
                 ]
             },
-            {
+            {   //see above
                 name: 'A Statement Reference\'s "id" property is a UUID (Type, Data 2.4.4.3.s4.table1.row2, XAPI-00072)',
                 config: [
                     {

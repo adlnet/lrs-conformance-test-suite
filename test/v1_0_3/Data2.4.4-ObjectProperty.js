@@ -38,7 +38,7 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
  * XAPI-00059 - in activities.js
  * XAPI-00060 - in activities.js
  * XAPI-00061 - in activities.js
- * XAPI-00062 - not found yet - An Interaction Component’s "description" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Interaction Component's "description" property is present and is an invalid Language Map.  Could this be added and covered in languages.js??
+ * XAPI-00062 - in activities.js
  * XAPI-00063 - in activities.js
  * XAPI-00064 - below
  */
@@ -46,9 +46,8 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
 
     /**  XAPI-00064, Data 2.4.4.1 when objectType is activity
      * An Activity Definition uses the "interactionType" property if correctResponsesPattern is present. An LRS rejects a statement with 400 Bad Request if a correctResponsePattern is present and interactionType is not.
-     * Note: Consider rewriting these tests into a templated config file
      */
-    describe('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, Data 2.4.4.1.s8, XAPI-00064) **Implicit**', function (){
+    describe('An Activity Definition uses the "interactionType" property if any of the correctResponsesPattern, choices, scale, source, target, or steps properties are used (Multiplicity, Data 2.4.4.1.s8, XAPI-00064) **Implicit**', function () {
 
         it ('Activity Definition uses correctResponsesPattern without "interactionType" property',function(done){
             id = helper.generateUUID();
@@ -147,6 +146,66 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
  * XAPI-00065 - not found yet - Statements that use an Agent or Group as an Object MUST specify an "objectType" property. The LRS rejects with 400 Bad Request if the “objectType” property is absent and the Object is an Agent Object or Group Object.
  * Think this will have to be added.
  */
+    describe('Statements that use an Agent or Group as an Object MUST specify an "objectType" property. (Data 2.4.4.2.s1.b1, XAPI-00065)', function () {
+
+        it('should fail when using agent as object and no objectType', function (done) {
+            var templates = [
+                {statement: '{{statements.object_agent_default}}'}
+            ];
+            var data = helper.createFromTemplate(templates).statement;
+            delete data.object.objectType;
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(400, done);
+        });
+
+        it('should fail when using group as object and no objectType', function (done) {
+            var templates = [
+                {statement: '{{statements.object_group_default}}'}
+            ];
+            var data = helper.createFromTemplate(templates).statement;
+            delete data.object.objectType;
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(400, done);
+        });
+
+        it('substatement should fail when using agent as object and no objectType', function (done) {
+            var templates = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{statements.object_agent_default}}'}
+            ];
+            var data = helper.createFromTemplate(templates).statement;
+            delete data.object.objectType;
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(400, done);
+        });
+
+        it('substatement should fail when using group as object and no objectType', function (done) {
+            var templates = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{statements.object_group_default}}'}
+            ];
+            var data = helper.createFromTemplate(templates).statement;
+            delete data.object.objectType;
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(400, done);
+        });
+    });
 
     //Data 2.4.4.3 - when the object is a statement
 /** Matchup with Conformance Requirements Document
@@ -159,8 +218,8 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
  * XAPI-00072 - in statementrefs.js
  * XAPI-00073 - in statementrefs.js
  */
-    templatingSelection.createTemplate('substatements.js')
-    templatingSelection.createTemplate('statementrefs.js')
+    templatingSelection.createTemplate('substatements.js');
+    templatingSelection.createTemplate('statementrefs.js');
 
 });
 

@@ -118,7 +118,7 @@
             /**  XAPI-00071, Data 2.4.4.3 when object is a statement
              * A Sub-Statement cannot have a Sub-Statement. The LRS rejects with 400 Bad Request a Statement with a Sub-Statement which contains a Sub-Statement.
              */
-                name: 'A Sub-Statement cannot have a Sub-Statement (Data 2.4.4.3.s8.b4)',
+                name: 'A Sub-Statement cannot have a Sub-Statement (Data 2.4.4.3.s8.b4, XAPI-00071)',
                 config: [
                     {
                         name: 'substatement invalid nested "SubStatement"',
@@ -135,7 +135,7 @@
             /**  XAPI-00070, Data 2.4.4.3 when object is a statement
              * A Sub-Statement cannot use the "id" property at the Statement level The LRS rejects with 400 Bad Request a Statement with a Sub-Statement where the “id” property is present.
              */
-                name: 'A Sub-Statement cannot use the "id" property at the Statement level (Data 2.4.4.3.s8.b3)',
+                name: 'A Sub-Statement cannot use the "id" property at the Statement level (Data 2.4.4.3.s8.b3, XAPI-00070)',
                 config: [
                     {
                         name: 'substatement invalid with property "id"',
