@@ -27,8 +27,8 @@ describe('Result Property Requirements (Data 2.4.5)', () => {
  * XAPI-00079 - in results.js
  * XAPI-00080 - in results.js
  * XAPI-00081 - in results.js
- * XAPI-00082 - in results.js
- * XAPI-00083 - in results.js
+ * XAPI-00082 - in results.js - needs refined - test is for seven digit decimal - requirement is for between min and max, etc, req can be posts only, test should have post and get
+ * XAPI-00083 - in results.js - this will need a get too for testing significance
  */
     templatingSelection.createTemplate('results.js');
 
