@@ -109,6 +109,38 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
         });
     });
 
+/**  XAPI-00254, Communication 2.5 Activities Resource
+ * The Activity Object must contain all available information about an activity from any statements who target the same “activityId”. For example, LRS accepts two statements each with a different language description of an activity using the exact same “activityId”. The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that “activityId”.
+ */
+    it('The Activity Object must contain all available information about an activity from any statements who target the same “activityId”. For example, LRS accepts two statements each with a different language description of an activity using the exact same “activityId”. The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that “activityId” (multiplicity, Communication.md#2.5.s1.table1.row1, XAPI-00254)', function () {
+
+        var templates = [
+            {statement: '{{statements.object_activity}}'},
+            {object: '{{activities.default}}'}
+        ];
+        var data = helper.createFromTemplate(templates);
+        var data2 = helper.createFromTemplate(templates);
+        var statement = data.statement;
+        var statement2 = data2.statement;
+        statement.object.id = 'http://www.example.com/verify/complete/34534100123';
+        statement2.object.id = 'http://www.example.com/verify/complete/34534100123';
+
+        statement2.object.definition.name['fr-FR'] = "réunion";
+        delete statement2.object.definition.name['en-US'];
+
+        return helper.sendRequest('post', helper.getEndpointStatements(), undefined, [statement,statement2], 200)
+        .then(function () {
+            var parameters = {
+                activityId: statement.object.id
+            };
+            return helper.sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 200)
+            .then(function (res) {
+                var activity = res.body;
+                expect(activity.definition.name['en-US']).to.eql("example meeting");
+                expect(activity.definition.name['fr-FR']).to.eql("réunion");
+            });
+        });
+    });
 });
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
