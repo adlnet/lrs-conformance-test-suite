@@ -36,7 +36,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
  * XAPI-00302 - below
  * XAPI-00303 - below
  * XAPI-00304 - *talk about this one* not found yet - An LRS's Activity Profile API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table2.row2.a)
- * XAPI-00305 - not found yet - An LRS's Activity Profile API rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)
+ * XAPI-00305 - below
  * XAPI-00306 - below
  * XAPI-00307 - below
  * XAPI-00308 - in Communication2.2-Documentresources.js
@@ -357,9 +357,9 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             });
     });
 
-    /**  XAPI-00305, Communication 2.7 Activity Profile Resource
-     * An LRS's Activity Profile API rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request
-     */
+/**  XAPI-00305, Communication 2.7 Activity Profile Resource
+ * An LRS's Activity Profile API rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
         describe('An LRS\'s Activity Profile Resource rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s4.table1.row2, XAPI-00305)', function () {
           var document = helper.buildDocument(),
               invalidTypes = [1, true, { key: 'value'}];
@@ -370,6 +370,29 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
                   return helper.sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, document, 400);
               });
           });
+        });
+
+/**  XAPI-00313, Communication 2.7 Activity Profile Resource
+ * An LRS's Activity Profile API, rejects a POST request if the document is found and either doucment is not a valid JSON Object
+ * tests if document is not a valid JSON object, not sure how to put a document in there that is already invalid
+ * this test is incomplete
+ */
+        it('An LRS\'s Activity Profile API, rejects a POST request if the document is found and either doucment is not a valid JSON Object (Communication 2.7.s4.table1.row2, XAPI-00313)', function () {
+
+            var document = undefined;
+            var parameters = helper.buildActivityProfile();
+            return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+        });
+
+/**  XAPI-00314, Communication 2.7 Activity Profile Resource
+ * An LRS's must reject, with 400 Bad Request, a POST request to the Acitvity Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
+ ** this test is incomplete
+ */
+        it('An LRS\'s must reject, with 400 Bad Request, a POST request to the Acitvity Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json" (Communication 2.7.s4.table1.row2, XAPI-00313)', function () {
+
+            var document = undefined;
+            var parameters = helper.buildActivityProfile();
+            return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 400);
         });
 
 });

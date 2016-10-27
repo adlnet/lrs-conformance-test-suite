@@ -102,7 +102,6 @@ describe('About Resource Requirements (Communication 2.8)', () => {
         return helper.sendRequest('get', helper.getEndpointAbout(), undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
-                console.log(res.body);
                 expect(about).to.have.property('extensions');
             });
     });
