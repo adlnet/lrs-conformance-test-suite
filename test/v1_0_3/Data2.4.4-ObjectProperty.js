@@ -143,8 +143,11 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
 
     //Data 2.4.4.2 - when the object is an agent or a group
 /**  Matchup with Conformance Requirements Document
- * XAPI-00065 - not found yet - Statements that use an Agent or Group as an Object MUST specify an "objectType" property. The LRS rejects with 400 Bad Request if the “objectType” property is absent and the Object is an Agent Object or Group Object.
- * Think this will have to be added.
+ * XAPI-00065 - below
+ */
+
+/** XAPI-00065, Data 2.4.4.2 when the object is an agent or a group
+ * Statements that use an Agent or Group as an Object MUST specify an "objectType" property. The LRS rejects with 400 Bad Request if the “objectType” property is absent and the Object is an Agent Object or Group Object.
  */
     describe('Statements that use an Agent or Group as an Object MUST specify an "objectType" property. (Data 2.4.4.2.s1.b1, XAPI-00065)', function () {
 

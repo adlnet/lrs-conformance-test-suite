@@ -377,7 +377,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
  */
     it('A GET request is defined as either a GET request or a POST request containing a GET request (Communication 2.1.2.s2.b3, XAPI-00148)', function (done) {
         request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
+            .post(helper.getEndpointStatements() + "?method=GET")
             .headers(helper.addAllHeaders({}))
             .form({limit: 1})
             .expect(200).end(function (err, res) {

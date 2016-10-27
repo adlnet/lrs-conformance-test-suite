@@ -64,6 +64,7 @@ describe('Formatting Requirements (Data 2.2)', () => {
             data.result.score.min = min;
             data.result.score.raw = raw;
             data.result.score.max = max;
+            data.result.score.scaled = min;
 
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
@@ -83,6 +84,7 @@ describe('Formatting Requirements (Data 2.2)', () => {
                     expect(score.min).to.eql(min);
                     expect(score.raw).to.eql(raw);
                     expect(score.max).to.eql(max);
+                    expect(score.scaled).to.eql(min);
                     done();
                 }
             });

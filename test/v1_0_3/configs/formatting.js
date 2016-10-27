@@ -149,30 +149,6 @@
                 ]
             },
             {
-            /**  XAPI-00022, Data 2.4 Statement Properties
-             * A "timestamp" property is a TimeStamp, per section 4.5. An LRS rejects with 400 Bad Request a statement if it has a TimeStamp and that TimeStamp is invalid.
-             */
-                name: 'A "timestamp" property is a TimeStamp (Type, Data 2.4.s1.table1.row7)',
-                config: [
-                    {
-                        name: 'statement "template" invalid string',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {timestamp: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "template" invalid date',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {timestamp: INVALID_DATE}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00001, 2.2 Formatting Requirements
              * An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to "null", an empty object, or has no value, except in an "extensions" property
              */

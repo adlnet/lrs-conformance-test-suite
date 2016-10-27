@@ -137,7 +137,7 @@
             },
             {
             /**  XAPI-00088, Data 2.4.6 Context
-             * An "team" property is a Group. The LRS rejects with 400 Bad Request a statement with a “team” property which is not a valid Group.
+             * A "team" property is a Group. The LRS rejects with 400 Bad Request a statement with a “team” property which is not a valid Group.
              */
                 name: 'An "team" property is a Group (Type, Data 2.4.6.s3.table1.row3)',
                 config: [
@@ -264,7 +264,7 @@
                         name: 'statement context "contextActivities" is "parent"',
                         templates: [
                             {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'}
+                            {context: '{{contexts.parent}}'}
                         ],
                         expect: [200]
                     },
@@ -293,11 +293,27 @@
                         expect: [200]
                     },
                     {
+                        name: 'statement context "contextActivities" accepts all property keys "parent", "grouping", "category", and "other"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.all_activities}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context "contextActivities" rejects any property key other than "parent", "grouping", "category", or "other"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.invalid_activity}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
                         name: 'statement substatement context "contextActivities" is "parent"',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
-                            {context: '{{contexts.default}}'}
+                            {context: '{{contexts.parent}}'}
                         ],
                         expect: [200]
                     },
@@ -327,6 +343,24 @@
                             {context: '{{contexts.other}}'}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement context "contextActivities" accepts all property keys "parent", "grouping", "category", and "other"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.all_activities}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context "contextActivities" rejects any property key other than "parent", "grouping", "category", or "other"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.invalid_activity}}'}
+                        ],
+                        expect: [400]
                     }
                 ]
             },
@@ -389,6 +423,19 @@
                         expect: [200]
                     },
                     {
+                        name: 'statement context contextActivities property\'s value is activity array with activities',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.other}}'},
+                            {
+                                contextActivities: {
+                                    other: [VALID_ACTIVITY, INVALID_OBJECT]
+                                }
+                            }
+                        ],
+                        expect: [400]
+                    },
+                    {
                         name: 'statement substatement context "contextActivities parent" value is activity array',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
@@ -443,6 +490,20 @@
                             }
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context "contextActivities property\'s value is activity array',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.other}}'},
+                            {
+                                contextActivities: {
+                                    other: [INVALID_OBJECT, VALID_ACTIVITY]
+                                }
+                            }
+                        ],
+                        expect: [400]
                     }
                 ]
             },
@@ -604,6 +665,14 @@
                         expect: [400]
                     },
                     {
+                        name: 'statement context "revision" is valid with no ObjectType',
+                        templates: [
+                            {statement: '{{statements.context_sans_objectType}}'},
+                            {context: '{{contexts.no_platform}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
                         name: 'statement substatement context "revision" is invalid with object agent',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
@@ -629,6 +698,15 @@
                             {context: '{{contexts.no_platform}}'}
                         ],
                         expect: [400]
+                    },
+                    {
+                        name: 'statement substatement context "revision" is valid with no objectType',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{statements.context_sans_objectType}}'},
+                            {context: '{{contexts.no_platform}}'}
+                        ],
+                        expect: [200]
                     }
                 ]
             },
@@ -717,6 +795,14 @@
                         expect: [400]
                     },
                     {
+                        name: 'statement context "platform" is valid with empty objectType',
+                        templates: [
+                            {statement: '{{statements.context_sans_objectType}}'},
+                            {context: '{{contexts.no_revision}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
                         name: 'statement substatement context "platform" is invalid with object agent',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
@@ -742,6 +828,15 @@
                             {context: '{{contexts.no_revision}}'}
                         ],
                         expect: [400]
+                    },
+                    {
+                        name: 'statement substatement context "platform" is valid with empty ObjectType',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{statements.context_sans_objectType}}'},
+                            {context: '{{contexts.no_revision}}'}
+                        ],
+                        expect: [200]
                     }
                 ]
             },

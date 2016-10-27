@@ -17,10 +17,10 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
 /**  Matchup with Conformance Requirements Document
  * XAPI-00016 - below
- * XAPI-00017 - in verbs.js
+ * XAPI-00017 - in voiding.js
  * XAPI-00018 - below
- * XAPI-00019 - in verbs.js
- * XAPI-00020 - in verbs.js
+ * XAPI-00019 - in voiding.js
+ * XAPI-00020 - in voiding.js
  */
 
     templatingSelection.createTemplate('voiding.js');
