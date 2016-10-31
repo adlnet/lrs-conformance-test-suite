@@ -22,6 +22,9 @@ describe('Version Property Requirements (Data 2.4.10)', () => {
 
     templatingSelection.createTemplate('version.js');
 
+/**  XAPI-00332, Communication 3.3 Versioning which should be moved to Data 2.4.10 Version Property
+ * Statements returned by an LRS MUST retain the version property they are accepted with.
+ */
     it ('Statements returned by an LRS MUST retain the version property they are accepted with (Format, Data 2.4.10)', function (done){
         this.timeout(0);
         var stmtTime = Date.now();

@@ -88,7 +88,7 @@
                     }
                 ]
             },
-            {
+            {   //this seems good - worth keeping
                 name: 'An Attachment is an Object (Definition, Data 2.4.11)',
                 config: [
                     {
@@ -196,6 +196,46 @@
              */
                 name: 'A "display" property is a Language Map (Type, Data 2.4.11.s2.table1.row2, XAPI-00106)',
                 config: [
+                    {
+                        name: 'statement attachment "display" language map numeric',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {
+                                attachments: [
+                                    {
+                                        'usageType': 'http://example.com/attachment-usage/test',
+                                        'display': INVALID_NUMERIC,
+                                        'description': {'en-US': 'A test attachment (description)'},
+                                        'contentType': 'text/plain; charset=ascii',
+                                        'length': 27,
+                                        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+                                        'fileUrl': 'http://over.there.com/file.txt'
+                                    }
+                                ]
+                            }
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement attachment "display" language map string',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {
+                                attachments: [
+                                    {
+                                        'usageType': 'http://example.com/attachment-usage/test',
+                                        'display': INVALID_STRING,
+                                        'description': {'en-US': 'A test attachment (description)'},
+                                        'contentType': 'text/plain; charset=ascii',
+                                        'length': 27,
+                                        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+                                        'fileUrl': 'http://over.there.com/file.txt'
+                                    }
+                                ]
+                            }
+                        ],
+                        expect: [400]
+                    },
                     {
                         name: 'statement attachment "description" language map numeric',
                         templates: [
