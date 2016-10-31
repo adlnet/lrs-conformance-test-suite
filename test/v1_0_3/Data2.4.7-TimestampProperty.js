@@ -16,7 +16,7 @@
 describe('Timestamp Property Requirements (Data 2.4.7)', () => {
 
 /**  Matchup with Conformance Requirements Document
- * XAPI-00022 - in timestamps.js
+ * XAPI-00022 - in timestamp_property.js
  */
 
     templatingSelection.createTemplate('timestamp_property.js');

@@ -37,13 +37,96 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
  */
     templatingSelection.createTemplate("timestamps.js");
 
+/**  XAPI-00123, Data 4.5 ISO 8601 Timestamps
+ * A Timestamp MUST preserve precision to at least milliseconds (3 decimal points beyond seconds). The LRS accepts a statement with a valid timestamp which has more than 3 decimal points beyond seconds and when recalled it returns at least 3 decimals points beyond seconds.
+ */
+    describe('A Timestamp MUST preserve precision to at least milliseconds, 3 decimal points beyond seconds. (Data 4.5.s1.b3, XAPI-00123)', function () {
+
+        it('retrieve statements, test a timestamp property', function (done) {
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders())
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body);
+                    var stmts = result.statements;
+                    var milliChecker = (num) => {
+                        expect(stmts[num]).to.have.property('timestamp');
+                        //formatted iso 8601
+                        var chkStored =  moment(stmts[num].timestamp, moment.ISO_8601);
+                        expect(chkStored.isValid()).to.be.true;
+                        expect(isNaN(chkStored._pf.parsedDateParts[6])).to.be.false;
+                        //precision to milliseconds
+                        if ((chkStored._pf.parsedDateParts[6] % 10) > 0) {
+                            expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                            done();
+                        } else {
+                            if (++num < stmts.length) {
+                                milliChecker(num);
+                            } else {
+                                expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                                done();
+                            }
+                        }
+                    }; milliChecker(0);
+                }
+            });
+        });
+
+        it('retrieve statements, test a stored property', function (done) {
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders())
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body);
+                    var stmts = result.statements;
+                    var milliChecker = (num) => {
+                        expect(stmts[num]).to.have.property('stored');
+                        //formatted iso 8601
+                        var chkStored =  moment(stmts[num].stored, moment.ISO_8601);
+                        expect(chkStored.isValid()).to.be.true;
+                        expect(isNaN(chkStored._pf.parsedDateParts[6])).to.be.false;
+                        //precision to milliseconds
+                        if ((chkStored._pf.parsedDateParts[6] % 10) > 0) {
+                            expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                            done();
+                        } else {
+                            if (++num < stmts.length) {
+                                milliChecker(num);
+                            } else {
+                                expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                                done();
+                            }
+                        }
+                    }; milliChecker(0);
+                }
+            });
+        });
+    });
+
     //Data 4.6
 /**  Matchup with Conformance Requirements Document
  * XAPI-00124 - soon to be below
  */
+
 /**  XAPI-00124, Data 4.6 ISO8601 Durations
-* A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2. The alternative format (in conformity with the format used for time points and described in ISO 8601:2004(E) section 4.4.3.3) MUST NOT be used. The LRS rejects with 400 a statement which includes the “duration” property and the value does not validate to ISO 8601:2004(E) section 4.4.3.2.
-  */
+ * A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2. The alternative format (in conformity with the format used for time points and described in ISO 8601:2004(E) section 4.4.3.3) MUST NOT be used. The LRS rejects with 400 a statement which includes the “duration” property and the value does not validate to ISO 8601:2004(E) section 4.4.3.2.
+ */
+    describe('A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2. The alternative format (in conformity with the format used for time points and described in ISO 8601:2004(E) section 4.4.3.3) MUST NOT be used. (Data 4.6.s1.b1, XAPI-00124)', function () {
+
+        it('do I need to pull durations, or do I need to just send durations??', function (done) {
+            //until I can gather some answers, this is all you get
+            done();
+        });
+
+    });
 
 });
 
