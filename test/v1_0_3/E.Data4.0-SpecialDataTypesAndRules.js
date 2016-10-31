@@ -113,20 +113,10 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
 
     //Data 4.6
 /**  Matchup with Conformance Requirements Document
- * XAPI-00124 - soon to be below
+ * XAPI-00124 - in durations.js
  */
 
-/**  XAPI-00124, Data 4.6 ISO8601 Durations
- * A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2. The alternative format (in conformity with the format used for time points and described in ISO 8601:2004(E) section 4.4.3.3) MUST NOT be used. The LRS rejects with 400 a statement which includes the “duration” property and the value does not validate to ISO 8601:2004(E) section 4.4.3.2.
- */
-    describe('A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2. The alternative format (in conformity with the format used for time points and described in ISO 8601:2004(E) section 4.4.3.3) MUST NOT be used. (Data 4.6.s1.b1, XAPI-00124)', function () {
-
-        it('do I need to pull durations, or do I need to just send durations??', function (done) {
-            //until I can gather some answers, this is all you get
-            done();
-        });
-
-    });
+    templatingSelection.createTemplate.("durations.js");
 
 });
 
