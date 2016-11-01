@@ -46,7 +46,46 @@ describe('Signed Statements (Data 2.6)', () => {
 
         }); //end it good sig with "RS256"
 
-        it("LRS must reject with 400 a signed statement with malformed signature - bad contentType (Data 2.6.s4.b1)", function (done) {
+        it("Signed statement with \"RS384\" (Data 2.6.s4.b1)", function (done)
+        {
+            // sign statement
+            data.id = helper.generateUUID();
+            var options = {algorithm: 'RS384'};
+            var body = helper.signStatement(data, options);
+
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary='+options.boundary}))
+                .body(body)
+                .expect(200)
+                .end(function (err, res) {
+                    done(err);
+                });
+
+        }); //end it good sig with "RS384"
+
+        it("Signed statement with \"RS512\" (Data 2.6.s4.b1)", function (done)
+        {
+            // sign statement
+            data.id = helper.generateUUID();
+            var options = {algorithm: 'RS512'};
+            var body = helper.signStatement(data, options);
+
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary='+options.boundary}))
+                .body(body)
+                .expect(200)
+                .end(function (err, res) {
+                    done(err);
+                });
+
+        }); //end it good sig with "RS512"
+
+/**  XAPI-00115, Data 2.5 Signed Statements
+ * A Signed Statement MUST include a JSON web signature (JWS) as defined here: http://tools.ietf.org/html/rfc7515, as an Attachment with a usageType of http://adlnet.gov/expapi/attachments/signature and a contentType of application/octet-stream. The LRS must reject with 400 a statement which has usageType of http://adlnet.gov/expapi/attachments/signature and a contentType of application/octet-stream but does not have a signature attached.
+ */
+        it("LRS must reject with 400 a signed statement with malformed signature - bad contentType (Data 2.6.s4.b1, XAPI-00115)", function (done) {
             data.id = helper.generateUUID();
             var options = {attachmentInfo: {contentType: 'text/plain; charset=ascii'}};
             var body = helper.signStatement(data, options);
@@ -64,7 +103,7 @@ describe('Signed Statements (Data 2.6)', () => {
 /**  XAPI-00117, Data 2.6 Signed Statements
  * The JWS signature MUST use an algorithm of "RS256", "RS384", or "RS512". The LRS must reject with 400 a statement which does not use one of these algorithms or does not use one of these algorithms correctly.
  */
-        it("LRS must reject with 400 a signed statement with malformed signature - bad algorithm (Data 2.6.s4.b4, XAPI-00117)", function (done) {
+        it('The JWS signature MUST use an algorithm of "RS256", "RS384", or "RS512". (Data 2.6.s4.b4, XAPI-00117)', function (done) {
             data.id = helper.generateUUID();
             var options = {algorithm: 'HS256'};
             var body = helper.signStatement(data, options);
@@ -82,7 +121,7 @@ describe('Signed Statements (Data 2.6)', () => {
 /**  XAPI-00016, Data 2.6 Signed Statements
  * The JWS signature MUST have a payload of a valid JSON serialization of the complete Statement before the signature was added.The LRS must reject with 400 a statement which does not have a valid JSON serialization.
  */
-        it("LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement (Data 2.6.s4.b3, XAPI-00016)", function (done) {
+        it("The JWS signature MUST have a payload of a valid JSON serialization of the complete Statement before the signature was added. (Data 2.6.s4.b3, XAPI-00016)", function (done) {
             data.id = helper.generateUUID();
             var options = {breakJson: true};
             var body = helper.signStatement(data, options);
