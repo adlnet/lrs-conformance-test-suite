@@ -115,7 +115,7 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
 /**  Matchup with Conformance Requirements Document
  * XAPI-00124 - in durations.js
  */
-    templatingSelection.createTemplate.("durations.js");
+    templatingSelection.createTemplate("durations.js");
 
 });
 

@@ -15,7 +15,7 @@
 
 describe('Retrieval of Statements (Data 2.5)', () => {
 
-/**n Matchup with Conformance Requirements Document
+/**  Matchup with Conformance Requirements Document
  * XAPI-00108 - below
  * XAPI-00109 - below
  * XAPI-00110 - below
@@ -382,10 +382,10 @@ describe('Retrieval of Statements (Data 2.5)', () => {
         });
     });
 
-/**  XAPI-00014, Data 2.5 Retrieval of Statements
+/**  XAPI-00114, Data 2.5 Retrieval of Statements
  * A "statements" property result which is paginated will create a container for each additional page.
  */
-    it('A "statements" property which is too large for a single page will create a container for each additional page (Data 2.5.s2.table1.row1, XAPI-00014)', function (done){
+    it('A "statements" property which is too large for a single page will create a container for each additional page (Data 2.5.s2.table1.row1, XAPI-00114)', function (done){
         this.timeout(0);
         var statementTemplates = [
             {statement: '{{statements.default}}'}
@@ -469,13 +469,10 @@ describe('Retrieval of Statements (Data 2.5)', () => {
     });
 
 /**  XAPI-00109, Data 2.5 Retrieval of Statements
- * The "more" property is absent or an empty string (no whitespace) if the entire results of
-the original GET request have been returned. To test make a GET request which will return
-a known number of statements and check to make sure the LRS either returns an empty
-string or the more property is absent.
+ * The "more" property is absent or an empty string (no whitespace) if the entire results of the original GET request have been returned. To test make a GET request which will return a known number of statements and check to make sure the LRS either returns an empty string or the more property is absent.
  */
-    describe('The "more" property is an empty string if the entire results of the original GET request have been returned (Data 2.5.s2.table1.row2, XAPI-00109)', function () {
-        it('should return empty "more" property when all statements returned', function (done) {
+    describe('The "more" property is absent or an empty string (no whitespace) if the entire results of the original GET request have been returned. (Data 2.5.s2.table1.row2, XAPI-00109)', function () {
+        it('should return empty "more" property or no "more" property when all statements returned', function (done) {
             var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent/344588672021038'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
@@ -486,6 +483,8 @@ string or the more property is absent.
                         done(err);
                     } else {
                         var result = helper.parse(res.body, done);
+        // expect(result.more).to.be.oneOf([undefined, '']);
+        // done();
                         expect(result).to.have.property('more').to.be.truthy;
                         expect(result.more).to.equal('')
                         done();
@@ -520,7 +519,21 @@ string or the more property is absent.
                             host_blacklist: false,
                             allow_trailing_dot: false,
                             allow_protocol_relative_urls: true })).to.be.truthy;
-                        done();
+                        request('')
+                        .get(liburl.resolve(res.request.href, result.more))
+                        .headers(helper.addAllHeaders({}))
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err) {
+                                done(err);
+                            }
+                            else {
+                                var results2 = helper.parse(res.body, done);
+                                expect(results2.statements).to.exist;
+                                expect(results2.more).to.exist;
+                                done();
+                            }
+                        });
                     }
                 });
         });
