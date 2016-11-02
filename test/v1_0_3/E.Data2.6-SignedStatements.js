@@ -14,7 +14,7 @@
 describe('Signed Statements (Data 2.6)', () => {
 
 /**  Matchup with Conformance Requirements Document
- * XAPI-00115 - not found yet - A Signed Statement MUST include a JSON web signature (JWS) as defined here: http://tools.ietf.org/html/rfc7515 , as an Attachment with a usageType of http://adlnet.gov/expapi/attachments/signature and a contentType of application/octet-stream. The LRS must reject with 400 a statement which has usageType of http://adlnet.gov/expapi/attachments/signature and a contentType of application/octet-stream but does not have a signature attached.
+ * XAPI-00115 - below
  * XAPI-00116 - below
  * XAPI-00117 - below
  */
@@ -118,10 +118,10 @@ describe('Signed Statements (Data 2.6)', () => {
                 });
         });
 
-/**  XAPI-00016, Data 2.6 Signed Statements
+/**  XAPI-00116, Data 2.6 Signed Statements
  * The JWS signature MUST have a payload of a valid JSON serialization of the complete Statement before the signature was added.The LRS must reject with 400 a statement which does not have a valid JSON serialization.
  */
-        it("The JWS signature MUST have a payload of a valid JSON serialization of the complete Statement before the signature was added. (Data 2.6.s4.b3, XAPI-00016)", function (done) {
+        it("The JWS signature MUST have a payload of a valid JSON serialization of the complete Statement before the signature was added. (Data 2.6.s4.b3, XAPI-00116)", function (done) {
             data.id = helper.generateUUID();
             var options = {breakJson: true};
             var body = helper.signStatement(data, options);

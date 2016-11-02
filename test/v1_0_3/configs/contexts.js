@@ -139,7 +139,7 @@
             /**  XAPI-00088, Data 2.4.6 Context
              * A "team" property is a Group. The LRS rejects with 400 Bad Request a statement with a “team” property which is not a valid Group.
              */
-                name: 'An "team" property is a Group (Type, Data 2.4.6.s3.table1.row3)',
+                name: 'An "team" property is a Group (Type, Data 2.4.6.s3.table1.row3, XAPI-00088)',
                 config: [
                     {
                         name: 'statement context "team" is agent',

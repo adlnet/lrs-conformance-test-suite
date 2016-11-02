@@ -105,7 +105,7 @@
             /**  XAPI-00028, Data 2.4.1 Id
              * A Statement's "id" property is a String. An LRS rejects with 400 Bad Request a statement which has an “id” and that property is not a string
              */
-                name: 'All UUID types are in standard String form (Type, Data 2.4.1.s1, XAPI-00028)',
+                name: 'All UUID types are in standard String form (Type, Data 2.4.1.s1, XAPI-00029, XAPI-00028)',
                 config: [
                     {   //XAPI-00028
                         name: 'statement "id" invalid numeric',

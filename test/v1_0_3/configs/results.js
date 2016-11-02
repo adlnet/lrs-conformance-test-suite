@@ -46,7 +46,7 @@
             /**  XAPI-00079, Data 2.4.5.1 score
              * A "score" property is an Object. The LRS rejects with 400 Bad Request a “score” property which is not a valid object.
              */
-                name: 'A "score" property is an Object (Type, Data 2.4.5.1)',
+                name: 'A "score" property is an Object (Type, Data 2.4.5.1, XAPI-00079)',
                 config: [
                     {
                         name: 'statement result score numeric',

@@ -20,7 +20,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
  * XAPI-00109 - below
  * XAPI-00110 - below
  * XAPI-00111 - below
- * XAPI-00112 - not found yet - The LRS will NOT reject a GET request which returns an empty "statements" property. Send a GET request which will not return any results and check that a 200 Ok and an empty StatementResult Object is returned.
+ * XAPI-00112 - duplicate of XAPI-00149 Communication 2.1.3 Statements GET
  * XAPI-00113 - not found yet - An LRS's Statement API, upon processing a successful GET request, will return a single "statements" property and a single "more" property. A single "more" property must be present if there are additional results available.
  * XAPI-00114 - below
  */
@@ -72,6 +72,48 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                 done();
             }
         });
+    });
+
+/**  XAPI-00113, Data 2.5 Retrieval of Statements
+ * An LRS's Statement API, upon processing a successful GET request, will return a single "statements" property and a single "more" property. A single "more" property must be present if there are additional results available.
+ */
+    describe('An LRS\'s Statement API, upon processing a successful GET request, will return a single "statements" property and a single "more" property. (Data 2.5.s2.table1, XAPI-00113)', function () {
+
+        before('guarantee two statements in LRS', function(done) {
+            var template = [
+                {statement: '{{statements.default}}'}
+            ],
+                s1 = helper.createFromTemplate(template).statement,
+                s2 = helper.createFromTemplate(template).statement,
+                stmts = [s1, s2];
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(stmts)
+            .expect(200, done);
+        });
+
+        it('will return single statements property and may return', function(done) {
+            this.timeout(0);
+            var query = '?limit=1';
+            var stmtTime = Date.now();
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + query)
+            .wait(helper.genDelay(stmtTime, query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements');
+                    expect(result).to.have.property('more');
+                    done();
+                }
+            });
+        });
+
     });
 
 /**  XAPI-00110, Data 2.5 Retrieval of Statements
