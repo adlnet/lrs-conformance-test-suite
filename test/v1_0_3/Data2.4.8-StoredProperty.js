@@ -15,7 +15,14 @@
 
 describe('Stored Property Requirements (Data 2.4.8)', () => {
 
-    describe('An LRS MUST accept statements with the stored property (Data 2.4.8.s3.b2)', function () {
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00097 - below
+ */
+
+/**  XAPI-00097, Data 2.4.8 Stored
+ * An LRS MUST assign the "stored" property timestamp upon receiving a statement.
+ */
+    describe('An LRS MUST accept statements with the stored property (Data 2.4.8.s3.b2, XAPI-00097)', function () {
         this.timeout(0);
         var storedTime = new Date('July 15, 2011').toISOString();
         var template = [
@@ -94,7 +101,10 @@ describe('Stored Property Requirements (Data 2.4.8)', () => {
         });
     });
 
-    describe('A stored property must be a TimeStamp (Data 2.4.8.s2)', function () {
+/**  XAPI-00023,  2.4 Statement Properties
+ * A "stored" property is a TimeStamp, per section 4.5. An LRS assigns the “stored” property upon receipt with a valid TimeStamp.
+ */
+    describe('A stored property must be a TimeStamp (Data 2.4.8.s2, XAPI-00023)', function () {
         it('retrieve statements, test a stored property', (done) => {
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements())

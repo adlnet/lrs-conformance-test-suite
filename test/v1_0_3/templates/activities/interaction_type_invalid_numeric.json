@@ -1,0 +1,51 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "definition": {
+    "name": {
+      "en": "Likert"
+    },
+    "description": {
+      "en": "How awesome is Experience API?"
+    },
+    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+    "moreInfo": "http://virtualmeeting.example.com/345256",
+    "interactionType": 12345,
+    "correctResponsesPattern": [
+      "likert_3"
+    ],
+    "scale": [
+      {
+        "id": "likert_0",
+        "description": {
+          "en-US": "It's OK"
+        }
+      },
+      {
+        "id": "likert_1",
+        "description": {
+          "en-US": "It's Pretty Cool"
+        }
+      },
+      {
+        "id": "likert_2",
+        "description": {
+          "en-US": "It's Damn Cool"
+        }
+      },
+      {
+        "id": "likert_3",
+        "description": {
+          "en-US": "It's Gonna Change the World"
+        }
+      }
+    ],
+    "extensions": {
+      "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+      "http://example.com/profiles/meetings/extension/reporter": {
+        "name": "Thomas",
+        "id": "http://openid.com/342"
+      }
+    }
+  }
+}
