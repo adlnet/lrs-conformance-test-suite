@@ -475,7 +475,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'statement result "duration" property is invalid',
+                        name: 'statement result "duration" property is valid',
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},
@@ -484,7 +484,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement result "duration" property is invalid',
+                        name: 'statement substatement result "duration" property is valid',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.result}}'},

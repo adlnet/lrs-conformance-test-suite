@@ -18,8 +18,8 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
     //Data 4.1
 /**  Matchup with Conformance Requirements Document
  * XAPI-00118 - in extensions.js
- * XAPI-00119 - in extensions.js - make tests for PUT and other emptys
- * XAPI-00120 - in extensions.js - make tests for 400 condition
+ * XAPI-00119 - below and in extensions.js
+ * XAPI-00120 - in extensions.js
  */
     templatingSelection.createTemplate("extensions.js");
 
@@ -78,7 +78,7 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
             .expect(204, done);
         });
 
-        it('statement activity extension values can be empty object', function (done) {
+        it('statement activity extensions can be empty object', function (done) {
             var template = [
                 {statement: '{{statements.object_activity}}'},
                 {object: '{{activities.no_extensions}}'},
@@ -125,7 +125,130 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
 
         it('statement result extension values can be null', function (done) {
             var template = [
-                {statement: '{{statements.object_activity}}'},
+                {statement: '{{statements.result}}'},
+                {result: '{{results.no_extensions}}'},
+                NULL_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement result extension values can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.result}}'},
+                {result: '{{results.no_extensions}}'},
+                EMPTY_OBJECT_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement context extensions can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.no_extensions}}'},
+                VALID_EXTENSION_EMPTY
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement context extension values can be empty string', function (done) {
+            var template = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.no_extensions}}'},
+                EMPTY_STRING_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement context extension values can be null', function (done) {
+            var template = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.no_extensions}}'},
+                NULL_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement context extension values can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.no_extensions}}'},
+                EMPTY_OBJECT_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement activity extensions can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.activity}}'},
+                {object: '{{activities.no_extensions}}'},
+                {definition: VALID_EXTENSION_EMPTY}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement activity extension values can be empty string', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.activity}}'},
+                {object: '{{activities.no_extensions}}'},
+                {definition: EMPTY_STRING_VALUE}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement activity extension values can be null', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.activity}}'},
                 {object: '{{activities.no_extensions}}'},
                 {definition: NULL_VALUE}
             ],
@@ -138,11 +261,140 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
             .expect(204, done);
         });
 
-        it('statement resulty extension values can be empty object', function (done) {
+        it('statement substatement activity extension values can be empty object', function (done) {
             var template = [
-                {statement: '{{statements.object_activity}}'},
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.activity}}'},
                 {object: '{{activities.no_extensions}}'},
                 {definition: EMPTY_OBJECT_VALUE}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement result extensions can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.result}}'},
+                {result: '{{results.no_extensions}}'},
+                VALID_EXTENSION_EMPTY
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement result extension values can be empty string', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.result}}'},
+                {result: '{{results.no_extensions}}'},
+                EMPTY_STRING_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement result extension values can be null', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.activity}}'},
+                {object: '{{activities.no_extensions}}'},
+                {definition: NULL_VALUE}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement result extension values can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.result}}'},
+                {result: '{{results.no_extensions}}'},
+                EMPTY_OBJECT_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement context extensions can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.context}}'},
+                {context: '{{contexts.no_extensions}}'},
+                VALID_EXTENSION_EMPTY
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement context extension values can be empty string', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.context}}'},
+                {context: '{{contexts.no_extensions}}'},
+                EMPTY_STRING_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement context extension values can be null', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.context}}'},
+                {context: '{{contexts.no_extensions}}'},
+                NULL_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement substatement context extension values can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.context}}'},
+                {context: '{{contexts.no_extensions}}'},
+                EMPTY_OBJECT_VALUE
             ],
                 data = helper.createFromTemplate(template).statement;
             data.id = helper.generateUUID();
@@ -163,16 +415,15 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
 
     //Data 4.5
 /**  Matchup with Conformance Requirements Document
- * XAPI-00122 - not found yet - A Timestamp MUST preserve precision to at least milliseconds (3 decimal points beyond seconds). The LRS accepts a statement with a valid timestamp which has more than 3 decimal points beyond seconds and when recalled it returns at least 3 decimals points beyond seconds.
- * See test in Data2.4.8-StoredProperty
+ * XAPI-00122 - below
  * XAPI-00123 - in timestamps.js
  */
     templatingSelection.createTemplate("timestamps.js");
 
-/**  XAPI-00123, Data 4.5 ISO 8601 Timestamps
+/**  XAPI-00122, Data 4.5 ISO 8601 Timestamps
  * A Timestamp MUST preserve precision to at least milliseconds (3 decimal points beyond seconds). The LRS accepts a statement with a valid timestamp which has more than 3 decimal points beyond seconds and when recalled it returns at least 3 decimals points beyond seconds.
  */
-    describe('A Timestamp MUST preserve precision to at least milliseconds, 3 decimal points beyond seconds. (Data 4.5.s1.b3, XAPI-00123)', function () {
+    describe('A Timestamp MUST preserve precision to at least milliseconds, 3 decimal points beyond seconds. (Data 4.5.s1.b3, XAPI-00122)', function () {
 
         it('retrieve statements, test a timestamp property', function (done) {
             request(helper.getEndpointAndAuth())
