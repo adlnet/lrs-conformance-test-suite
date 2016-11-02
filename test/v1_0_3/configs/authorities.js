@@ -36,7 +36,7 @@
             /**  XAPI-00024,  Data 2.4 Statement Properties
              * An "authority" property is an Agent or Group. An LRS rejects with 400 Bad Request a statement which has an “authority” property which is not Agent or Group.
              */
-                name: 'An "authority" property is an Agent or Group (Type, Data 2.4.s1.table1.row9)',
+                name: 'An "authority" property is an Agent or Group (Type, Data 2.4.s1.table1.row9, XAPI-00024)',
                 config: [
                     {
                         name: 'should pass statement authority agent template',
@@ -118,6 +118,35 @@
                             {statement: '{{statements.authority}}'},
                             {authority: '{{groups.anonymous_no_member}}'},
                             {member: INVALID_THREE_MEMBER}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {   //see above
+                name: 'Statement authority shall only be an anonymous group with two members (Data 2.4.9.s3.b1)',
+                config: [
+                    {
+                        name: 'statement authority identified group is rejected',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_openid}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority anonymous group with two members is accepted',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_two_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement authority anonymous group without two members is rejected',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_no_member}}'}
                         ],
                         expect: [400]
                     }

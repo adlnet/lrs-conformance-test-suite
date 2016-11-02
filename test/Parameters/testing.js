@@ -85,7 +85,10 @@
 
     describe('These are tests with specific parameters that need to be met', function () {
 
-      describe('An LRS\'s Agent Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
+/**  XAPI-00277, Communication 2.6 Agent Profile Resource
+ * An LRS's Agent Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
+      describe('An LRS\'s Agent Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a, XAPI-00277)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
@@ -97,7 +100,10 @@
         });
       });
 
-      describe('An LRS\'s Agent Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a)', function () {
+/**  XAPI-00276, Communication 2.6 Agent Profile Resource
+ * An LRS's Agent Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
+      describe('An LRS\'s Agent Profile API rejects a POST request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.6.table3.row2.a, XAPI-00276)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
@@ -109,6 +115,9 @@
         });
       });
 
+/**  XAPI-00228, Communication 2.3 State Resource
+ * An LRS's State API rejects a PUT request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
       describe('An LRS\'s State API rejects a PUT request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}];
@@ -121,7 +130,10 @@
         });
       });
 
-      describe('An LRS\'s State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+/**  XAPI-00226, Communication 2.3 State Resource
+ * An LRS's State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
+      describe('An LRS\'s State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a, XAPI-00226)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
@@ -133,7 +145,10 @@
         });
       });
 
-      describe('An LRS\'s State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a)', function () {
+/**  XAPI-00225, Communication 2.3 State Resources
+ * An LRS's State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
+      describe('An LRS\'s State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.4.table1.row1.a, XAPI-00225)', function () {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, { key: 'value'}];
         invalidTypes.forEach(function (type) {
@@ -144,6 +159,10 @@
             });
         });
       });
+
+/**  XAPI-00224, Communication 2.3 State Resource
+ * An LRS's State API rejects a DELETE request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
 
     });
 

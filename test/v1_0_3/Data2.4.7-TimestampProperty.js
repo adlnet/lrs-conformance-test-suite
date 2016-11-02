@@ -6,7 +6,7 @@
  *
  */
 
-(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
+(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, templatingSelection) {
     // "use strict";
 
     var expect = chai.expect;
@@ -14,7 +14,13 @@
         request = helper.OAuthRequest(request);
 
 describe('Timestamp Property Requirements (Data 2.4.7)', () => {
-//for tests/requirements which seem to pertain to timestamps, please see statements.js (Data 2.4), or Data 4.5
+
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00022 - in timestamp_property.js
+ */
+
+    templatingSelection.createTemplate('timestamp_property.js');
+
 });
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('./../templatingSelection.js')));

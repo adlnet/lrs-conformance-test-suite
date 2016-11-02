@@ -15,7 +15,20 @@
 
 describe('Error Codes Requirements (Communication 3.2)', () => {
 
-    it('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter not recognized by the LRS (Communication 3.2.s2.b1)', function (done) {
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00323 - not found yet - An LRS can only reject Statements using the error codes in this specification - what are we to test here??
+ * XAPI-00324 - below
+ * XAPI-00325 - below
+ * XAPI-00326 - below
+ * XAPI-00327 - not found yet - An LRS rejects a Statement of insufficient permissions (credentials are valid, but not adequate) with error code 403 Forbidden
+ * XAPI-00328 - not found yet - An LRS rejects a Statement due to size if the Statement exceeds the size limit the LRS is configured to with error code 413 Request Entity Too Large. Suggestion: test increasingly larger statements to identify capacity of the upper limit - 1MB, 5MB, 10MB, 20MB until a 413 is returned.
+ * XAPI-00329 - not found yet - An LRS rejects a Statement due to network/server issues with an error code of 500 Internal Server Error
+ */
+
+/**  XAPI-00324, Communication 3.2 Error Codes
+ * An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter not recognized by the LRS
+ */
+    it('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter not recognized by the LRS (Communication 3.2.s2.b1, XAPI-00324)', function (done) {
         request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?foo=bar')
             .headers(helper.addAllHeaders({}))
@@ -107,11 +120,10 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
         });
     });
 
-/**  XAPI-00008, 2.2 Formatting Requirements
- * An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification.
- * Does this also cover XAPI-00009??
+/**  XAPI-00325, Communication 3.2 Error Codes
+ * An LRS rejects with error code 400 Bad Request any request to an API which uses a parameter with differing case
  */
-    describe('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter with differing case (Communication 3.2.s3.b8, XAPI-00008)', function () {
+    describe('An LRS rejects with error code 400 Bad Request any request to an Resource which uses a parameter with differing case (Communication 3.2.s3.b8, XAPI-00325)', function () {
 
         it('should fail on PUT statement when not using "statementId"', function (done) {
             var templates = [
@@ -247,7 +259,10 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
         });
     });
 
-    describe('An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing (Communication 3.2.s3.b9, **Implicit**)', function () {
+/**  XAPI-00326, Communication 3.2 Error Codes
+ * An LRS rejects with a 400 Bad Request any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing. The response may identify the first statementId which failed.
+ */
+    describe('An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing (Communication 3.2.s3.b9, XAPI-00326, **Implicit**)', function () {
 
         it('should not persist any statements on a single failure', function (done) {
             this.timeout(0);

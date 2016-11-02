@@ -419,35 +419,6 @@
                 ]
             },
             {
-                name: 'Statement authority shall only be an anonymous group with two members (Data 2.4.9.s3.b1)',
-                config: [
-                    {
-                        name: 'statement authority identified group is rejected',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.identified_openid}}'}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement authority anonymous group with two members is accepted',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.anonymous_two_member}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement authority anonymous group without two members is rejected',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{groups.anonymous_no_member}}'}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00037,  Data 2.4.2.2 when actor objectType is group
              * An "actor" property with "objectType" as "Group" uses exactly one of the following Inverse Functional Identifier properties: "mbox", "mbox_sha1sum", "openid", "account" or a member property with at least one Agent. An LRS rejects with 400 Bad Request any group object with:
                 - no IFI and no member property

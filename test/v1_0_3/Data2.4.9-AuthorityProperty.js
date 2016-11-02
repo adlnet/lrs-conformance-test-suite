@@ -25,7 +25,7 @@ describe('Authority Property Requirements (Data 2.4.9)', () => {
 /**  XAPI-00100, Data 2.4.9 Authority
  * An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group having more than two Agents
  */
-    it('An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group and consists of non-O-Auth Agents (Data 2.4.9.s3.b3)', function (done) {
+    it('An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group and consists of non-O-Auth Agents (Data 2.4.9.s3.b3, XAPI-00100)', function (done) {
         var templates = [
             {statement: '{{statements.default}}'},
             {authority: {"objectType": "Group", "name": "xAPI Group", "mbox": "mailto:xapigroup@example.com",

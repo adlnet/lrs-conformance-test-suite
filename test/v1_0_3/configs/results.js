@@ -46,7 +46,7 @@
             /**  XAPI-00079, Data 2.4.5.1 score
              * A "score" property is an Object. The LRS rejects with 400 Bad Request a “score” property which is not a valid object.
              */
-                name: 'A "score" property is an Object (Type, Data 2.4.5.1)',
+                name: 'A "score" property is an Object (Type, Data 2.4.5.1, XAPI-00079)',
                 config: [
                     {
                         name: 'statement result score numeric',
@@ -92,10 +92,10 @@
             /**  XAPI-00083, Data 2.4.5.1 score
              * If the "score" Object uses the "scaled" property, the value must be a decimal number between -1 and 1. The LRS rejects with 400 Bad Request a statement with a Result Object using the “scaled” property (if it is present) which is not a decimal number or is greater than 1 or less than -1.
              */
-                name: 'A "score" Object\'s "scaled" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row1, XAPI-00083)',
+                name: 'A "score" Object\'s "scaled" property is a decimal number between -1 and 1, inclusive. (Type, Data 2.4.5.1.s2.table1.row1, XAPI-00083)',
                 config: [
                     {
-                        name: 'statement result "scaled" accepts seven significant decimal',
+                        name: 'statement result "scaled" accepts decimal',
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},
@@ -104,7 +104,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement result "scaled" accepts seven significant decimal',
+                        name: 'statement substatement result "scaled" accepts decimal',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.result}}'},
@@ -112,6 +112,44 @@
                             {score: {scaled: VALID_DECIMAL_DIGITS}}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement result "scaled" should pass with value 1.0',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {scaled: 1.0}}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement result "scaled" pass with value -1.0000',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {scaled: -1.0000}}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement result "scaled" should reject with value 1.01',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {scaled: 1.01}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement result "scaled" reject with value -1.00001',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {scaled: -1.00001}}
+                        ],
+                        expect: [400]
                     }
                 ]
             },
@@ -119,10 +157,10 @@
             /**  XAPI-00082, Data 2.4.5.1 score
              * If the "score" Object uses the "raw" property, the value must be a decimal number between the "min" and "max", if they are present. If they are not present "raw" can be any number. The LRS rejects with 400 Bad Request a statement with a Result Object using the “raw” property (if it is present) which is not a decimal number or is greater than the value of the “max” property, if it is present, or lesser than the value of the “min” property, if it is present.
              */
-                name: 'A "score" Object\'s "raw" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row2, XAPI-00082)',
+                name: 'A "score" Object\'s "raw" property is a decimal number between min and max (if present, otherwise unrestricted), inclusive (Type, Data 2.4.5.1.s2.table1.row2, XAPI-00082)',
                 config: [
                     {
-                        name: 'statement result "raw" accepts seven significant decimal',
+                        name: 'statement result "raw" accepts decimal',
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},
@@ -131,7 +169,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement result "raw" accepts seven significant decimal',
+                        name: 'statement substatement result "raw" accepts decimal',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.result}}'},
@@ -139,6 +177,44 @@
                             {score: {raw: VALID_DECIMAL_DIGITS}}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement result "raw" rejects raw greater than max',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {raw: VALID_DECIMAL_DIGITS, max: VALID_DECIMAL_DIGITS - 0.02}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement result "raw" rejects raw greater than max',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {raw: VALID_DECIMAL_DIGITS, max: VALID_DECIMAL_DIGITS - 2}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement result "raw" rejects raw less than min',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {raw: VALID_DECIMAL_DIGITS, min: VALID_DECIMAL_DIGITS + 0.73}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement result "raw" rejects raw less than min',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {raw: VALID_DECIMAL_DIGITS, min: VALID_DECIMAL_DIGITS + 7}}
+                        ],
+                        expect: [400]
                     }
                 ]
             },
@@ -146,10 +222,10 @@
             /** XAPI-00081, Data 2.4.5.1 score
              * If the "score" Object uses the "min" property, the value must be a decimal number less than the "max" property, if it is present. If "max" is not present "min" can be any number. The LRS rejects with 400 Bad Request a statement with a Result Object using the “min” property (if it is present) which is not a decimal number or is greater than the value of the “max” property, if it is present.
              */
-                name: 'A "score" Object\'s "min" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row3, XAPI-00081)',
+                name: 'A "score" Object\'s "min" property is a decimal number less than the "max" property, if it is present. (Type, Data 2.4.5.1.s2.table1.row3, XAPI-00081)',
                 config: [
                     {
-                        name: 'statement result "min" accepts seven significant decimal',
+                        name: 'statement result "min" accepts decimal',
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},
@@ -158,7 +234,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement result "min" accepts seven significant decimal',
+                        name: 'statement substatement result "min" accepts decimal',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.result}}'},
@@ -166,6 +242,25 @@
                             {score: {min: VALID_DECIMAL_DIGITS}}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement result "min" rejects decimal number greater than "max"',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {min: VALID_DECIMAL_DIGITS, max: VALID_DECIMAL_DIGITS - 0.0000321, raw: VALID_DECIMAL_DIGITS - 0.0000033}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement result "min" rejects decimal number greater than "max"',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {min: VALID_DECIMAL_DIGITS, max: VALID_DECIMAL_DIGITS - 4, raw: VALID_DECIMAL_DIGITS - 1}}
+                        ],
+                        expect: [400]
                     }
                 ]
             },
@@ -177,7 +272,7 @@
                 name: 'A "score" Object\'s "max" property is a Decimal accurate to seven significant decimal figures (Type, Data 2.4.5.1.s2.table1.row4, XAPI-00080)',
                 config: [
                     {
-                        name: 'statement result "max" accepts seven significant decimal',
+                        name: 'statement result "max" accepts a decimal number more than the "min" property, if it is present.',
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},
@@ -186,7 +281,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement result "max" accepts seven significant decimal',
+                        name: 'statement substatement result "max" accepts a decimal number more than the "min" property, if it is present.',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.result}}'},
@@ -194,6 +289,25 @@
                             {score: {max: VALID_MAX_DECIMAL_DIGITS}}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement result "max" accepts a decimal number more than the "min" property, if it is present.',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {max: VALID_MAX_DECIMAL_DIGITS, min: VALID_MAX_DECIMAL_DIGITS + 4, raw: VALID_MAX_DECIMAL_DIGITS + 1}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement result "max" accepts a decimal number more than the "min" property, if it is present.',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {score: {max: VALID_MAX_DECIMAL_DIGITS, raw: VALID_MAX_DECIMAL_DIGITS + 10, min: VALID_MAX_DECIMAL_DIGITS + 100}}
+                        ],
+                        expect: [400]
                     }
                 ]
             },
@@ -201,7 +315,7 @@
             /**  XAPI-00074, Data 2.4.5 result
              * A "success" property is a Boolean. The LRS rejects with 400 Bad Request a Statement which has a Result Object with a “success” property which does not have a valid Boolean value, if present.
              */
-                name: 'A "success" property is a Boolean (Type, ata 2.4.5.s2.table1.row1, XAPI-00074)',
+                name: 'A "success" property is a Boolean (Type, Data 2.4.5.s2.table1.row1, XAPI-00074)',
                 config: [
                     {
                         name: 'statement result "success" property is string "true"',
@@ -337,10 +451,7 @@
             },
             {
             /**  XAPI-00077, Data 2.4.5 result
-             * A "duration" property is a formatted to ISO 8601 durations (see part 3, section 4.6). The LRS rejects with 400 Bad Request a Statement which has a Result Object with a “duration” property which does not have a valid ISO 8601 value, if present.
-             */
-            /**  XAPI-00124, Data 4.6 ISO8601 Durations
-             * A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2. The alternative format (in conformity with the format used for time points and described in ISO 8601:2004(E) section 4.4.3.3) MUST NOT be used. The LRS rejects with 400 a statement which includes the “duration” property and the value does not validate to ISO 8601:2004(E) section 4.4.3.2.
+             * A "duration" property is a formatted to ISO 8601 durations (see Data 4.6). The LRS rejects with 400 Bad Request a Statement which has a Result Object with a “duration” property which does not have a valid ISO 8601 value, if present.
              */
                 name: 'A "duration" property is a formatted to ISO 8601 (Type, Data 2.4.5.s2.table1.row4, XAPI-00077)',
                 config: [
@@ -362,14 +473,9 @@
                             {duration: INVALID_DURATION}
                         ],
                         expect: [400]
-                    }
-                ]
-            },
-            {   //see above
-                name: 'A "duration" property keeps at least 0.01 seconds of precision (Type, Data 2.4.5.s2.table1.row4)',
-                config: [
+                    },
                     {
-                        name: 'statement result "duration" property is invalid',
+                        name: 'statement result "duration" property is valid',
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},
@@ -378,12 +484,59 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement result "duration" property is invalid',
+                        name: 'statement substatement result "duration" property is valid',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.result}}'},
                             {result: '{{results.default}}'},
                             {duration: VALID_DURATION}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement result "duration" property is valid',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: 'PT4H35M59.14S'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement result "duration" property is valid',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: 'PT16559.14S'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement result "duration" property is valid',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: 'P3Y1M29DT4H35M59.14S'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement result "duration" property is valid',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: 'P3Y'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement result "duration" property is valid',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.default}}'},
+                            {duration: 'P4W'}
                         ],
                         expect: [200]
                     }
@@ -394,52 +547,6 @@
              * An "extensions" property is an Object. The LRS rejects with 400 Bad Request a Statement which has a Result Object with aa “extensions” property which does not have a valid Extensions Object, if present.
              */
                 name: 'An "extensions" property is an Object (Type, Data 2.4.5.s2.table1.row6, XAPI-00078)',
-                config: [
-                    {
-                        name: 'statement result "extensions" property is numeric',
-                        templates: [
-                            {statement: '{{statements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_NUMERIC}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement result "extensions" property is string',
-                        templates: [
-                            {statement: '{{statements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement result "extensions" property is numeric',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_NUMERIC}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement result "extensions" property is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.result}}'},
-                            {result: '{{results.default}}'},
-                            {duration: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
-            /**  XAPI-00002, 2.2 Formatting Requirements
-             * An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754
-             */
-                name: 'An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754 (Data 2.2.s4.b3, XAPI-00002)',
                 config: [
                     {
                         name: 'statement result "extensions" property is numeric',

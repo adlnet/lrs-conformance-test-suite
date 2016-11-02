@@ -189,9 +189,9 @@
             },
             {
             /**  XAPI-00047, Data 2.4.4.1 when the objectType is activity
-             * An "object" property uses the "id" property exactly one time. The LRS must reject with 404 Bad Request an otherwise legal statement if the object's objectType is Activity and the object's “id” is not an IRI or the object’s “id” is absent
+             * An "object" property uses the "id" property exactly one time. The LRS must reject with 400 Bad Request an otherwise legal statement if the object's objectType is Activity and the object's “id” is not an IRI or the object’s “id” is absent
              */
-                name: 'An "object" property uses the "id" property exactly one time (Multiplicity, Data 2.4.4.1.table1.row2, XAPI-00047)',
+                name: 'An "object" property uses the "id" property exactly one time (Multiplicity, Data 2.4.4.1.s1.table1.row2, XAPI-00047)',
                 config: [
                     {
                         name: 'statement activity "id" not provided',
@@ -489,6 +489,242 @@
                 ]
             },
             {
+            /**  XAPI-00062, Data 2.4.4.1 when objectType is activity
+             * An Interaction Component’s "description" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Interaction Component's "description" property is present and is an invalid Language Map.
+             */
+                name: 'An Interaction Component’s "description" property is a Language Map. (Type, Data 2.4.4.1.s15.table1.row2, XAPI-00062)',
+                config: [
+                    {
+                        name: 'statement object interaction component choice "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [{description:{12345: 'Choice 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component choice "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [{description:{English: 'Choice A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component sequencing "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [{description:{12345: 'Choice 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component sequencing "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [{description:{English: 'Choice A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component likert "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [{description:{12345: 'Scale 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component likert "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [{description:{English: 'Scale A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component matching source "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [{description:{12345: 'source 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component matching source "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [{description:{English: 'source A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component matching target "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [{description:{12345: 'target 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component matching target "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [{description:{English: 'target A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component performance "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [{description:{12345: 'steps 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement object interaction component performance "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [{description:{English: 'steps A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component choice "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [{description:{12345: 'Choice 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component choice "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.choice}}'},
+                            {definition: {choices: [{description:{English: 'Choice A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component sequencing "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [{description:{12345: 'Choice 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component sequencing "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.sequencing}}'},
+                            {definition: {choices: [{description:{English: 'Choice A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component likert "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [{description:{12345: 'scale 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component likert "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.likert}}'},
+                            {definition: {scale: [{description:{English: 'scale A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component matching source "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [{description:{12345: 'source 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component matching source "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {source: [{description:{English: 'source A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component matching target "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [{description:{12345: 'target 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component matching target "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.matching}}'},
+                            {definition: {target: [{description:{English: 'target A'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component performance "description" language map is numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [{description:{12345: 'steps 12345'}}]}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement object interaction component performance "description" language map is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.performance}}'},
+                            {definition: {steps: [{description:{English: 'steps A'}}]}}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {
             /**  XAPI-00059, Data 2.4.4.1 when objectType is activity
              * An Activity Definition's "description" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Activity Definition's "description" property is present and is an invalid Language Map.
              */
@@ -670,9 +906,41 @@
                         name: 'statement activity "interactionType" can be used with "other"',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.other}}'}
+                            {object: '{{activities.other}}'},
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement activity "interactionType" fails with invalid iri',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.interaction_type_invalid_iri}}'},
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "interactionType" fails with invalid numeric',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.interaction_type_invalid_numeric}}'},
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "interactionType" fails with invalid object',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.interaction_type_invalid_object}}'},
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement activity "interactionType" fails with invalid string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.interaction_type_invalid_string}}'},
+                        ],
+                        expect: [400]
                     },
                     {
                         name: 'statement substatement activity "interactionType" can be used with "true-false"',
@@ -763,6 +1031,42 @@
                             {object: '{{activities.other}}'}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement substatement activity "interactionType" fails with invalid iri',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.interaction_type_invalid_iri}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "interactionType" fails with invalid numeric',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.interaction_type_invalid_numeric}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "interactionType" fails with invalid object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.interaction_type_invalid_object}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "interactionType" fails with invalid string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.interaction_type_invalid_string}}'}
+                        ],
+                        expect: [400]
                     }
                 ]
             },
@@ -1162,7 +1466,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching_source}}'},
-                            {definition: {scale: VALID_INTERACTION_COMPONENT}}
+                            {definition: {source: VALID_INTERACTION_COMPONENT}}
                         ],
                         expect: [400]
                     },
@@ -1171,7 +1475,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching_source}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_ID]}}
+                            {definition: {source: [INVALID_INTERACTION_COMPONENT_ID]}}
                         ],
                         expect: [400]
                     },
@@ -1180,7 +1484,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching_source}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
+                            {definition: {source: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
                         ],
                         expect: [400]
                     },
@@ -1189,7 +1493,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching_source}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
+                            {definition: {source: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
                         ],
                         expect: [400]
                     },
@@ -1208,7 +1512,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching_source}}'},
-                            {definition: {scale: VALID_INTERACTION_COMPONENT}}
+                            {definition: {source: VALID_INTERACTION_COMPONENT}}
                         ],
                         expect: [400]
                     },
@@ -1218,7 +1522,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching_source}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_ID]}}
+                            {definition: {source: [INVALID_INTERACTION_COMPONENT_ID]}}
                         ],
                         expect: [400]
                     },
@@ -1228,7 +1532,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching_source}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
+                            {definition: {source: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
                         ],
                         expect: [400]
                     },
@@ -1238,7 +1542,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching_source}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
+                            {definition: {source: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
                         ],
                         expect: [400]
                     }
@@ -1263,7 +1567,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching_target}}'},
-                            {definition: {scale: VALID_INTERACTION_COMPONENT}}
+                            {definition: {target: VALID_INTERACTION_COMPONENT}}
                         ],
                         expect: [400]
                     },
@@ -1272,7 +1576,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching_target}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_ID]}}
+                            {definition: {target: [INVALID_INTERACTION_COMPONENT_ID]}}
                         ],
                         expect: [400]
                     },
@@ -1281,7 +1585,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching_target}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
+                            {definition: {target: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
                         ],
                         expect: [400]
                     },
@@ -1290,7 +1594,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching_target}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
+                            {definition: {target: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
                         ],
                         expect: [400]
                     },
@@ -1309,7 +1613,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching_target}}'},
-                            {definition: {scale: VALID_INTERACTION_COMPONENT}}
+                            {definition: {target: VALID_INTERACTION_COMPONENT}}
                         ],
                         expect: [400]
                     },
@@ -1319,7 +1623,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching_target}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_ID]}}
+                            {definition: {target: [INVALID_INTERACTION_COMPONENT_ID]}}
                         ],
                         expect: [400]
                     },
@@ -1329,7 +1633,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching_target}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
+                            {definition: {target: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
                         ],
                         expect: [400]
                     },
@@ -1339,7 +1643,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching_target}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
+                            {definition: {target: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
                         ],
                         expect: [400]
                     }
@@ -1364,7 +1668,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {scale: VALID_INTERACTION_COMPONENT}}
+                            {definition: {steps: VALID_INTERACTION_COMPONENT}}
                         ],
                         expect: [400]
                     },
@@ -1373,7 +1677,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_ID]}}
+                            {definition: {steps: [INVALID_INTERACTION_COMPONENT_ID]}}
                         ],
                         expect: [400]
                     },
@@ -1382,7 +1686,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
+                            {definition: {steps: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
                         ],
                         expect: [400]
                     },
@@ -1391,7 +1695,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
+                            {definition: {steps: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
                         ],
                         expect: [400]
                     },
@@ -1410,7 +1714,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {scale: VALID_INTERACTION_COMPONENT}}
+                            {definition: {steps: VALID_INTERACTION_COMPONENT}}
                         ],
                         expect: [400]
                     },
@@ -1420,7 +1724,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_ID]}}
+                            {definition: {steps: [INVALID_INTERACTION_COMPONENT_ID]}}
                         ],
                         expect: [400]
                     },
@@ -1430,7 +1734,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
+                            {definition: {steps: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_STRING]}}
                         ],
                         expect: [400]
                     },
@@ -1440,7 +1744,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {scale: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
+                            {definition: {steps: [INVALID_INTERACTION_COMPONENT_DESCRIPTION_LANGUAGE]}}
                         ],
                         expect: [400]
                     }
@@ -1810,7 +2114,7 @@
                 ]
             },
             {   //see above
-                name: 'Within an array of Interaction Components, the "id" property is unique (Multiplicty, Data 2.4.4.1.s16.b1)',
+                name: 'Within an array of Interaction Components, the "id" property is unique (Multiplicty, Data 2.4.4.1.s16.b1, XAPI-00058)',
                 config: [
                     {
                         name: 'statement activity choice "choices" cannot use same "id"',
@@ -1944,12 +2248,32 @@
                         expect: [400]
                     },
                     {
+                        name: 'statement activity "extension" invalid iri',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_definition}}'},
+                            {definition: {extensions: VALID_INTERACTION_COMPONENT}}
+                        ],
+                        expect: [400]
+                    },
+                    {
                         name: 'statement substatement activity "extension" invalid string',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.no_definition}}'},
                             {definition: {extensions: INVALID_STRING}}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement activity "extension" invalid iri',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_definition}}'},
+                            {definition: {extensions: VALID_INTERACTION_COMPONENT}}
                         ],
                         expect: [400]
                     }

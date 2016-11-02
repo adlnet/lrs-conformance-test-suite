@@ -9,7 +9,7 @@
 /**  As there is no Data 2.4 file, I will match them up here
  * Matchup with Conformance Requirements Document
  * XAPI-00021 - these are all in Multiplicity folder, the community said this won't be a problem and do not test it.  some are also covered in templating tests, usually in these cases post and 200 or 400.
- * XAPI-00022 - in statements.js
+ * XAPI-00022 - in timestamps.js
  * XAPI-00023 - in Data 2.4.8 Stored Property
  * XAPI-00024 - in authorities.js
  * XAPI-00025 - in attachments.js
@@ -26,8 +26,8 @@
  * XAPI-00026 - found below
  * XAPI-00027 - in uuids.js
  * XAPI-00028 - in uuids.js
- * XAPI-00029 - this looks the same as XAPI-00028 to me
- * XAPI-00030 - this looks the same as XAPI-00027 to me
+ * XAPI-00029 - in uuids.js
+ * XAPI-00030 - in uuids.js
  */
 
 describe('Id Property Requirements (Data 2.4.1)', () => {
@@ -41,6 +41,7 @@ describe('Id Property Requirements (Data 2.4.1)', () => {
 
         it('should complete an empty id property', (done) => {
             this.timeout(0);
+            var stmtid, query;
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -53,17 +54,26 @@ describe('Id Property Requirements (Data 2.4.1)', () => {
             .headers(helper.addAllHeaders({}))
             .json(data)
             .expect(200)
-            .end()
-            .get(helper.getEndpointStatements() + '?limit=1')
-            .wait(helper.genDelay(stmtTime, null, null))
-            .headers(helper.addAllHeaders({}))
             .end(function (err, res) {
                 if (err) {
                     done(err);
                 } else {
-                    var results = helper.parse(res.body, done);
-                    expect(results.statements[0].id).to.not.be.undefined;
-                    done();
+                    stmtid = res.body[0];
+                    query = '?statementId=' + stmtid;
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + query)
+                    .wait(helper.genDelay(stmtTime, query, stmtid))
+                    .headers(helper.addAllHeaders({}))
+                    .end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            var results = helper.parse(res.body, done);
+                            expect(results.id).to.not.be.undefined;
+                            expect(results.id).to.eql(stmtid);
+                            done();
+                        }
+                    })
                 }
             });
         });

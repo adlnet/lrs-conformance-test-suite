@@ -31,6 +31,13 @@
 
 describe('Concurrency Requirements (Communication 3.1)', () => {
 
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00322 - below
+ */
+
+/**  XAPI-00322, Communication 3.1 Concurrency
+ * An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile)
+ */
     describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling Resources where PUT may overwrite existing data (State, Agent Profile, and Activity Profile, Communication 3.1)', function () {
 
         it('When responding to a GET request to State resource, include an ETag HTTP header in the response', function () {

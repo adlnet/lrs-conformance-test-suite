@@ -14,7 +14,7 @@
     var INVALID_CONTENT_TYPE = {
         'usageType': 'http://example.com/attachment-usage/test',
         'display': {'en-US': 'A test attachment'},
-        'contentType': INVALID_STRING,
+        'contentType': INVALID_NUMERIC,
         'length': 27,
         'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
         'fileUrl': 'http://over.there.com/file.txt'
@@ -68,8 +68,16 @@
             /**  XAPI-00025,  Data 2.4 Statement Properties
              * A Statement's "attachments" property is an array of Attachments. An LRS rejects with 400 Bad Request a statement which has an “attachments” property which is not an array of attachments.
              */
-                name: 'A Statement\'s "attachments" property is an array of Attachments (Data 2.4.s1.table1.row11)',
+                name: 'A Statement\'s "attachments" property is an array of Attachments (Data 2.4.s1.table1.row11, XAPI-00025)',
                 config: [
+                    {
+                        name: 'statement "attachments" is an array',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {attachments: [VALID_ATTACHMENT]}
+                        ],
+                        expect: [200]
+                    },
                     {
                         name: 'statement "attachments" not an array',
                         templates: [
@@ -80,14 +88,14 @@
                     }
                 ]
             },
-            {
+            {   //this seems good - worth keeping
                 name: 'An Attachment is an Object (Definition, Data 2.4.11)',
                 config: [
                     {
                         name: 'statement "attachment" invalid numeric',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_NUMERIC}
+                            {attachments: [INVALID_NUMERIC]}
                         ],
                         expect: [400]
                     },
@@ -95,7 +103,7 @@
                         name: 'statement "attachment" invalid string',
                         templates: [
                             {statement: '{{statements.authority}}'},
-                            {attachments: INVALID_STRING}
+                            {attachments: [INVALID_STRING]}
                         ],
                         expect: [400]
                     }
@@ -111,7 +119,7 @@
                         name: 'statement "usageType" invalid string',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_USAGE_TYPE}
+                            {attachments: [INVALID_USAGE_TYPE]}
                         ],
                         expect: [400]
                     }
@@ -124,10 +132,11 @@
                 name: 'A "contentType" property is an Internet Media/MIME type (Format, Data 2.4.11.s2.table1.row4, XAPI-00105)',
                 config: [
                     {
-                        name: 'statement "contentType" invalid string',
+                        name: 'statement "contentType" invalid number',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_CONTENT_TYPE}
+                            {attachments: [INVALID_CONTENT_TYPE]},
+                            {attachments: {contentType: 999}}
                         ],
                         expect: [400]
                     }
@@ -143,7 +152,7 @@
                         name: 'statement "length" invalid string',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_LENGTH}
+                            {attachments: [INVALID_LENGTH]}
                         ],
                         expect: [400]
                     }
@@ -159,7 +168,7 @@
                         name: 'statement "sha2" invalid string',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_SHA2}
+                            {attachments: [INVALID_SHA2]}
                         ],
                         expect: [400]
                     }
@@ -175,7 +184,7 @@
                         name: 'statement "fileUrl" invalid string',
                         templates: [
                             {statement: '{{statements.attachment}}'},
-                            {attachments: INVALID_FILE_URL}
+                            {attachments: [INVALID_FILE_URL]}
                         ],
                         expect: [400]
                     }
@@ -187,6 +196,46 @@
              */
                 name: 'A "display" property is a Language Map (Type, Data 2.4.11.s2.table1.row2, XAPI-00106)',
                 config: [
+                    {
+                        name: 'statement attachment "display" language map numeric',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {
+                                attachments: [
+                                    {
+                                        'usageType': 'http://example.com/attachment-usage/test',
+                                        'display': INVALID_NUMERIC,
+                                        'description': {'en-US': 'A test attachment (description)'},
+                                        'contentType': 'text/plain; charset=ascii',
+                                        'length': 27,
+                                        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+                                        'fileUrl': 'http://over.there.com/file.txt'
+                                    }
+                                ]
+                            }
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement attachment "display" language map string',
+                        templates: [
+                            {statement: '{{statements.attachment}}'},
+                            {
+                                attachments: [
+                                    {
+                                        'usageType': 'http://example.com/attachment-usage/test',
+                                        'display': INVALID_STRING,
+                                        'description': {'en-US': 'A test attachment (description)'},
+                                        'contentType': 'text/plain; charset=ascii',
+                                        'length': 27,
+                                        'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+                                        'fileUrl': 'http://over.there.com/file.txt'
+                                    }
+                                ]
+                            }
+                        ],
+                        expect: [400]
+                    },
                     {
                         name: 'statement attachment "description" language map numeric',
                         templates: [
