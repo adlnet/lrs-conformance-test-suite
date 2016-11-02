@@ -23,6 +23,138 @@ describe('Special Data Types and Rules (Data 4.0)', () => {
  */
     templatingSelection.createTemplate("extensions.js");
 
+/**  XAPI-00119, Data 4.1 Extensions
+ * An Extension can be null, an empty string, objects with nothing in them. The LRS accepts with 200 if a PUT or 204 if a POST an otherwise valid statement which has any extension value including null, an empty string, or an empty object.
+ * Tests for other emptys and PUT
+ */
+    describe('An Extension can be null, an empty string, objects with nothing in them when using PUT. (Format, Data 4.1, XAPI-00119)', function () {
+        var NULL_VALUE = {'extensions': {'http://example.com/ex': null}},
+            EMPTY_STRING_VALUE = {'extensions': {'http://example.com/ex': ''}},
+            EMPTY_OBJECT_VALUE = {'extensions': {'http://example.com/ex': {}}},
+            VALID_EXTENSION_EMPTY = {'extensions': {}};
+
+        it('statement activity extensions can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.object_activity}}'},
+                {object: '{{activities.no_extensions}}'},
+                {definition: VALID_EXTENSION_EMPTY}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement activity extension values can be empty string', function (done) {
+            var template = [
+                {statement: '{{statements.object_activity}}'},
+                {object: '{{activities.no_extensions}}'},
+                {definition: EMPTY_STRING_VALUE}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement activity extension values can be null', function (done) {
+            var template = [
+                {statement: '{{statements.object_activity}}'},
+                {object: '{{activities.no_extensions}}'},
+                {definition: NULL_VALUE}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement activity extension values can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.object_activity}}'},
+                {object: '{{activities.no_extensions}}'},
+                {definition: EMPTY_OBJECT_VALUE}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement result extensions can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.result}}'},
+                {result: '{{results.no_extensions}}'},
+                VALID_EXTENSION_EMPTY
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement result extension values can be empty string', function (done) {
+            var template = [
+                {statement: '{{statements.result}}'},
+                {result: '{{results.no_extensions}}'},
+                EMPTY_STRING_VALUE
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement result extension values can be null', function (done) {
+            var template = [
+                {statement: '{{statements.object_activity}}'},
+                {object: '{{activities.no_extensions}}'},
+                {definition: NULL_VALUE}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+        it('statement resulty extension values can be empty object', function (done) {
+            var template = [
+                {statement: '{{statements.object_activity}}'},
+                {object: '{{activities.no_extensions}}'},
+                {definition: EMPTY_OBJECT_VALUE}
+            ],
+                data = helper.createFromTemplate(template).statement;
+            data.id = helper.generateUUID();
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(204, done);
+        });
+
+    });
+
     //Data 4.2
 /**  Matchup with Conformance Requirements Document
  * XAPI-00121 - in languages.js
