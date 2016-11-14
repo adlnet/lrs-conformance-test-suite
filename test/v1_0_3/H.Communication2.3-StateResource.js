@@ -354,7 +354,89 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-/**  XAPI-00227, Communication 2.3 State Resource
+/**  XAPI-00229, Communication 2.3 State Resource
+ * An LRS's State API, rejects a POST request if the document is found and either document is not a valid JSON Object
+ */
+    describe('An LRSs State API, rejects a POST request if the document is found and either document is not a valid JSON Object (multiplicity, Communication 2.3.s3.table1.row3, XAPI-00229)',function(){
+        it("Rejects a malformed JSON document when the content-type is 'application/json'", function (done) {
+            var parameters = helper.buildState(),
+            document = helper.buildDocument();
+            document = JSON.stringify(document);
+            document = "/ asdf / undefined";
+            console.log(parameters);
+            parameters.registration = helper.generateUUID();
+
+
+            var header = {'content-type': 'application/json'};
+            var attachment = document;
+                
+                request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) )
+                    .headers(helper.addAllHeaders(header))
+                    .body(attachment)
+                    .expect(400,function(err,res)
+                    {
+                        done(err);
+                    });        
+            });
+
+
+        it("Rejects a JSON update document when the original documents content-type is not 'application/json'", function (done) {
+            var parameters = helper.buildState();
+            var attachment = "/ asdf / undefined";
+            parameters.registration = helper.generateUUID();
+
+            var header = {'content-type': 'application/octet-stream'};
+                
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) )
+                .headers(helper.addAllHeaders(header))
+                .body(attachment)
+                .expect(204,function(err,res)
+                {
+                    
+                    attachment = helper.buildDocument();
+                    attachment = JSON.stringify(attachment);
+                    var header2 = {'content-type': 'application/json'};
+                    request(helper.getEndpointAndAuth())
+                        .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) )
+                        .headers(helper.addAllHeaders(header2))
+                        .body(attachment)
+                        .expect(400,function(err,res)
+                        {
+                            done(err);
+                        });        
+                });
+                        
+            });
+        it("Rejects a JSON update document when the original documents content-type is 'application/json' but the original document is not valid json", function (done) {
+            var parameters = helper.getEndpointActivitiesState();
+            parameters.registration = helper.generateUUID();
+            var attachment = JSON.stringify(helper.buildDocument()) +"{";
+            var header = {'content-type': 'application/json'};
+                
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) )
+                .headers(helper.addAllHeaders(header))
+                .body(attachment)
+                .expect(204,function(err,res)
+                {
+                    attachment = {"update":"me"};
+                    attachment = JSON.stringify(attachment);
+                    var header2 = {'content-type': 'application/json'};
+                    request(helper.getEndpointAndAuth())
+                        .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+                        .headers(helper.addAllHeaders(header2))
+                        .body(attachment)
+                        .expect(400,function(err,res)
+                        {
+                            done(err);
+                        });        
+                });              
+        });
+    });
+
+/**  XAPI-00229, Communication 2.3 State Resource
  * An LRS's State API can process a POST request with "registration" as a parameter
  */
     it('An LRS\'s State Resource can process a POST request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
@@ -362,7 +444,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
-    });
+    });    
 
 /**  XAPI-00202, Communication 2.3 State Resource
  * An LRS's State API rejects a POST request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request

@@ -341,5 +341,78 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
     });
 
 });
+/**  XAPI-00278, Communication 2.6 Agent Profile Resource
+ * TAn LRS's Agent Profile API, rejects a POST request if the document is found and either document's type is not "application/json" with error code 400 Bad Request
+ */
+describe('An LRSs Agent Profile API, rejects a POST request if the document is found and either documents type is not "application/json" with error code 400 Bad Request(multiplicity, Communication 2.3.s3.table1.row3, XAPI-00278)',function(){
+        it("Rejects a malformed JSON document when the content-type is 'application/json'", function (done) {
+            var parameters = helper.buildAgentProfile();
+            var header = {'content-type': 'application/json'};
+            var attachment = "/ asdf / undefined";
+                
+                request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+                    .headers(helper.addAllHeaders(header))
+                    .body(attachment)
+                    .expect(400,function(err,res)
+                    {
+                        done(err);
+                    });        
+            });
+
+
+        it("Rejects a JSON update document when the original documents content-type is not 'application/json'", function (done) {
+            var parameters = helper.buildAgentProfile();
+            var attachment = "/ asdf / undefined";
+          
+            var header = {'content-type': 'application/octet-stream'};
+                
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+                .headers(helper.addAllHeaders(header))
+                .body(attachment)
+                .expect(204,function(err,res)
+                {
+                    
+                    attachment = helper.buildDocument();
+                    attachment = JSON.stringify(attachment);
+                    var header2 = {'content-type': 'application/json'};
+                    request(helper.getEndpointAndAuth())
+                        .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+                        .headers(helper.addAllHeaders(header2))
+                        .body(attachment)
+                        .expect(400,function(err,res)
+                        {
+                            done(err);
+                        });        
+                });
+                        
+        });
+
+        it("Rejects a JSON update document when the original documents content-type is 'application/json' but the original document is not valid json", function (done) {
+            var parameters = helper.buildAgentProfile();
+            var attachment = JSON.stringify(helper.buildDocument()) +"{";
+            var header = {'content-type': 'application/json'};
+                
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+                .headers(helper.addAllHeaders(header))
+                .body(attachment)
+                .expect(204,function(err,res)
+                {
+                    attachment = {"update":"me"};
+                    attachment = JSON.stringify(attachment);
+                    var header2 = {'content-type': 'application/json'};
+                    request(helper.getEndpointAndAuth())
+                        .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+                        .headers(helper.addAllHeaders(header2))
+                        .body(attachment)
+                        .expect(400,function(err,res)
+                        {
+                            done(err);
+                        });        
+                });              
+        });
+    });
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
