@@ -95,6 +95,8 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
+    
+
     describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, 4.1.9.b, 4.1.9.c) ', function () {
 
         it('should populate authority ', function (done) {
@@ -2981,6 +2983,12 @@
                 });
         });
     });
+    
+
+    //#Rob Anchor
+    //does this work?
+    require("./non_templating/XAPI_00161.js")(genDelay, comb,expect,module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect)
+
 
     describe('A "statements" property is an Array of Statements (Type, 4.2.table1.row1.a)', function () {
         var statement, substatement, stmtTime;

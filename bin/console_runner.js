@@ -124,7 +124,11 @@ function start(options)
 			var cleanLog = testRunner.getCleanRecord();
 			var output = JSON.stringify(cleanLog, null, '    ');
 			var outDir = libpath.join(__dirname, '../logs');
-			fs.mkdir(outDir, 0o775, function(){
+
+
+            console.log(require("util").inspect(JSON.parse(JSON.stringify(cleanLog,function(k,v){if(k=="log" && v.constructor == String) return undefined; return v})),{depth:10}));
+			
+            fs.mkdir(outDir, 0o775, function(){
 				var outPath = libpath.join(outDir, testRunner.uuid+'.log');
 				fs.writeFile(outPath, output);
 				console.log('Full run log written to', outPath);
