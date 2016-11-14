@@ -389,7 +389,7 @@ describe('An LRSs Agent Profile API, rejects a POST request if the document is f
                         
         });
 
-        it("Rejects a JSON update document when the original documents content-type is 'application/json' but the original document is not valid json", function (done) {
+        it("Rejects a JSON update document when the original documents content-type is 'application/json' but the original document is not valid json (XAPI-00281)", function (done) {
             var parameters = helper.buildAgentProfile();
             var attachment = JSON.stringify(helper.buildDocument()) +"{";
             var header = {'content-type': 'application/json'};
@@ -414,5 +414,37 @@ describe('An LRSs Agent Profile API, rejects a POST request if the document is f
                 });              
         });
     });
+
+
+/**  XAPI-00284, Communication 2.6 State Resource
+ * An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
+ */
+it("An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile API which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json' (Communication 2.3, XAPI-00284)", function (done) {
+            var parameters = {
+               profileId: helper.generateUUID()
+            }
+
+            var agent = encodeURIComponent( JSON.stringify({
+                    "objectType": "Agent",
+                    "account": {
+                        "homePage": "http://www.example.com/agentId/1",
+                        "name": "Rick James"
+                    }
+                })
+                ).replace('%3A','%22'); //break the encoding here.
+
+           
+            var attachment = JSON.stringify(helper.buildDocument());
+            var header = {'content-type': 'application/json'};
+                
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) +"&agent=" + agent) 
+                .headers(helper.addAllHeaders(header))
+                .body(attachment)
+                .expect(400,function(err,res)
+                {
+                   done(err);
+                });              
+        });
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
