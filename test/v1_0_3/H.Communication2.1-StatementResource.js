@@ -2347,7 +2347,12 @@ StatementResult Object.
                     var boundary = ContentType.split(";")[1].replace(" boundary=","");
 
                     var body = res.body.split("--"+boundary);
-                    expect(body[2].indexOf("here is a simple attachment")).to.not.eql(-1);
+                    var idx = -1;
+                    for(var i in body)
+                    {
+                        idx = Math.max(body[i].indexOf("here is a simple attachment"),idx);
+                    }
+                    expect(idx).to.not.eql(-1);
                     done();
                 }
             });
