@@ -392,7 +392,10 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             });
     });
 
-    it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including Communication 2.1.2.s2.b4)', function(done){
+/**  XAPI-00182, Communication 2.2 Documents Resources
+ * An LRS makes no modifications to stored data for any rejected request.
+ */
+    it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including Communication 2.1.2.s2.b4, XAPI-00182)', function(done){
         this.timeout(0);
         var templates = [
             {statement: '{{statements.default}}'}

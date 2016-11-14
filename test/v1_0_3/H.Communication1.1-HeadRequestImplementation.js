@@ -23,7 +23,7 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
 /**  XAPI-00126
  * An LRS accepts HEAD requests.
  */
-    it('An LRS accepts HEAD requests (Communication 1.1, XAPI-00126)', function () {
+    describe('An LRS accepts HEAD requests (Communication 1.1, XAPI-00126)', function () {
 
         it('should succeed GET about with no body', function () {
             return helper.sendRequest('head', helper.getEndpointAbout(), undefined, undefined, 200);
