@@ -13,6 +13,11 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00044 - in verbs.js - two suites
+ * XAPI-00045 - in verbs.js
+ */
+
 describe('Verb Property Requirements (Data 2.4.3)', () => {
 
     templatingSelection.createTemplate('verbs.js');

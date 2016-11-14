@@ -44,7 +44,10 @@
                 ]
             },
             {
-                name: 'A "registration" property is a UUID (Type, 4.1.6.table1.row1.a)',
+            /**  XAPI-00087-1, Data 2.4.6 Context
+             * A "registration" property is a UUID. The LRS rejects with 400 Bad Request a statement with a “registration” property which is not a valid UUID.
+             */
+                name: 'A "registration" property is a UUID (Type, Data 2.4.6.s3.table1.row1, XAPI-00087-1)',
                 config: [
                     {
                         name: 'statement context "registration" is object',
@@ -87,7 +90,10 @@
                 ]
             },
             {
-                name: 'An "instructor" property is an Agent (Type, 4.1.6.table1.row2.a)',
+            /**  XAPI-00087-2, Data 2.4.6 Context
+             * An "instructor" property is an Agent. The LRS rejects with 400 Bad Request a statement with an “instructor” property which is not a valid Agent.
+             */
+                name: 'An "instructor" property is an Agent (Type, Data 2.4.6.s3.table1.row2, XAPI-00087-2)',
                 config: [
                     {
                         name: 'statement context "instructor" is object',
@@ -130,7 +136,10 @@
                 ]
             },
             {
-                name: 'An "team" property is a Group (Type, 4.1.6.table1.row3.a)',
+            /**  XAPI-00088, Data 2.4.6 Context
+             * A "team" property is a Group. The LRS rejects with 400 Bad Request a statement with a “team” property which is not a valid Group.
+             */
+                name: 'An "team" property is a Group (Type, Data 2.4.6.s3.table1.row3, XAPI-00088)',
                 config: [
                     {
                         name: 'statement context "team" is agent',
@@ -192,7 +201,10 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property is an Object (Type, 4.1.5.table1.row4.a)',
+            /**  XAPI-00086, Data 2.4.6 Context
+             * A "contextActivities" property is an Object. The LRS rejects with 400 Bad Request a statement with a “contextActivities” property which is not a valid object.
+             */
+                name: 'A "contextActivities" property is an Object (Type, Data 2.4.6.s3.table1.row4, XAPI-00086)',
                 config: [
                     {
                         name: 'statement context "contextActivities" is string',
@@ -216,7 +228,10 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property contains one or more key/value pairs (Format, 4.1.a, 4.1.6.2.b)',
+            /**  XAPI-00095, Data 2.4.6.2 ContextActivities Property
+             * A "contextActivities" property contains one or more key/value pairs. The LRS rejects with 400 Bad Request a statement which has an empty “contextActivities” property.
+             */
+                name: 'A "contextActivities" property contains one or more key/value pairs (Format, Data 2.4.6.2.s4.b2, XAPI-00095)',
                 config: [
                     {
                         name: 'statement context "contextActivities" is empty',
@@ -240,13 +255,16 @@
                 ]
             },
             {
-                name: 'A "contextActivities" property\'s "key" has a value of "parent", "grouping", "category", or "other" (Format, 4.1.6.2.a)',
+            /**  XAPI-00093, Data 2.4.6.2 ContextActivities Property
+             * A "contextActivities" property's "key" has a value of "parent", "grouping", "category", or "other". The LRS rejects with 400 Bad Request a statement which has a key other than "parent", "grouping", "category", or "other" for the “contextActivities” property
+             */
+                name: 'A "contextActivities" property\'s "key" has a value of "parent", "grouping", "category", or "other" (Format, Data 2.4.6.2.s4.b1, XAPI-00093)',
                 config: [
                     {
                         name: 'statement context "contextActivities" is "parent"',
                         templates: [
                             {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'}
+                            {context: '{{contexts.parent}}'}
                         ],
                         expect: [200]
                     },
@@ -275,11 +293,27 @@
                         expect: [200]
                     },
                     {
+                        name: 'statement context "contextActivities" accepts all property keys "parent", "grouping", "category", and "other"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.all_activities}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context "contextActivities" rejects any property key other than "parent", "grouping", "category", or "other"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.invalid_activity}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
                         name: 'statement substatement context "contextActivities" is "parent"',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
-                            {context: '{{contexts.default}}'}
+                            {context: '{{contexts.parent}}'}
                         ],
                         expect: [200]
                     },
@@ -309,11 +343,32 @@
                             {context: '{{contexts.other}}'}
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement context "contextActivities" accepts all property keys "parent", "grouping", "category", and "other"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.all_activities}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement context "contextActivities" rejects any property key other than "parent", "grouping", "category", or "other"',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.invalid_activity}}'}
+                        ],
+                        expect: [400]
                     }
                 ]
             },
             {
-                name: 'A "contextActivities" property\'s "value" is an Activity (Format, 4.1.6.2.a)',
+            /**  XAPI-00094, Data 2.4.6.2 ContextActivities Property
+             * A "contextActivities" property's "value" is an Activity. The LRS rejects with 400 Bad Request a statement which has a value which is not an Activity for the “contextActivities” property.
+             */
+                name: 'A "contextActivities" property\'s "value" is an Activity (Format, Data 2.4.6.2.s4.b2, XAPI-00094)',
                 config: [
                     {
                             name: 'statement context "contextActivities parent" value is activity array',
@@ -366,6 +421,19 @@
                             }
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement context contextActivities property\'s value is activity array with activities',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.other}}'},
+                            {
+                                contextActivities: {
+                                    other: [VALID_ACTIVITY, INVALID_OBJECT]
+                                }
+                            }
+                        ],
+                        expect: [400]
                     },
                     {
                         name: 'statement substatement context "contextActivities parent" value is activity array',
@@ -422,11 +490,25 @@
                             }
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context "contextActivities property\'s value is activity array',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.other}}'},
+                            {
+                                contextActivities: {
+                                    other: [INVALID_OBJECT, VALID_ACTIVITY]
+                                }
+                            }
+                        ],
+                        expect: [400]
                     }
                 ]
             },
             {
-                name: 'A ContextActivity is defined as a single Activity of the "value" of the "contextActivities" property (definition)',
+                name: 'A ContextActivity is defined as a single Activity of the "value" of the "contextActivities" property (definition, Data 2.4.6.2.s4.b2)',
                 config: [
                     {
                         name: 'statement context "contextActivities parent" value is activity',
@@ -499,7 +581,10 @@
                 ]
             },
             {
-                name: 'A "revision" property is a String (Type, 4.1.6.table1.row5.a)',
+            /**  XAPI-00089, Data 2.4.6 Context
+             * A "revision" property is a String. The LRS rejects with 400 Bad Request a statement with a “revision” property which is not a valid string.
+             */
+                name: 'A "revision" property is a String (Type, Data 2.4.6.s3.table1.row5, XAPI-00089)',
                 config: [
                     {
                         name: 'statement context "revision" is numeric',
@@ -542,7 +627,10 @@
                 ]
             },
             {
-                name: 'A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (4.1.6.a)',
+            /**  XAPI-00084, Data 2.4.6 Context
+            * A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property's "objectType" be anything but "Activity". The LRS rejects a statement with 400 Bad Request if contains a "revision" property in its "context" property and does not have an Object with an “objectType” value of “activity” or an Object where the “objectType” property is absent.
+            */
+                name: 'A Statement cannot contain both a "revision" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (Data 2.4.6.s4.b1, XAPI-00084)',
                 config: [
                     {
                         name: 'statement context "revision" is invalid with object agent',
@@ -577,6 +665,14 @@
                         expect: [400]
                     },
                     {
+                        name: 'statement context "revision" is valid with no ObjectType',
+                        templates: [
+                            {statement: '{{statements.context_sans_objectType}}'},
+                            {context: '{{contexts.no_platform}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
                         name: 'statement substatement context "revision" is invalid with object agent',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
@@ -602,11 +698,23 @@
                             {context: '{{contexts.no_platform}}'}
                         ],
                         expect: [400]
+                    },
+                    {
+                        name: 'statement substatement context "revision" is valid with no objectType',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{statements.context_sans_objectType}}'},
+                            {context: '{{contexts.no_platform}}'}
+                        ],
+                        expect: [200]
                     }
                 ]
             },
             {
-                name: 'A "platform" property is a String (Type, 4.1.6.table1.row6.a)',
+            /**  XAPI-00090, Data 2.4.6 Context
+             * A "platform" property is a String. The LRS rejects with 400 Bad Request a statement with a “platform” property which is not a valid string.
+             */
+                name: 'A "platform" property is a String (Type, Data 2.4.6.s3.table1.row6, XAPI-00090)',
                 config: [
                     {
                         name: 'statement context "platform" is numeric',
@@ -649,7 +757,10 @@
                 ]
             },
             {
-                name: 'A Statement cannot contain both a "platform" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (4.1.6.b)',
+            /**  XAPI-00085, Data 2.4.6 Context
+            * A Statement cannot contain a "platform" property in its "context" property and have the value of the "object" property's "objectType" be anything but "Activity". The LRS rejects a statement with 400 Bad Request if contains a "platform" property in its "context" property and does not have an Object with an “objectType” value of “activity” or an Object where the “objectType” property is absent.
+            */
+                name: 'A Statement cannot contain both a "platform" property in its "context" property and have the value of the "object" property\'s "objectType" be anything but "Activity" (Data 2.4.6.s4.b2, XAPI-00085)',
                 config: [
                     {
                         name: 'statement context "platform" is invalid with object agent',
@@ -684,6 +795,14 @@
                         expect: [400]
                     },
                     {
+                        name: 'statement context "platform" is valid with empty objectType',
+                        templates: [
+                            {statement: '{{statements.context_sans_objectType}}'},
+                            {context: '{{contexts.no_revision}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
                         name: 'statement substatement context "platform" is invalid with object agent',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
@@ -709,11 +828,24 @@
                             {context: '{{contexts.no_revision}}'}
                         ],
                         expect: [400]
+                    },
+                    {
+                        name: 'statement substatement context "platform" is valid with empty ObjectType',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{statements.context_sans_objectType}}'},
+                            {context: '{{contexts.no_revision}}'}
+                        ],
+                        expect: [200]
                     }
                 ]
             },
             {
-                name: 'A "language" property is a String (Type, 4.1.6.table1.row7.a)',
+            /**  XAPI-00091, Data 2.4.6 Context
+             * A "language" property is a String which follows RFC 5646. The LRS rejects with 400 Bad Request a statement with a “language” property which is not a valid RFC 5646 string.
+             * And see below
+             */
+                name: 'A "language" property is a String (Type, Data 2.4.6.s3.table1.row7, XAPI-00091)',
                 config: [
                     {
                         name: 'statement context "language" is numeric',
@@ -752,12 +884,7 @@
                             {language: INVALID_OBJECT}
                         ],
                         expect: [400]
-                    }
-                ]
-            },
-            {
-                name: 'A "language" property follows RFC5646 (Format, 4.1.6.table1.row7.a, RFC5646)',
-                config: [
+                    },
                     {
                         name: 'statement context "language" is is invalid language',
                         templates: [
@@ -780,7 +907,10 @@
                 ]
             },
             {
-                name: 'A "statement" property is a Statement Reference (Type, 4.1.6.table1.row8.a)',
+            /**  XAPI-00092, Data 2.4.6 Context
+             * A "statement" property is a Statement Reference. The LRS rejects with 400 Bad Request a statement with a “statement” property which is not a valid StatementRef.
+             */
+                name: 'A "statement" property is a Statement Reference (Type, Data 2.4.6.s3.table1.row8, XAPI-00092)',
                 config: [
                     {
                         name: 'statement context "statement" invalid with "statementref"',

@@ -83,6 +83,10 @@
                 ]
             },
             {
+            /**
+             * Tests for 400 with blank language map, and with an invalid languge map.
+             * For testing of various good and bad language map values see formatting.js
+             */
                 name: 'A Language Map is defined as an array of language tag/String pairs has at least 1 entry',
                 config: [
                     {
@@ -280,7 +284,10 @@
                 ]
             },
             {
-                name: 'A Language Map follows RFC5646 (Format, 5.2.a, RFC5646)',
+            /**  XAPI-00121, Data 4.2 Language Maps
+             * A Language Map follows RFC 5646. The LRS rejects with 400 a statement using a Language Map which doesn’t not validate to RFC 5646.
+             */
+                name: 'A Language Map follows RFC5646 (Format, Data 4.2.s1, RFC5646, XAPI-00121)',
                 config: [
                     {
                         name: 'statement verb "display" language map invalid',

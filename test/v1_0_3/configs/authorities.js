@@ -33,7 +33,10 @@
     module.exports.config = function () {
         return [
             {
-                name: 'An "authority" property is an Agent or Group (Type, 4.1.2.1.table1.row9.a, 4.1.2.1.table1.row9.b, 4.1.9.a)',
+            /**  XAPI-00024,  Data 2.4 Statement Properties
+             * An "authority" property is an Agent or Group. An LRS rejects with 400 Bad Request a statement which has an “authority” property which is not Agent or Group.
+             */
+                name: 'An "authority" property is an Agent or Group (Type, Data 2.4.s1.table1.row9, XAPI-00024)',
                 config: [
                     {
                         name: 'should pass statement authority agent template',
@@ -95,7 +98,10 @@
                 ]
             },
             {
-                name: 'An "authority" property which is also a Group contains exactly two Agents (Type, 4.1.2.1.table1.row9.a, 4.1.2.1.table1.row9.b, 4.1.9.a)',
+            /**  XAPI-00098, Data 2.4.9 Authority
+             * An "authority" property which is also a Group contains exactly two Agents. The LRS rejects with 400 Bad Request a statement which has an “authority” property with a “objectType” of “Group” with more or less than two Oauth Agents as values of the “member” property.
+             */
+                name: 'An "authority" property which is also a Group contains exactly two Agents (Type, Data 2.4.9.s3.b1, XAPI-00098)',
                 config: [
                     {
                         name: 'statement "authority" invalid one member',
@@ -117,8 +123,37 @@
                     }
                 ]
             },
-            {
-                name: 'An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group of more than two Agents (Format, 4.1.9.a)',
+            {   //see above
+                name: 'Statement authority shall only be an anonymous group with two members (Data 2.4.9.s3.b1)',
+                config: [
+                    {
+                        name: 'statement authority identified group is rejected',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.identified_openid}}'}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement authority anonymous group with two members is accepted',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_two_member}}'}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement authority anonymous group without two members is rejected',
+                        templates: [
+                            {statement: '{{statements.authority}}'},
+                            {authority: '{{groups.anonymous_no_member}}'}
+                        ],
+                        expect: [400]
+                    }
+                ]
+            },
+            {   //see above
+                name: 'An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group of more than two Agents (Format, Data 2.4.9.s3.b1)',
                 config: [
                     {
                         name: 'statement "authority" invalid three member',

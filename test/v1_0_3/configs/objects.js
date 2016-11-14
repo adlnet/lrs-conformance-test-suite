@@ -98,7 +98,10 @@
                 ]
             },
             {
-                name: 'An "object" property\'s "objectType" property is either "Activity", "Agent", "Group", "SubStatement", or "StatementRef" (Vocabulary, 4.1.4.b)',
+            /**  XAPI-00046, Data 2.4.4 Object
+             * An "object" property's "objectType" property is either "Activity", "Agent", "Group", "SubStatement", or "StatementRef". An LRS rejects with 400 Bad Request an “object” property with an objectType which is not "Activity", "Agent", "Group", "SubStatement", or "StatementRef".
+             */
+                name: 'An "object" property\'s "objectType" property is either "Activity", "Agent", "Group", "SubStatement", or "StatementRef" (Vocabulary, Data 2.4.4.s2, XAPI-00046)',
                 config: [
                     {
                         name: 'statement activity should fail on "activity"',
