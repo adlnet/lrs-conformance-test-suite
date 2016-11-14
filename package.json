@@ -23,6 +23,8 @@
   "dependencies": {
     "chai": "^2.3.0",
     "chai-as-promised": "^4.1.1",
+    "colors": "^1.1.2",
+    "comb": "^1.0.1",
     "commander": "^2.6.0",
     "concat-stream": "^1.5.1",
     "cookie-parser": "^1.4.1",
@@ -54,6 +56,7 @@
     "superagent-oauth": "^0.2.3",
     "supertest": "git+https://github.com/rchadwic/supertest.git#ipc",
     "supertest-as-promised": "^1.0.0",
-    "uuid": "^2.0.1"
+    "uuid": "^2.0.1",
+    "validator": "^5.7.0"
   }
 }

@@ -10,6 +10,9 @@
 
     // defines overwriting data
     var INVALID_EXTENSION_KEY = {'extensions': {'should fail': true}};
+    var NULL_VALUE = {'extensions': {'http://example.com/ex': null}};
+    var EMPTY_STRING_VALUE = {'extensions': {'http://example.com/ex': ''}};
+    var EMPTY_OBJECT_VALUE = {'extensions': {'http://example.com/ex': {}}};
     var VALID_EXTENSION_EMPTY = {'extensions': {}};
     var VALID_EXTENSION_BOOLEAN = {'extensions': {'http://example.com/ex': true}};
     var VALID_EXTENSION_NUMERIC = {'extensions': {'http://example.com/ex': 12345}};
@@ -20,7 +23,11 @@
     module.exports.config = function () {
         return [
             {
-                name: 'An Extension is defined as an Object of any "extensions" property (Multiplicity, 5.3)',
+            /**  XAPI-00120, Data 4.1 Extensions
+             * An Extension's structure is that of "key"/"value" pairs. The LRS rejects with 400 a statement which does not use valid “key”/”value” pairs in the Extension property
+             * See XAPI-00118 for the 400
+             */
+                name: 'An Extension is defined as an Object of any "extensions" property (Multiplicity, Data 4.1.s2, XAPI-00120)',
                 config: [
                     {
                         name: 'statement activity extensions valid boolean',
@@ -253,10 +260,14 @@
                 ]
             },
             {
-                name: 'An Extension can be empty (Format, 5.3)',
+            /**  XAPI-00119, Data 4.1 Extensions
+             * An Extension can be null, an empty string, objects with nothing in them. The LRS accepts with 200 if a PUT or 204 if a POST an otherwise valid statement which has any extension value including null, an empty string, or an empty object.
+             * These are all emptys and POST
+             */
+                name: 'An Extension can be null, an empty string, objects with nothing in them when using POST. (Format, Data 4.1, XAPI-00119)',
                 config: [
                     {
-                        name: 'statement activity extensions can be empty',
+                        name: 'statement activity extensions can be empty object',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.no_extensions}}'},
@@ -265,7 +276,34 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement result extensions can be empty',
+                        name: 'statement activity extension values can be empty string',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_extensions}}'},
+                            {definition: EMPTY_STRING_VALUE}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement activity extension values can be null',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_extensions}}'},
+                            {definition: NULL_VALUE}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement activity extension values can be empty object',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.no_extensions}}'},
+                            {definition: EMPTY_OBJECT_VALUE}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement result extensions can be empty object',
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.no_extensions}}'},
@@ -274,7 +312,34 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement context extensions can be empty',
+                        name: 'statement result extension values can be empty string',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.no_extensions}}'},
+                            EMPTY_STRING_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement result extension values can be null',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.no_extensions}}'},
+                            NULL_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement result extension values can be empty object',
+                        templates: [
+                            {statement: '{{statements.result}}'},
+                            {result: '{{results.no_extensions}}'},
+                            EMPTY_OBJECT_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context extensions can be empty object',
                         templates: [
                             {statement: '{{statements.context}}'},
                             {context: '{{contexts.no_extensions}}'},
@@ -283,7 +348,34 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement activity extensions can be empty',
+                        name: 'statement context extensions can be empty string',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.no_extensions}}'},
+                            EMPTY_STRING_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context extensions can be null',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.no_extensions}}'},
+                            NULL_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement context extensions can be empty object',
+                        templates: [
+                            {statement: '{{statements.context}}'},
+                            {context: '{{contexts.no_extensions}}'},
+                            EMPTY_OBJECT_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement activity extensions can be empty object',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
@@ -293,7 +385,37 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement result extensions can be empty',
+                        name: 'statement substatement activity extension values can be empty string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_extensions}}'},
+                            {definition: EMPTY_STRING_VALUE}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement activity extension values can be null',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_extensions}}'},
+                            {definition: NULL_VALUE}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement activity extension values can be empty object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.activity}}'},
+                            {object: '{{activities.no_extensions}}'},
+                            {definition: EMPTY_OBJECT_VALUE}
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement result extensions can be empty object',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.result}}'},
@@ -303,7 +425,37 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement context extensions can be empty',
+                        name: 'statement substatement result extensions can be empty string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.no_extensions}}'},
+                            EMPTY_STRING_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement result extensions can be null',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.no_extensions}}'},
+                            NULL_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement result extensions can be empty object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.result}}'},
+                            {result: '{{results.no_extensions}}'},
+                            EMPTY_OBJECT_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context extensions can be empty object',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
@@ -311,11 +463,44 @@
                             VALID_EXTENSION_EMPTY
                         ],
                         expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context extensions can be empty string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.no_extensions}}'},
+                            EMPTY_STRING_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context extensions can be null',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.no_extensions}}'},
+                            NULL_VALUE
+                        ],
+                        expect: [200]
+                    },
+                    {
+                        name: 'statement substatement context extensions can be empty object',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.context}}'},
+                            {context: '{{contexts.no_extensions}}'},
+                            EMPTY_OBJECT_VALUE
+                        ],
+                        expect: [200]
                     }
                 ]
             },
             {
-                name: 'An Extension "key" is an IRI (Format, 5.3.a)',
+            /**  XAPI-00118, Data 4.1 Extensions
+             * An Extension "key" is an IRI. The LRS rejects with 400 a statement which has an extension key which is not a valid IRI, if an extension object is present.
+             */
+                name: 'An Extension "key" is an IRI (Format, Data 4.1.s3.b1, XAPI-00118)',
                 config: [
                     {
                         name: 'statement activity extensions key is not an IRI',
