@@ -126,7 +126,7 @@ function start(options)
 			var outDir = libpath.join(__dirname, '../logs');
 
 
-            console.log(require("util").inspect(JSON.parse(JSON.stringify(cleanLog,function(k,v){if(k=="log" && v.constructor == String) return undefined; return v})),{depth:10}));
+            console.log(require("util").inspect(JSON.parse(JSON.stringify(cleanLog,function(k,v){if(k=="log" && v && v.constructor == String) return undefined; return v})),{depth:10}));
 			
             fs.mkdir(outDir, 0o775, function(){
 				var outPath = libpath.join(outDir, testRunner.uuid+'.log');

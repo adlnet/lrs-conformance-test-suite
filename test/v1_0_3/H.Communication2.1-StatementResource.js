@@ -2260,13 +2260,13 @@ StatementResult Object.
 /**  XAPI-00161, Communication 2.1.3 GET Statements
  * An LRS's Statement API not return attachment data and only return application/json if the "attachment" parameter set to "false"
  */
-    describe('An LRSs Statement API not return attachment data and only return application/json if the "attachment" parameter set to "false"', function () {        
+    describe('An LRSs Statement API not return attachment data and only return application/json if the "attachment" parameter set to "false" (Communication 2.1.3.s1.b1, XAPI-00161)', function () {        
         var statementId = null;
         var stmtTime = null;
         before("store statement",function(done){
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
-            stmtTime = Date.now();
+            
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
@@ -2284,28 +2284,9 @@ StatementResult Object.
                         done();
                     }
                 });
-        })          
-        it('should NOT return the attachment if "attachments" is false', function (done) {
-            
-            var query = '?statementId=' + statementId + "&attachments=false";
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + query)
-            .wait(helper.genDelay(stmtTime, '?statementId=' + statementId, statementId))
-            .headers(helper.addAllHeaders())
-            .expect(200)
-            .end((err, res) => {
-                if (err) {
-                    done(err);
-                } else {
-
-            
-                    expect(res.headers["content-type"]).to.equal('application/json');
-                    done();
-                }
-            });
-        });
+        })      
         it('should NOT return the attachment if "attachments" is missing', function (done) {
-            
+            console.log('should NOT return the attachment if "attachments" is missing');
             var query = '?statementId=' + statementId;
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
@@ -2320,6 +2301,27 @@ StatementResult Object.
                     
                     expect(res.headers["content-type"]).to.equal('application/json');
                     done();
+                }
+            });
+        });    
+        it('should NOT return the attachment if "attachments" is false', function (done) {
+            
+            var query = '?statementId=' + statementId + "&attachments=false";
+         
+
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + query)
+            .wait(helper.genDelay(stmtTime, '?statementId=' + statementId, statementId))
+            .headers(helper.addAllHeaders())
+            .expect(200)
+            .end(function(err, res){
+                if (err) {
+                    done(err);
+                } else {
+
+             done();
+                    expect(res.headers["content-type"]).to.equal('application/json');
+                   
                 }
             });
         });
