@@ -410,7 +410,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
                         
             });
         it("Rejects a JSON update document when the original documents content-type is 'application/json' but the original document is not valid json", function (done) {
-            var parameters = helper.getEndpointActivitiesState();
+            var parameters = helper.buildState();
             parameters.registration = helper.generateUUID();
             var attachment = JSON.stringify(helper.buildDocument()) +"{";
             var header = {'content-type': 'application/json'};
@@ -436,7 +436,39 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         });
     });
 
-/**  XAPI-00229, Communication 2.3 State Resource
+/**  XAPI-00235, Communication 2.3 State Resource
+ * An LRS must reject with 400 Bad Request a POST request to the State API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
+ */
+it("An LRS must reject with 400 Bad Request a POST request to the State API which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json' (Communication 2.3, XAPI-00235)", function (done) {
+            var parameters = {
+                activityId: 'http://www.example.com/activityId/hashset',
+                stateId: helper.generateUUID()
+            }
+
+            var agent = encodeURIComponent( JSON.stringify({
+                    "objectType": "Agent",
+                    "account": {
+                        "homePage": "http://www.example.com/agentId/1",
+                        "name": "Rick James"
+                    }
+                })
+                ).replace('%3A','%22'); //break the encoding here.
+
+            parameters.registration = helper.generateUUID();
+            var attachment = JSON.stringify(helper.buildDocument());
+            var header = {'content-type': 'application/json'};
+                
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) +"&agent=" + agent) 
+                .headers(helper.addAllHeaders(header))
+                .body(attachment)
+                .expect(400,function(err,res)
+                {
+                   done(err);
+                });              
+        });
+
+/**  XAPI-00227, Communication 2.3 State Resource
  * An LRS's State API can process a POST request with "registration" as a parameter
  */
     it('An LRS\'s State Resource can process a POST request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
