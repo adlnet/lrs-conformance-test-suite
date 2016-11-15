@@ -17,6 +17,8 @@ describe('Stored Property Requirements (Data 2.4.8)', () => {
 
 /**  Matchup with Conformance Requirements Document
  * XAPI-00097 - below
+
+ * Note XAPI-00023 - below
  */
 
 /**  XAPI-00097, Data 2.4.8 Stored

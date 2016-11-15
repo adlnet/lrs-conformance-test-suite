@@ -22,6 +22,8 @@ describe('Attachments Property Requirements (Data 2.4.11)', () => {
  * XAPI-00105 - in attachments.js
  * XAPI-00106 - in attachments.js
  * XAPI-00107 - in attachments.js
+
+ * Note XAPI-00025 - in attachments.js
  */
 
     templatingSelection.createTemplate('attachments.js');
