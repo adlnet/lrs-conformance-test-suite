@@ -1318,6 +1318,26 @@ StatementResult Object.
         });
     });
 
+/**  XAPI-00165, Communication 2.1.3 GET Statements
+ * An LRS's Statement API, upon receiving a GET request, 
+MUST have a "Content-Type" header
+ */
+    describe('An LRSs Statement API, upon receiving a GET request, MUST have a "Content-Type" header(**Implicit**, Communication 2.1.3.s1.table1.row14, XAPI-00165)', function () {
+        it('should contain the content-type header', function (done) {
+            var query = helper.getUrlEncoding({ascending: true});
+            request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addAllHeaders({}))
+                .expect(200, function(err,res)
+                    {
+                        expect(res.headers).to.have.property("content-type");
+                        done();
+
+                    });
+        });
+    });
+
+
 /**  XAPI-00166, Communication 2.1.3 GET Statements
  * An LRS's Statement API can process a GET request with "ascending" as a parameter The Statement API MUST return 200 OK, StatementResult Object with results in ascending order of stored time if the ascending parameter is set to true.
  */
