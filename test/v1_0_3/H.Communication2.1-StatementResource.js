@@ -1144,6 +1144,7 @@ StatementResult Object.
 
         it('should process using GET with "related_agents"', function (done) {
             this.timeout(0);
+
             var query = helper.getUrlEncoding({
                 agent: statement.context.instructor,
                 related_agents: true
@@ -1195,6 +1196,96 @@ StatementResult Object.
         });
     });
 
+/**  XAPI-00172, Communication 2.1.3 GET Statements
+ * If the "Accept-Language" header is present as part of the GET request to the Statement API and the "format" parameter is set to "canonical", the LRS MUST apply this data to choose the matching language in the response.
+ */
+    describe('If the "Accept-Language" header is present as part of the GET request to the Statement API and the "format" parameter is set to "canonical", the LRS MUST apply this data to choose the matching language in the response. (Communication 2.1.3.s1.table1.row11, XAPI-00172)',function()
+    {
+        var statement;
+        var statementID;
+        var stmtTime;
+        before('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:pri@adlnet.gov"
+                }}
+            ];
+            var data = helper.createFromTemplate(templates);
+            statement = data.statement;
+            statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
+            
+
+            
+            stmtTime = Date.now();
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(statement)
+            .expect(200, function(err,res)
+                {
+                    statementID = res.body[0];
+                    done(err);
+                });
+        });
+
+        it('should apply this data to choose the matching language in the response', function (done) {
+            this.timeout(0);
+            var query = helper.getUrlEncoding({
+                statementId:statementID,
+                format: "canonical"
+            });
+            
+            ;
+             request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(null, null, statementID))
+            .headers(helper.addAllHeaders({"Accept-Language":"en-GB"}))
+            .expect(200,  function(err,res)
+                {
+                    if(err) console.log(err);
+                    
+                    var statement = JSON.parse(res.body);
+                    console.log(require("util").inspect(statement,{depth:7}));
+                    expect(statement.verb.display).not.to.have.property("en-US");
+                    expect(statement.context.contextActivities.category[0].definition.description).not.to.have.property("en-US");
+                    expect(statement.context.contextActivities.category[0].definition.name).not.to.have.property("en-US");
+                    done(err);
+                });
+        });
+
+        it('should NOT apply this data to choose the matching language in the response when format is not set ', function (done) {
+            this.timeout(0);
+            var query = helper.getUrlEncoding({
+                statementId:statementID,
+            });
+            
+            ;
+             request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(null, null, statementID))
+            .headers(helper.addAllHeaders({"Accept-Language":"en-GB"}))
+            .expect(200,  function(err,res)
+                {
+                    if(err) console.log(err);
+                    
+                    var statement = JSON.parse(res.body);
+                    console.log(require("util").inspect(statement,{depth:7}));
+                    expect(statement.verb.display).to.have.property("en-US");
+                    expect(statement.context.contextActivities.category[0].definition.description).to.have.property("en-US");
+                    expect(statement.context.contextActivities.category[0].definition.name).to.have.property("en-US");
+
+                    expect(statement.verb.display).to.have.property("en-GB");
+                    expect(statement.context.contextActivities.category[0].definition.description).to.have.property("en-GB");
+                    expect(statement.context.contextActivities.category[0].definition.name).to.have.property("en-GB");
+                    done(err);
+                });
+        });
+
+    })
 /**  XAPI-00168, Communication 2.1.3 GET Statements
  * An LRS's Statement API can process a GET request with "format" as a parameter. The Statement API MUST return 200 OK, StatementResult Object with results in the requested format or in “exact” if the “format” parameter is absent.
  */
@@ -1229,6 +1320,26 @@ StatementResult Object.
                 .expect(200, done);
         });
     });
+
+/**  XAPI-00165, Communication 2.1.3 GET Statements
+ * An LRS's Statement API, upon receiving a GET request, 
+MUST have a "Content-Type" header
+ */
+    describe('An LRSs Statement API, upon receiving a GET request, MUST have a "Content-Type" header(**Implicit**, Communication 2.1.3.s1.table1.row14, XAPI-00165)', function () {
+        it('should contain the content-type header', function (done) {
+            var query = helper.getUrlEncoding({ascending: true});
+            request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .headers(helper.addAllHeaders({}))
+                .expect(200, function(err,res)
+                    {
+                        expect(res.headers).to.have.property("content-type");
+                        done();
+
+                    });
+        });
+    });
+
 
 /**  XAPI-00166, Communication 2.1.3 GET Statements
  * An LRS's Statement API can process a GET request with "ascending" as a parameter The Statement API MUST return 200 OK, StatementResult Object with results in ascending order of stored time if the ascending parameter is set to true.
@@ -2260,6 +2371,110 @@ StatementResult Object.
         });
     });
 
+/**  XAPI-00161, Communication 2.1.3 GET Statements
+ * An LRS's Statement API not return attachment data and only return application/json if the "attachment" parameter set to "false"
+ */
+    describe('An LRSs Statement API not return attachment data and only return application/json if the "attachment" parameter set to "false" (Communication 2.1.3.s1.b1, XAPI-00161)', function () {        
+        var statementId = null;
+        var stmtTime = null;
+        before("store statement",function(done){
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
+            
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders(header))
+                .body(attachment)
+                .expect(200,function(err,res)
+                {
+                    if(err)
+                        done(err)
+                    else
+                    {
+                        var body = JSON.parse(res.body);
+
+                        statementId = body[0];
+                        console.log("Statement ID is", statementId)
+                        done();
+                    }
+                });
+        })      
+        it('should NOT return the attachment if "attachments" is missing', function (done) {
+            console.log('should NOT return the attachment if "attachments" is missing');
+            var query = '?statementId=' + statementId;
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + query)
+            .wait(helper.genDelay(stmtTime, '?statementId=' + statementId, statementId))
+            .headers(helper.addAllHeaders())
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+
+                    
+                    expect(res.headers["content-type"]).to.equal('application/json');
+                    done();
+                }
+            });
+        });    
+        it('should NOT return the attachment if "attachments" is false', function (done) {
+            
+            var query = '?statementId=' + statementId + "&attachments=false";
+         
+
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + query)
+            .wait(helper.genDelay(stmtTime, '?statementId=' + statementId, statementId))
+            .headers(helper.addAllHeaders())
+            .expect(200)
+            .end(function(err, res){
+                if (err) {
+                    done(err);
+                } else {
+
+             done();
+                    expect(res.headers["content-type"]).to.equal('application/json');
+                   
+                }
+            });
+        });
+        it('should return the attachment when "attachment" is true', function (done) {
+            
+            var query = '?statementId=' + statementId + "&attachments=true";
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + query)
+            .wait(helper.genDelay(stmtTime, '?statementId=' + statementId, statementId))
+            .headers(helper.addAllHeaders())
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+
+                    
+                    //how delicate is this parsing? There is a newline as body[1], the statement as body[0]. Should we search all
+                    //parts of the body? 
+                    var ContentType = res.headers["content-type"];
+                    var type = ContentType.split(";")[0];
+                    expect(type).to.equal("multipart/mixed");
+                    var boundary = ContentType.split(";")[1].replace(" boundary=","");
+
+                    var body = res.body.split("--"+boundary);
+                    var idx = -1;
+                    for(var i in body)
+                    {
+                        idx = Math.max(body[i].indexOf("here is a simple attachment"),idx);
+                    }
+                    expect(idx).to.not.eql(-1);
+                    done();
+                }
+            });
+
+
+        });
+
+    });
 /**  XAPI-00163, Communication 2.1.3 GET Statements
  * An LRS's Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request
  * very similar to XAPI-00162
