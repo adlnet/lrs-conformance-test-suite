@@ -1141,6 +1141,7 @@ StatementResult Object.
 
         it('should process using GET with "related_agents"', function (done) {
             this.timeout(0);
+
             var query = helper.getUrlEncoding({
                 agent: statement.context.instructor,
                 related_agents: true
@@ -1192,6 +1193,96 @@ StatementResult Object.
         });
     });
 
+/**  XAPI-00172, Communication 2.1.3 GET Statements
+ * If the "Accept-Language" header is present as part of the GET request to the Statement API and the "format" parameter is set to "canonical", the LRS MUST apply this data to choose the matching language in the response.
+ */
+    describe('If the "Accept-Language" header is present as part of the GET request to the Statement API and the "format" parameter is set to "canonical", the LRS MUST apply this data to choose the matching language in the response. (Communication 2.1.3.s1.table1.row11, XAPI-00172)',function()
+    {
+        var statement;
+        var statementID;
+        var stmtTime;
+        before('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:pri@adlnet.gov"
+                }}
+            ];
+            var data = helper.createFromTemplate(templates);
+            statement = data.statement;
+            statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
+            
+
+            
+            stmtTime = Date.now();
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(statement)
+            .expect(200, function(err,res)
+                {
+                    statementID = res.body[0];
+                    done(err);
+                });
+        });
+
+        it('should apply this data to choose the matching language in the response', function (done) {
+            this.timeout(0);
+            var query = helper.getUrlEncoding({
+                statementId:statementID,
+                format: "canonical"
+            });
+            
+            ;
+             request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(null, null, statementID))
+            .headers(helper.addAllHeaders({"Accept-Language":"en-GB"}))
+            .expect(200,  function(err,res)
+                {
+                    if(err) console.log(err);
+                    
+                    var statement = JSON.parse(res.body);
+                    console.log(require("util").inspect(statement,{depth:7}));
+                    expect(statement.verb.display).not.to.have.property("en-US");
+                    expect(statement.context.contextActivities.category[0].definition.description).not.to.have.property("en-US");
+                    expect(statement.context.contextActivities.category[0].definition.name).not.to.have.property("en-US");
+                    done(err);
+                });
+        });
+
+        it('should NOT apply this data to choose the matching language in the response when format is not set ', function (done) {
+            this.timeout(0);
+            var query = helper.getUrlEncoding({
+                statementId:statementID,
+            });
+            
+            ;
+             request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(null, null, statementID))
+            .headers(helper.addAllHeaders({"Accept-Language":"en-GB"}))
+            .expect(200,  function(err,res)
+                {
+                    if(err) console.log(err);
+                    
+                    var statement = JSON.parse(res.body);
+                    console.log(require("util").inspect(statement,{depth:7}));
+                    expect(statement.verb.display).to.have.property("en-US");
+                    expect(statement.context.contextActivities.category[0].definition.description).to.have.property("en-US");
+                    expect(statement.context.contextActivities.category[0].definition.name).to.have.property("en-US");
+
+                    expect(statement.verb.display).to.have.property("en-GB");
+                    expect(statement.context.contextActivities.category[0].definition.description).to.have.property("en-GB");
+                    expect(statement.context.contextActivities.category[0].definition.name).to.have.property("en-GB");
+                    done(err);
+                });
+        });
+
+    })
 /**  XAPI-00168, Communication 2.1.3 GET Statements
  * An LRS's Statement API can process a GET request with "format" as a parameter. The Statement API MUST return 200 OK, StatementResult Object with results in the requested format or in “exact” if the “format” parameter is absent.
  */
