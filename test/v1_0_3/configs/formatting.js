@@ -125,30 +125,6 @@
                 ]
             },
             {
-            /**  XAPI-00123, Data 4.5 ISO8601 Timestamps
-             * A Timestamp must conform to ISO 8601 Date format. An LRS rejects a statement with a Timestamp which doesn’t validate to ISO 8601 Extended or ISO 8601 Basic.
-             */
-                name: 'A TimeStamp is defined as a Date/Time formatted according to ISO 8601 (Format, Data 4.5.s1.b1, ISO8601, XAPI-00123)',
-                config: [
-                    {
-                        name: 'statement "template" invalid string',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {timestamp: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "template" invalid date',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {timestamp: INVALID_DATE}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00001, 2.2 Formatting Requirements
              * An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to "null", an empty object, or has no value, except in an "extensions" property
              */
