@@ -15,7 +15,13 @@
         data.id = helper.generateUUID();
         var headers = helper.addAllHeaders(
         {});
-        headers["Authorization"] = 'Basic ' + new Buffer('RobCIsNot:AUserOnThisLRS').toString('base64');
+
+        //warning: this ".\\" is super important. Node caches the modules, and the superrequest module has been modified to work correctly
+        //with oauth already. We get a new verions by appending some other characters to defeat the cache. 
+        if(global.OAUTH)
+            request = require('.\\super-request');
+        else
+            headers["Authorization"] = 'Basic ' + new Buffer('RobCIsNot:AUserOnThisLRS').toString('base64');
         request(helper.getEndpointAndAuth())
             .put(helper.getEndpointStatements() + '?statementId=' + data.id)
             .headers(headers)
