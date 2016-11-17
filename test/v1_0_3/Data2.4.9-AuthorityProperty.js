@@ -19,6 +19,8 @@ describe('Authority Property Requirements (Data 2.4.9)', () => {
  * XAPI-00098 - in authorities.js
  * XAPI-00099 - below
  * XAPI-00100 - below
+
+ * Note - XAPI-00024 - in authorities.js
  */
     templatingSelection.createTemplate('authorities.js');
 
