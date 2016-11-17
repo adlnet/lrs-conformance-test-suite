@@ -40,7 +40,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
     });
 
     //see above
-    it('An LRS\'s About Resource upon processing a successful GET request returns a version property and code 200 OK (multiplicity, Communication 2.8.s4)', function () {
+    it('An LRS\'s About Resource upon processing a successful GET request returns a version property and code 200 OK (multiplicity, Communication 2.8.s4, XAPI-00319)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;

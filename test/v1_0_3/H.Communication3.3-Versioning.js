@@ -166,6 +166,9 @@ describe('Versioning Requirements (Communication 3.3)', () => {
         });
     });
 
+/**  XAPI-00332, Comminication 3.3 Versioning
+ * Statements returned by an LRS MUST retain the version property they are accepted with.
+ */
     it ('Statements returned by an LRS MUST retain the header version they are accepted with (Format, Communication 3.3.s3.b1, Communication 3.3.s3.b2, XAPI-00332)', function (done){
         this.timeout(0);
         var stmtTime = Date.now();

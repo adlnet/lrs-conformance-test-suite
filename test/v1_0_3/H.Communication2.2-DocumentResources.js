@@ -16,7 +16,7 @@
 describe('Document Resource Requirements (Communication 2.2)', () => {
 
 /**  Macthup with Conformance Requirements Document
- * XAPI-00182 - not found yet - An LRS makes no modifications to stored data for any rejected request.
+ * XAPI-00182 - in Communication2.1-StatementResources.js
  * XAPI-00183 - below
  * XAPI-00184 - below
  * XAPI-00185 - not found yet - A Document Merge re-serializes all Objects to finalize a single document
