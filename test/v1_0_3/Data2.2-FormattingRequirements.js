@@ -111,6 +111,26 @@ describe('Formatting Requirements (Data 2.2)', () => {
         .json(malformed)
         .expect(400, done)
     });
+
+    it('An LRS rejects with error code 400 Bad Request a Statement containing IRL or IRI values without a scheme. (Data2.2-Formatting XAPI-00011)', function(done)
+    {
+        var templates = [
+        {
+            statement: '{{statements.default}}'
+        }];
+        var data = helper.createFromTemplate(templates);
+        data = data.statement;
+        data.id = helper.generateUUID();
+        data.verb.id = data.verb.id.replace("http://","")   // remove the scheme portion of the verb IRI 
+        var headers = helper.addAllHeaders(
+        {});
+      
+        request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .headers(headers)
+            .json(data)
+            .expect(400, done);
+    });
 });
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('./../templatingSelection.js')));
