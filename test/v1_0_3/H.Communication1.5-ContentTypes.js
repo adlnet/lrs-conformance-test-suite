@@ -31,25 +31,10 @@ describe('Content Type Requirements (Communication 1.5)', () => {
  * XAPI-00134 - below
  * XAPI-00135 - below
  * there is no XAPI-00136
- * XAPI-00137 - below
- * XAPI-00138 - below
+ * XAPI-00137 - not found yet - An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater
+ * XAPI-00138 - removed
  */
 
-
- /**  XAPI-00138, Communication 1.5.2 Multipart/Mixed
-  * An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "Content-Type" with value "multipart/mixed"
-  */
-     describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "Content-Type" with value "multipart/mixed" (RFC 2046, Data 2.4.11, XAPI-00138)', function () {
-         it('should fail when attachment is raw data and first part content type is not "application/json"', function (done) {
-             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
-             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_first_part_content_type.part', {encoding: 'binary'});
-
-             request(helper.getEndpointAndAuth())
-                 .post(helper.getEndpointStatements())
-                 .headers(helper.addAllHeaders(header))
-                 .body(attachment).expect(400, done);
-         });
-     });
 
 /**  XAPI-00127, Communication 1.5.1 Application/JSON
  * An LRS rejects with error code 400 Bad Request, a PUT or POST Request which does not have a "Content-Type" header with value "application/json" or "multipart/mixed"
@@ -260,6 +245,7 @@ describe('Content Type Requirements (Communication 1.5)', () => {
 /**  XAPI-00137, Communication 1.5.2 Multipart/Mixed
  * An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "boundary"
  */
+ /* removed post DISC Email
     describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater (Communication 1.5.2.s2.b2, Data 2.4.11, RFC 2046, XAPI-00137)', function () {
         it('should fail if MIME version less than 1.0', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
@@ -271,7 +257,7 @@ describe('Content Type Requirements (Communication 1.5)', () => {
             .body(attachment).expect(400, done);
         });
     });
-
+*/
     it('An LRS rejects with error code 400 Bad Request, a GET Request which uses Attachments, has a "Content-Type" header with value "application/json", and has the "attachments" filter attribute set to "true" (Data 2.4.11)', function (done) {
         this.timeout(0);
         var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
