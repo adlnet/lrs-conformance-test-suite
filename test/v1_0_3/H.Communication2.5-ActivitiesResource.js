@@ -20,7 +20,7 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
  * XAPI-00251 - below
  * XAPI-00252 - below
  * XAPI-00253 - below
- * XAPI-00254 - not found yet - The Activity Object must contain all available information about an activity from any statements who target the same “activityId”. For example, LRS accepts two statements each with a different language description of an activity using the exact same “activityId”. The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that “activityId”.
+ * XAPI-00254 - below
  */
 
 /**  XAPI-00252, Communication 2.5 Activities Resource

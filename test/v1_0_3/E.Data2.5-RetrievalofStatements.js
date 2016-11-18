@@ -21,7 +21,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
  * XAPI-00110 - below
  * XAPI-00111 - below
  * XAPI-00112 - duplicate of XAPI-00149 Communication 2.1.3 Statements GET
- * XAPI-00113 - not found yet - An LRS's Statement API, upon processing a successful GET request, will return a single "statements" property and a single "more" property. A single "more" property must be present if there are additional results available.
+ * XAPI-00113 - below
  * XAPI-00114 - below
  */
 
