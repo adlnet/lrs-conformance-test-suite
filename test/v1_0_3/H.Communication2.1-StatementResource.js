@@ -436,7 +436,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
  * XAPI-00158 - below
  * XAPI-00159 - below
  * XAPI-00160 - below
- * XAPI-00161 - not found yet - An LRS's Statement API not return attachment data and only return application/json if the "attachment" parameter set to "false".  Something similar is in XAPI-00154 as a sub-test - will that suffice?
+ * XAPI-00161 - below
  * XAPI-00162 - below
  * XAPI-00163 - below
  * XAPI-00164 - not found yet - The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request

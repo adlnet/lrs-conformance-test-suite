@@ -261,15 +261,15 @@ describe('Agents Resource Requirements (Communication 2.4)', () => {
             });
     });
 
+/**  XAPI-00249, Communication 2.4 Agents Resource
+ * An LRSs Agents API rejects a GET request with "agent" as a parameter if it is not a valid (in structure) Agent with error code 400 Bad Request (XAPI-00249)
+ */
     it('An LRSs Agents API rejects a GET request with "agent" as a parameter if it is not a valid (in structure) Agent with error code 400 Bad Request (XAPI-00249)',function()
     {
         var parameter = helper.buildAgent();
         parameter.notGoodSchema = "test";
         return helper.sendRequest('get', helper.getEndpointAgents(), parameter, undefined, 400);
     });
-
-
-
 
 
 });
