@@ -152,8 +152,8 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
             }); // post
         });
 
-        it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains “*”', function () {
-            var parameters = helper.buildActivityProfile(),
+        it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains an etag', function () {
+            var parameters = goodParameters,
                 document = helper.buildDocument();
 
             var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
