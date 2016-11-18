@@ -382,6 +382,31 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             var document = undefined;
             var parameters = helper.buildActivityProfile();
             return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+
+
+            var parameters = helper.buildActivityProfile();
+            var attachment = JSON.stringify(helper.buildDocument()) +"{";
+            var header = {'content-type': 'application/json'};
+                
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointActivitiesProfile()+ '?' + helper.getUrlEncoding(parameters) )
+                .headers(helper.addAllHeaders(header))
+                .body(attachment)
+                .expect(204,function(err,res)
+                {
+                    attachment = {"update":"me"};
+                    attachment = JSON.stringify(attachment);
+                    var header2 = {'content-type': 'application/json'};
+                    request(helper.getEndpointAndAuth())
+                        .post(helper.getEndpointActivitiesProfile()+ '?' + helper.getUrlEncoding(parameters) )
+                        .headers(helper.addAllHeaders(header2))
+                        .body(attachment)
+                        .expect(400,function(err,res)
+                        {
+                            done(err);
+                        });        
+                });              
+                
         });
 
 /**  XAPI-00314, Communication 2.7 Activity Profile Resource
