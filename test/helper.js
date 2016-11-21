@@ -213,7 +213,7 @@ if (!process.env.EB_NODE_COMMAND) {
                         } else {
                             try {
                             //we parse the result into either a single statement or a statements object
-                                result = parse(res.body);
+                                result = JSON.parse(res.body);
                             } catch (e) {
                                 result = {};
                             }
