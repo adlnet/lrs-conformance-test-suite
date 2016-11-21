@@ -1369,6 +1369,18 @@ StatementResult Object.
             canonicalActor.objectType = agent.objectType;
             canonicalActor.name = 'xAPI mbox';
 
+            // Build a better verb
+            var mainVerb = {};
+            mainVerb.id = verb1.id;
+            mainVerb.display = {};
+            mainVerb.display["en-GB"] = verb1.display["en-GB"];
+
+            // Build a better substatement verb
+            var subVerb = {};
+            subVerb.id = verb2.id;
+            subVerb.display = {};
+            subVerb.display["en-GB"] = verb2.display["en-GB"];
+
             // Build a better activity
             var canonicalSubActivity = {};
             // console.log('try these', activity);
@@ -1378,10 +1390,19 @@ StatementResult Object.
             canonicalSubActivity.definition.name = {"en-GB":"attended"};
             canonicalSubActivity.definition.description = activity.definition.description;
             canonicalSubActivity.definition.type = activity.definition.type;
-            canonicalSubActivity.moreInfo = activity.moreInfo;
-            canonicalSubActivity.interactionType = activity.interactionType;
-            canonicalSubActivity.correctResponsesPattern = activity.correctResponsesPattern;
-            canonicalSubActivity.extensions = activity.extensions;
+            canonicalSubActivity.definition.moreInfo = activity.definition.moreInfo;
+            canonicalSubActivity.definition.interactionType = activity.definition.interactionType;
+            canonicalSubActivity.definition.correctResponsesPattern = activity.definition.correctResponsesPattern;
+            canonicalSubActivity.definition.extensions = activity.definition.extensions;
+
+            // Build a better group
+            var canonicalGroup = {};
+            canonicalGroup.mbox = group.mbox;
+            canonicalGroup.objectType = group.objectType;
+            canonicalGroup.name = 'xAPI mbox';
+
+console.log(group);
+console.log(canonicalGroup);
 
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
@@ -1399,16 +1420,17 @@ StatementResult Object.
                         expect(stmts).to.be.an('array');
                         stmts.forEach(function(stmt) {
                             if (stmt.id === id) {
-                                // console.log('Testing MainActor:', stmt.actor, canonicalActor);
-                                console.log('Testing MainVerb:', stmt.verb, verb1);
-                                console.log('Testing SubVerb:', stmt.object.verb, verb2);
+                                console.log('Testing MainActor:', stmt.actor, agent);
+                                // console.log('Testing MainVerb:', stmt.verb, mainVerb);
+                                // console.log('Testing SubVerb:', stmt.object.verb, subVerb);
+                                console.log('Testing Group:', stmt.object.actor, canonicalGroup);
                                 // console.log('Testing Object:', stmt.object.object, canonicalSubActivity);
                                 expect(stmt.actor).to.eql(canonicalActor);
+                                expect(stmt.verb).to.eql(mainVerb);
+                                expect(stmt.object.verb).to.eql(subVerb);
                                 expect(stmt.object.object).to.eql(canonicalSubActivity);
                                 console.log('HHHHHHHHHHHHHHHHHHH');
-                                expect(stmt.object.actor).to.eql(group);
-                                expect(stmt.verb).to.eql(verb1);
-                                expect(stmt.object.verb).to.eql(verb2);
+                                expect(stmt.object.actor).to.eql(canonicalGroup);
                             }
                         });
                         done();
