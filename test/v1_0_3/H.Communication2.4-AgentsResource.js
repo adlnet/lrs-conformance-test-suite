@@ -26,10 +26,10 @@ describe('Agents Resource Requirements (Communication 2.4)', () => {
  * XAPI-00243 - below
  * XAPI-00244 - below
  * XAPI-00245 - below
- * XAPI-00246 - not found yet - The Agents Resource MUST have an endpoint which accepts GET requests and returns a special, Person Object where each attribute has an array value and it is legal to include multiple identifying properties.
- * XAPI-00247 - not found yet - If an LRS does not have any additional information about an Agent to return from the Agents Resource, the LRS MUST still return a Person when queried, but that Person Object will only include the information associated with the requested Agent.
+ * XAPI-00246 - same as 248 - The Agents Resource MUST have an endpoint which accepts GET requests and returns a special, Person Object where each attribute has an array value and it is legal to include multiple identifying properties.
+ * XAPI-00247 - same as 248 - If an LRS does not have any additional information about an Agent to return from the Agents Resource, the LRS MUST still return a Person when queried, but that Person Object will only include the information associated with the requested Agent.
  * XAPI-00248 - below
- * XAPI-00249 - not found yet - An LRS's Agents API rejects a GET request with "agent" as a parameter if it is not a valid (in structure) Agent with error code 400 Bad Request
+ * XAPI-00249 - below
  */
 
 /**  XAPI-00245, Communication 2.4 Agents Resource
