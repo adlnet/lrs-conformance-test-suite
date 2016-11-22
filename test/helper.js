@@ -11,6 +11,22 @@ if (!process.env.EB_NODE_COMMAND) {
 }
 (function (module, fs, extend, uuid, lodash, FormUrlencode, jws, crypto) {
 
+
+    var oauth;
+    if (global.OAUTH) {
+        var OAuth = require('oauth');
+
+        oauth = new OAuth.OAuth(
+            "",
+            "",
+            global.OAUTH.consumer_key,
+            global.OAUTH.consumer_secret,
+            '1.0',
+            null,
+            'HMAC-SHA1'
+        );
+    }
+    
     /** Appears to use absolute path */
     var CONFIG_FOLDER = './test/' + process.env.DIRECTORY + '/configs';
 
