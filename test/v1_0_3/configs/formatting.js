@@ -229,7 +229,7 @@
             /**  XAPI-00006, Data 2.2 Formatting Requirements
              * An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type
              */
-                name: 'An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type (Data 2.2.s4.b2)',
+                name: 'An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type (Data 2.2.s4.b2, XAPI-00006)',
                 config: [
                     {
                         name: 'with strings where numbers are required',
@@ -275,7 +275,7 @@
              * Additional UUID tests in uuids.js xapi-00027 & 28
              * IFI's covered in actors.js xapi-0038
              */
-                name: 'An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format (such as mailto IRI, UUID, or IRI) is required. (Data 2.2.s4.b4)',
+                name: 'An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format (such as mailto IRI, UUID, or IRI) is required. (Data 2.2.s4.b4, XAPI-00007)',
                 config: [
                     {
                         name: 'statement "id" invalid numeric',
@@ -452,7 +452,11 @@
             /**  XAPI-00008, Data 2.2 Formatting Requirements
              * An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification.
              */
-                name: 'An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification. (Data 2.2.s4.b1.b5, XAPI-00008)',
+             /**  XAPI-00010, Data 2.2 Formatting Requirements
+              * An LRS rejects with error code 400 Bad Request a Statement where a key or value is not allowed by this specification.
+              * This meets keys not allowed.  Values not allowed are scattered throughout the suite.
+              */
+                name: 'An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification. (Data 2.2.s4.b1.b5, XAPI-00008, XAPI-00010)',
                 config: [
                     {
                         name: 'should fail when not using "id"',

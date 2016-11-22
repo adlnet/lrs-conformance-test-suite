@@ -1218,8 +1218,6 @@ StatementResult Object.
             statement = data.statement;
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
 
-
-
             stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
@@ -1239,8 +1237,7 @@ StatementResult Object.
                 format: "canonical"
             });
 
-            ;
-             request(helper.getEndpointAndAuth())
+            request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(null, null, statementID))
             .headers(helper.addAllHeaders({"Accept-Language":"en-GB"}))
@@ -1263,8 +1260,7 @@ StatementResult Object.
                 statementId:statementID,
             });
 
-            ;
-             request(helper.getEndpointAndAuth())
+            request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(null, null, statementID))
             .headers(helper.addAllHeaders({"Accept-Language":"en-GB"}))
@@ -1286,6 +1282,7 @@ StatementResult Object.
         });
 
     })
+
 /**  XAPI-00168, Communication 2.1.3 GET Statements
  * An LRS's Statement API can process a GET request with "format" as a parameter. The Statement API MUST return 200 OK, StatementResult Object with results in the requested format or in “exact” if the “format” parameter is absent.
  */
@@ -1298,22 +1295,24 @@ StatementResult Object.
 /**  XAPI-00171, Communication 2.1.3 GET Statements
 * An LRS's Statement API can process a GET request with "format" as a parameter. The Statement API MUST return 200 OK, StatementResult Object with results in the requested format. If “ids”, only include identifiers for Agent, Activity, Verb, Group Objects, and members of Anonymous groups.
 */
-    describe('An LRS\'s Statement Resource can process a GET request with "format" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row12, XAPI-00168, XAPI-00169, XAPI-00170, XAPI-00171)', function () {
-        var agent, activity, group, verb1, verb2, id;
+    describe('An LRS\'s Statement Resource can process a GET request with "format" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row12)', function () {
+        this.timeout(0);
+        var agent, activity, group, verb1, verb2, id, stmtTime;
         before('setting up the statement to test against', function(done) {
             var templates = [
                 {statement: '{{statements.object_substatement}}'},
-                // {statement: '{{statements.object_substatement_default}}'},
                 {object: '{{statements.unicode}}'},
                 {actor: '{{groups.default}}'}
             ];
             var data = helper.createFromTemplate(templates).statement;
             agent = data.actor;
+            agent.mbox = 'mailto:agent'+helper.generateUUID()+'@adlnet.gov';
             verb1 = data.verb;
             group = data.object.actor;
+            group.mbox = 'mailto:group'+helper.generateUUID()+'@adlnet.gov';
             verb2 = data.object.verb;
             activity = data.object.object;
-            console.log('Before', data);
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders({}))
@@ -1329,11 +1328,10 @@ StatementResult Object.
             })
         });
         // XAPI-00168
-        it('should process using GET with "format" absent', function (done) {
-            // var query = helper.getUrlEncoding({format: 'ids'});
+        it('should process using GET with "format" absent (XAPI-00168)', function (done) {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements())
-                // .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?statementId='+id, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1341,13 +1339,10 @@ StatementResult Object.
                         done(err);
                     } else {
                         var result = helper.parse(res.body);
-                        // console.log('Absent', Object.keys(result));
-                        // console.log('Absent', res.body[0]);
                         var stmts = result.statements;
                         expect(stmts).to.be.an('array');
                         stmts.forEach(function(stmt) {
                             if (stmt.id === id) {
-                                // console.log('absent group', stmt.actor);
                                 expect(stmt.actor).to.eql(agent);
                                 expect(stmt.verb).to.eql(verb1);
                                 expect(stmt.object.actor).to.eql(group);
@@ -1360,14 +1355,14 @@ StatementResult Object.
                 });
         });
         // XAPI-00169
-        it('should process using GET with "format" canonical', function (done) {
+        it('should process using GET with "format" canonical (XAPI-00169)', function (done) {
             var query = helper.getUrlEncoding({format: 'canonical'});
 
             // Build a better actor
             var canonicalActor = {};
             canonicalActor.mbox = agent.mbox;
             canonicalActor.objectType = agent.objectType;
-            canonicalActor.name = 'xAPI mbox';
+            canonicalActor.name = agent.name;
 
             // Build a better verb
             var mainVerb = {};
@@ -1383,7 +1378,6 @@ StatementResult Object.
 
             // Build a better activity
             var canonicalSubActivity = {};
-            // console.log('try these', activity);
             canonicalSubActivity.objectType = activity.objectType;
             canonicalSubActivity.id = activity.id;
             canonicalSubActivity.definition = {};
@@ -1399,37 +1393,26 @@ StatementResult Object.
             var canonicalGroup = {};
             canonicalGroup.mbox = group.mbox;
             canonicalGroup.objectType = group.objectType;
-            canonicalGroup.name = 'xAPI mbox';
-
-console.log(group);
-console.log(canonicalGroup);
+            canonicalGroup.name = group.name;
 
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .headers(helper.addAllHeaders({"Accept-Language":"en-GB"}))
-                // .headers(helper.addAllHeaders({}))
+                .wait(helper.genDelay(stmtTime, '?statementId='+id, id))
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
                         done(err);
                     } else {
                         var result = helper.parse(res.body);
-                        // console.log('Canonical', Object.keys(result));
-                        // console.log('Canonical', res.body[0]);
                         var stmts = result.statements;
                         expect(stmts).to.be.an('array');
                         stmts.forEach(function(stmt) {
                             if (stmt.id === id) {
-                                console.log('Testing MainActor:', stmt.actor, agent);
-                                // console.log('Testing MainVerb:', stmt.verb, mainVerb);
-                                // console.log('Testing SubVerb:', stmt.object.verb, subVerb);
-                                console.log('Testing Group:', stmt.object.actor, canonicalGroup);
-                                // console.log('Testing Object:', stmt.object.object, canonicalSubActivity);
                                 expect(stmt.actor).to.eql(canonicalActor);
                                 expect(stmt.verb).to.eql(mainVerb);
                                 expect(stmt.object.verb).to.eql(subVerb);
                                 expect(stmt.object.object).to.eql(canonicalSubActivity);
-                                console.log('HHHHHHHHHHHHHHHHHHH');
                                 expect(stmt.object.actor).to.eql(canonicalGroup);
                             }
                         });
@@ -1438,10 +1421,11 @@ console.log(canonicalGroup);
                 });
         });
         // XAPI-00170
-        it('should process using GET with "format" exact', function (done) {
+        it('should process using GET with "format" exact (XAPI-00170)', function (done) {
             var query = helper.getUrlEncoding({format: 'exact'});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?statementId='+id, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1449,8 +1433,6 @@ console.log(canonicalGroup);
                         done(err);
                     } else {
                         var result = helper.parse(res.body);
-                        // console.log('Exact', Object.keys(result));
-                        // console.log('Exact', res.body[0]);
                         var stmts = result.statements;
                         expect(stmts).to.be.an('array');
                         stmts.forEach(function(stmt) {
@@ -1459,8 +1441,6 @@ console.log(canonicalGroup);
                                 expect(stmt.verb).to.eql(verb1);
                                 expect(stmt.object.actor).to.eql(group);
                                 expect(stmt.object.verb).to.eql(verb2);
-                                // console.log('HI!!!!!!');
-                                // console.log(stmt.object.object, activity);
                                 expect(stmt.object.object).to.eql(activity);
                             }
                         });
@@ -1469,11 +1449,11 @@ console.log(canonicalGroup);
                 });
         });
         // XAPI-00171
-        it('should process using GET with "format" ids', function (done) {
+        it('should process using GET with "format" ids (XAPI-00171)', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
-            // console.log('Ids', agent, verb1, activity, group, id);
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?statementId='+id, id))
                 .headers(helper.addAllHeaders({}))
                 .expect(200)
                 .end(function (err, res) {
@@ -1481,14 +1461,12 @@ console.log(canonicalGroup);
                         done(err);
                     } else {
                         var result = helper.parse(res.body);
-                        // console.log('Ids', Object.keys(result));
-                        // console.log('Ids', res.body[0]);
                         var stmts = result.statements;
                         expect(stmts).to.be.an('array');
                         stmts.forEach(function(stmt) {
                             if (stmt.id === id) {
                                 expect(Object.keys(stmt.actor).length).to.eql(1);
-                                expect(Object.keys(stmt.object.actor).length).to.eql(1);
+                                expect(Object.keys(stmt.object.actor).length).to.eql(2);
                                 expect(Object.keys(stmt.object.object).length).to.eql(1);
                                 /*  Removed since spec 1.0.3 is SHOULD*
                                 expect(Object.keys(stmt.verb).length).to.eql(1);
@@ -1497,6 +1475,7 @@ console.log(canonicalGroup);
                                 expect(stmt.actor.mbox).to.eql(agent.mbox);
                                 expect(stmt.verb.id).to.eql(verb1.id);
                                 expect(stmt.object.actor.mbox).to.eql(group.mbox);
+                                expect(stmt.object.actor.objectType).to.eql(group.objectType);
                                 expect(stmt.object.object.id).to.eql(activity.id);
                                 expect(stmt.object.verb.id).to.eql(verb2.id);
                             }
@@ -2593,13 +2572,13 @@ MUST have a "Content-Type" header
                         var body = JSON.parse(res.body);
 
                         statementId = body[0];
-                        console.log("Statement ID is", statementId)
+                        // console.log("Statement ID is", statementId)
                         done();
                     }
                 });
         })
         it('should NOT return the attachment if "attachments" is missing', function (done) {
-            console.log('should NOT return the attachment if "attachments" is missing');
+            // console.log('should NOT return the attachment if "attachments" is missing');
             var query = '?statementId=' + statementId;
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)

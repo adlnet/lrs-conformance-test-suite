@@ -363,13 +363,13 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             document = helper.buildDocument();
             document = JSON.stringify(document);
             document = "/ asdf / undefined";
-            console.log(parameters);
+            // console.log(parameters);
             parameters.registration = helper.generateUUID();
 
 
             var header = {'content-type': 'application/json'};
             var attachment = document;
-                
+
                 request(helper.getEndpointAndAuth())
                     .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) )
                     .headers(helper.addAllHeaders(header))
@@ -377,7 +377,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
                     .expect(400,function(err,res)
                     {
                         done(err);
-                    });        
+                    });
             });
 
 
@@ -387,14 +387,14 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             parameters.registration = helper.generateUUID();
 
             var header = {'content-type': 'application/octet-stream'};
-                
+
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) )
                 .headers(helper.addAllHeaders(header))
                 .body(attachment)
                 .expect(204,function(err,res)
                 {
-                    
+
                     attachment = helper.buildDocument();
                     attachment = JSON.stringify(attachment);
                     var header2 = {'content-type': 'application/json'};
@@ -405,16 +405,16 @@ describe('State Resource Requirements (Communication 2.3)', () => {
                         .expect(400,function(err,res)
                         {
                             done(err);
-                        });        
+                        });
                 });
-                        
+
             });
         it("Rejects a JSON update document when the original documents content-type is 'application/json' but the original document is not valid json", function (done) {
             var parameters = helper.buildState();
             parameters.registration = helper.generateUUID();
             var attachment = JSON.stringify(helper.buildDocument()) +"{";
             var header = {'content-type': 'application/json'};
-                
+
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) )
                 .headers(helper.addAllHeaders(header))
@@ -431,8 +431,8 @@ describe('State Resource Requirements (Communication 2.3)', () => {
                         .expect(400,function(err,res)
                         {
                             done(err);
-                        });        
-                });              
+                        });
+                });
         });
     });
 
@@ -457,15 +457,15 @@ it("An LRS must reject with 400 Bad Request a POST request to the State API whic
             parameters.registration = helper.generateUUID();
             var attachment = JSON.stringify(helper.buildDocument());
             var header = {'content-type': 'application/json'};
-                
+
             request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) +"&agent=" + agent) 
+                .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) +"&agent=" + agent)
                 .headers(helper.addAllHeaders(header))
                 .body(attachment)
                 .expect(400,function(err,res)
                 {
                    done(err);
-                });              
+                });
         });
 
 /**  XAPI-00227, Communication 2.3 State Resource
@@ -476,7 +476,7 @@ it("An LRS must reject with 400 Bad Request a POST request to the State API whic
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
-    });    
+    });
 
 /**  XAPI-00202, Communication 2.3 State Resource
  * An LRS's State API rejects a POST request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request

@@ -213,7 +213,7 @@
                 ]
             },
             {   //see above
-                name: 'An "object" property\'s "id" property is an IRI (Type, Data 2.2.4.4.1.table1.row2)',
+                name: 'An "object" property\'s "id" property is an IRI (Type, Data 2.2.4.4.1.table1.row2, XAPI-00047)',
                 config: [
                     {
                         name: 'statement activity "id" not IRI',
