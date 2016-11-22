@@ -26,7 +26,7 @@
             /**  XAPI-00042, 2.4.2.4 Account Object
              * An Account Object's homePage" property is an IRL. An LRS rejects with 400 Bad Request if a statement uses the “account” IFI and the “homePage” property is absent or has an invalid IRL.
              */
-                name: 'An Account Object uses the "homePage" property (Multiplicity, Data 2.4.2.4.s2.table1.row1)',
+                name: 'An Account Object uses the "homePage" property (Multiplicity, Data 2.4.2.4.s2.table1.row1, XAPI-00042)',
                 config: [
                     {
                         name: 'statement actor "agent" account "homePage" property exists',

@@ -99,11 +99,11 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
         invalidTypes.forEach(function (type) {
             it('Should reject GET with "activityId" with type ' + type, function () {
                 var parameters = helper.buildActivity();
-                console.log(parameters);
+                // console.log(parameters);
                 parameters.activityId = type;
-                console.log(parameters);
+                // console.log(parameters);
                 return helper.sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 400).then((res) => {
-                    console.log('howdy', res.text);
+                    // console.log('howdy', res.text);
                 });
             });
         });
