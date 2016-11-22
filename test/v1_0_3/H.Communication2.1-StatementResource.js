@@ -2655,7 +2655,6 @@ MUST have a "Content-Type" header
     });
 /**  XAPI-00163, Communication 2.1.3 GET Statements
  * An LRS's Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request
- * very similar to XAPI-00162
  */
     describe('An LRS\'s Statement Resource, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request (Communication 2.1.4.s1.b1, XAPI-00163)', function () {
         var voidedId = helper.generateUUID();
@@ -2714,10 +2713,12 @@ MUST have a "Content-Type" header
         var voidedId = helper.generateUUID();
         var voidingId = helper.generateUUID();
         var statementRefId = helper.generateUUID();
-        var voidingTime, untilVoidingTime;
-        var stmtTime;
+        var sinceVoidingTime, untilVoidingTime;
+        var stmtTime, prevStmtTime;
 
         before('persist voided statement', function (done) {
+            // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Ed Before');
+            sinceVoidingTime = new Date(Date.now() - helper.getTimeMargin() - 4000).toISOString();
             var voidedTemplates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -2734,6 +2735,7 @@ MUST have a "Content-Type" header
         });
 
         before('persist voiding statement', function (done) {
+            // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Ing Before');
             var voidingTemplates = [
                 {statement: '{{statements.object_statementref}}'},
                 {verb: '{{verbs.voided}}'}
@@ -2743,23 +2745,17 @@ MUST have a "Content-Type" header
             voiding.id = voidingId;
             voiding.object.id = voidedId;
 
+            prevStmtTime = Date.now();
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
+                .wait(helper.genDelay(sinceVoidingTime, '?statementId='+voidedId, voidedId))
                 .headers(helper.addAllHeaders({}))
                 .json(voiding)
-                .expect(200)
-                .end(function (err, res){
-                    if (err){
-                        done(err);
-                    } else {
-                        voidingTime = new Date(Date.now() - helper.getTimeMargin() - 10000).toISOString();
-                        untilVoidingTime = new Date(Date.now() + helper.getTimeMargin()).toISOString();
-                        done();
-                    }
-                });
+                .expect(200, done);
         });
 
         before('persist object with statement references', function (done) {
+            // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Ref Before');
             var statementRefTemplates = [
                 {statement: '{{statements.object_statementref}}'}
             ];
@@ -2772,17 +2768,36 @@ MUST have a "Content-Type" header
             stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
+            .wait(helper.genDelay(prevStmtTime, '?statementId='+voidingId, voidingId))
             .headers(helper.addAllHeaders({}))
             .json(statementRef)
-            .expect(200, done)
+            .expect(200, done);
+        });
+
+        before('ensure all stmts are recorded in the lrs', function (done) {
+            // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Final Before');
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements())
+            .wait(helper.genDelay(stmtTime, '/statementId='+statementRefId, statementRefId))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function(err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    untilVoidingTime = new Date(Date.now() - helper.getTimeMargin() + 4000).toISOString();
+                    done();
+                }
+            });
         });
 
         // reworded the test to be more generic, shouldn't have to stay in here
         it('should only return statements stored after designated "since" timestamp when using "since" parameter', function (done) {
             // Need to use statementRefId verb b/c initial voided statement comes before voidingTime
+            // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Since');
             var query = helper.getUrlEncoding({
                 verb: verb,
-                since: voidingTime
+                since: sinceVoidingTime
             });
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
@@ -2795,7 +2810,15 @@ MUST have a "Content-Type" header
                 } else {
                     var results = helper.parse(res.body, done);
                     expect(results).to.have.property('statements');
-                    expect(JSON.stringify(results.statements)).to.contain(statementRefId);
+                    // console.log(results.statements.length);
+                    var ids = [];
+                    results.statements.forEach(function(stmt) {
+                        ids.push(stmt.id)
+                    });
+                    // console.log(ids);
+                    expect(ids).to.contain(statementRefId);
+                    expect(ids).to.contain(voidingId);
+                    expect(ids).to.not.contain(voidedId);
                     done();
                 }
             });
@@ -2803,8 +2826,10 @@ MUST have a "Content-Type" header
 
         // reworded the test to be more generic, shouldn't have to stay in here
         it('should only return statements stored at or before designated "before" timestamp when using "until" parameter', function (done) {
+            // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Until');
             var query = helper.getUrlEncoding({
-                verb: "http://adlnet.gov/expapi/verbs/voided",
+                // verb: "http://adlnet.gov/expapi/verbs/voided",
+                verb: verb,
                 until: untilVoidingTime
             });
             request(helper.getEndpointAndAuth())
@@ -2819,7 +2844,15 @@ MUST have a "Content-Type" header
                     try {
                         var results = helper.parse(res.body, done);
                         expect(results).to.have.property('statements');
-                        expect(JSON.stringify(results.statements)).to.contain(voidingId);
+                        // console.log(results.statements.length, statementRefId, voidingId, voidedId);
+                        var ids = [];
+                        results.statements.forEach(function(stmt) {
+                            ids.push(stmt.id)
+                        });
+                        // console.log(ids);
+                        expect(ids).to.contain(statementRefId);
+                        expect(ids).to.contain(voidingId);
+                        expect(ids).to.not.contain(voidedId);
                         done();
                     } catch (e) {
                         if (e.message.length > 400) {
@@ -2833,6 +2866,7 @@ MUST have a "Content-Type" header
 
         // reworded the test to be more generic, shouldn't have to stay in here
         it('should return the number of statements listed in "limit" parameter', function (done) {
+            // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Limit');
             var query = helper.getUrlEncoding({
                 verb: verb,
                 limit: 1
@@ -2857,6 +2891,7 @@ MUST have a "Content-Type" header
 
         // i think this can be removed
         it('should return StatementRef and voiding statement when not using "since", "until", "limit"', function (done) {
+            // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' None');
             var query = helper.getUrlEncoding({
                 verb: verb
             });
@@ -2874,6 +2909,9 @@ MUST have a "Content-Type" header
                     expect(results.statements).to.have.length(2);
                     expect(results.statements[0]).to.have.property('id').to.equal(statementRefId);
                     expect(results.statements[1]).to.have.property('id').to.equal(voidingId);
+                    // var pt = new Date(prevStmtTime - helper.getTimeMargin()).toISOString();
+                    // var st = new Date(stmtTime - helper.getTimeMargin()).toISOString();
+                    // console.log(sinceVoidingTime +'\n'+ pt +'\n'+ st +'\n'+ untilVoidingTime);
                     done();
                 }
             });
