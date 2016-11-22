@@ -379,21 +379,26 @@ describe('Content Type Requirements (Communication 1.5)', () => {
         .post(helper.getEndpointStatements())
         .headers(helper.addAllHeaders(header))
         .body(attachment).expect(200)
-        .end()
-        .get(helper.getEndpointStatements()+ '?' + query)
-        .wait(helper.genDelay(stmtTime, '?' + query, null))
-        .headers(helper.addAllHeaders(header))
-        .expect(200)
         .end(function(err,res){
-            if (err){
-                done(err);
-            }
-            else{
-                var request = helper.parse(res.body);
-                expect(res.headers['content-type']).to.equal('application/json');
-                done();
-            }
-        });
+
+            var id = JSON.parse(res.body)[0];
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements()+ '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, id))
+            .headers(helper.addAllHeaders(header))
+            .expect(200)
+            .end(function(err,res){
+                if (err){
+                    done(err);
+                }
+                else{
+                    var request = helper.parse(res.body);
+                    expect(res.headers['content-type']).to.equal('application/json');
+                    done();
+                }
+            });
+        })
+        
     });
 
 
