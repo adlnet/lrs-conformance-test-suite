@@ -11,6 +11,22 @@ if (!process.env.EB_NODE_COMMAND) {
 }
 (function (module, fs, extend, uuid, lodash, FormUrlencode, jws, crypto) {
 
+
+    var oauth;
+    if (global.OAUTH) {
+        var OAuth = require('oauth');
+
+        oauth = new OAuth.OAuth(
+            "",
+            "",
+            global.OAUTH.consumer_key,
+            global.OAUTH.consumer_secret,
+            '1.0',
+            null,
+            'HMAC-SHA1'
+        );
+    }
+    
     /** Appears to use absolute path */
     var CONFIG_FOLDER = './test/' + process.env.DIRECTORY + '/configs';
 
@@ -54,8 +70,7 @@ if (!process.env.EB_NODE_COMMAND) {
     var URL_STATEMENTS = '/statements';
 
     /** HTTP header xAPI Version */
-    var XAPI_VERSION = '1.0.2'; //for now '1.0.3' for release
-    //process.env.XAPI_VERSION; - kept getting 1.0.1
+    var XAPI_VERSION = '1.0.3';
 
     module.exports = {
         /**
@@ -214,7 +229,7 @@ if (!process.env.EB_NODE_COMMAND) {
                         } else {
                             try {
                             //we parse the result into either a single statement or a statements object
-                                result = parse(res.body);
+                                result = JSON.parse(res.body);
                             } catch (e) {
                                 result = {};
                             }
@@ -794,7 +809,7 @@ if (!process.env.EB_NODE_COMMAND) {
 
         },
         /**
-         * 
+         *
          */
         parse: function(string, done) {
             var parsed;

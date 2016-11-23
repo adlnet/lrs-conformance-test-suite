@@ -38,7 +38,11 @@
                 ]
             },
             {
-                name: 'A "verb" property contains an "id" property (Multiplicity, 4.1.3.table1.row1.b)',
+            /** XAPI-00044, Data 2.4.3 Verb
+             * A "verb" object contains an "id" property which is required to be an IRI. An LRS rejects with 400 Bad Request if a statement uses the Verb Object and “id” is absent or “id” is present, but the value is an invalid IRI.
+             * Covers this and next suite
+             */
+                name: 'A "verb" property contains an "id" property (Multiplicity, Data 2.4.3.s3.table1.row1, XAPI-00044)',
                 config: [
                     {
                         name: 'statement verb missing "id"',
@@ -59,8 +63,8 @@
                     }
                 ]
             },
-            {
-                name: 'A "verb" property\'s "id" property is an IRI (Type, 4.1.3.table1.row1.a)',
+            {   //see above
+                name: 'A "verb" property\'s "id" property is an IRI (Type, Data 2.4.3.s3.table1.row1, XAPI-00044)',
                 config: [
                     {
                         name: 'statement verb "id" not IRI',
@@ -83,41 +87,11 @@
                 ]
             },
             {
-                name: 'A Voiding Statement is defined as a Statement whose "verb" property\'s "id" property\'s IRI ending with "voided" (4.3)',
-                config: [
-                    {
-                        name: 'statement verb voided IRI ends with "voided" (WARNING: this applies "Upon receiving a Statement that voids another, the LRS SHOULD NOT* reject the request on the grounds of the Object of that voiding Statement not being present")',
-                        templates: [
-                            {statement: '{{statements.object_statementref}}'},
-                            {verb: '{{verbs.voided}}'}
-                        ],
-                        expect: [200]
-                    }
-                ]
-            },
-            {
-                name: 'A Voiding Statement\'s "objectType" field has a value of "StatementRef" (Format, 4.3.a)',
-                config: [
-                    {
-                        name: 'statement verb voided uses substatement with "StatementRef"',
-                        templates: [
-                            {statement: '{{statements.object_statementref}}'},
-                            {verb: '{{verbs.voided}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement verb voided does not use object "StatementRef"',
-                        templates: [
-                            {statement: '{{statements.verb}}'},
-                            {verb: '{{verbs.voided}}'}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
-                name: 'A "verb" property\'s "display" property is a Language Map (Type, 4.1.3.table1.row2.a)',
+            /**  XAPI-00045, Data 2.4.3 Verb
+             * A "verb" property's "display" property is a Language Map. An LRS rejects with 400 Bad Request if a statement uses the Verb Object’s “display” property and it is not a valid Language Map.
+             * Further verification of language map in Data 2.2 Formatting
+             */
+                name: 'A "verb" property\'s "display" property is a Language Map (Type, Data 2.4.3.s3.table1.row2, XAPI-00045)',
                 config: [
                     {
                         name: 'statement verb "display" not language',

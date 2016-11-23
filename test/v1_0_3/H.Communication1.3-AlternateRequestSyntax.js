@@ -21,7 +21,7 @@ describe('Alternate Request Syntax Requirements (Communication 1.3)', () => {
         return helper.sendRequest('post', helper.getEndpointStatements(), parameters, formBody, 400);
     });
 
-    it('Any LRS API that accepts a POST request can accept a POST request with a single query string parameter named "method" on that request (Communication 1.3.s3.b2)', function () {
+    it('Any LRS Resource that accepts a POST request can accept a POST request with a single query string parameter named "method" on that request (Communication 1.3.s3.b2)', function () {
         var parameters = {method: 'post'},
             formBody = helper.buildFormBody(helper.buildStatement());
         return helper.sendRequest('post', helper.getEndpointStatements(), parameters, formBody, 200);

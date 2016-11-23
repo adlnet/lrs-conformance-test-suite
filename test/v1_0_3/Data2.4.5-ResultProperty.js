@@ -15,6 +15,21 @@
 
 describe('Result Property Requirements (Data 2.4.5)', () => {
 
+/**  Matchup with Conformance Requirements Document
+ * Data 2.4.5 Result
+ * XAPI-00074 - in results.js
+ * XAPI-00075 - in results.js
+ * XAPI-00076 - in results.js
+ * XAPI-00077 - in results.js
+ * XAPI-00078 - in results.js
+
+ * Data 2.4.5.1 Score
+ * XAPI-00079 - in results.js
+ * XAPI-00080 - in results.js
+ * XAPI-00081 - in results.js
+ * XAPI-00082 - in results.js
+ * XAPI-00083 - in results.js
+ */
     templatingSelection.createTemplate('results.js');
 
 });

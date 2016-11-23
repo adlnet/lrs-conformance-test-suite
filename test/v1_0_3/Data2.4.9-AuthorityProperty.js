@@ -15,9 +15,19 @@
 
 describe('Authority Property Requirements (Data 2.4.9)', () => {
 
+/**  Matchup with Conformance Requirements Document
+ * XAPI-00098 - in authorities.js
+ * XAPI-00099 - below
+ * XAPI-00100 - below
+
+ * Note - XAPI-00024 - in authorities.js
+ */
     templatingSelection.createTemplate('authorities.js');
 
-    it('An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group and consists of non-O-Auth Agents (Data 2.4.9.s3.b3)', function (done) {
+/**  XAPI-00100, Data 2.4.9 Authority
+ * An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group having more than two Agents
+ */
+    it('An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group and consists of non-O-Auth Agents (Data 2.4.9.s3.b3, XAPI-00100)', function (done) {
         var templates = [
             {statement: '{{statements.default}}'},
             {authority: {"objectType": "Group", "name": "xAPI Group", "mbox": "mailto:xapigroup@example.com",
@@ -32,7 +42,10 @@ describe('Authority Property Requirements (Data 2.4.9)', () => {
             .expect(400, done)
     });
 
-    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, Data 2.4.9.s3.b4) ', function () {
+/**  XAPI-00099, Data 2.4.9 Authority
+ * An LRS populates the "authority" property if it is not provided in the Statement
+ */
+    describe('An LRS populates the "authority" property if it is not provided in the Statement, based on header information with the Agent corresponding to the user (contained within the header) (Implicit, Data 2.4.9.s3.b4, XAPI-00099) ', function () {
 
         it('should populate authority ', function (done) {
 
