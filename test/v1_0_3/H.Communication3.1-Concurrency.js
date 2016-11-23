@@ -114,22 +114,27 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 });
             });
         });
-        var goodTag;
-        var goodParameters;
-        it('When responding to a PUT request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag', function () {
-            var parameters = helper.buildAgentProfile(),
+
+        describe('With a valid etag', function () {
+            var parameters, document;
+            before('before', function() {
+                parameters = helper.buildAgentProfile();
                 document = helper.buildDocument();
-            goodParameters = parameters;
-            return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-            .then(function (res) {
-                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, document, 200).then(function (res) {
-                    var etag = res.headers.etag;
-                    goodTag = etag;
+                return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
+            });
+
+            it('When responding to a PUT request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag', function () {
+                document = helper.buildDocument();
+                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, document, 200)
+                .then(function (res) {
+                    var goodTag = res.headers.etag;
+
+                    var document = helper.buildDocument();
+
                     var reqUrl = parameters ? (helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointAgentsProfile();
-                    var data = {'If-Match': etag};
+                    var data = {'If-Match': goodTag};
                     var headers = helper.addAllHeaders(data);
                     var pre = request['put'](reqUrl);
-                    // var pre = request('PUT', reqUrl);
                     helper.extendRequestWithOauth(pre);
                     pre.send(document);
                     pre.set('If-Match', headers['If-Match']);
@@ -145,37 +150,40 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                     } catch (e) {
                         console.log(e);
                     }
-                    return pre.expect(204)
-                    .then(function (res) {
-                    }); //put
-                }); // get
-            }); // post
-        });
+                    return pre.expect(204);
+                });
+            });
 
-        it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains an etag', function () {
-            var parameters = goodParameters,
+            it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains an etag', function () {
                 document = helper.buildDocument();
+                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, document, 200)
+                .then(function (res) {
+                    var goodTag = res.headers.etag;
 
-            var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
-            var data = {'If-None-Match': goodTag};
-            var headers = helper.addAllHeaders(data);
-            var pre = request['put'](reqUrl);
-            helper.extendRequestWithOauth(pre);
-            pre.send(document);
-            pre.set('If-None-Match', headers['If-None-Match']);
-            pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-            if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                pre.set('Authorization', headers['Authorization']);
-            }
-            //If we're doing oauth, set it up!
-            try {
-                if (global.OAUTH) {
-                    pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-                }
-            } catch (e) {
-                console.log(e);
-            }
-            return pre.expect(412)
+                    var document = helper.buildDocument();
+
+                    var reqUrl = parameters ? (helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointAgentsProfile();
+                    var data = {'If-None-Match': goodTag};
+                    var headers = helper.addAllHeaders(data);
+                    var pre = request['put'](reqUrl);
+                    helper.extendRequestWithOauth(pre);
+                    pre.send(document);
+                    pre.set('If-None-Match', headers['If-None-Match']);
+                    pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
+                    if (process.env.BASIC_AUTH_ENABLED === 'true') {
+                        pre.set('Authorization', headers['Authorization']);
+                    }
+                    //If we're doing oauth, set it up!
+                    try {
+                        if (global.OAUTH) {
+                            pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    return pre.expect(412)
+                });
+            });
         });
 
         it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains “*”', function () {

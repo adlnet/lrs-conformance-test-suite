@@ -21,19 +21,18 @@
 describe('Formatting Requirements (Data 2.2)', () => {
 
 /**  Matchup with Conformance Requirements Document
- * XAPI-00001 - in formattting.js
+ * XAPI-00001 - in formatting.js
  * XAPI-00002 - below
- * XAPI-00003 - in formattting.js
- * XAPI-00004 - in formattting.js
- * XAPI-00005 - in formattting.js
- * XAPI-00006 - in formattting.js
- * XAPI-00007 - in formattting.js
- * XAPI-00008 - in formattting.js
- * XAPI-00009 - in formattting.js
- * XAPI-00010 - no match found yet - An LRS rejects with error code 400 Bad Request a Statement where a key or value is not allowed by this specification.
- * XAPI-00011 - no match found yet - is this covered by multiple individual tests, if so should they be grouped together for this req? - An LRS rejects with error code 400 Bad Request a Statement containing IRL or IRI values without a scheme.
+ * XAPI-00003 - in formatting.js
+ * XAPI-00004 - in formatting.js
+ * XAPI-00005 - in formatting.js
+ * XAPI-00006 - in formatting.js
+ * XAPI-00007 - in formatting.js
+ * XAPI-00008 - in formatting.js
+ * XAPI-00009 - in formatting.js
+ * XAPI-00010 - in formatting.js
  * XAPI-00012 - no match yet - broad catchall again - is this taken care of by many other tests throughout the suite? - The LRS rejects with error code 400 Bad Request parameter values which do not validate to the same standards required for values of the same types in Statements.
- * XAPI-00013 - in formattting.js from Data 2.4.6
+ * XAPI-00013 - in formatting.js from Data 2.4.6
  * XAPI-00014 - below - best ref in spec is Data 2.1 - leave it here
  * XAPI-00015 - in Communication 1.4 - should stay in Comm 1.4 Encoding
  */
@@ -121,10 +120,10 @@ describe('Formatting Requirements (Data 2.2)', () => {
         var data = helper.createFromTemplate(templates);
         data = data.statement;
         data.id = helper.generateUUID();
-        data.verb.id = data.verb.id.replace("http://","")   // remove the scheme portion of the verb IRI 
+        data.verb.id = data.verb.id.replace("http://","")   // remove the scheme portion of the verb IRI
         var headers = helper.addAllHeaders(
         {});
-      
+
         request(helper.getEndpointAndAuth())
             .put(helper.getEndpointStatements() + '?statementId=' + data.id)
             .headers(headers)
