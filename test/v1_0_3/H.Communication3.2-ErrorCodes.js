@@ -21,7 +21,7 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
  * XAPI-00325 - below
  * XAPI-00326 - below
  * XAPI-00327 - not found yet - An LRS rejects a Statement of insufficient permissions (credentials are valid, but not adequate) with error code 403 Forbidden
- * XAPI-00328 - not found yet - An LRS rejects a Statement due to size if the Statement exceeds the size limit the LRS is configured to with error code 413 Request Entity Too Large. Suggestion: test increasingly larger statements to identify capacity of the upper limit - 1MB, 5MB, 10MB, 20MB until a 413 is returned.
+ * XAPI-00328 - below
  * XAPI-00329 - not found yet - An LRS rejects a Statement due to network/server issues with an error code of 500 Internal Server Error
  */
 
@@ -293,6 +293,11 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
         });
     });
 
+
+/**  XAPI-00328, Communication 3.2 Error Codes
+ * An LRS rejects a Statement due to size if the Statement exceeds the size limit the LRS is configured to with error code 413 Request Entity Too Large.
+ * Held out for now. No upper limit constraint.
+ */
 });
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
