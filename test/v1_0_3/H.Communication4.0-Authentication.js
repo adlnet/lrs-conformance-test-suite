@@ -12,7 +12,7 @@ describe('Authentication Requirements (Communication 4.0)', function() {
 /**  XAPI-00334, Communication 2.1.3 GET Statements
  * An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized
  */
- describe('An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized (Authentication 4.0 XAPI-00334)',function(){
+ describe('An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized (Authentication 4.0.s2.b2, XAPI-00334)',function(){
 
 
     it("fails when given a random name pass pair", function(done)
@@ -70,7 +70,7 @@ describe('Authentication Requirements (Communication 4.0)', function() {
  * An LRS must support HTTP Basic Authentication
  */
  //WARNING: This might not be a great test. OAUTH will override it
-    it('An LRS must support HTTP Basic Authentication(Authentication 4.0 XAPI-00335)', function(done)
+    it('An LRS must support HTTP Basic Authentication (Authentication 4.0 XAPI-00335)', function(done)
     {
         var templates = [
         {

@@ -39,10 +39,10 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  * XAPI-00278 - below
  * XAPI-00279 - in Communication2.2-DocumentResources.js
  * XAPI-00280 - in Communication2.2-DocumentResources.js
- * XAPI-00281 - not found yet - An LRS's Agent Profile API, rejects a POST request if the document is found and either document is not a valid JSON Object
+ * XAPI-00281 - below
  * XAPI-00282 - in Communication2.2-DocumentResources.js
  * XAPI-00283 - in Communication2.2-DocumentResources.js
- * XAPI-00284 - not found yet - An LRS must reject, with 400 Bad Request, a POST request to the Agent Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json
+ * XAPI-00284 - below
  */
 
     it('An LRS\'s Agent Profile Resource accepts PUT requests (Communication 2.6.s2)', function () {

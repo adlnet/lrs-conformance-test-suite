@@ -2549,7 +2549,7 @@ MUST have a "Content-Type" header
 /**  XAPI-00161, Communication 2.1.3 GET Statements
  * An LRS's Statement API not return attachment data and only return application/json if the "attachment" parameter set to "false"
  */
-    describe('An LRSs Statement API not return attachment data and only return application/json if the "attachment" parameter set to "false" (Communication 2.1.3.s1.b1, XAPI-00161)', function () {
+    describe('An LRSs Statement Resource not return attachment data and only return application/json if the "attachment" parameter set to "false" (Communication 2.1.3.s1.b1, XAPI-00161)', function () {
         var statementId = null;
         var stmtTime = null;
         before("store statement",function(done){

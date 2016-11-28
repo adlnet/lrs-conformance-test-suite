@@ -18,8 +18,8 @@ describe('About Resource Requirements (Communication 2.8)', () => {
  * XAPI-00317 - below
  * XAPI-00318 - below
  * XAPI-00319 - below
- * XAPI-00320 - below
- * XAPI-00321 - not found yet - An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API
+ * XAPI-00320 - bad test - extesion property is optional in spec
+ * XAPI-00321 - below
  */
 
 /**  XAPI-00315, Communication 2.8 About Resource
@@ -91,74 +91,61 @@ describe('About Resource Requirements (Communication 2.8)', () => {
             });
     });
 
-/**  XAPI-00320, Communication 2.8 About Resource
- * An LRS's About API upon processing a successful GET request can return an Extension Object with code 200 OK
+/**  XAPI-00321, Communication 2.8 About Resource
+ * An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API
  */
-// This is a bad test (LRS doesn't need to check for extension since its optional).  Extensions property is option in the spec.
-    it('An LRS\'s About Resource upon processing a successful GET request can return an Extension with code 200 OK (multiplicity, Communication 2.8.s4.table1.row2, XAPI-00320)', function () {
-        return helper.sendRequest('get', helper.getEndpointAbout(), undefined, undefined, 200)
-            .then(function (res) {
-                var about = res.body;
-                expect(about).to.have.property('extensions');
-            });
-    });
+    describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (multiplicity, Communication 2.8.s4.table1.row2, XAPI-00321)', function () {
 
-    /**  XAPI-00321, Communication 2.8 About Resource
-     * An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API
-     */
-    // This is a bad test.  Extensions property is option in the spec.
-        describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (multiplicity, Communication 2.8.s4.table1.row2, XAPI-00321)', function () {
-
-            it ('using Statement Endpoint', function(done){
-                request(helper.getEndpointAndAuth())
-                  .get(helper.getEndpointStatements())
-                  .headers(helper.addBasicAuthenicationHeader({}))
-                  .expect(400, done)
-            });
-
-            it ('using About Endpoint', function(done){
-                request(helper.getEndpointAndAuth())
-                  .get(helper.getEndpointAbout())
-                  .headers(helper.addBasicAuthenicationHeader({}))
-                  .expect(200, done)
-            });
-
-            it ('using Activities Endpoint', function(done){
-                request(helper.getEndpointAndAuth())
-                  .get(helper.getEndpointActivities())
-                  .headers(helper.addBasicAuthenicationHeader({}))
-                  .expect(400, done)
-            });
-
-            it ('using Activities Profile Endpoint', function(done){
-                request(helper.getEndpointAndAuth())
-                  .get(helper.getEndpointActivitiesProfile())
-                  .headers(helper.addBasicAuthenicationHeader({}))
-                  .expect(400, done)
-            });
-
-            it ('using Activities State Endpoint', function(done){
-                request(helper.getEndpointAndAuth())
-                  .get(helper.getEndpointActivitiesState())
-                  .headers(helper.addBasicAuthenicationHeader({}))
-                  .expect(400, done)
-            });
-
-            it ('using Agents Endpoint', function(done){
-                request(helper.getEndpointAndAuth())
-                  .get(helper.getEndpointAgents())
-                  .headers(helper.addBasicAuthenicationHeader({}))
-                  .expect(400, done)
-            });
-
-            it ('using Agents Profile Endpoint', function(done){
-                request(helper.getEndpointAndAuth())
-                  .get(helper.getEndpointAgentsProfile())
-                  .headers(helper.addBasicAuthenicationHeader({}))
-                  .expect(400, done)
-            });
-
+        it ('using Statement Endpoint', function(done){
+            request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointStatements())
+              .headers(helper.addBasicAuthenicationHeader({}))
+              .expect(400, done)
         });
+
+        it ('using About Endpoint', function(done){
+            request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointAbout())
+              .headers(helper.addBasicAuthenicationHeader({}))
+              .expect(200, done)
+        });
+
+        it ('using Activities Endpoint', function(done){
+            request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointActivities())
+              .headers(helper.addBasicAuthenicationHeader({}))
+              .expect(400, done)
+        });
+
+        it ('using Activities Profile Endpoint', function(done){
+            request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointActivitiesProfile())
+              .headers(helper.addBasicAuthenicationHeader({}))
+              .expect(400, done)
+        });
+
+        it ('using Activities State Endpoint', function(done){
+            request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointActivitiesState())
+              .headers(helper.addBasicAuthenicationHeader({}))
+              .expect(400, done)
+        });
+
+        it ('using Agents Endpoint', function(done){
+            request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointAgents())
+              .headers(helper.addBasicAuthenicationHeader({}))
+              .expect(400, done)
+        });
+
+        it ('using Agents Profile Endpoint', function(done){
+            request(helper.getEndpointAndAuth())
+              .get(helper.getEndpointAgentsProfile())
+              .headers(helper.addBasicAuthenicationHeader({}))
+              .expect(400, done)
+        });
+
+    });
 
 });
 

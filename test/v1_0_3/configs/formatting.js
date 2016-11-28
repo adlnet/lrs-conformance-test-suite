@@ -275,7 +275,7 @@
              * Additional UUID tests in uuids.js xapi-00027 & 28
              * IFI's covered in actors.js xapi-0038
              */
-                name: 'An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format (such as mailto IRI, UUID, or IRI) is required. (Data 2.2.s4.b4, XAPI-00007)',
+                name: 'An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format, such as mailto IRI, UUID, or IRI, is required. (Data 2.2.s4.b4, XAPI-00007)',
                 config: [
                     {
                         name: 'statement "id" invalid numeric',

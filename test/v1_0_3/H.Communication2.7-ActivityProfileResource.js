@@ -32,7 +32,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
  * XAPI-00301 - below
  * XAPI-00302 - below
  * XAPI-00303 - below
- * XAPI-00304 - *talk about this one* not found yet - An LRS's Activity Profile API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table2.row2.a)
+ * XAPI-00304 - 'agent' is not a valid parameter in the Activity Profile Resource - An LRS's Activity Profile API rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, 7.4.table2.row2.a)
  * XAPI-00305 - below
  * XAPI-00306 - below
  * XAPI-00307 - below
@@ -41,9 +41,8 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
  * XAPI-00310 - in Communication2.2-Documentresources.js
  * XAPI-00311 - in Communication2.2-Documentresources.js
  * XAPI-00312 - in Communication2.2-Documentresources.js
- * XAPI-00313 - not found yet - An LRS's Activity Profile API, rejects a POST request if the document is found and either document is not a valid JSON Object
- * XAPI-00314 - not found yet - An LRS must reject, with 400 Bad Request, a POST request to the Activity Profile API which contains name/value pairs with invalid JSON and the Content-Type header is
-"application/json
+ * XAPI-00313 - below
+ * XAPI-00314 - below
  */
 
 /**  XAPI-00293, Communication 2.7 Activity Profile Resource
@@ -374,7 +373,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
  * tests if document is not a valid JSON object, not sure how to put a document in there that is already invalid
  * this test is incomplete
  */
-        it('An LRS\'s Activity Profile API, rejects a POST request if the document is found and either doucment is not a valid JSON Object (Communication 2.7.s4.table1.row2, XAPI-00313)', function () {
+        it('An LRS\'s Activity Profile Resource, rejects a POST request if the document is found and either doucment is not a valid JSON Object (Communication 2.7.s4.table1.row2, XAPI-00313)', function () {
 
             var document = undefined;
             var parameters = helper.buildActivityProfile();
@@ -410,7 +409,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
  * An LRS's must reject, with 400 Bad Request, a POST request to the Acitvity Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
  ** this test is incomplete
  */
-        it('An LRS\'s must reject, with 400 Bad Request, a POST request to the Acitvity Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json" (Communication 2.7.s4.table1.row2, XAPI-00314)', function () {
+        it('An LRS\'s must reject, with 400 Bad Request, a POST request to the Acitvity Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is "application/json" (Communication 2.7.s4.table1.row2, XAPI-00314)', function () {
 
             var document = undefined;
             var parameters = helper.buildActivityProfile();

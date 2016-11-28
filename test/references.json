@@ -2361,11 +2361,20 @@
     "statement substatement context extensions valid string": {
         "name": "statement substatement context extensions valid string"
     },
-    "An Extension can be empty": {
-        "name": "An Extension can be empty",
+    "An Extension can be null, an empty string, objects with nothing in them when using POST.": {
+        "name": "An Extension can be null, an empty string, objects with nothing in them when using POST.",
         "1.0.2_ref_text": "Format, 5.3",
         "1.0.2_ref": "5.3",
-        "1.0.3_ref": "Data 4.1",
+        "1.0.3_ref": "Data 4.1, XAPI-00119",
+        "1.0.3_link": [
+            "Data.md#4.1"
+        ]
+    },
+    "An Extension can be null, an empty string, objects with nothing in them when using PUT.": {
+        "name": "An Extension can be null, an empty string, objects with nothing in them when using PUT.",
+        "1.0.2_ref_text": "Format, 5.3",
+        "1.0.2_ref": "5.3",
+        "1.0.3_ref": "Data 4.1, XAPI-00119",
         "1.0.3_link": [
             "Data.md#4.1"
         ]
@@ -5981,11 +5990,11 @@
     "should return \"X-Experience-API-Consistent-Through\" when using GET for statements": {
         "name": "should return \"X-Experience-API-Consistent-Through\" when using GET for statements"
     },
-    "An LRS's Statement API upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.": {
-        "name": "An LRS's Statement API upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.",
+    "An LRS's Statement Resource upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.": {
+        "name": "An LRS's Statement Resource upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.",
         "1.0.2_ref_text": "7.2.3.c",
         "1.0.2_ref": "7.2.3.c",
-        "1.0.3_ref": "Communication 2.1.3.s2.b5",
+        "1.0.3_ref": "Communication 2.1.3.s2.b5, XAPI-00153",
         "1.0.3_link": ["Communication.md#2.1.3.s2.b5"]
     },
     "should return \"X-Experience-API-Consistent-Through\" using GET": {
@@ -6517,9 +6526,9 @@
         "1.0.3_ref": "Data 2.2.s4.b1.b8",
         "1.0.3_link": ["Data#2.2.s4.b1.b8"]
     },
-    "An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format": {
-        "name": "An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format",
-        "1.0.3_ref": "Data 2.2.s4.b4",
+    "An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format, such as mailto IRI, UUID, or IRI, is required.": {
+        "name": "An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format, such as mailto IRI, UUID, or IRI, is required.",
+        "1.0.3_ref": "Data 2.2.s4.b4, XAPI-00007",
         "1.0.3_link": ["Data#2.2.s4.b4"]
     },
     "An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification.": {
@@ -6551,6 +6560,96 @@
         "name": "Statements that use an Agent or Group as an Object MUST specify an \"objectType\" property.",
         "1.0.3_ref": "Data 2.4.4.2.s1.b1, XAPI-00065",
         "1.0.3_link": ["Data#2.4.4.2.s1.b1"]
+    },
+    "The LRS rejects with error code 400 Bad Request parameter values which do not validate to the same standards required for values of the same types in Statements": {
+        "name": "The LRS rejects with error code 400 Bad Request parameter values which do not validate to the same standards required for values of the same types in Statements",
+        "1.0.3_ref": "Data 2.2.s4.b4, XAPI-00012",
+        "1.0.3_link": ["Data#2.2.s4.b4"]
+    },
+    "A \"score\" Object's \"scaled\" property is a decimal number between -1 and 1, inclusive.": {
+        "name": "A \"score\" Object's \"scaled\" property is a decimal number between -1 and 1, inclusive.",
+        "1.0.3_ref": "Data 2.4.5.1.s2.table1.row1, XAPI-00083",
+        "1.0.3_link": ["Data#2.4.5.1.s2.table1.row1"]
+    },
+    "A \"score\" Object's \"raw\" property is a decimal number between min and max (if present, otherwise unrestricted), inclusive": {
+        "name": "A \"score\" Object's \"raw\" property is a decimal number between min and max (if present, otherwise unrestricted), inclusive",
+        "1.0.3_ref": "Data 2.4.5.1.s2.table1.row2, XAPI-00082",
+        "1.0.3_link": ["Data#2.4.5.1.s2.table1.row2"]
+    },
+    "A \"score\" Object's \"min\" property is a decimal number less than the \"max\" property, if it is present.": {
+        "name": "A \"score\" Object's \"min\" property is a decimal number less than the \"max\" property, if it is present.",
+        "1.0.3_ref": "Data 2.4.5.1.s2.table1.row3, XAPI-00081",
+        "1.0.3_link": ["Data#2.4.5.1.s2.table1.row3"]
+    },
+    "Statements returned by an LRS MUST retain the version property they are accepted with": {
+        "name": "Statements returned by an LRS MUST retain the version property they are accepted with",
+        "1.0.3_ref": "Data 2.4.10, XAPI-00332",
+        "1.0.3_link": ["Data#2.4.10"]
+    },
+    "Signed statement with \"RS384\"": {
+        "name": "Signed statement with \"RS384\"",
+        "1.0.3_ref": "Data 2.6.s4.b1",
+        "1.0.3_link": ["Data#2.6.s4.b1"]
+    },
+    "Signed statement with \"RS512\"": {
+        "name": "Signed statement with \"RS512\"",
+        "1.0.3_ref": "Data 2.6.s4.b1",
+        "1.0.3_link": ["Data#2.6.s4.b1"]
+    },
+    "The JWS signature MUST use an algorithm of \"RS256\", \"RS384\", or \"RS512\".": {
+        "name": "The JWS signature MUST use an algorithm of \"RS256\", \"RS384\", or \"RS512\".",
+        "1.0.3_ref": "Data 2.6.s4.b4, XAPI-00117",
+        "1.0.3_link": ["Data#2.6.s4.b4"]
+    },
+    "The JWS signature MUST have a payload of a valid JSON serialization of the complete Statement before the signature was added.": {
+        "name": "The JWS signature MUST have a payload of a valid JSON serialization of the complete Statement before the signature was added.",
+        "1.0.3_ref": "Data 2.6.s4.b3, XAPI-00116",
+        "1.0.3_link": ["Data#2.6.s4.b3"]
+    },
+    " A Timestamp MUST preserve precision to at least milliseconds, 3 decimal points beyond seconds.": {
+        "name": " A Timestamp MUST preserve precision to at least milliseconds, 3 decimal points beyond seconds.",
+        "1.0.3_ref": "Data 4.5.s1.b3, XAPI-00122",
+        "1.0.3_link": ["Data#4.5.s1.b3"]
+    },
+    "A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2.": {
+        "name": "A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2.",
+        "1.0.3_ref": "Data 4.6.s1.b1, XAPI-00124",
+        "1.0.3_link": ["Data#4.6.s1.b1"]
+    },
+    "If the \"Accept-Language\" header is present as part of the GET request to the Statement API and the \"format\" parameter is set to \"canonical\", the LRS MUST apply this data to choose the matching language in the response.": {
+        "name": "If the \"Accept-Language\" header is present as part of the GET request to the Statement API and the \"format\" parameter is set to \"canonical\", the LRS MUST apply this data to choose the matching language in the response.",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row11, XAPI-00172",
+        "1.0.3_link": ["Communication#2.1.3.s1.table1.row11"]
+    },
+    "An LRSs Statement API, upon receiving a GET request, MUST have a \"Content-Type\" header": {
+        "name": "An LRSs Statement API, upon receiving a GET request, MUST have a \"Content-Type\" header",
+        "1.0.3_ref": "Communication 2.1.3.s1.table1.row14, XAPI-00165",
+        "1.0.3_link": ["Communication#2.1.3.s1.table1.row14"]
+    },
+    "An LRSs Statement Resource not return attachment data and only return application/json if the \"attachment\" parameter set to \"false\"": {
+        "name": "An LRSs Statement Resource not return attachment data and only return application/json if the \"attachment\" parameter set to \"false\"",
+        "1.0.3_ref": "Communication 2.1.3.s1.b1, XAPI-00161",
+        "1.0.3_link": ["Communication#2.1.3.s1.b1"]
+    },
+    "An LRSs Agents Resource rejects a GET request with \"agent\" as a parameter if it is not a valid, in structure, Agent with error code 400 Bad Request": {
+        "name": "An LRSs Agents Resource rejects a GET request with \"agent\" as a parameter if it is not a valid, in structure, Agent with error code 400 Bad Request",
+        "1.0.3_ref": "Communication 2.4, XAPI-00249",
+        "1.0.3_link": ["Communication#2.4"]
+    },
+    "An LRS's Activity Profile Resource, rejects a POST request if the document is found and either doucment is not a valid JSON Object": {
+        "name": "An LRS's Activity Profile Resource, rejects a POST request if the document is found and either doucment is not a valid JSON Object",
+        "1.0.3_ref": "Communication 2.7.s4.table1.row2, XAPI-00313",
+        "1.0.3_link": ["Communication#2.7.s4.table1.row2"]
+    },
+    "An LRS's must reject, with 400 Bad Request, a POST request to the Acitvity Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is \"application/json\"": {
+        "name": "An LRS's must reject, with 400 Bad Request, a POST request to the Acitvity Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is \"application/json\"",
+        "1.0.3_ref": "Communication 2.7.s4.table1.row2, XAPI-00314",
+        "1.0.3_link": ["Communication#2.7.s4.table1.row2"]
+    },
+    "An LRS must support HTTP Basic Authentication": {
+        "name": "An LRS must support HTTP Basic Authentication",
+        "1.0.3_ref": "Communication 4.0, XAPI-00335",
+        "1.0.3_link": ["Communication#4.0"]
     }
 
 }

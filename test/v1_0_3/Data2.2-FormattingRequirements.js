@@ -30,8 +30,8 @@ describe('Formatting Requirements (Data 2.2)', () => {
  * XAPI-00010 - in formatting.js
  * XAPI-00011 - below
  * XAPI-00012 - below
- * XAPI-00013 - in formatting.js from Data 2.4.6
- * XAPI-00014 - below - best ref in spec is Data 2.1 - leave it here
+ * XAPI-00013 - in formatting.js
+ * XAPI-00014 - below - best ref in spec is Data 2.1
  * XAPI-00015 - in Communication 1.4 - should stay in Comm 1.4 Encoding
  */
 
@@ -91,7 +91,7 @@ describe('Formatting Requirements (Data 2.2)', () => {
 /**  XAPI-00012
  * The LRS rejects with error code 400 Bad Request parameter values which do not validate to the same standards required for values of the same types in Statements.
  */
-    describe('The LRS rejects with error code 400 Bad Request parameter values which do not validate to the same standards required for values of the same types in Statements', function (done) {
+    describe('The LRS rejects with error code 400 Bad Request parameter values which do not validate to the same standards required for values of the same types in Statements (Data 2.2.s4.b4, XAPI-00012)', function (done) {
         it('should reject when statementId value is invalid', function () {
             var query = helper.getUrlEncoding({statementId: 'wrong'});
             request(helper.getEndpointAndAuth())
