@@ -1,9 +1,6 @@
 /**
  * Description : This is a test suite that tests an LRS endpoint based on the testing requirements document
- * found at https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
- *
- * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
- *
+ * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
  */
 
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
@@ -387,7 +384,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             var parameters = helper.buildActivityProfile();
             var attachment = JSON.stringify(helper.buildDocument()) +"{";
             var header = {'content-type': 'application/json'};
-                
+
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointActivitiesProfile()+ '?' + helper.getUrlEncoding(parameters) )
                 .headers(helper.addAllHeaders(header))
@@ -404,9 +401,9 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
                         .expect(400,function(err,res)
                         {
                             done(err);
-                        });        
-                });              
-                
+                        });
+                });
+
         });
 
 /**  XAPI-00314, Communication 2.7 Activity Profile Resource

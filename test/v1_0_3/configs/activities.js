@@ -492,7 +492,7 @@
             /**  XAPI-00062, Data 2.4.4.1 when objectType is activity
              * An Interaction Component’s "description" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Interaction Component's "description" property is present and is an invalid Language Map.
              */
-                name: 'An Interaction Component’s "description" property is a Language Map. (Type, Data 2.4.4.1.s15.table1.row2, XAPI-00062)',
+                name: 'An Interaction Component\'s "description" property is a Language Map. (Type, Data 2.4.4.1.s15.table1.row2, XAPI-00062)',
                 config: [
                     {
                         name: 'statement object interaction component choice "description" language map is numeric',

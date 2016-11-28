@@ -1,9 +1,6 @@
 /**
  * Description : This is a test suite that tests an LRS endpoint based on the testing requirements document
- * found at https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
- *
- * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
- *
+ * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
  */
 
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
@@ -33,7 +30,7 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
             var statement = helper.buildStatement();
             var parameters = {
                 activityId: statement.object.id
-            };            
+            };
             return helper.sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
                 .then(function () {
                     return helper.sendRequest('head', helper.getEndpointActivities(), parameters, undefined, 200);
@@ -55,14 +52,14 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
             return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
                 .then(function () {
                     return helper.sendRequest('head', helper.getEndpointActivitiesState(), parameters, undefined, 200);
-                });          
+                });
         });
 
         it('should succeed GET agents with no body', function () {
             var statement = helper.buildStatement();
             var parameters = {
                 agent: statement.actor
-            };            
+            };
             return helper.sendRequest('post', helper.getEndpointStatements(), undefined, [statement], 200)
                 .then(function () {
                     return helper.sendRequest('head', helper.getEndpointAgents(), parameters, undefined, 200);
