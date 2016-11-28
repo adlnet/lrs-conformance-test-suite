@@ -1,9 +1,6 @@
 /**
  * Description : This is a test suite that tests an LRS endpoint based on the testing requirements document
- * found at https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
- *
- * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
- *
+ * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
  */
 
 /**  As there is no Data 2.4 file, I will match them up here

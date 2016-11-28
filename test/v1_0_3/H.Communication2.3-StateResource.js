@@ -1,9 +1,6 @@
 /**
  * Description : This is a test suite that tests an LRS endpoint based on the testing requirements document
- * found at https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
- *
- * https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md
- *
+ * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
  */
 
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
@@ -50,19 +47,19 @@
  * XAPI-00220 - below
  * XAPI-00221 - below
  * XAPI-00222 - not yet found - The State API's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present
- * XAPI-00223 - below
+ * XAPI-00223 - No 'since' property with DELETE in the State Resource
  * XAPI-00224 - look in parameter folder - An LRS's State API rejects a DELETE request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
- * XAPI-00225 - look in parameters forlder - An LRS's State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ * XAPI-00225 - look in parameters folder - An LRS's State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
  * XAPI-00226 - look in parameters folder - An LRS's State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
  * XAPI-00227 - below
  * XAPI-00228 - look in parameters folder - An LRS's State API rejects a PUT request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
- * XAPI-00229 - not found yet - An LRS's State API, rejects a POST request if the document is found and either document is not a valid JSON Object
+ * XAPI-00229 - below
  * XAPI-00230 - in Communication2.2-DocumentResources.js
  * XAPI-00231 - in Communication2.2-DocumentResources.js
  * XAPI-00232 - in Communication2.2-DocumentResources.js
  * XAPI-00233 - in Communication2.2-DocumentResources.js
  * XAPI-00234 - in Communication2.2-DocumentResources.js
- * XAPI-00235 - not found yet - An LRS must reject with 400 Bad Request a POST request to the State API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json
+ * XAPI-00235 - below
  */
 
 describe('State Resource Requirements (Communication 2.3)', () => {
@@ -471,7 +468,7 @@ it("An LRS must reject with 400 Bad Request a POST request to the State API whic
 /**  XAPI-00227, Communication 2.3 State Resource
  * An LRS's State API can process a POST request with "registration" as a parameter
  */
-    it('An LRS\'s State Resource can process a POST request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3)', function () {
+    it('An LRS\'s State Resource can process a POST request with "registration" as a parameter (multiplicity, Communication 2.3.s3.table1.row3, XAPI-00227)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         parameters.registration = helper.generateUUID();
