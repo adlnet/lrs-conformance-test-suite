@@ -612,7 +612,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
           .expect(200)
           .end()
           .get(helper.getEndpointStatements() + '?' + query)
-          .wait(helper.genDelay(stmtTime, query, id2))
+          .wait(helper.genDelay(stmtTime, "?" + query, id2))
           .headers(helper.addAllHeaders({}))
           .expect(200)
           .end(function (err, res) {
