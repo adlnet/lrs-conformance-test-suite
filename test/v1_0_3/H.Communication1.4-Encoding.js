@@ -40,7 +40,7 @@ describe('Encoding Requirements (Communication 1.4)', () => {
         .expect(200)
         .end()
         .get(helper.getEndpointStatements() + '?' + query)
-        .wait(helper.genDelay(stmtTime, query, null))
+        .wait(helper.genDelay(stmtTime, "?" + query, null))
         .headers(helper.addAllHeaders({}))
         .expect(200)
         .end(function (err, res) {

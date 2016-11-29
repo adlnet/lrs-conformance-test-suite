@@ -2775,7 +2775,7 @@ MUST have a "Content-Type" header
             // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Final Before');
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements())
-            .wait(helper.genDelay(stmtTime, '/statementId='+statementRefId, statementRefId))
+            .wait(helper.genDelay(stmtTime, '?statementId='+statementRefId, statementRefId))
             .headers(helper.addAllHeaders({}))
             .expect(200)
             .end(function(err, res) {
