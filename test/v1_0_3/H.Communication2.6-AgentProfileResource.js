@@ -340,7 +340,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
 /**  XAPI-00278, Communication 2.6 Agent Profile Resource
  * TAn LRS's Agent Profile API, rejects a POST request if the document is found and either document's type is not "application/json" with error code 400 Bad Request
  */
-    describe('An LRSs Agent Profile API, rejects a POST request if the document is found and either documents type is not "application/json" with error code 400 Bad Request(multiplicity, Communication 2.3.s3.table1.row3, XAPI-00278)',function(){
+    describe('An LRSs Agent Profile Resource, rejects a POST request if the document is found and either documents type is not "application/json" with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row3, XAPI-00278)',function(){
         it("Rejects a malformed JSON document when the content-type is 'application/json'", function (done) {
             var parameters = helper.buildAgentProfile();
             var header = {'content-type': 'application/json'};

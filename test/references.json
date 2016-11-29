@@ -6194,11 +6194,11 @@
             "Data.md#2.4.9.s3.b1"
         ]
     },
-    "An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized": {
+    "An LRS rejects a Statement of bad authorization, either authentication needed or failed credentials, with error code 401 Unauthorized": {
         "name": "An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized",
         "1.0.2_ref_text": "7.1",
         "1.0.2_ref": "7.1",
-        "1.0.3_ref": "Communication 4.0.s2.b2",
+        "1.0.3_ref": "Communication 4.0.s2.b2, XAPI-00334",
         "1.0.3_link": [
             "Communication.md#4.0.s2.b2"
         ]
@@ -6571,7 +6571,7 @@
         "1.0.3_ref": "Data 2.4.5.1.s2.table1.row1, XAPI-00083",
         "1.0.3_link": ["Data#2.4.5.1.s2.table1.row1"]
     },
-    "A \"score\" Object's \"raw\" property is a decimal number between min and max (if present, otherwise unrestricted), inclusive": {
+    "A \"score\" Object's \"raw\" property is a decimal number between min and max, if present and otherwise unrestricted, inclusive": {
         "name": "A \"score\" Object's \"raw\" property is a decimal number between min and max (if present, otherwise unrestricted), inclusive",
         "1.0.3_ref": "Data 2.4.5.1.s2.table1.row2, XAPI-00082",
         "1.0.3_link": ["Data#2.4.5.1.s2.table1.row2"]
@@ -6606,7 +6606,7 @@
         "1.0.3_ref": "Data 2.6.s4.b3, XAPI-00116",
         "1.0.3_link": ["Data#2.6.s4.b3"]
     },
-    " A Timestamp MUST preserve precision to at least milliseconds, 3 decimal points beyond seconds.": {
+    "A Timestamp MUST preserve precision to at least milliseconds, 3 decimal points beyond seconds.": {
         "name": " A Timestamp MUST preserve precision to at least milliseconds, 3 decimal points beyond seconds.",
         "1.0.3_ref": "Data 4.5.s1.b3, XAPI-00122",
         "1.0.3_link": ["Data#4.5.s1.b3"]
@@ -6650,6 +6650,21 @@
         "name": "An LRS must support HTTP Basic Authentication",
         "1.0.3_ref": "Communication 4.0, XAPI-00335",
         "1.0.3_link": ["Communication#4.0"]
+    },
+    "An LRSs State Resource, rejects a POST request if the document is found and either document is not a valid JSON Object": {
+        "name": "An LRSs State Resource, rejects a POST request if the document is found and either document is not a valid JSON Object",
+        "1.0.3_ref": "Communication 2.3.s3.table1.row3, XAPI-00229",
+        "1.0.3_link": ["Communication#2.3.s3.table1.row3"]
+    },
+    "The Activity Object must contain all available information about an activity from any statements who target the same \"activityId\". For example, LRS accepts two statements each with a different language description of an activity using the exact same \"activityId\". The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that \"activityId\"": {
+        "name": "The Activity Object must contain all available information about an activity from any statements who target the same \"activityId\". For example, LRS accepts two statements each with a different language description of an activity using the exact same \"activityId\". The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that \"activityId\"",
+        "1.0.3_ref": "Communication 2.5.s1.table1.row1, XAPI-00254",
+        "1.0.3_link": ["Communication#2.5.s1.table1.row1"]
+    },
+    "An LRSs Agent Profile Resource, rejects a POST request if the document is found and either documents type is not \"application/json\" with error code 400 Bad Request": {
+        "name": "An LRSs Agent Profile Resource, rejects a POST request if the document is found and either documents type is not \"application/json\" with error code 400 Bad Request",
+        "1.0.3_ref": "Communication 2.6.s3.table1.row3, XAPI-00278",
+        "1.0.3_link": ["Communication#2.6.s3.table1.row3"]
     }
 
 }

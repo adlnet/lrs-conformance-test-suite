@@ -354,7 +354,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
 /**  XAPI-00229, Communication 2.3 State Resource
  * An LRS's State API, rejects a POST request if the document is found and either document is not a valid JSON Object
  */
-    describe('An LRSs State API, rejects a POST request if the document is found and either document is not a valid JSON Object (multiplicity, Communication 2.3.s3.table1.row3, XAPI-00229)',function(){
+    describe('An LRSs State Resource, rejects a POST request if the document is found and either document is not a valid JSON Object (multiplicity, Communication 2.3.s3.table1.row3, XAPI-00229)',function(){
         it("Rejects a malformed JSON document when the content-type is 'application/json'", function (done) {
             var parameters = helper.buildState(),
             document = helper.buildDocument();
