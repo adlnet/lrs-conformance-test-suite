@@ -324,9 +324,11 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
     it('An LRS\'s returned array of ids from a successful GET request to the Agent Profile Resource all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present (Communication 2.6.s4.table1.row2, XAPI-00275)', function () {
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
+        var since = new Date().toISOString();
+
         return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
             .then(function () {
-                parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString();
+                parameters.since = since;
                 delete parameters.profileId;
                 return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
                     .then(function (res) {

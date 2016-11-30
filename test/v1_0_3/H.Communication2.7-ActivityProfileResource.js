@@ -339,11 +339,12 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         parameters.activityId = parameters.activityId + helper.generateUUID();
+        var since = new Date().toISOString();
 
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
             .then(function () {
                 delete parameters.profileId;
-                parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString(); // Date 1 second ago
+                parameters.since = since;
                 return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
                     .then(function (res) {
                         var body = res.body;

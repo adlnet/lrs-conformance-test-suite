@@ -663,13 +663,15 @@ it("An LRS must reject with 400 Bad Request a POST request to the State API whic
  */
     it('An LRS\'s returned array of ids from a successful GET request to the State Resource all refer to documents stored after the TimeStamp in the "since" parameter of the GET request (Communication 2.3.s4.table1.row4, XAPI-00195)', function () {
         var document = helper.buildDocument();
+        var since = new Date().toISOString();
+
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), helper.buildState(), document, 204)
             .then(function () {
                 return helper.sendRequest('post', helper.getEndpointActivitiesState(), helper.buildState(), document, 204)
                     .then(function () {
                         var parameters = helper.buildState();
                         delete parameters.stateId;
-                        parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString();
+                        parameters.since = since;
                         return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
                             .then(function (res) {
                                 var body = res.body;
