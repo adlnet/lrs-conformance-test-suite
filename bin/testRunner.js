@@ -109,8 +109,8 @@ class TestRunner extends EventEmitter
 	}
 
 	_registerStatusUpdates()
-	{	
-		
+	{
+
 
 		this.proc.on('message', function(msg)
 		{
@@ -132,7 +132,7 @@ class TestRunner extends EventEmitter
 
 				if(this.activeTest)
 					this.activeTest._log(payload);
-				break;	
+				break;
 
 			case 'end':
 
@@ -221,11 +221,11 @@ class TestRunner extends EventEmitter
 		}.bind(this));
 
 		this.proc.on("close", function(w)
-		{		
+		{
 			if(this.state == "cancelled" || this.state == "finished")
-			{		
+			{
 				return;
-			}	
+			}
 			else
 			{
 				this.state = "error";
@@ -239,7 +239,7 @@ class TestRunner extends EventEmitter
 	{
 		if(this.proc)
 		{
-			
+
 			this.endTime = Date.now();
 			this.duration = this.endTime - this.startTime;
 
@@ -297,8 +297,8 @@ class TestRunner extends EventEmitter
 
 		function cleanLog(log)
 		{
-			if(!log) return null;
-
+			if(!log || log.status !== 'failed') return undefined;
+			// if (log.status === 'failed')
 			return {
 				title: log.title,
 				name: log.name,

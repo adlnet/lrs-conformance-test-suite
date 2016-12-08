@@ -125,6 +125,21 @@ function start(options)
 			var output = JSON.stringify(cleanLog, null, '    ');
 			var outDir = libpath.join(__dirname, '../logs');
 
+			var errOnly = removeNulls (cleanLog.log.tests);
+
+			function removeNulls (arr)
+			{
+				if (!Array.isArray(arr)) return console.log("Not an Array", typeof arr);
+				console.log(Object.keys(arr), arr.length);
+				arr.forEach(function (item) {
+					if (!item) {console.log('this is a null');}
+					else if (item.tests === []) {'this is [] empty'}
+					else {
+						console.log('this is full of stuff', item.tests.length);
+						removeNulls(item.tests);
+					}
+				})
+			}
 
             // console.log(require("util").inspect(JSON.parse(JSON.stringify(cleanLog,function(k,v){if(k=="log" && v && v.constructor == String) return undefined; return v})),{depth:10}));
 
@@ -133,6 +148,7 @@ function start(options)
 				fs.writeFile(outPath, output);
 				console.log('Full run log written to', outPath);
 			});
+
 		}
 	});
 }

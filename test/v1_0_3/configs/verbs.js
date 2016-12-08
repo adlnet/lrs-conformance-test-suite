@@ -24,7 +24,8 @@
                             {statement: '{{statements.verb}}'},
                             {verb: '{{verbs.default}}'}
                         ],
-                        expect: [200]
+                        expect: [400]
+                        // expect: [200]
                     },
                     {
                         name: 'should pass substatement verb template',
@@ -33,6 +34,7 @@
                             {object: '{{substatements.verb}}'},
                             {verb: '{{verbs.default}}'}
                         ],
+                        // expect: [400]
                         expect: [200]
                     }
                 ]
@@ -59,7 +61,8 @@
                             {object: '{{substatements.verb}}'},
                             {verb: '{{verbs.no_id}}'}
                         ],
-                        expect: [400]
+                        // expect: [400]
+                        expect: [200]
                     }
                 ]
             },
