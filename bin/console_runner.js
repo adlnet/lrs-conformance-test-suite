@@ -125,20 +125,33 @@ function start(options)
 			var output = JSON.stringify(cleanLog, null, '    ');
 			var outDir = libpath.join(__dirname, '../logs');
 
-			var errOnly = removeNulls (cleanLog.log.tests);
-
+			var num = 0;
+			// var errOnly = removeNulls (cleanLog.log.tests);
 			function removeNulls (arr)
 			{
+				console.log(num);
+				var cleanup = false;
+				var newarr;
 				if (!Array.isArray(arr)) return console.log("Not an Array", typeof arr);
 				console.log(Object.keys(arr), arr.length);
 				arr.forEach(function (item) {
-					if (!item) {console.log('this is a null');}
-					else if (item.tests === []) {'this is [] empty'}
+					if (!item) {console.log('this is a null'); return true;}
+					else if (item.tests.lenght === 0) {console.log('this is [] empty'); return false;}
 					else {
 						console.log('this is full of stuff', item.tests.length);
-						removeNulls(item.tests);
+						if (removeNulls(item.tests)) cleanup = true;
 					}
-				})
+				});
+				console.log("howdy this is after the for each", ++num);
+				if (cleanup) {
+					console.log('clean this place up', cleanup);
+					newarr = arr.filter(function(value) {
+						return value;
+					});
+				}
+				else console.log('nope, leave it alone', cleanup);
+				console.log('mountain', newarr);
+				return newarr;
 			}
 
             // console.log(require("util").inspect(JSON.parse(JSON.stringify(cleanLog,function(k,v){if(k=="log" && v && v.constructor == String) return undefined; return v})),{depth:10}));
