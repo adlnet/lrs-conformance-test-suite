@@ -68,23 +68,29 @@ describe('Formatting Requirements (Data 2.2)', () => {
             .headers(helper.addAllHeaders({}))
             .json(data)
             .expect(200)
-            .end()
-            .get(helper.getEndpointStatements() + query)
-            .wait(helper.genDelay(stmtTime, query, id))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end((err, res) => {
+            .end(function (err, res) {
                 if (err) {
                     done(err);
                 } else {
-                    var score = helper.parse(res.body).result.score;
-                    expect(score.min).to.eql(min);
-                    expect(score.raw).to.eql(raw);
-                    expect(score.max).to.eql(max);
-                    expect(score.scaled).to.eql(min);
-                    done();
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + query)
+                    .wait(helper.genDelay(stmtTime, query, id))
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200)
+                    .end((err, res) => {
+                        if (err) {
+                            done(err);
+                        } else {
+                            var score = helper.parse(res.body).result.score;
+                            expect(score.min).to.eql(min);
+                            expect(score.raw).to.eql(raw);
+                            expect(score.max).to.eql(max);
+                            expect(score.scaled).to.eql(min);
+                            done();
+                        }
+                    });
                 }
-            });
+            })
         });
     });
 
