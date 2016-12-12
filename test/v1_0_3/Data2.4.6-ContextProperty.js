@@ -59,7 +59,9 @@ describe('Context Property Requirements (Data 2.4.6)', () => {
                 .json(data)
                 .expect(200)
                 .end(function (err, res) {
-                    if (err) console.log(err);
+                    if (err) {
+                        done(err);
+                    }
                     else {
                         request(helper.getEndpointAndAuth())
                         .get(helper.getEndpointStatements() + query)
