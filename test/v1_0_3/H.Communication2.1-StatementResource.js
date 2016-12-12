@@ -2622,17 +2622,15 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-
-
                     expect(res.headers["content-type"]).to.equal('application/json');
                     done();
                 }
             });
         });
+
         it('should NOT return the attachment if "attachments" is false', function (done) {
 
             var query = '?statementId=' + statementId + "&attachments=false";
-
 
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
@@ -2646,10 +2644,10 @@ MUST have a "Content-Type" header
 
              done();
                     expect(res.headers["content-type"]).to.equal('application/json');
-
                 }
             });
         });
+
         it('should return the attachment when "attachment" is true', function (done) {
 
             var query = '?statementId=' + statementId + "&attachments=true";
@@ -2662,8 +2660,6 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-
-
                     //how delicate is this parsing? There is a newline as body[1], the statement as body[0]. Should we search all
                     //parts of the body?
                     var ContentType = res.headers["content-type"];
@@ -2682,10 +2678,10 @@ MUST have a "Content-Type" header
                 }
             });
 
-
         });
 
     });
+
 /**  XAPI-00163, Communication 2.1.3 GET Statements
  * An LRS's Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request
  */
