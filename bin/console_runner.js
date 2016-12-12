@@ -120,39 +120,43 @@ function start(options)
 			console.log(JSON.stringify(testRunner.summary));
 			console.log(`Tests completed in ${testRunner.duration/1000} seconds`);
 
+			function removeNulls (log)
+			{
+				var temp;
+				if (log.status === 'failed')
+				{
+					temp = {
+						title: log.title,
+						name: log.name,
+						requirement: log.requirement,
+						log:log.log,
+						status: log.status,
+						error: log.error
+					};
+					var t = log.tests.map(removeNulls);
+					if (t) temp.tests = t.filter(function(v){return v != undefined});
+				}
+				return temp;
+			}
+
 			// write log to file
 			var cleanLog = testRunner.getCleanRecord();
-			var output = JSON.stringify(cleanLog, null, '    ');
+			var errOnly = {
+				name: cleanLog.name,
+				owner: cleanLog.owner,
+				flags: cleanLog.flags,
+				options: cleanLog.options,
+				rollupRule: cleanLog.rollupRule,
+				uuid: cleanLog.uuid,
+				startTime: cleanLog.startTime,
+				endTime: cleanLog.endTime,
+				duration: cleanLog.duration,
+				state: cleanLog.state,
+				summary: cleanLog.summary,
+				log: removeNulls(cleanLog.log)
+			};
+			var output = JSON.stringify(errOnly, null, '    ');
 			var outDir = libpath.join(__dirname, '../logs');
-
-			var num = 0;
-			// var errOnly = removeNulls (cleanLog.log.tests);
-			function removeNulls (arr)
-			{
-				console.log(num);
-				var cleanup = false;
-				var newarr;
-				if (!Array.isArray(arr)) return console.log("Not an Array", typeof arr);
-				console.log(Object.keys(arr), arr.length);
-				arr.forEach(function (item) {
-					if (!item) {console.log('this is a null'); return true;}
-					else if (item.tests.lenght === 0) {console.log('this is [] empty'); return false;}
-					else {
-						console.log('this is full of stuff', item.tests.length);
-						if (removeNulls(item.tests)) cleanup = true;
-					}
-				});
-				console.log("howdy this is after the for each", ++num);
-				if (cleanup) {
-					console.log('clean this place up', cleanup);
-					newarr = arr.filter(function(value) {
-						return value;
-					});
-				}
-				else console.log('nope, leave it alone', cleanup);
-				console.log('mountain', newarr);
-				return newarr;
-			}
 
             // console.log(require("util").inspect(JSON.parse(JSON.stringify(cleanLog,function(k,v){if(k=="log" && v && v.constructor == String) return undefined; return v})),{depth:10}));
 

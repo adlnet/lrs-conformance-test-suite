@@ -294,34 +294,20 @@ class TestRunner extends EventEmitter
 				version: version.versionNumber
 			}
 		};
-		// var ctr = 0;
+
 		function cleanLog(log)
 		{
-			// console.log(++ctr);
 			if(!log) return undefined;
-			// if(!log || log.status !== 'failed') return undefined;
-			// if (log.status === 'failed')
-			function removeNulls(v) {return v != undefined}
-			// console.log('boo');
-			if (log.status === 'failed')
-			{
-				var temp = {
-					title: log.title,
-					name: log.name,
-					requirement: log.requirement,
-					log:log.log,
-					status: log.status,
-					error: log.error,
-				};
-				var t = log.tests.map(cleanLog);
-				if (t) temp.tests = t.filter(function(v){return v != undefined})
-			}
 
-
-			// log.tests.filter();
-			// console.log(typeof log.tests);
-
-			return temp;
+			return {
+				title: log.title,
+				name: log.name,
+				requirement: log.requirement,
+				log:log.log,
+				status: log.status,
+				error: log.error,
+				tests: log.tests.map(cleanLog)
+			};
 		}
 
 		runRecord.log = cleanLog(this.log);
