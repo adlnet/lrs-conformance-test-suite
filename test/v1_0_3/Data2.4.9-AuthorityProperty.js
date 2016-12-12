@@ -66,7 +66,7 @@ describe('Authority Property Requirements (Data 2.4.9)', () => {
                     done(err);
                 } else {
                     request(helper.getEndpointAndAuth())
-                    .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                    .get(helper.getEndpointStatements() + query)
                     .headers(helper.addAllHeaders({}))
                     .wait(helper.genDelay(stmtTime, query, data.id))
                     .expect(200).end(function (err, res) {
