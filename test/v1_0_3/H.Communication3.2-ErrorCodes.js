@@ -278,15 +278,21 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json([correct, incorrect])
-                .expect(400)
-                .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
-                .wait(helper.genDelay(stmtTime, query, correct.id))
-                .headers(helper.addAllHeaders({}))
-                .expect(404, done);
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json([correct, incorrect])
+            .expect(400)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
+                    .wait(helper.genDelay(stmtTime, query, correct.id))
+                    .headers(helper.addAllHeaders({}))
+                    .expect(404, done);
+                }
+            });
         });
     });
 
