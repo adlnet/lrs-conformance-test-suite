@@ -199,22 +199,34 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             .headers(helper.addAllHeaders({}))
             .json(data)
             .expect(200)
-            .end()
-            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .headers(helper.addAllHeaders({}))
-            .json(modified)
-            .end()
-            .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .wait(helper.genDelay(stmtTime, query, data.id))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
                 } else {
-                    var statement = helper.parse(res.body, done);
-                    expect(statement.verb.id).to.equal(data.verb.id);
-                    done();
+                    request(helper.getEndpointAndAuth())
+                    .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                    .headers(helper.addAllHeaders({}))
+                    .json(modified)
+                    .end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            request(helper.getEndpointAndAuth())
+                            .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                            .wait(helper.genDelay(stmtTime, query, data.id))
+                            .headers(helper.addAllHeaders({}))
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    done(err);
+                                } else {
+                                    var statement = helper.parse(res.body, done);
+                                    expect(statement.verb.id).to.equal(data.verb.id);
+                                    done();
+                                }
+                            });
+                        }
+                    });
                 }
             });
         });
@@ -236,22 +248,34 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             .headers(helper.addAllHeaders({}))
             .json(data)
             .expect(204)
-            .end()
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .json(modified)
-            .end()
-            .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .wait(helper.genDelay(stmtTime, query, data.id))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
                 } else {
-                    var statement = helper.parse(res.body, done);
-                    expect(statement.verb.id).to.equal(data.verb.id);
-                    done();
+                    request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .json(modified)
+                    .end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            request(helper.getEndpointAndAuth())
+                            .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                            .wait(helper.genDelay(stmtTime, query, data.id))
+                            .headers(helper.addAllHeaders({}))
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    done(err);
+                                } else {
+                                    var statement = helper.parse(res.body, done);
+                                    expect(statement.verb.id).to.equal(data.verb.id);
+                                    done();
+                                }
+                            });
+                        }
+                    });
                 }
             });
         });
@@ -412,11 +436,17 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         .headers(helper.addAllHeaders({}))
         .json([correct, incorrect])
         .expect(400)
-        .end()
-        .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
-        .wait(helper.genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
-        .headers(helper.addAllHeaders({}))
-        .expect(404, done);
+        .end(function (err, res) {
+            if (err) {
+                done(err);
+            } else {
+                request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
+                .wait(helper.genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
+                .headers(helper.addAllHeaders({}))
+                .expect(404, done);
+            }
+        });
     });
 
     //Communication 2.1.3 GET Statements
@@ -950,15 +980,21 @@ StatementResult Object.
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(200)
-                .end()
-                .get(helper.getEndpointStatements() + query)
-                .wait(helper.genDelay(stmtTime, query, data.id))
-                .headers(helper.addAllHeaders({}))
-                .expect(200, done);
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + query)
+                    .wait(helper.genDelay(stmtTime, query, data.id))
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200, done);
+                }
+            });
         });
     });
 
