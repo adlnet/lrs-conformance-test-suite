@@ -76,7 +76,8 @@
                 then: Joi.required()
             }),
             reporter: Joi.string().regex(/^((dot)|(spec)|(nyan)|(tap)|(List)|(progress)|(min)|(doc))$/).default('nyan'),
-            bail: Joi.boolean()
+            bail: Joi.boolean(),
+            errors: Joi.boolean()
         }).unknown(false);
 
         var validOptions = Joi.validate(_options, optionsValidator);
@@ -102,6 +103,7 @@
             token_secret: _options.token_secret,
             verifier: _options.verifier,
             oAuth1: _options.oAuth1,
+            errors: _options.errors
         };
 
         var grep;

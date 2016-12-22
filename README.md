@@ -41,6 +41,7 @@ $ node bin/console_runner.js --help
     -g, --grep [string]                Only run tests that match the given pattern
     -b, --bail                         Abort the battery if one test fails
     -d, --directory [value]            Specific directories of tests (as a comma seperated list with no spaces)
+    -z, --errors                       Results log of failing tests only
 ```
 
 ### Running Test Suite
@@ -48,17 +49,13 @@ $ node bin/console_runner.js --help
 Example:
 
 ```bash
-$ node bin/console_runner.js -e http://localhost/xapi -a true -u username -p password
+$ node bin/console_runner.js -e http://localhost/xapi -a -u username -p password
 -or-
-$ node bin/console_runner.js --endpoint http://localhost/xapi --basicAuth true --authUser username --authPass password
+$ node bin/console_runner.js --endpoint http://localhost/xapi --basicAuth --authUser username --authPass password
 ```
 
-
 ## Contributing to the project
-We welcome contributions to this project. Fork this repository,
-make changes, and submit pull requests. If you're not comfortable
-with editing the code, please [submit an issue](https://github.com/adlnet/lrs-conformance-test-suite/issues) and we'll be happy
-to address it. 
+We welcome contributions to this project. Fork this repository, make changes, and submit pull requests. If you're not comfortable with editing the code, please [submit an issue](https://github.com/adlnet/lrs-conformance-test-suite/issues) and we'll be happy to address it.
 
 ### License
 MIT License
