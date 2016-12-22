@@ -40,19 +40,25 @@ describe('Versioning Requirements (Communication 3.3)', () => {
         .headers(helper.addAllHeaders({}))
         .json(statement)
         .expect(200)
-        .end()
-        .get(helper.getEndpointStatements() + '?' + query)
-        .wait(helper.genDelay(stmtTime, '?' + query, id))
-        .headers(helper.addAllHeaders({}))
-        .expect(200)
-        .end(function(err,res){
-            if (err){
+        .end(function (err, res) {
+            if (err) {
                 done(err);
-            }
-            else{
-                expect(res.headers).to.have.property('x-experience-api-version');
-                expect(res.headers['x-experience-api-version']).to.equal("1.0.3");
-                done();
+            } else {
+                request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?' + query, id))
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function(err,res){
+                    if (err){
+                        done(err);
+                    }
+                    else{
+                        expect(res.headers).to.have.property('x-experience-api-version');
+                        expect(res.headers['x-experience-api-version']).to.equal("1.0.3");
+                        done();
+                    }
+                });
             }
         });
     });
@@ -70,16 +76,22 @@ describe('Versioning Requirements (Communication 3.3)', () => {
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(200)
-                .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .wait(helper.genDelay(stmtTime, query, data.id))
-                .headers(helper.addAllHeaders({}))
-                .expect(200)
-                .expect('x-experience-api-version', '1.0.3', done);
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                    .wait(helper.genDelay(stmtTime, query, data.id))
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200)
+                    .expect('x-experience-api-version', '1.0.3', done);
+                }
+            });
         });
     });
 
@@ -99,25 +111,31 @@ describe('Versioning Requirements (Communication 3.3)', () => {
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(200)
-                .end()
-                .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .wait(helper.genDelay(stmtTime, query, data.id))
-                .headers(helper.addAllHeaders({}))
-                .expect(200).end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        var statement = helper.parse(res.body, done);
-                        expect(helper.isEqual(data.actor, statement.actor)).to.be.true;
-                        expect(helper.isEqual(data.object, statement.object)).to.be.true;
-                        expect(helper.isEqual(data.verb, statement.verb)).to.be.true;
-                        done();
-                    }
-                });
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                    .wait(helper.genDelay(stmtTime, query, data.id))
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200).end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            var statement = helper.parse(res.body, done);
+                            expect(helper.isEqual(data.actor, statement.actor)).to.be.true;
+                            expect(helper.isEqual(data.object, statement.object)).to.be.true;
+                            expect(helper.isEqual(data.verb, statement.verb)).to.be.true;
+                            done();
+                        }
+                    });
+                }
+            });
         });
     });
 
@@ -188,18 +206,24 @@ describe('Versioning Requirements (Communication 3.3)', () => {
         .headers(helper.addAllHeaders({}))
         .json(statement)
         .expect(200)
-        .end()
-        .get(helper.getEndpointStatements() + '?' + query)
-        .wait(helper.genDelay(stmtTime, '?' + query, id))
-        .headers(helper.addAllHeaders({}))
-        .expect(200)
-        .end(function(err,res){
-            if (err){
+        .end(function (err, res) {
+            if (err) {
                 done(err);
-            }
-            else{
-                expect(res.headers['x-experience-api-version']).to.equal(version);
-                done();
+            } else {
+                request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?' + query, id))
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function(err,res){
+                    if (err){
+                        done(err);
+                    }
+                    else{
+                        expect(res.headers['x-experience-api-version']).to.equal(version);
+                        done();
+                    }
+                });
             }
         });
     });
