@@ -24,13 +24,14 @@ program
     .option('-a, --basicAuth', 'Enable Basic Auth')
     .option('-o, --oAuth1', 'Enable oAuth 1')
     .option('-c, --consumer_key [string]', 'oAuth 1 Consumer Key')
-    .option('-s, --consumer_secret [string]', 'oAuth 1 Consumer Secert')
+    .option('-s, --consumer_secret [string]', 'oAuth 1 Consumer Secret')
     .option('-r, --request_token_path [string]', 'Path to OAuth request token endpoint (relative to endpoint)')
     .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint)')
     .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
     .option('-g, --grep [string]', 'Only run tests that match the given pattern')
     .option('-b, --bail', 'Abort the battery if one test fails')
     .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, ['v1_0_3'])
+    .option('-z, --errors', 'Results log of failing tests only')
     .parse(process.argv);
 
 var options = {
@@ -46,11 +47,11 @@ var options = {
         authorization_path: program.authorization_path,
         grep: program.grep,
         bail: program.bail,
-        directory: program.directory
+        directory: program.directory,
+		errors: program.errors
     }
 
-    /*
-
+/*
 var valid = validate(options, {
     type: "object",
     properties: {
@@ -141,21 +142,27 @@ function start(options)
 
 			// write log to file
 			var cleanLog = testRunner.getCleanRecord();
-			var errOnly = {
-				name: cleanLog.name,
-				owner: cleanLog.owner,
-				flags: cleanLog.flags,
-				options: cleanLog.options,
-				rollupRule: cleanLog.rollupRule,
-				uuid: cleanLog.uuid,
-				startTime: cleanLog.startTime,
-				endTime: cleanLog.endTime,
-				duration: cleanLog.duration,
-				state: cleanLog.state,
-				summary: cleanLog.summary,
-				log: removeNulls(cleanLog.log)
-			};
-			var output = JSON.stringify(errOnly, null, '    ');
+			var output;
+			if (options.errors) {
+				var errOnly = {
+					name: cleanLog.name,
+					owner: cleanLog.owner,
+					flags: cleanLog.flags,
+					options: cleanLog.options,
+					rollupRule: cleanLog.rollupRule,
+					uuid: cleanLog.uuid,
+					startTime: cleanLog.startTime,
+					endTime: cleanLog.endTime,
+					duration: cleanLog.duration,
+					state: cleanLog.state,
+					summary: cleanLog.summary,
+					log: removeNulls(cleanLog.log)
+				};
+				output = JSON.stringify(errOnly, null, '    ');
+			} else {
+				output = JSON.stringify(cleanLog, null, '    ');
+			}
+
 			var outDir = libpath.join(__dirname, '../logs');
 
             // console.log(require("util").inspect(JSON.parse(JSON.stringify(cleanLog,function(k,v){if(k=="log" && v && v.constructor == String) return undefined; return v})),{depth:10}));
