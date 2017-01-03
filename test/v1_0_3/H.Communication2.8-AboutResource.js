@@ -60,7 +60,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
  * An LRS's About API's version property contains at least one string of "1.0.x"
  */
     //moving this over for now, string value will need updated
-    it('An LRS\'s About Resource\'s version property contains at least one string of "1.0.1" (Communication 2.8.s5.b1.b1, XAPI-00317)', function () {
+    it('An LRS\'s About Resource\'s version property contains at least one string of "1.0.3" (Communication 2.8.s5.b1.b1, XAPI-00317)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
@@ -68,7 +68,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
 
                 var foundVersion = false
                 about.version.forEach(function (item) {
-                    if (item === '1.0.1') {
+                    if (item === '1.0.3') {
                         foundVersion = true;
                     }
                 })
