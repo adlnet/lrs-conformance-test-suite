@@ -314,7 +314,7 @@
                             {object: '{{activities.no_definition}}'},
                             {definition: {}}
                         ],
-                        expect: [400]
+                        expect: [200]
                     },
                     {
                         name: 'statement activity "definition" contains "name"',
@@ -378,7 +378,7 @@
                             {object: '{{activities.no_definition}}'},
                             {definition: {}}
                         ],
-                        expect: [400]
+                        expect: [200]
                     },
                     {
                         name: 'statement substatement activity "definition" contains "name"',
