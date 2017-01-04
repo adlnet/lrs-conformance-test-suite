@@ -111,6 +111,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                 } else {
                     var result = helper.parse(res.body, done);
                     expect(result).to.have.property('statements');
+                    //in this case we can be sure there will be a more property because we know that there is more than one statement to be returned, so the more property is required
                     expect(result).to.have.property('more');
                     done();
                 }
@@ -474,6 +475,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                     else {
                         var results = helper.parse(res.body, done);
                         expect(results.statements).to.exist;
+                        //because of the 2 statements and the limit 1, we know there will be additional statements and the more link is required
                         expect(results.more).to.exist;
                         done();
                     }
@@ -546,10 +548,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                         done(err);
                     } else {
                         var result = helper.parse(res.body, done);
-        // expect(result.more).to.be.oneOf([undefined, '']);
-        // done();
-                        expect(result).to.have.property('more').to.be.truthy;
-                        expect(result.more).to.equal('')
+                        expect(result.more).to.be.oneOf([undefined, '']);
                         done();
                     }
                 });
@@ -593,7 +592,18 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                             else {
                                 var results2 = helper.parse(res.body, done);
                                 expect(results2.statements).to.exist;
-                                expect(results2.more).to.exist;
+/*
+    So this is what I am looking for, the spec is wishy washy so if there is something more, there must be a more, and if there is nothing more, then you can just not have a more property or you can have a more property which is simply an empty string, and both of those options are valid.  Seems dumb to me, but that is our spec, and I'm sure there is some discussion on some issue somewhere where this became the all important way for this to be done.  And so now this is what I have got to test which really pisses me off at this point.
+
+    So instead of:
+        expect(results2.more).to.exist;
+
+    we need to have:
+        if (results2.more)
+
+    Nope, really whether there is a more property or not in no way affects this part of the test.  As long as we can get more statements - we good.
+
+*/
                                 done();
                             }
                         });
@@ -659,7 +669,8 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                             }
                             else {
                                 var results2 = helper.parse(res.body, done);
-                                expect(results2.statements && results2.more).to.exist;
+                                expect(results2.statements).to.exist;
+                                // expect(results2.statements && results2.more).to.exist;
                                 done();
                             }
                         });
