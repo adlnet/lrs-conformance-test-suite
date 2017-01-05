@@ -11,7 +11,7 @@
     // defines overwriting data
     var INVALID_IRI = 'ab=c://should.fail.com';
     var INVALID_NUMERIC = 12345;
-    var INVALID_OBJECT = {test: 'value'};
+    var INVALID_OBJECT = {something: 'value'};
     var INVALID_STRING = 'should error';
     var INVALID_INTERACTION_COMPONENT_ID = {
         'id': INVALID_OBJECT,
@@ -499,7 +499,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.choice}}'},
-                            {definition: {choices: [{description:{12345: 'Choice 12345'}}]}}
+                            {definition: {choices: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -508,7 +508,8 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.choice}}'},
-                            {definition: {choices: [{description:{English: 'Choice A'}}]}}
+                            // {definition: {choices: [{description:{English: 'Choice A'}}]}}
+                            {definition: {choices: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -517,7 +518,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.sequencing}}'},
-                            {definition: {choices: [{description:{12345: 'Choice 12345'}}]}}
+                            {definition: {choices: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -526,7 +527,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.sequencing}}'},
-                            {definition: {choices: [{description:{English: 'Choice A'}}]}}
+                            {definition: {choices: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -535,7 +536,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.likert}}'},
-                            {definition: {scale: [{description:{12345: 'Scale 12345'}}]}}
+                            {definition: {scale: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -544,7 +545,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.likert}}'},
-                            {definition: {scale: [{description:{English: 'Scale A'}}]}}
+                            {definition: {scale: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -553,7 +554,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching}}'},
-                            {definition: {source: [{description:{12345: 'source 12345'}}]}}
+                            {definition: {source: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -562,7 +563,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching}}'},
-                            {definition: {source: [{description:{English: 'source A'}}]}}
+                            {definition: {source: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -571,7 +572,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching}}'},
-                            {definition: {target: [{description:{12345: 'target 12345'}}]}}
+                            {definition: {target: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -580,7 +581,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching}}'},
-                            {definition: {target: [{description:{English: 'target A'}}]}}
+                            {definition: {target: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -589,7 +590,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {steps: [{description:{12345: 'steps 12345'}}]}}
+                            {definition: {steps: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -598,7 +599,7 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {steps: [{description:{English: 'steps A'}}]}}
+                            {definition: {steps: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -608,7 +609,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.choice}}'},
-                            {definition: {choices: [{description:{12345: 'Choice 12345'}}]}}
+                            {definition: {choices: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -618,7 +619,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.choice}}'},
-                            {definition: {choices: [{description:{English: 'Choice A'}}]}}
+                            {definition: {choices: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -628,7 +629,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.sequencing}}'},
-                            {definition: {choices: [{description:{12345: 'Choice 12345'}}]}}
+                            {definition: {choices: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -638,7 +639,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.sequencing}}'},
-                            {definition: {choices: [{description:{English: 'Choice A'}}]}}
+                            {definition: {choices: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -648,7 +649,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.likert}}'},
-                            {definition: {scale: [{description:{12345: 'scale 12345'}}]}}
+                            {definition: {scale: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -658,7 +659,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.likert}}'},
-                            {definition: {scale: [{description:{English: 'scale A'}}]}}
+                            {definition: {scale: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -668,7 +669,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching}}'},
-                            {definition: {source: [{description:{12345: 'source 12345'}}]}}
+                            {definition: {source: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -678,7 +679,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching}}'},
-                            {definition: {source: [{description:{English: 'source A'}}]}}
+                            {definition: {source: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -688,7 +689,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching}}'},
-                            {definition: {target: [{description:{12345: 'target 12345'}}]}}
+                            {definition: {target: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -698,7 +699,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.matching}}'},
-                            {definition: {target: [{description:{English: 'target A'}}]}}
+                            {definition: {target: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     },
@@ -708,7 +709,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {steps: [{description:{12345: 'steps 12345'}}]}}
+                            {definition: {steps: [{description: INVALID_NUMERIC}]}}
                         ],
                         expect: [400]
                     },
@@ -718,7 +719,7 @@
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
                             {object: '{{activities.performance}}'},
-                            {definition: {steps: [{description:{English: 'steps A'}}]}}
+                            {definition: {steps: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
                     }

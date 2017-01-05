@@ -10,7 +10,8 @@
 
     // defines overwriting data
     var INVALID_URI = 'ab=c://should.fail.com';
-    var INVALID_LANGUAGE_MAP = {'display': { 'a12345': 'attended'}};
+    var INVALID_LANGUAGE_MAP_NUMERIC = {'display': 'a12345'};
+    var INVALID_LANGUAGE_MAP_STRING = {'display': 'a12345 attended'};
 
     // configures tests
     module.exports.config = function () {
@@ -94,21 +95,40 @@
                 name: 'A "verb" property\'s "display" property is a Language Map (Type, Data 2.4.3.s3.table1.row2, XAPI-00045)',
                 config: [
                     {
-                        name: 'statement verb "display" not language',
+                        name: 'statement verb "display" is numeric',
                         templates: [
                             {statement: '{{statements.verb}}'},
                             {verb: '{{verbs.default}}'},
-                            INVALID_LANGUAGE_MAP
+                            INVALID_LANGUAGE_MAP_NUMERIC
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'statement substatement verb "display" not language',
+                        name: 'statement verb "display" is string',
+                        templates: [
+                            {statement: '{{statements.verb}}'},
+                            {verb: '{{verbs.default}}'},
+                            INVALID_LANGUAGE_MAP_STRING
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement verb "display" is numeric',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.verb}}'},
                             {verb: '{{verbs.default}}'},
-                            INVALID_LANGUAGE_MAP
+                            INVALID_LANGUAGE_MAP_NUMERIC
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement substatement verb "display" is string',
+                        templates: [
+                            {statement: '{{statements.object_substatement}}'},
+                            {object: '{{substatements.verb}}'},
+                            {verb: '{{verbs.default}}'},
+                            INVALID_LANGUAGE_MAP_STRING
                         ],
                         expect: [400]
                     }
