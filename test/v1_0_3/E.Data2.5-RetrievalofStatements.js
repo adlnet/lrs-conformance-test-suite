@@ -661,7 +661,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                             }
                             else {
                                 var results2 = helper.parse(res.body, done);
-                                expect(results2.statements && results2.more).to.exist;
+                                expect(results2.statements).to.exist;
                                 done();
                             }
                         });
