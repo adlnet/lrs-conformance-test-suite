@@ -508,7 +508,6 @@
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.choice}}'},
-                            // {definition: {choices: [{description:{English: 'Choice A'}}]}}
                             {definition: {choices: [{description: INVALID_STRING}]}}
                         ],
                         expect: [400]
