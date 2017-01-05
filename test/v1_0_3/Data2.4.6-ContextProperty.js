@@ -53,28 +53,34 @@ describe('Context Property Requirements (Data 2.4.6)', () => {
                 data.id = helper.generateUUID();
                 var query = '?statementId=' + data.id;
                 var stmtTime = Date.now();
-
                 request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .json(data)
-                    .expect(200)
-                    .end()
-                    .get(helper.getEndpointStatements() + query)
-                    .wait(helper.genDelay(stmtTime, query, data.id))
-                    .headers(helper.addAllHeaders({}))
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            done(err);
-                        } else {
-                            var statement = helper.parse(res.body, done);
-                            expect(statement).to.have.property('context').to.have.property('contextActivities');
-                            expect(statement.context.contextActivities).to.have.property(type);
-                            expect(statement.context.contextActivities[type]).to.be.an('array');
-                            done();
-                        }
-                    });
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    }
+                    else {
+                        request(helper.getEndpointAndAuth())
+                        .get(helper.getEndpointStatements() + query)
+                        .wait(helper.genDelay(stmtTime, query, data.id))
+                        .headers(helper.addAllHeaders({}))
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err) {
+                                done(err);
+                            } else {
+                                var statement = helper.parse(res.body, done);
+                                expect(statement).to.have.property('context').to.have.property('contextActivities');
+                                expect(statement.context.contextActivities).to.have.property(type);
+                                expect(statement.context.contextActivities[type]).to.be.an('array');
+                                done();
+                            }
+                        });
+                    }
+                });
             });
         });
 
@@ -92,26 +98,32 @@ describe('Context Property Requirements (Data 2.4.6)', () => {
                 var stmtTime = Date.now();
 
                 request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}))
-                    .json(data)
-                    .expect(200)
-                    .end()
-                    .get(helper.getEndpointStatements() + query)
-                    .wait(helper.genDelay(stmtTime, query, data.id))
-                    .headers(helper.addAllHeaders({}))
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            done(err);
-                        } else {
-                            var statement = helper.parse(res.body, done);
-                            expect(statement).to.have.property('object').to.have.property('context').to.have.property('contextActivities');
-                            expect(statement.object.context.contextActivities).to.have.property(type);
-                            expect(statement.object.context.contextActivities[type]).to.be.an('array');
-                            done();
-                        }
-                    });
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        request(helper.getEndpointAndAuth())
+                        .get(helper.getEndpointStatements() + query)
+                        .wait(helper.genDelay(stmtTime, query, data.id))
+                        .headers(helper.addAllHeaders({}))
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err) {
+                                done(err);
+                            } else {
+                                var statement = helper.parse(res.body, done);
+                                expect(statement).to.have.property('object').to.have.property('context').to.have.property('contextActivities');
+                                expect(statement.object.context.contextActivities).to.have.property(type);
+                                expect(statement.object.context.contextActivities[type]).to.be.an('array');
+                                done();
+                            }
+                        });
+                    }
+                });
             });
         });
     });
