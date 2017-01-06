@@ -370,11 +370,11 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         });
 
 /**  XAPI-00313, Communication 2.7 Activity Profile Resource
- * An LRS's Activity Profile API, rejects a POST request if the document is found and either doucment is not a valid JSON Object
+ * An LRS's Activity Profile API, rejects a POST request if the document is found and either document is not a valid JSON Object
  * tests if document is not a valid JSON object, not sure how to put a document in there that is already invalid
  * this test is incomplete
  */
-        it('An LRS\'s Activity Profile Resource, rejects a POST request if the document is found and either doucment is not a valid JSON Object (Communication 2.7.s4.table1.row2, XAPI-00313)', function () {
+        it('An LRS\'s Activity Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object (Communication 2.7.s4.table1.row2, XAPI-00313)', function () {
 
             var document = undefined;
             var parameters = helper.buildActivityProfile();
@@ -407,10 +407,10 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         });
 
 /**  XAPI-00314, Communication 2.7 Activity Profile Resource
- * An LRS's must reject, with 400 Bad Request, a POST request to the Acitvity Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
+ * An LRS's must reject, with 400 Bad Request, a POST request to the Activity Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
  ** this test is incomplete
  */
-        it('An LRS\'s must reject, with 400 Bad Request, a POST request to the Acitvity Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is "application/json" (Communication 2.7.s4.table1.row2, XAPI-00314)', function () {
+        it('An LRS\'s must reject, with 400 Bad Request, a POST request to the Activity Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is "application/json" (Communication 2.7.s4.table1.row2, XAPI-00314)', function () {
 
             var document = undefined;
             var parameters = helper.buildActivityProfile();
