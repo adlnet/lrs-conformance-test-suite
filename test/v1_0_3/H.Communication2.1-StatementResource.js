@@ -305,7 +305,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                 } else if (res.statusCode === 409 || res.statusCode === 204) {
                     done();
                 } else {
-                    done(new Error('Missing: no update status code using POST'))
+                    done(new Error('Received status code: ' + res.statusCode));
                 }
             });
         });
@@ -333,7 +333,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                 } else if (res.statusCode === 409 || res.statusCode === 204) {
                     done();
                 } else {
-                    done(new Error('Missing: no update status code using PUT'))
+                    done(new Error('Received status code: ' + res.statusCode));
                 }
             });
         });
