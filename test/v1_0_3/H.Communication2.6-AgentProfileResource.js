@@ -391,7 +391,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
             var header = {'content-type': 'application/octet-stream'};
 
             request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+            .put(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
             .headers(helper.addAllHeaders(header))
             .body(attachment)
             .expect(204,function(err,res) {

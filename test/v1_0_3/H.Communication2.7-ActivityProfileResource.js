@@ -421,7 +421,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             var header = {'content-type': 'application/octet-stream'};
 
             request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointActivitiesProfile()+ '?' + helper.getUrlEncoding(parameters) )
+            .put(helper.getEndpointActivitiesProfile()+ '?' + helper.getUrlEncoding(parameters) )
             .headers(helper.addAllHeaders(header))
             .body(attachment)
             .expect(204, function(err,res) {

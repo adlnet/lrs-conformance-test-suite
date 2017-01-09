@@ -403,7 +403,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
             var header = {'content-type': 'application/octet-stream'};
 
             request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) )
+            .put(helper.getEndpointActivitiesState()+ '?' + helper.getUrlEncoding(parameters) )
             .headers(helper.addAllHeaders(header))
             .body(attachment)
             .expect(204, function(err,res) {
