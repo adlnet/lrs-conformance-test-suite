@@ -94,7 +94,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
 /**  XAPI-00321, Communication 2.8 About Resource
  * An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API
  */
-    describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (multiplicity, Communication 2.8.s4.table1.row2, XAPI-00321)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any Resource except the About Resource (multiplicity, Communication 2.8.s4.table1.row2, XAPI-00321)', function () {
 
         it ('using Statement Endpoint', function(done){
             request(helper.getEndpointAndAuth())

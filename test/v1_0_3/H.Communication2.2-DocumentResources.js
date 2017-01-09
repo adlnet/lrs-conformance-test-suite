@@ -211,7 +211,6 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
 
 /**  XAPI-00234, Communication 2.3 State Resource
  * An LRS's State API performs a Document Merge if a profileId is found and both it and the document in the POST request have type "application/json". If the merge is successful, the LRS MUST respond with HTTP status code 204 No Content.
- * differing language - double check this test
  */
     it('An LRS\'s State Resource performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3, XAPI-00234)', function () {
         var parameters = helper.buildState(),
