@@ -343,7 +343,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
 /**  Matchup with Conformance Requirements Document
  * XAPI-00146 - below
  * XAPI-00147 - below
- * XAPI-00148 - below
+ * XAPI-00148 - in H.Communication1.3-AlternateRequestSyntax.js
  */
 
 /**  XAPI-00147, Communication 2.1.2 POST Statements
@@ -391,26 +391,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                     }
                 });
         });
-    });
-
-/**  XAPI-00148, Communication 2.1.2 POST Statements
- * An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object.
- */
-    it('A GET request is defined as either a GET request or a POST request containing a GET request (Communication 2.1.2.s2.b3, XAPI-00148)', function (done) {
-        request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements() + "?method=GET")
-            .headers(helper.addAllHeaders({}))
-            .form({limit: 1})
-            .expect(200).end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var results = helper.parse(res.body, done);
-                    expect(results).to.have.property('statements');
-                    expect(results).to.have.property('more');
-                    done();
-                }
-            });
     });
 
 /**  XAPI-00182, Communication 2.2 Documents Resources
