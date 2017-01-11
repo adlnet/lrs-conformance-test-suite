@@ -200,7 +200,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
 /**  XAPI-00258, Communication 2.6 Agent Profile Resource
  * An LRS's Agent Profile API rejects a GET request with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request
  */
-    it('An LRS\'s Agent Profile Resource rejects a GET request with "agent" as a parameter if it is a valid (in structure) Agent with error code 400 Bad Request (multiplicity, Communication 2.6.s4.table1.row1, Communication 2.6.s3.table1.row1, XAPI-00258)', function () {
+    it('An LRS\'s Agent Profile Resource rejects a GET request with "agent" as a parameter if it is a valid, in structure, Agent with error code 400 Bad Request (multiplicity, Communication 2.6.s4.table1.row1, Communication 2.6.s3.table1.row1, XAPI-00258)', function () {
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
         parameters.agent = {
@@ -470,7 +470,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
 /**  XAPI-00281, Communication 2.6 Agent Profile Resource
  * An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
  */
-    it("An LRS's Agent Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object (XAPI-00281)", function (done) {
+    it("An LRS's Agent Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object (Communication 2.6, XAPI-00281)", function (done) {
         var parameters = helper.buildAgentProfile();
         var attachment = JSON.stringify(helper.buildDocument()) +"{";
         var header = {'content-type': 'application/json'};

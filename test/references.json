@@ -6670,6 +6670,16 @@
         "name": "The \"more\" property is absent or an empty string (no whitespace) if the entire results of the original GET request have been returned.",
         "1.0.3_ref": "Data 2.5.s2.table1.row2, XAPI-00109",
         "1.0.3_link": ["Data.md#2.5.s2.table1.row2"]
+    },
+    "An LRS's Agent Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object": {
+        "name": "An LRS's Agent Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object",
+        "1.0.3_ref": "Communication 2.6, XAPI-00281",
+        "1.0.3_link": ["Communication.md#2.6, XAPI-00281"]
+    },
+    "An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json'": {
+        "name": "An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json'",
+        "1.0.3_ref": "Communication 2.6, XAPI-00284",
+        "1.0.3_link": ["Communication.md#2.6"]
     }
 
 }
