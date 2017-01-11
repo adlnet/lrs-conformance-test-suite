@@ -9,7 +9,7 @@
     "use strict";
 
     // defines overwriting data
-    var INVALID_LANGUAGE = {a12345: 'should error'};
+    var INVALID_LANGUAGE = {a12345678: 'should error'};
     var INVALID_DESCRIPTION_LANGUAGE = {description: INVALID_LANGUAGE};
     var INVALID_DESCRIPTION_NO_ENTRY = {description: {}};
     var INVALID_DESCRIPTION_STRING = {description: 'should error'};

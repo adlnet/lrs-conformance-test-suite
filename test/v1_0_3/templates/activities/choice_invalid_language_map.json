@@ -19,7 +19,7 @@
         "id": "golf",
         "description": {
           "en-US": "Golf Example",
-          "en-US-GB": "Golf Example"
+          "something": "Golf Example"
         }
       },
       {

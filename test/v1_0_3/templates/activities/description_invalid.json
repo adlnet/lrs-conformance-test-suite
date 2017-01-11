@@ -11,7 +11,7 @@
     "description": {
       "en-GB": "An example meeting that happened on a specific occasion with certain people present.",
       "en-US": "An example meeting that happened on a specific occasion with certain people present.",
-      "ar-a-aaa-b-bbb-a-ccc": "اجتماع سبيل المثال ما حدث في مناسبة محددة مع بعض الحاضرين."
+      "something": "اجتماع سبيل المثال ما حدث في مناسبة محددة مع بعض الحاضرين."
     },
     "moreInfo": "http://virtualmeeting.example.com/345256",
     "extensions": {

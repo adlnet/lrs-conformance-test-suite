@@ -20,7 +20,7 @@
       "name": {
         "en-GB": "example meeting",
         "en-US": "example meeting",
-        "zh-z-aaa-z-bbb-c-ccc": "例如会议"
+        "zh-something-ccc": "例如会议"
       },
       "description": {
         "en-GB": "An example meeting that happened on a specific occasion with certain people present.",
