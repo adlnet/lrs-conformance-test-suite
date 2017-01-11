@@ -662,7 +662,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement verb "display" should fail given de-419-DE invalid (two region tags) language code',
+                        name: 'statement verb "display" should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.default}}'},
                             {verb: '{{verbs.default}}'},
