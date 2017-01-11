@@ -45,20 +45,26 @@ describe('Version Property Requirements (Data 2.4.10)', () => {
         .headers(helper.addAllHeaders({}))
         .json(statement)
         .expect(200)
-        .end()
-        .get(helper.getEndpointStatements() + '?' + query)
-        .wait(helper.genDelay(stmtTime, '?' + query, id))
-        .headers(helper.addAllHeaders({}))
-        .expect(200)
-        .end(function(err,res){
-             if (err){
+        .end(function (err, res) {
+            if (err) {
                 done(err);
-             }
-             else{
-                var results = helper.parse(res.body);
-                expect(results.version).to.equal(version);
-                done();
-             }
+            } else {
+                request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?' + query, id))
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function(err,res){
+                     if (err){
+                        done(err);
+                     }
+                     else{
+                        var results = helper.parse(res.body);
+                        expect(results.version).to.equal(version);
+                        done();
+                     }
+                });
+            }
         });
     });
 

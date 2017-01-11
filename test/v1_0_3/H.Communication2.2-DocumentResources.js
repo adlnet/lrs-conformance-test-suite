@@ -82,36 +82,6 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
         return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
     });
 
-    describe('An LRS cannot reject a POST request to the State Resource based on the contents of the name/value pairs of the document (Communication 2.2.s4.b2, Implicit) **Implicit**', function () {
-        var documents = [helper.buildDocument(), '1', 'true'];
-        documents.forEach(function (document) {
-            it('Should accept POST to State with document ' + document, function () {
-                var parameters = helper.buildState();
-                return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
-            });
-        });
-    });
-
-    describe('An LRS cannot reject a POST request to the Activity Profile Resource based on the contents of the name/value pairs of the document (Communication 2.2.s4.b2, Implicit) **Implicit**', function () {
-        var documents = [helper.buildDocument(), '1', 'true'];
-        documents.forEach(function (document) {
-            it('Should accept POST to Activity profile with document ' + document, function () {
-                var parameters = helper.buildActivityProfile();
-                return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204);
-            });
-        });
-    });
-
-    describe('An LRS cannot reject a POST request to the Agent Profile Resource based on the contents of the name/value pairs of the document (Communication 2.2.s4.b2, Implicit) **Implicit**', function () {
-        var documents = [{}, '1', 'true'];
-        documents.forEach(function (document) {
-            it('Should accept POST to Agent profile with document ' + document, function () {
-                var parameters = helper.buildAgentProfile();
-                return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
-            });
-        });
-    });
-
 /**  XAPI-00233, Communication 2.3 State Resource
  * An LRS's State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document. Returning 204 No Content
  */
@@ -241,7 +211,6 @@ describe('Document Resource Requirements (Communication 2.2)', () => {
 
 /**  XAPI-00234, Communication 2.3 State Resource
  * An LRS's State API performs a Document Merge if a profileId is found and both it and the document in the POST request have type "application/json". If the merge is successful, the LRS MUST respond with HTTP status code 204 No Content.
- * differing language - double check this test
  */
     it('An LRS\'s State Resource performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3, XAPI-00234)', function () {
         var parameters = helper.buildState(),

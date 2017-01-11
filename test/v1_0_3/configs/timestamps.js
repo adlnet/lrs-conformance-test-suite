@@ -38,22 +38,6 @@
                         expect: [400]
                     },
                     {
-                        name: 'statement "template" invalid string in stored',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {stored: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement "template" invalid date in stored',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {stored: INVALID_DATE}
-                        ],
-                        expect: [400]
-                    },
-                    {
                         name: 'substatement "template" invalid string in timestamp',
                         templates: [
                             {statement: '{{statements.default}}'},
@@ -66,22 +50,6 @@
                         templates: [
                             {statement: '{{statements.default}}'},
                             {timestamp: INVALID_DATE}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'substatement "template" invalid string in stored',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {stored: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'substatement "template" invalid date in stored',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {stored: INVALID_DATE}
                         ],
                         expect: [400]
                     }

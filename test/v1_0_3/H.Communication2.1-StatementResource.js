@@ -199,22 +199,34 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             .headers(helper.addAllHeaders({}))
             .json(data)
             .expect(200)
-            .end()
-            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .headers(helper.addAllHeaders({}))
-            .json(modified)
-            .end()
-            .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .wait(helper.genDelay(stmtTime, query, data.id))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
                 } else {
-                    var statement = helper.parse(res.body, done);
-                    expect(statement.verb.id).to.equal(data.verb.id);
-                    done();
+                    request(helper.getEndpointAndAuth())
+                    .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+                    .headers(helper.addAllHeaders({}))
+                    .json(modified)
+                    .end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            request(helper.getEndpointAndAuth())
+                            .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                            .wait(helper.genDelay(stmtTime, query, data.id))
+                            .headers(helper.addAllHeaders({}))
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    done(err);
+                                } else {
+                                    var statement = helper.parse(res.body, done);
+                                    expect(statement.verb.id).to.equal(data.verb.id);
+                                    done();
+                                }
+                            });
+                        }
+                    });
                 }
             });
         });
@@ -236,22 +248,34 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             .headers(helper.addAllHeaders({}))
             .json(data)
             .expect(204)
-            .end()
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .json(modified)
-            .end()
-            .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .wait(helper.genDelay(stmtTime, query, data.id))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
                 } else {
-                    var statement = helper.parse(res.body, done);
-                    expect(statement.verb.id).to.equal(data.verb.id);
-                    done();
+                    request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointStatements())
+                    .headers(helper.addAllHeaders({}))
+                    .json(modified)
+                    .end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            request(helper.getEndpointAndAuth())
+                            .get(helper.getEndpointStatements() + '?statementId=' + data.id)
+                            .wait(helper.genDelay(stmtTime, query, data.id))
+                            .headers(helper.addAllHeaders({}))
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    done(err);
+                                } else {
+                                    var statement = helper.parse(res.body, done);
+                                    expect(statement.verb.id).to.equal(data.verb.id);
+                                    done();
+                                }
+                            });
+                        }
+                    });
                 }
             });
         });
@@ -281,7 +305,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                 } else if (res.statusCode === 409 || res.statusCode === 204) {
                     done();
                 } else {
-                    done(new Error('Missing: no update status code using POST'))
+                    done(new Error('Received status code: ' + res.statusCode));
                 }
             });
         });
@@ -309,7 +333,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                 } else if (res.statusCode === 409 || res.statusCode === 204) {
                     done();
                 } else {
-                    done(new Error('Missing: no update status code using PUT'))
+                    done(new Error('Received status code: ' + res.statusCode));
                 }
             });
         });
@@ -319,7 +343,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
 /**  Matchup with Conformance Requirements Document
  * XAPI-00146 - below
  * XAPI-00147 - below
- * XAPI-00148 - below
+ * XAPI-00148 - in H.Communication1.3-AlternateRequestSyntax.js
  */
 
 /**  XAPI-00147, Communication 2.1.2 POST Statements
@@ -369,26 +393,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-/**  XAPI-00148, Communication 2.1.2 POST Statements
- * An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object.
- */
-    it('A GET request is defined as either a GET request or a POST request containing a GET request (Communication 2.1.2.s2.b3, XAPI-00148)', function (done) {
-        request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements() + "?method=GET")
-            .headers(helper.addAllHeaders({}))
-            .form({limit: 1})
-            .expect(200).end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var results = helper.parse(res.body, done);
-                    expect(results).to.have.property('statements');
-                    expect(results).to.have.property('more');
-                    done();
-                }
-            });
-    });
-
 /**  XAPI-00182, Communication 2.2 Documents Resources
  * An LRS makes no modifications to stored data for any rejected request.
  */
@@ -412,11 +416,17 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         .headers(helper.addAllHeaders({}))
         .json([correct, incorrect])
         .expect(400)
-        .end()
-        .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
-        .wait(helper.genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
-        .headers(helper.addAllHeaders({}))
-        .expect(404, done);
+        .end(function (err, res) {
+            if (err) {
+                done(err);
+            } else {
+                request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
+                .wait(helper.genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
+                .headers(helper.addAllHeaders({}))
+                .expect(404, done);
+            }
+        });
     });
 
     //Communication 2.1.3 GET Statements
@@ -950,15 +960,21 @@ StatementResult Object.
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(200)
-                .end()
-                .get(helper.getEndpointStatements() + query)
-                .wait(helper.genDelay(stmtTime, query, data.id))
-                .headers(helper.addAllHeaders({}))
-                .expect(200, done);
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + query)
+                    .wait(helper.genDelay(stmtTime, query, data.id))
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200, done);
+                }
+            });
         });
     });
 
@@ -2586,17 +2602,15 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-
-
                     expect(res.headers["content-type"]).to.equal('application/json');
                     done();
                 }
             });
         });
+
         it('should NOT return the attachment if "attachments" is false', function (done) {
 
             var query = '?statementId=' + statementId + "&attachments=false";
-
 
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
@@ -2610,10 +2624,10 @@ MUST have a "Content-Type" header
 
              done();
                     expect(res.headers["content-type"]).to.equal('application/json');
-
                 }
             });
         });
+
         it('should return the attachment when "attachment" is true', function (done) {
 
             var query = '?statementId=' + statementId + "&attachments=true";
@@ -2626,8 +2640,6 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-
-
                     //how delicate is this parsing? There is a newline as body[1], the statement as body[0]. Should we search all
                     //parts of the body?
                     var ContentType = res.headers["content-type"];
@@ -2646,10 +2658,10 @@ MUST have a "Content-Type" header
                 }
             });
 
-
         });
 
     });
+
 /**  XAPI-00163, Communication 2.1.3 GET Statements
  * An LRS's Statement API, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request
  */

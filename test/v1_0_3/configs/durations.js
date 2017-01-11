@@ -167,7 +167,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement result "duration" property is valid with "P4W1D"',
+                        name: 'statement result "duration" property is invalid with "P4W1D"',
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},

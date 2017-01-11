@@ -3,7 +3,7 @@ LRS Conformance Test Suite
 
 ### Description
 
-This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec) and is based on the ADL [testing requirements](https://github.com/adlnet/xAPI_LRS_Test/blob/master/TestingRequirements.md) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite only supports basic authentication. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
+This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec) and is based on the ADL [testing requirements](https://github.com/adlnet/xapi-lrs-conformance-requirements) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite only supports basic authentication. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
 
 ### Installation  
 
@@ -41,24 +41,49 @@ $ node bin/console_runner.js --help
     -g, --grep [string]                Only run tests that match the given pattern
     -b, --bail                         Abort the battery if one test fails
     -d, --directory [value]            Specific directories of tests (as a comma seperated list with no spaces)
+    -z, --errors                       Results log of failing tests only
 ```
 
-### Running Test Suite
+### Running the Test Suite
 
-Example:
+Example Basic Authentication:
 
 ```bash
-$ node bin/console_runner.js -e http://localhost/xapi -a true -u username -p password
+$ node bin/console_runner.js -e <http://localhost/xapi> -a -u <username> -p <password>
 -or-
-$ node bin/console_runner.js --endpoint http://localhost/xapi --basicAuth true --authUser username --authPass password
+$ node bin/console_runner.js --endpoint <http://localhost/xapi> --basicAuth --authUser <username> --authPass <password>
 ```
 
+Example OAuth1 Authentication:
+
+```bash
+$ node bin/console_runner.js -e <http://localhost/xapi> -o -c <consumer_key> -s <consumer_secret> -r <request_token_path> -t <auth_token_path> -l <authorization_path>
+-or-
+$ node bin/console_runner.js --endpoint <http://localhost/xapi> --oAuth1 --consumer_key <consumer_key> --consumer_secret <consumer_secret> --request_token_path <request_token_path> --auth_token_path <auth_token_path> --authorization_path <authorization_path>
+```
+
+Example with Grep:
+
+```bash
+$ node bin/console_runner.js -a -e <http://localhost/xapi> -a -u <username> -p <password> -g "<string or pattern to match>"
+-or-
+$ node bin/console_runner.js --endpoint <http://localhost/xapi> --basicAuth --authUser <username> --authPass <password> --grep "<string or pattern to match>"
+```
+
+**Note:** Grep is a useful tool to run only specific tests or a group of tests which meet a specific pattern.  For example using a specific requirement number (XAPI-00113) or a specific section of the spec (Data 2.4.1).
+
+Example using Option for Log Containing Only Errors:
+
+```bash
+$ node bin/console_runner.js -e <http://localhost/xapi> -a -u <username> -p <password> -z
+-or-
+$ node bin/console_runner.js --endpoint <http://localhost/xapi> --basicAuth --authUser <username> --authPass <password> --errors
+```
+
+**Note:** The default log contains results from every test run in the suite both passed and failed.  The --errors option filters the log to contain only tests which have failed.
 
 ## Contributing to the project
-We welcome contributions to this project. Fork this repository,
-make changes, and submit pull requests. If you're not comfortable
-with editing the code, please [submit an issue](https://github.com/adlnet/lrs-conformance-test-suite/issues) and we'll be happy
-to address it. 
+We welcome contributions to this project. Fork this repository, make changes, and submit pull requests. If you're not comfortable with editing the code, please [submit an issue](https://github.com/adlnet/lrs-conformance-test-suite/issues) and we'll be happy to address it.
 
 ### License
 MIT License
