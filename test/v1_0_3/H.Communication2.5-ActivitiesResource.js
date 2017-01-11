@@ -109,7 +109,7 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
 /**  XAPI-00254, Communication 2.5 Activities Resource
  * The Activity Object must contain all available information about an activity from any statements who target the same “activityId”. For example, LRS accepts two statements each with a different language description of an activity using the exact same “activityId”. The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that “activityId”.
  */
-    it('The Activity Object must contain all available information about an activity from any statements who target the same “activityId”. For example, LRS accepts two statements each with a different language description of an activity using the exact same “activityId”. The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that “activityId” (multiplicity, Communication.md#2.5.s1.table1.row1, XAPI-00254)', function () {
+    it('The Activity Object must contain all available information about an activity from any statements who target the same "activityId". For example, LRS accepts two statements each with a different language description of an activity using the exact same "activityId". The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that "activityId" (multiplicity, Communication.md#2.5.s1.table1.row1, XAPI-00254)', function () {
 
         var templates = [
             {statement: '{{statements.object_activity}}'},
