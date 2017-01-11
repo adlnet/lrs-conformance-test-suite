@@ -22,11 +22,13 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
  */
     describe('An LRS accepts HEAD requests (Communication 1.1, XAPI-00126)', function () {
 
+        /*  This is to be removed in a future version on the specification and is being removed now.
         it('should succeed GET about with no body', function () {
             return helper.sendRequest('head', helper.getEndpointAbout(), undefined, undefined, 200);
         });
+        */
 
-        it('should succeed GET activities with no body', function () {
+        it('should succeed HEAD activities with no body', function () {
             var statement = helper.buildStatement();
             var parameters = {
                 activityId: statement.object.id
@@ -37,7 +39,7 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
                 });
         });
 
-        it('should succeed GET activities profile with no body', function () {
+        it('should succeed HEAD activities profile with no body', function () {
             var parameters = helper.buildActivityProfile(),
                 document = helper.buildDocument();
             return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
@@ -46,7 +48,7 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
                 });
         });
 
-        it('should succeed GET activities state with no body', function () {
+        it('should succeed HEAD activities state with no body', function () {
             var parameters = helper.buildState(),
                 document = helper.buildDocument();
             return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
@@ -55,7 +57,7 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
                 });
         });
 
-        it('should succeed GET agents with no body', function () {
+        it('should succeed HEAD agents with no body', function () {
             var statement = helper.buildStatement();
             var parameters = {
                 agent: statement.actor
@@ -66,7 +68,7 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
                 });
         });
 
-        it('should succeed GET agents profile with no body', function () {
+        it('should succeed HEAD agents profile with no body', function () {
             var parameters = helper.buildAgentProfile(),
                 document = helper.buildDocument();
             return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
@@ -75,7 +77,7 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
                 });
         });
 
-        it('should succeed GET statements with no body', function () {
+        it('should succeed HEAD statements with no body', function () {
             return helper.sendRequest('head', helper.getEndpointStatements(), undefined, undefined, 200);
         });
     });
@@ -85,12 +87,14 @@ describe('HEAD Request Implementation Requirements (Communication 1.1)', () => {
  */
     describe('An LRS responds to a HEAD request in the same way as a GET request, but without the message-body (Communication 1.1.s3.b1, XAPI-00125) **This means run ALL GET tests with HEAD**', function () {
 
+        /*  This is to be removed in a future version on the specification and is being removed now.
         it('should succeed HEAD about with no body', function () {
             return helper.sendRequest('head', helper.getEndpointAbout(), undefined, undefined, 200)
                 .then(function (res) {
                     expect(Object.keys(res.body)).to.have.length(0);
                 });
         });
+        */
 
         it('should succeed HEAD activities with no body', function () {
             var templates = [

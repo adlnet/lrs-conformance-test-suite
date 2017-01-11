@@ -85,7 +85,7 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
                 .then(function (res) {
                     expect(res.headers.etag).to.be.ok;
-                    expect(res.headers.etag).to.match(/\b[0-9a-f]{40}\b/);
+                    expect(res.headers.etag).to.match(/\b[0-9a-fA-F]{40}\b/);
                 });
             });
         });

@@ -264,7 +264,7 @@ describe('Agents Resource Requirements (Communication 2.4)', () => {
     it('An LRSs Agents Resource rejects a GET request with "agent" as a parameter if it is not a valid, in structure, Agent with error code 400 Bad Request (Communication 2.4, XAPI-00249)',function()
     {
         var parameter = helper.buildAgent();
-        parameter.notGoodSchema = "test";
+        delete parameter.agent.account;
         return helper.sendRequest('get', helper.getEndpointAgents(), parameter, undefined, 400);
     });
 

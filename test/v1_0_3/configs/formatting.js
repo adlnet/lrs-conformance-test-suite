@@ -555,7 +555,7 @@
                 name: 'An LRS rejects with error code 400 Bad Request a Statement where the case of a value restricted to enumerated values does not match an enumerated value given in this specification exactly. (Data 2.2.s4.b1.b6, XAPI-00009)',
                 config: [
                     {
-                        name: 'when interactionType is not "true-false"',
+                        name: 'when interactionType is wrong case ("true-faLse")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.true_false}}'},
@@ -564,7 +564,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "choice"',
+                        name: 'when interactionType is wrong case ("choiCe")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.choice}}'},
@@ -573,7 +573,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "fill-in"',
+                        name: 'when interactionType is wrong case ("fill-iN")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.fill_in}}'},
@@ -582,7 +582,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "long-fill-in"',
+                        name: 'when interactionType is wrong case ("long-fiLl-in")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.long_fill_in}}'},
@@ -591,7 +591,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "matching"',
+                        name: 'when interactionType is wrong case ("matchIng")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching}}'},
@@ -600,7 +600,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "performance"',
+                        name: 'when interactionType is wrong case ("perfOrmance")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.performance}}'},
@@ -609,7 +609,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "sequencing"',
+                        name: 'when interactionType is wrong case ("seqUencing")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.sequencing}}'},
@@ -618,7 +618,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "likert"',
+                        name: 'when interactionType is wrong case ("liKert")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.likert}}'},
@@ -627,7 +627,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "numeric"',
+                        name: 'when interactionType is wrong case ("nUmeric")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.numeric}}'},
@@ -636,7 +636,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "other"',
+                        name: 'when interactionType is wrong case ("Other")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.other}}'},

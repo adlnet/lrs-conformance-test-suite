@@ -60,7 +60,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
  * An LRS's About API's version property contains at least one string of "1.0.x"
  */
     //moving this over for now, string value will need updated
-    it('An LRS\'s About Resource\'s version property contains at least one string of "1.0.1" (Communication 2.8.s5.b1.b1, XAPI-00317)', function () {
+    it('An LRS\'s About Resource\'s version property contains at least one string of "1.0.3" (Communication 2.8.s5.b1.b1, XAPI-00317)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
@@ -68,7 +68,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
 
                 var foundVersion = false
                 about.version.forEach(function (item) {
-                    if (item === '1.0.1') {
+                    if (item === '1.0.3') {
                         foundVersion = true;
                     }
                 })
@@ -94,7 +94,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
 /**  XAPI-00321, Communication 2.8 About Resource
  * An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API
  */
-    describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any API except the About API (multiplicity, Communication 2.8.s4.table1.row2, XAPI-00321)', function () {
+    describe('An LRS rejects with error code 400 Bad Request, a Request which does not use a "X-Experience-API-Version" header name to any Resource except the About Resource (multiplicity, Communication 2.8.s4.table1.row2, XAPI-00321)', function () {
 
         it ('using Statement Endpoint', function(done){
             request(helper.getEndpointAndAuth())
