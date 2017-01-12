@@ -3982,7 +3982,7 @@
         "name": "An LRS's State Resource can process a PUT request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
-        "1.0.3_link": "multiplicity, Communication 2.3.s3.table1.row3",
+        "1.0.3_link": ["multiplicity, Communication 2.3.s3.table1.row3, XAPI-00218"],
         "1.0.3_ref": ["Communication.md#2.3.s3.table1.row3"]
     },
     "An LRS's State Resource rejects a PUT request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
@@ -4078,7 +4078,7 @@
         "name": "An LRS's State Resource can process a POST request with \"registration\" as a parameter",
         "1.0.2_ref_text": "multiplicity, 7.4.table1.row3.b",
         "1.0.2_ref": "7.4.table1.row3.b",
-        "1.0.3_ref": "multiplicity, Communication 2.3.s3.table1.row3",
+        "1.0.3_ref": "multiplicity, Communication 2.3.s3.table1.row3, XAPI-00227",
         "1.0.3_link": ["Communication.md#2.3.s3.table1.row3"]
     },
     "An LRS's State Resource rejects a POST request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request": {
@@ -6680,6 +6680,21 @@
         "name": "An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json'",
         "1.0.3_ref": "Communication 2.6, XAPI-00284",
         "1.0.3_link": ["Communication.md#2.6"]
+    },
+    "An LRS must reject with 400 Bad Request a POST request to the State Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json'": {
+        "name": "An LRS must reject with 400 Bad Request a POST request to the State Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json'",
+        "1.0.3_ref": "Communication 2.3, XAPI-00235",
+        "1.0.3_link": ["Communication.md#2.3"]
+    },
+    "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which has excess multi-part sections that are not attachments.": {
+        "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which has excess multi-part sections that are not attachments.",
+        "1.0.3_ref": "Communication 1.5.1.s1.b2, Data 2.4.11, XAPI-00128",
+        "1.0.3_link": ["Communication.md#1.5.1.s1.b2", "Data.md#2.4.11"]
+    },
+    "An LRS's Statement API, upon processing a successful GET request, will return a single \"statements\" property and a single \"more\" property.": {
+        "name": "An LRS's Statement API, upon processing a successful GET request, will return a single \"statements\" property and a single \"more\" property.",
+        "1.0.3_ref": "Data 2.5.s2.table1, XAPI-00113",
+        "1.0.3_link": ["Data.md#2.5.s2.table1"]
     }
 
 }
