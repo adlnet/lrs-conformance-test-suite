@@ -1324,6 +1324,7 @@ StatementResult Object.
             group = data.object.actor;
             group.mbox = 'mailto:group'+helper.generateUUID()+'@adlnet.gov';
             verb2 = data.object.verb;
+            data.object.object.id = 'http://www.example.com/unicode/' +helper.generateUUID();
             activity = data.object.object;
             stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
@@ -1394,8 +1395,10 @@ StatementResult Object.
             canonicalSubActivity.objectType = activity.objectType;
             canonicalSubActivity.id = activity.id;
             canonicalSubActivity.definition = {};
-            canonicalSubActivity.definition.name = {"en-GB":"attended"};
-            canonicalSubActivity.definition.description = activity.definition.description;
+            canonicalSubActivity.definition.name = {}
+            canonicalSubActivity.definition.name["en-GB"] = activity.definition.name["en-GB"];
+            canonicalSubActivity.definition.description = {};
+            canonicalSubActivity.definition.description["en-GB"] = activity.definition.description["en-GB"];
             canonicalSubActivity.definition.type = activity.definition.type;
             canonicalSubActivity.definition.moreInfo = activity.definition.moreInfo;
             canonicalSubActivity.definition.interactionType = activity.definition.interactionType;
