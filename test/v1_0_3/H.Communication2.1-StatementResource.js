@@ -2029,7 +2029,8 @@ MUST have a "Content-Type" header
 
         it('should return "X-Experience-API-Consistent-Through" misusing GET (status code 400)', function (done) {
             request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements())
+            .get(helper.getEndpointStatements() + '?LIMIT=1')
+            .headers(helper.addAllHeaders({}))
             .expect(400)
             .end(function (err, res) {
                 if (err) {
