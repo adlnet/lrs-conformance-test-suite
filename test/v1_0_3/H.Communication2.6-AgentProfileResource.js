@@ -472,27 +472,43 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  */
     it("An LRS's Agent Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object (XAPI-00281)", function (done) {
         var parameters = helper.buildAgentProfile();
-        var attachment = JSON.stringify(helper.buildDocument()) +"{";
-        var header = {'content-type': 'application/json'};
+        var document = helper.buildDocument();
 
         request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
-            .headers(helper.addAllHeaders(header))
-            .body(attachment)
-            .expect(204,function(err,res)
-            {
-                attachment = {"update":"me"};
-                attachment = JSON.stringify(attachment);
-                var header2 = {'content-type': 'application/json'};
+        .post(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+        .headers(helper.addAllHeaders({}))
+        .json(document)
+        .expect(204, function(err,res) {
+            if (err) {
+                done(err);
+            } else {
+                var document2 = 'abcdefg';
+                var header2 = {'content-type': 'not/json'};
+
                 request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
-                    .headers(helper.addAllHeaders(header2))
-                    .body(attachment)
-                    .expect(400,function(err,res)
-                    {
+                .post(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                .headers(helper.addAllHeaders(header2))
+                .body(document2)
+                .expect(400, function (err,res) {
+                    if (err) {
                         done(err);
-                    });
-            });
+                    } else {
+                        request(helper.getEndpointAndAuth())
+                        .get(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                        .headers(helper.addAllHeaders({}))
+                        .expect(200, function (err, res) {
+                            if (err) {
+                                done(err)
+                            } else {
+                                var result = helper.parse(res.body);
+                                expect(result).to.eql(document);
+                                done();
+                            }
+                        });
+                    }
+                });
+            }
+        });
     });
 
 /**  XAPI-00284, Communication 2.6 Agent Profile Resource
