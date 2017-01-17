@@ -124,8 +124,8 @@ function start(options)
 			function removeNulls (log)
 			{
 				var temp;
-				// if (log.status === 'failed')	// original line which fails if no tests are actually run
-				if (log && log.status === 'failed')	// new fancier which I hope does not fail in such a case
+
+				if (log && log.status === 'failed')
 				{
 					temp = {
 						title: log.title,
