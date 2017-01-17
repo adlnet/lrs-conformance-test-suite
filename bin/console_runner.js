@@ -124,7 +124,8 @@ function start(options)
 			function removeNulls (log)
 			{
 				var temp;
-				if (log.status === 'failed')
+
+				if (log && log.status === 'failed')
 				{
 					temp = {
 						title: log.title,
