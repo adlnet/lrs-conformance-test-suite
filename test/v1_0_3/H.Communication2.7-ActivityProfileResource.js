@@ -498,10 +498,10 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
     });
 
 /**  XAPI-00314, Communication 2.7 Activity Profile Resource
- * An LRS's must reject, with 400 Bad Request, a POST request to the Acitvity Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
+ * An LRS's must reject, with 400 Bad Request, a POST request to the Activity Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
  ** this test is incomplete
  */
-        it('An LRS\'s must reject, with 400 Bad Request, a POST request to the Acitvity Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is "application/json" (Communication 2.7.s4.table1.row2, XAPI-00314)', function () {
+        it('An LRS\'s must reject, with 400 Bad Request, a POST request to the Activity Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is "application/json" (Communication 2.7.s4.table1.row2, XAPI-00314)', function () {
 
             var document = undefined;
             var parameters = helper.buildActivityProfile();
