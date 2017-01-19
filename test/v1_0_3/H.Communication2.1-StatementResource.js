@@ -1481,7 +1481,7 @@ StatementResult Object.
                         expect(stmts).to.be.an('array');
                         stmts.forEach(function(stmt) {
                             if (stmt.id === id) {
-                                expect(Object.keys(stmt.actor).length).to.eql(1);
+                                expect(Object.keys(stmt.actor).length).to.eql(2);
                                 expect(Object.keys(stmt.object.actor).length).to.eql(2);
                                 expect(Object.keys(stmt.object.object).length).to.eql(1);
                                 /*  Removed since spec 1.0.3 is SHOULD*
@@ -1489,6 +1489,7 @@ StatementResult Object.
                                 expect(Object.keys(stmt.object.verb).length).to.eql(1);
                                 */
                                 expect(stmt.actor.mbox).to.eql(agent.mbox);
+                                expect(stmt.actor.objectType).to.eql(agent.objectType);
                                 expect(stmt.verb.id).to.eql(verb1.id);
                                 expect(stmt.object.actor.mbox).to.eql(group.mbox);
                                 expect(stmt.object.actor.objectType).to.eql(group.objectType);
