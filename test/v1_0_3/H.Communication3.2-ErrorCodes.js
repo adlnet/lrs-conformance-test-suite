@@ -32,25 +32,21 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
             .expect(400, done)
     });
 
-    if(!global.OAUTH)
-    {
-        //This test appears to only make sense in the case of http basic Auth. Should we have additional tests for bad OAUTH, which is more complicated?
-        it('An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized (Communication 3.2.s2.b2)', function (done) {
-            request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}, true))
-                .expect(401, done);
-        });
-    }
-
-    describe('An LRS rejects with error code 405 Method Not Allowed to any request to an Resource which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior** (Communication 3.2.s3.b1)', function () {
+    describe('An LRS rejects any request to an Resource which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior** (Communication 3.2.s3.b1)', function () {
 
         it('should fail with statement "DELETE"', function (done) {
             var query = helper.getUrlEncoding({statementId: helper.generateUUID()});
             requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointStatements() + '?' + query)
                 .set('X-Experience-API-Version', '1.0.1')
-                .expect(405, done);
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.statusCode, 'Status Code').to.be.within(400, 499);
+                        done();
+                    }
+                });
         });
 
         it('should fail with activities "DELETE"', function (done) {
@@ -58,7 +54,14 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
             requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointActivities() + '?' + query)
                 .set('X-Experience-API-Version', '1.0.1')
-                .expect(405, done);
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.statusCode).to.be.within(400, 499);
+                        done();
+                    }
+                });
         });
 
         it('should fail with activities "POST"', function (done) {
@@ -66,7 +69,14 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointActivities() + '?' + query)
                 .headers(helper.addAllHeaders({}))
-                .expect(405, done);
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.statusCode).to.be.within(400, 499);
+                        done();
+                    }
+                });
         });
 
         it('should fail with activities "PUT"', function (done) {
@@ -74,7 +84,14 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
             request(helper.getEndpointAndAuth())
                 .put(helper.getEndpointActivities() + '?' + query)
                 .headers(helper.addAllHeaders({}))
-                .expect(405, done);
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.statusCode).to.be.within(400, 499);
+                        done();
+                    }
+                });
         });
 
         it('should fail with agents "DELETE"', function (done) {
@@ -87,7 +104,14 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
             requestPromise(helper.getEndpoint())
                 .delete(helper.getEndpointAgents() + '?' + query)
                 .set('X-Experience-API-Version', '1.0.1')
-                .expect(405, done);
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.statusCode).to.be.within(400, 499);
+                        done();
+                    }
+                });
         });
 
         it('should fail with agents "POST"', function (done) {
@@ -100,7 +124,14 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointAgents() + '?' + query)
                 .headers(helper.addAllHeaders({}))
-                .expect(405, done);
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.statusCode).to.be.within(400, 499);
+                        done();
+                    }
+                });
         });
 
         it('should fail with agents "PUT"', function (done) {
@@ -113,7 +144,14 @@ describe('Error Codes Requirements (Communication 3.2)', () => {
             request(helper.getEndpointAndAuth())
                 .put(helper.getEndpointAgents() + '?' + query)
                 .headers(helper.addAllHeaders({}))
-                .expect(405, done);
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.statusCode).to.be.within(400, 499);
+                        done();
+                    }
+                });
         });
     });
 

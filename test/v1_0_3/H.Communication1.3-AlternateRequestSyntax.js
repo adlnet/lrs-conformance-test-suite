@@ -12,6 +12,26 @@
 
 describe('Alternate Request Syntax Requirements (Communication 1.3)', () => {
 
+    /**  XAPI-00148, Communication 2.1.2 POST Statements
+     * An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object.
+     */
+        it('A GET request is defined as either a GET request or a POST request containing a GET request (Communication 2.1.2.s2.b3, XAPI-00148)', function (done) {
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements() + "?method=GET")
+                .headers(helper.addAllHeaders({}))
+                .form({limit: 1})
+                .expect(200).end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        var results = helper.parse(res.body, done);
+                        expect(results).to.have.property('statements');
+                        expect(results).to.have.property('more');
+                        done();
+                    }
+                });
+        });
+
     it('An LRS rejects a new Request in the same way for violating rules of this document as it would a normal Request (**Implicit**, Communication 1.3)', function () {
         var parameters = {method: 'post'},
             formBody = helper.buildFormBody(helper.buildStatement().actor);

@@ -39,7 +39,8 @@
         "kn-IN": "ಹಾಜರಿದ್ದರು"
       },
       "description": {
-        "en": "On this map, please mark Franklin, TN"
+        "en-US": "On this map, please mark Franklin, TN",
+        "en-GB": "On this map, please mark Franklin, TN"
       },
       "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
       "moreInfo": "http://virtualmeeting.example.com/345256",

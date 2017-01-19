@@ -200,7 +200,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
 /**  XAPI-00258, Communication 2.6 Agent Profile Resource
  * An LRS's Agent Profile API rejects a GET request with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request
  */
-    it('An LRS\'s Agent Profile Resource rejects a GET request with "agent" as a parameter if it is a valid (in structure) Agent with error code 400 Bad Request (multiplicity, Communication 2.6.s4.table1.row1, Communication 2.6.s3.table1.row1, XAPI-00258)', function () {
+    it('An LRS\'s Agent Profile Resource rejects a GET request with "agent" as a parameter if it is a valid, in structure, Agent with error code 400 Bad Request (multiplicity, Communication 2.6.s4.table1.row1, Communication 2.6.s3.table1.row1, XAPI-00258)', function () {
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
         parameters.agent = {
@@ -340,82 +340,181 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
     });
 
 /**  XAPI-00278, Communication 2.6 Agent Profile Resource
- * TAn LRS's Agent Profile API, rejects a POST request if the document is found and either document's type is not "application/json" with error code 400 Bad Request
+ * An LRS's Agent Profile API, rejects a POST request if the document is found and either document's type is not "application/json" with error code 400 Bad Request
  */
-    describe('An LRSs Agent Profile Resource, rejects a POST request if the document is found and either documents type is not "application/json" with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row3, XAPI-00278)',function(){
-        it("Rejects a malformed JSON document when the content-type is 'application/json'", function (done) {
+    describe('An LRSs Agent Profile Resource, rejects a POST request if the document is found and either documents type is not "application/json" with error code 400 Bad Request (multiplicity, Communication 2.3.s3.table1.row3, Communication 2.2.s8.b1, XAPI-00278)',function(){
+// case 1 - bad post
+        it("If the document being posted to the Agent Profile Resource does not have a Content-Type of application/json and the existing document does, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.", function (done) {
             var parameters = helper.buildAgentProfile();
-            var header = {'content-type': 'application/json'};
-            var attachment = "/ asdf / undefined";
+            var document = helper.buildDocument();
 
-                request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
-                    .headers(helper.addAllHeaders(header))
-                    .body(attachment)
-                    .expect(400,function(err,res)
-                    {
-                        done(err);
-                    });
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+            .headers(helper.addAllHeaders({}))
+            .json(document)
+            .expect(204, function (err,res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var document2 = "abcdefg";
+                    var header2 = {'content-type': 'application/octet-stream'};
+
+                    request(helper.getEndpointAndAuth())
+                    .post(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                    .headers(helper.addAllHeaders(header2))
+                    .body(document2)
+                    .expect(400, function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            request(helper.getEndpointAndAuth())
+                            .get(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                            .headers(helper.addAllHeaders({}))
+                            .expect(200, function (err, res) {
+                                if (err) {
+                                    done(err);
+                                } else {
+                                    var result = helper.parse(res.body);
+                                    expect(result).to.eql(document);
+                                    done(err);
+                                }
+                            });
+                        }
+                    })
+                }
             });
-
-        it("Rejects a JSON update document when the original documents content-type is not 'application/json'", function (done) {
+        });
+// case 2 - bad existing
+        it("If the existing document does not have a Content-Type of application/json but the document being posted to the Agent Profile Resource does the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.", function (done) {
             var parameters = helper.buildAgentProfile();
             var attachment = "/ asdf / undefined";
-
             var header = {'content-type': 'application/octet-stream'};
 
             request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
-                .headers(helper.addAllHeaders(header))
-                .body(attachment)
-                .expect(204,function(err,res)
-                {
+            .put(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+            .headers(helper.addAllHeaders(header))
+            .body(attachment)
+            .expect(204,function(err,res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var attachment2 = helper.buildDocument();
 
-                    attachment = helper.buildDocument();
-                    attachment = JSON.stringify(attachment);
-                    var header2 = {'content-type': 'application/json'};
                     request(helper.getEndpointAndAuth())
-                        .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
-                        .headers(helper.addAllHeaders(header2))
-                        .body(attachment)
-                        .expect(400,function(err,res)
-                        {
+                    .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
+                    .headers(helper.addAllHeaders({}))
+                    .json(attachment2)
+                    .expect(400, function (err,res) {
+                        if (err) {
                             done(err);
-                        });
-                });
-
+                        } else {
+                            request(helper.getEndpointAndAuth())
+                            .get(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                            .headers(helper.addAllHeaders({}))
+                            .expect(200, function (err, res) {
+                                if (err) {
+                                    done(err);
+                                } else {
+                                    expect(res.body).to.eql(attachment);
+                                    done();
+                                }
+                            })
+                        }
+                    });
+                }
+            });
         });
-
-        it("Rejects a JSON update document when the original documents content-type is 'application/json' but the original document is not valid json (XAPI-00281)", function (done) {
+// case 3 - bad json
+        it("If the document being posted to the Agent Profile Resource has a content type of Content-Type of application/json but cannot be parsed as a JSON Object, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.", function (done) {
             var parameters = helper.buildAgentProfile();
-            var attachment = JSON.stringify(helper.buildDocument()) +"{";
-            var header = {'content-type': 'application/json'};
+            var document = helper.buildDocument()
 
             request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
-                .headers(helper.addAllHeaders(header))
-                .body(attachment)
-                .expect(204,function(err,res)
-                {
-                    attachment = {"update":"me"};
-                    attachment = JSON.stringify(attachment);
-                    var header2 = {'content-type': 'application/json'};
+            .post(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+            .headers(helper.addAllHeaders({}))
+            .json(document)
+            .expect(204, function(err,res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var header = {'content-type': 'application/json'};
+                    var attachment = JSON.stringify(helper.buildAgentProfile()) + '{';
+
                     request(helper.getEndpointAndAuth())
-                        .post(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
-                        .headers(helper.addAllHeaders(header2))
-                        .body(attachment)
-                        .expect(400,function(err,res)
-                        {
+                    .post(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                    .headers(helper.addAllHeaders(header))
+                    .body(attachment)
+                    .expect(400, function (err, res) {
+                        if (err) {
                             done(err);
+                        } else {
+                            request(helper.getEndpointAndAuth())
+                            .get(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                            .headers(helper.addAllHeaders({}))
+                            .expect(200, function (err, res) {
+                                if (err) {
+                                    done(err);
+                                } else {
+                                    var result = helper.parse(res.body);
+                                    expect(result).to.eql(document);
+                                    done();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+/**  XAPI-00281, Communication 2.6 Agent Profile Resource
+ * An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
+ */
+    it("An LRS's Agent Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object (Communication 2.6, XAPI-00281)", function (done) {
+        var parameters = helper.buildAgentProfile();
+        var document = helper.buildDocument();
+
+        request(helper.getEndpointAndAuth())
+        .post(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+        .headers(helper.addAllHeaders({}))
+        .json(document)
+        .expect(204, function(err,res) {
+            if (err) {
+                done(err);
+            } else {
+                var document2 = 'abcdefg';
+                var header2 = {'content-type': 'not/json'};
+
+                request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                .headers(helper.addAllHeaders(header2))
+                .body(document2)
+                .expect(400, function (err,res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        request(helper.getEndpointAndAuth())
+                        .get(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                        .headers(helper.addAllHeaders({}))
+                        .expect(200, function (err, res) {
+                            if (err) {
+                                done(err)
+                            } else {
+                                var result = helper.parse(res.body);
+                                expect(result).to.eql(document);
+                                done();
+                            }
                         });
+                    }
                 });
+            }
         });
     });
 
 /**  XAPI-00284, Communication 2.6 Agent Profile Resource
  * An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile API which contains name/value pairs with invalid JSON and the Content-Type header is "application/json"
  */
-    it("An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile API which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json' (Communication 2.6, XAPI-00284)", function (done) {
+    it("An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json' (Communication 2.6, XAPI-00284)", function (done) {
             var parameters = {
                profileId: helper.generateUUID()
             }

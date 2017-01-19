@@ -47,7 +47,7 @@
     var INVALID_DESCRIPTION_ATTACHMENT = {
         'usageType': 'http://example.com/attachment-usage/test',
         'display': {'en-US': 'A test attachment'},
-        'description': {'en-US': 'A test attachment (description)', 'es-MX-PE': 'Un accesorio de prueba (descripción)'},
+        'description': {'en-US': 'A test attachment (description)', 'something': 'Un accesorio de prueba (descripción)'},
         'contentType': 'text/plain; charset=ascii',
         'length': 27,
         'sha2': '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
@@ -55,7 +55,7 @@
     };
     var INVALID_DISPLAY_ATTACHMENT = {
         'usageType': 'http://example.com/attachment-usage/test',
-        'display': {'en-US': 'A test attachment', 'es-a-aaa-b-bbb-b-ccc': 'Un accesorio de prueba'},
+        'display': {'en-US': 'A test attachment', 'something': 'Un accesorio de prueba'},
         'description': {'en-US': 'A test attachment (description)'},
         'contentType': 'text/plain; charset=ascii',
         'length': 27,
@@ -555,7 +555,7 @@
                 name: 'An LRS rejects with error code 400 Bad Request a Statement where the case of a value restricted to enumerated values does not match an enumerated value given in this specification exactly. (Data 2.2.s4.b1.b6, XAPI-00009)',
                 config: [
                     {
-                        name: 'when interactionType is not "true-false"',
+                        name: 'when interactionType is wrong case ("true-faLse")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.true_false}}'},
@@ -564,7 +564,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "choice"',
+                        name: 'when interactionType is wrong case ("choiCe")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.choice}}'},
@@ -573,7 +573,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "fill-in"',
+                        name: 'when interactionType is wrong case ("fill-iN")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.fill_in}}'},
@@ -582,7 +582,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "long-fill-in"',
+                        name: 'when interactionType is wrong case ("long-fiLl-in")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.long_fill_in}}'},
@@ -591,7 +591,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "matching"',
+                        name: 'when interactionType is wrong case ("matchIng")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.matching}}'},
@@ -600,7 +600,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "performance"',
+                        name: 'when interactionType is wrong case ("perfOrmance")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.performance}}'},
@@ -609,7 +609,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "sequencing"',
+                        name: 'when interactionType is wrong case ("seqUencing")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.sequencing}}'},
@@ -618,7 +618,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "likert"',
+                        name: 'when interactionType is wrong case ("liKert")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.likert}}'},
@@ -627,7 +627,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "numeric"',
+                        name: 'when interactionType is wrong case ("nUmeric")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.numeric}}'},
@@ -636,7 +636,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'when interactionType is not "other"',
+                        name: 'when interactionType is wrong case ("Other")',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.other}}'},
@@ -662,11 +662,11 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement verb "display" should fail given de-419-DE invalid (two region tags) language code',
+                        name: 'statement verb "display" should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.default}}'},
                             {verb: '{{verbs.default}}'},
-                            {display: {'de-419-DE': 'besucht'}}
+                            {display: {'something': 'besucht'}}
                         ],
                         expect: [400]
                     },
@@ -679,7 +679,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement object "name" should fail given a-DE invalid (use of a single-character subtag in primary position) language code',
+                        name: 'statement object "name" should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.name_invalid}}'}
@@ -695,7 +695,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement object "description" should fail given ar-a-aaa-b-bbb-a-ccc invalid (two extensions with same single-letter prefix) language code',
+                        name: 'statement object "description" should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.description_invalid}}'}
@@ -711,7 +711,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'interaction components\' description should fail given en-US-GB invalid (two region tags) language code',
+                        name: 'interaction components\' description should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
                             {object: '{{activities.choice_invalid_language_map}}'}
@@ -728,11 +728,11 @@
                         expect: [200]
                     },
                     {
-                        name: 'context.language should fail given g-GR invalid (use of a single-character subtag in primary position) language code',
+                        name: 'context.language should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.context}}'},
                             {context: '{{contexts.default}}'},
-                            {language: 'g-GR'}
+                            {language: 'something'}
                         ],
                         expect: [400]
                     },
@@ -745,7 +745,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement attachment "display" should fail given es-a-aaa-b-bbb-b-ccc invalid (two extensions with same single-letter prefix) language code',
+                        name: 'statement attachment "display" should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.attachment}}'},
                             {attachments: [INVALID_DISPLAY_ATTACHMENT]}
@@ -761,7 +761,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement attachment "description" should fail given es-MX invalid es-MX-PE (two region tags) language code',
+                        name: 'statement attachment "description" should fail given es-MX invalid language code',
                         templates: [
                             {statement: '{{statements.attachment}}'},
                             {attachments: [INVALID_DESCRIPTION_ATTACHMENT]}
@@ -777,7 +777,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement verb "display" should fail given s-RS invalid (use of a single-character subtag in primary position) language code',
+                        name: 'statement substatement verb "display" should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.object_substatement_default}}'},
                             {object: '{{substatements.verb_invalid}}'}
@@ -809,7 +809,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement activity "description" should fail given ase-GB-US invalid (two region tags) language code',
+                        name: 'statement substatement activity "description" should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.object_substatement_default}}'},
                             {object: '{{substatements.activity_definition_description_invalid}}'}
@@ -825,7 +825,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'substatement interaction components\' description should fail given j-JP invalid (use of a single-character subtag in primary position) language code',
+                        name: 'substatement interaction components\' description should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.object_substatement_default}}'},
                             {object: '{{substatements.interaction_component_invalid_language_map}}'}
@@ -841,7 +841,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'substatement context.language should fail given fr-f-aaa-b-rrr-f-ccc invalid (two extensions with same single-letter prefix) language code',
+                        name: 'substatement context.language should fail given invalid language code',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context_invalid_language_map}}'}

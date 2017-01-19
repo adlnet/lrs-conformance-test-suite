@@ -45,7 +45,7 @@
           "id": "lunch",
           "description": {
             "en-US": "Lunch having been eaten",
-            "j-JP": "昼食は食べれました"
+            "something": "昼食は食べれました"
           }
         }
       ],
