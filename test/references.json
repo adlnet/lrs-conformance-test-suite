@@ -6230,12 +6230,13 @@
             "Communication.md#3.2.s2.b1"
         ]
     },
-    "A GET request is defined as either a GET request or a POST request containing a GET request": {
-        "name": "A GET request is defined as either a GET request or a POST request containing a GET request",
+    "An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object.": {
+        "name": "An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object.",
         "1.0.2_ref_text": "7.2.3, 7.2.2.e",
         "1.0.2_ref": "7.2.3, 7.2.2.e",
-        "1.0.3_ref": "Communication 2.1.2.s2.b2",
+        "1.0.3_ref": "Communication 1.3, Communication 2.1.2.s2.b3, XAPI-00148",
         "1.0.3_link": [
+            "Communication 1.3",
             "Communication.md#2.1.2.s2.b2"
         ]
     },
