@@ -32,59 +32,93 @@ describe('Alternate Request Syntax Requirements (Communication 1.3)', () => {
         });
     });
 
-    describe('An LRS will reject any request sending content which does not have a form parameter with the name of "content" (Communication 1.3.s3.b4)', function () {
-        it('will fail PUT with no content body', function () {
-            // var parameters = {method: 'put'};
-            var parameters = {method: 'PUT'};
-            return helper.sendRequest('post', helper.getEndpointStatements(), parameters, undefined, 400);
-        });
-
-// Adding old code to test if it will work, to find out why mine isn't
-it('Any LRS Resource that accepts a POST request can accept a POST request with a single query string parameter named "method" on that request (Communication 1.3.s3.b2)', function () {
-    var parameters = {method: 'POST'},
-        formBody = helper.buildFormBody(helper.buildStatement());
-    return helper.sendRequest('post', helper.getEndpointStatements(), parameters, formBody, 200);
-});
-
-        it('will fail PUT with content body which is not url encoded', function () {
-            // var parameters = {method: 'put'};
-            var parameters = {method: 'PUT'};
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates).statement;
-            return helper.sendRequest('post', helper.getEndpointStatements(), parameters, data, 400);
-        });
-
-        it('will pass PUT with content body which is url encoded', function () {
-            // var parameters = {method: 'put'};
-            var parameters = {method: 'PUT'};
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates).statement;
-            var body = 'statementId=' + helper.generateUUID() + '&content='+JSON.stringify(data);
-            // var body = 'statementId=' + helper.generateUUID() + '&content='+JSON.stringify(data) + '&X-Experience-API-Version=1.0.3&Authorization=' + auth; //original
-            return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.buildFormBody(body), 204);
-        });
+    it('An LRS rejects an alertnate syntax request not issued as a POST', function () {
+        var parameters = {method: 'POST'};
+        var formBody = helper.buildFormBody(helper.buildStatement());
+        return helper.sendRequest('get', helper.getEndpointStatements(), parameters, formBody, 400);
     });
 
-    it('An LRS will reject a Cross Origin Request or new Request which contains any extra information with error code 400 Bad Request (**Implicit**, Communication 1.3.s3.b4)', function () {
+    it('An LRS accepts an alertnate syntax request PUT issued as a POST', function () {
+        var parameters = {method: 'PUT'};
+        var formBody = {
+            statementId: helper.generateUUID(),
+            content: helper.buildStatement()
+        }
+        return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(formBody), 204);
+    });
+
+    it('An LRS will reject an alternate syntax request which contains any extra information with error code 400 Bad Request (Communication 1.3.s3.b4)', function () {
         var templates = [
             {statement: '{{statements.default}}'}
         ];
         var data = helper.createFromTemplate(templates);
-
         var statement = data.statement;
         var sID = helper.generateUUID();
-        var headers = helper.addAllHeaders({});
-        var auth = headers['Authorization']
         var parameters = {
             method: 'PUT',
-            statementId: helper.generateUUID()
+            statementId: sID
         }
-        var body = 'statementId=' + sID + '&content=' + JSON.stringify(statement) + '&Content-Type=application/json&X-Experience-API-Version=1.0.3&Authorization=' + auth;
-        return helper.sendRequest('post', helper.getEndpointStatements(), parameters, body, 400);
+        var body = {
+            statementId: sID,
+            content: statement,
+        }
+
+        return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(body), 400);
+    });
+
+    describe('An LRS will reject any request sending content which does not have a form parameter with the name of "content" (Communication 1.3.s3.b4)', function () {
+        it('will pass PUT with content body which is url encoded', function (done) {
+            var headers = helper.addAllHeaders({});
+            var auth = headers['Authorization'];
+            var query = helper.getUrlEncoding({method: 'PUT'});
+
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = helper.createFromTemplate(templates).statement;
+
+            var form = {
+                statementId: helper.generateUUID(),
+                content: JSON.stringify(data),
+                'X-Experience-API-Version': '1.0.3',
+                Authorization: auth
+            }
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements() + '?' + query)
+            .headers({'content-type': 'application/x-www-form-urlencoded'})
+            .form(form)
+            .expect(204, done);
+        });
+
+        it('will fail PUT with no content body', function () {
+            var parameters = {method: 'PUT'};
+            return helper.sendRequest('post', helper.getEndpointStatements(), parameters, undefined, 400);
+        });
+
+        it('will fail PUT with content body which is not url encoded', function (done) {
+            var headers = helper.addAllHeaders({});
+            var auth = headers['Authorization'];
+            var query = helper.getUrlEncoding({method: 'PUT'});
+
+            var templates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var data = helper.createFromTemplate(templates).statement;
+
+            var form = {
+                statementId: helper.generateUUID(),
+                content: JSON.stringify(data),
+                'X-Experience-API-Version': '1.0.3',
+                Authorization: auth
+            }
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements() + '?' + query)
+            .headers({'content-type': 'application/x-www-form-urlencoded'})
+            .body(JSON.stringify(form))
+            .expect(400, done);
+        });
     });
 
 });
