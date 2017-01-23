@@ -6230,12 +6230,13 @@
             "Communication.md#3.2.s2.b1"
         ]
     },
-    "A GET request is defined as either a GET request or a POST request containing a GET request": {
-        "name": "A GET request is defined as either a GET request or a POST request containing a GET request",
+    "An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object.": {
+        "name": "An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object.",
         "1.0.2_ref_text": "7.2.3, 7.2.2.e",
         "1.0.2_ref": "7.2.3, 7.2.2.e",
-        "1.0.3_ref": "Communication 2.1.2.s2.b2",
+        "1.0.3_ref": "Communication 1.3, Communication 2.1.2.s2.b3, XAPI-00148",
         "1.0.3_link": [
+            "Communication.md#1.3",
             "Communication.md#2.1.2.s2.b2"
         ]
     },
@@ -6695,6 +6696,11 @@
         "name": "An LRS's Statement API, upon processing a successful GET request, will return a single \"statements\" property and a single \"more\" property.",
         "1.0.3_ref": "Data 2.5.s2.table1, XAPI-00113",
         "1.0.3_link": ["Data.md#2.5.s2.table1"]
+    },
+    "An LRS will reject an alternate syntax request which contains any extra information with error code 400 Bad Request": {
+        "name": "An LRS will reject an alternate syntax request which contains any extra information with error code 400 Bad Request",
+        "1.0.3_ref": "Communication 1.3.s3.b4",
+        "1.0.3_link": ["Communication.md#1.3.s3.b4"]
     }
 
 }
