@@ -6697,8 +6697,23 @@
         "1.0.3_ref": "Data 2.5.s2.table1, XAPI-00113",
         "1.0.3_link": ["Data.md#2.5.s2.table1"]
     },
-    "An LRS will reject an alternate syntax request which contains any extra information with error code 400 Bad Request": {
-        "name": "An LRS will reject an alternate syntax request which contains any extra information with error code 400 Bad Request",
+    "An LRS will reject an alternate request syntax which contains any extra information with error code 400 Bad Request": {
+        "name": "An LRS will reject an alternate request syntax which contains any extra information with error code 400 Bad Request",
+        "1.0.3_ref": "Communication 1.3.s3.b4",
+        "1.0.3_link": ["Communication.md#1.3.s3.b4"]
+    },
+    "The LRS MUST support the Alternate Request Syntax": {
+        "name": "The LRS MUST support the Alternate Request Syntax",
+        "1.0.3_ref": "Communication 1.3.s3.b15, XAPI-00336",
+        "1.0.3_link": ["Communication.md#1.3.s3.b15"]
+    },
+    "During an alternate request syntax the LRS treats the listed form parameters, 'Authorization', 'X-Experience-API-Version', 'Content-Type', 'Content-Length', 'If-Match' and 'If-None-Match', as header parameters": {
+        "name": "During an alternate request syntax the LRS treats the listed form parameters, 'Authorization', 'X-Experience-API-Version', 'Content-Type', 'Content-Length', 'If-Match' and 'If-None-Match', as header parameters",
+        "1.0.3_ref": "Communication 1.3.s3.b7",
+        "1.0.3_link": ["Communication.md#1.3.s3.b7"]
+    },
+    "An LRS will reject an alternate request syntax sending content which does not have a form parameter with the name of \"content\"": {
+        "name": "An LRS will reject an alternate request syntax sending content which does not have a form parameter with the name of \"content\"",
         "1.0.3_ref": "Communication 1.3.s3.b4",
         "1.0.3_link": ["Communication.md#1.3.s3.b4"]
     }

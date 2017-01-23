@@ -10,8 +10,12 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-describe('Alternate Request Syntax Requirements (Communication 1.3)', () => {
+describe('Alternate Request Syntax Requirements (Communication 1.3)', function () {
 
+/**  XAPI-00336, Communication 1.3 Alternate Request Syntax
+ * The LRS MUST support the Alternate Request Syntax.
+ */
+describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s3.b15, XAPI-00336)', function () {
     /**  XAPI-00148, Communication 2.1.2 POST Statements
      * An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object.
      */
@@ -32,13 +36,13 @@ describe('Alternate Request Syntax Requirements (Communication 1.3)', () => {
         });
     });
 
-    it('An LRS rejects an alertnate syntax request not issued as a POST', function () {
+    it('An LRS rejects an alternate request syntax not issued as a POST', function () {
         var parameters = {method: 'POST'};
         var formBody = helper.buildFormBody(helper.buildStatement());
         return helper.sendRequest('get', helper.getEndpointStatements(), parameters, formBody, 400);
     });
 
-    it('An LRS accepts an alertnate syntax request PUT issued as a POST', function () {
+    it('An LRS accepts an alternate request syntax PUT issued as a POST', function () {
         var parameters = {method: 'PUT'};
         var formBody = {
             statementId: helper.generateUUID(),
@@ -47,7 +51,44 @@ describe('Alternate Request Syntax Requirements (Communication 1.3)', () => {
         return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(formBody), 204);
     });
 
-    it('An LRS will reject an alternate syntax request which contains any extra information with error code 400 Bad Request (Communication 1.3.s3.b4)', function () {
+    it('During an alternate request syntax the LRS treats the listed form parameters, \'Authorization\', \'X-Experience-API-Version\', \'Content-Type\', \'Content-Length\', \'If-Match\' and \'If-None-Match\', as header parameters (Communictation 1.3.s3.b7)', function () {
+        var parameters = {method: 'PUT'};
+        var sID = helper.generateUUID();
+        var query = '?statementId=' + sID;
+        var formBody = {
+            statementId: sID,
+            'X-Experience-API-Version': '0.8',
+            // happy: 'day',
+            content: helper.buildStatement()
+        }
+        console.log(helper.buildStatement());
+        var stmtTime = Date.now();
+        return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(formBody), 204)
+        .then(function (res) {
+            console.log('ta da');
+            console.log(res.req._headers);
+            console.log(res.headers);
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + query)
+            .wait(helper.genDelay(stmtTime, query, sID))
+            .headers(helper.addAllHeaders({}))
+            .expect(200, function (err, res) {
+                if (err) {
+                    return err;
+                } else {
+                    var result = helper.parse(res.body)
+                    console.log(result.version);
+                    console.log(result);
+                    console.log(res.headers);
+                    expect(result.version).to.eql('0.8');
+                    // expect(result.version).to.eql('8.8');
+                    return;
+                }
+            });
+        });
+    });
+
+    it('An LRS will reject an alternate request syntax which contains any extra information with error code 400 Bad Request (Communication 1.3.s3.b4)', function () {
         var templates = [
             {statement: '{{statements.default}}'}
         ];
@@ -66,7 +107,7 @@ describe('Alternate Request Syntax Requirements (Communication 1.3)', () => {
         return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(body), 400);
     });
 
-    describe('An LRS will reject any request sending content which does not have a form parameter with the name of "content" (Communication 1.3.s3.b4)', function () {
+    describe('An LRS will reject an alternate request syntax sending content which does not have a form parameter with the name of "content" (Communication 1.3.s3.b4)', function () {
         it('will pass PUT with content body which is url encoded', function (done) {
             var headers = helper.addAllHeaders({});
             var auth = headers['Authorization'];
@@ -120,6 +161,7 @@ describe('Alternate Request Syntax Requirements (Communication 1.3)', () => {
             .expect(400, done);
         });
     });
+});
 
 });
 
