@@ -58,34 +58,10 @@ describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s
         var formBody = {
             statementId: sID,
             'X-Experience-API-Version': '0.8',
-            // happy: 'day',
             content: helper.buildStatement()
         }
-        console.log(helper.buildStatement());
         var stmtTime = Date.now();
-        return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(formBody), 204)
-        .then(function (res) {
-            console.log('ta da');
-            console.log(res.req._headers);
-            console.log(res.headers);
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + query)
-            .wait(helper.genDelay(stmtTime, query, sID))
-            .headers(helper.addAllHeaders({}))
-            .expect(200, function (err, res) {
-                if (err) {
-                    return err;
-                } else {
-                    var result = helper.parse(res.body)
-                    console.log(result.version);
-                    console.log(result);
-                    console.log(res.headers);
-                    expect(result.version).to.eql('0.8');
-                    // expect(result.version).to.eql('8.8');
-                    return;
-                }
-            });
-        });
+        return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(formBody), 400);
     });
 
     it('An LRS will reject an alternate request syntax which contains any extra information with error code 400 Bad Request (Communication 1.3.s3.b4)', function () {
