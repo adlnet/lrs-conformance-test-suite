@@ -320,7 +320,7 @@ describe('State Resource Requirements (Communication 2.3)', () => {
         invalidTypes.forEach(function (type) {
             it('Should reject DELETE with "agent" with type ' + type, function () {
                 var parameters = helper.buildState();
-                parameters.activityId = type;
+                parameters.agent = type;
                 return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
             });
         });
