@@ -26,7 +26,7 @@ if (!process.env.EB_NODE_COMMAND) {
             'HMAC-SHA1'
         );
     }
-    
+
     /** Appears to use absolute path */
     var CONFIG_FOLDER = './test/' + process.env.DIRECTORY + '/configs';
 
@@ -588,8 +588,7 @@ if (!process.env.EB_NODE_COMMAND) {
          */
         buildFormBody: function (content, id) {
             var body = {
-                'X-Experience-API-Version': '1.0.2',
-                'Content-Type': 'application/json',
+                'X-Experience-API-Version': '1.0.3',
                 'content': JSON.stringify(content)
             }
             if (id) {
