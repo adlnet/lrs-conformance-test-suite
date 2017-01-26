@@ -536,7 +536,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent is defined by "objectType" of an "actor" property or "object" property with value "Agent" (Data 2.4.2.1.s2.table1.row1)',
+                name: 'An Agent is defined by "objectType" of an "actor" property or "object" property with value "Agent" (Data 2.4.2.1.s2.table1.row1, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor does not require objectType',
@@ -606,7 +606,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2)',
+                name: 'An Agent does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor "mbox" cannot be used with "account"',
@@ -785,7 +785,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2)',
+                name: 'An Agent does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor "mbox_sha1sum" cannot be used with "account"',
@@ -964,7 +964,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, Data 2.4.2.1.s2.b2)',
+                name: 'An Agent does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, Data 2.4.2.1.s2.b2, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor "account" cannot be used with "mbox"',
@@ -1143,7 +1143,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2)',
+                name: 'An Agent does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor "openid" cannot be used with "account"',
