@@ -23,63 +23,6 @@
     module.exports.config = function () {
         return [
             {
-                name: 'Agents Verify Templates',
-                config: [
-                    {
-                        name: 'should pass statement actor template',
-                        templates: [
-                            {statement: '{{statements.actor}}'},
-                            {actor: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement authority template',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement context instructor template',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement as agent template',
-                        templates: [
-                            {statement: '{{statements.object_actor}}'},
-                            {object: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement"s agent template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.actor}}'},
-                            {actor: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement"s context instructor template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00032, Data 2.4.2.1 when the actor objectType is agent
              * An "objectType" property is a String. If present, the LRS must validate and reject with 400 Bad Request if invalid
              */
