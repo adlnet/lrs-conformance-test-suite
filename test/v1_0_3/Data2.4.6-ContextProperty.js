@@ -10,7 +10,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-describe('Context Property Requirements (Data 2.4.6)', () => {
+describe('Context Property Requirements (Data 2.4.6)', function () {
 
     //Data 2.4.6.s3
 /**  Matchup with Conformance Requirements Document
