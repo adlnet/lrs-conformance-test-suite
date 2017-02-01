@@ -29,7 +29,7 @@
  * XAPI-00202 - below
  * XAPI-00203 - below
  * XAPI-00204 - below
- * XAPI-00205 - below
+ * XAPI-00205 - No 'since' property with DELETE in the State Resource
  * XAPI-00206 - below
  * XAPI-00207 - below
  * XAPI-00208 - below
@@ -46,13 +46,13 @@
  * XAPI-00219 - below
  * XAPI-00220 - below
  * XAPI-00221 - below
- * XAPI-00222 - duplicate of XAPI-00195 - The State API's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present
+ * XAPI-00222 - duplicate of XAPI-00195
  * XAPI-00223 - No 'since' property with DELETE in the State Resource
- * XAPI-00224 - look in parameter folder - An LRS's State API rejects a DELETE request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
- * XAPI-00225 - look in parameters folder - An LRS's State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
- * XAPI-00226 - look in parameters folder - An LRS's State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ * XAPI-00224 - in Parameters folder
+ * XAPI-00225 - look in Parameters folder
+ * XAPI-00226 - look in Parameters folder
  * XAPI-00227 - below
- * XAPI-00228 - look in parameters folder - An LRS's State API rejects a PUT request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
+ * XAPI-00228 - look in Parameters folder
  * XAPI-00229 - below
  * XAPI-00230 - below
  * XAPI-00231 - below
@@ -87,16 +87,10 @@ describe('State Resource Requirements (Communication 2.3)', function () {
 /**  XAPI-00189, Communication 2.3 State Resource
 * An LRS's State API upon processing a successful POST request returns code 204 No Content
 */
-    it('An LRS\'s State Resource accepts POST requests (Communication 2.3, XAPI-00189)', function () {
-        var parameters = helper.buildState(),
-            document = helper.buildDocument();
-        return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
-    });
-
 /**  XAPI-00231, Communication 2.3 State Resource
- * An LRS will accept a POST request to the State API
- */
-    it('An LRS will accept a POST request to the State Resource (Communication 2.2.s3.table1.row1.a, XAPI-00231)', function () {
+* An LRS will accept a POST request to the State API
+*/
+    it('An LRS\'s State Resource accepts POST requests (Communication 2.3, XAPI-00189, XAPI-00231)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
@@ -128,18 +122,6 @@ describe('State Resource Requirements (Communication 2.3)', function () {
             .then(function () {
                 return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204);
             });
-    });
-
-    it('An LRS\'s State Resource upon processing a successful PUT request returns code 204 No Content (Communication 2.3.s3)', function () {
-        var parameters = helper.buildState(),
-            document = helper.buildDocument();
-        return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 204);
-    });
-
-    it('An LRS\'s State Resource upon processing a successful POST request returns code 204 No Content (Communication 2.3.s3)', function () {
-        var parameters = helper.buildState(),
-            document = helper.buildDocument();
-        return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
     });
 
 /**  XAPI-00192, Communication 2.3 State Resource
@@ -180,18 +162,6 @@ describe('State Resource Requirements (Communication 2.3)', function () {
         return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
     });
 
-    describe('An LRS\'s State Resource rejects a PUT request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
-        var invalidTypes = [{ key: 'value'}, 1, true, undefined];
-        invalidTypes.forEach(function (type) {
-            it('Should State Resource reject a PUT request with activityId type ' + type, function () {
-                var parameters = helper.buildState(),
-                    document = helper.buildDocument();
-                parameters.activityId = type;
-                return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
-            });
-        });
-    });
-
 /**  XAPI-00209, Communication 2.3 State Resource
  * An LRS's State API rejects a POST request without "activityId" as a parameter with error code 400 Bad Request
  */
@@ -200,18 +170,6 @@ describe('State Resource Requirements (Communication 2.3)', function () {
             document = helper.buildDocument();
         delete parameters.activityId;
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
-    });
-
-    describe('An LRS\'s State Resource rejects a POST request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
-        var document = helper.buildDocument(),
-            invalidTypes = [1, true, { key: 'value'}, undefined];
-        invalidTypes.forEach(function (type) {
-            it('Should reject PUT State with stateId type : ' + type, function () {
-                var parameters = helper.buildState();
-                parameters.activityId = type;
-                return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
-            });
-        });
     });
 
 /**  XAPI-00208, Communication 2.3 State Resource
@@ -223,16 +181,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
         return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
     });
 
-    describe('An LRS\'s State Resource rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
-        var invalidTypes = [1, true, { key: 'value'}, undefined];
-        invalidTypes.forEach(function (type) {
-            it('Should reject GET with "activityId" with type ' + type, function () {
-                var parameters = helper.buildState();
-                parameters.activityId = type;
-                return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
-            });
-        });
-    });
+
 
 /**  XAPI-00207, Communication 2.3 State Resource
  * An LRS's State API rejects a DELETE request without "activityId" as a parameter with error code 400 Bad Request
@@ -241,17 +190,6 @@ describe('State Resource Requirements (Communication 2.3)', function () {
         var parameters = helper.buildState();
         delete parameters.activityId;
         return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
-    });
-
-    describe('An LRS\'s State Resource rejects a DELETE request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
-        var invalidTypes = [1, true, { key: 'value'}, undefined];
-        invalidTypes.forEach(function (type) {
-            it('Should reject DELETE with "activityId" with type ' + type, function () {
-                var parameters = helper.buildState();
-                parameters.activityId = type;
-                return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
-            });
-        });
     });
 
 /**  XAPI-00215, Communication 2.3 State Resource
@@ -512,7 +450,6 @@ describe('State Resource Requirements (Communication 2.3)', function () {
             });
     });
 
-
 /**  XAPI-00233, Communication 2.3 State Resource
  * An LRS's State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document. Returning 204 No Content
  */
@@ -744,24 +681,6 @@ it("An LRS must reject with 400 Bad Request a POST request to the State Resource
                 return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 204);
             });
     });
-
-// No 'since' property with DELETE in the State Resource
-/**  XAPI-00205, Communication 2.3 State Resource
- * An LRS's State API rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request
- */
-/**  XAPI-00223, Communication 2.3 State Resource
- * An LRS's State API can process a DELETE request with "since" as a parameter
- */
-    // describe('An LRS\'s State Resource rejects a DELETE request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication.md#2.3.s3.table1.row4, XAPI-00205, XAPI-00223)', function () {
-    //     var invalidTypes = [1, true];
-    //     invalidTypes.forEach(function (type) {
-    //         it('Should reject DELETE with "since" with type ' + type, function () {
-    //             var parameters = helper.buildState();
-    //             parameters.since = type;
-    //             return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
-    //         });
-    //     });
-    // });
 
 /**  XAPI-00193, Communication 2.3 State Resource
  * An LRS's State API upon processing a successful GET request without "stateId" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK

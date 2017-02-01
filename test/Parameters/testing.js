@@ -129,6 +129,17 @@
             });
         });
       });
+      describe('An LRS\'s State Resource rejects a PUT request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
+          var invalidTypes = [{ key: 'value'}, 1, true, undefined];
+          invalidTypes.forEach(function (type) {
+              it('Should State Resource reject a PUT request with activityId type ' + type, function () {
+                  var parameters = helper.buildState(),
+                      document = helper.buildDocument();
+                  parameters.activityId = type;
+                  return helper.sendRequest('put', helper.getEndpointActivitiesState(), parameters, document, 400);
+              });
+          });
+      });
 
 /**  XAPI-00226, Communication 2.3 State Resource
  * An LRS's State API rejects a POST request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
@@ -143,6 +154,17 @@
                 return sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
             });
         });
+      });
+      describe('An LRS\'s State Resource rejects a POST request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
+          var document = helper.buildDocument(),
+              invalidTypes = [1, true, { key: 'value'}, undefined];
+          invalidTypes.forEach(function (type) {
+              it('Should reject PUT State with stateId type : ' + type, function () {
+                  var parameters = helper.buildState();
+                  parameters.activityId = type;
+                  return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 400);
+              });
+          });
       });
 
 /**  XAPI-00225, Communication 2.3 State Resources
