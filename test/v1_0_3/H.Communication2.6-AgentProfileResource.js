@@ -37,13 +37,24 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  * XAPI-00276 - in parameters folder
  * XAPI-00277 - in parameters folder
  * XAPI-00278 - below
- * XAPI-00279 - in Communication2.2-DocumentResources.js
- * XAPI-00280 - in Communication2.2-DocumentResources.js
+ * XAPI-00279 - below
+ * XAPI-00280 - below
  * XAPI-00281 - below
- * XAPI-00282 - in Communication2.2-DocumentResources.js
- * XAPI-00283 - in Communication2.2-DocumentResources.js
+ * XAPI-00282 - below
+ * XAPI-00283 - below
  * XAPI-00284 - below
  */
+
+/**  XAPI-00282, Communication 2.6 Agent Profile Resource
+* An LRS has an Agent Profile API with endpoint "base IRI"+"/agents/profile"
+*/
+    it('An LRS has an Agent Profile Resource with endpoint "base IRI"+"/agents/profile" (Communication 2.2.s3.table2.row3.a, Communication 2.2.table2.row3.c, XAPI-00282)', function () {
+        //Also covers An LRS will accept a POST request to the Agent Profile Resource
+        var parameters = helper.buildAgentProfile(),
+             document = helper.buildDocument();
+
+        return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
+    });
 
     it('An LRS\'s Agent Profile Resource accepts PUT requests (Communication 2.6.s2)', function () {
         var parameters = helper.buildAgentProfile(),
@@ -87,6 +98,15 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  * An LRS's Agent Profile API upon processing a successful POST request returns code 204 No Content
  */
     it('An LRS\'s Agent Profile Resource upon processing a successful POST request returns code 204 No Content (Communication 2.6.s3, XAPI-00272)', function () {
+        var parameters = helper.buildAgentProfile(),
+            document = helper.buildDocument();
+        return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
+    });
+
+/**  XAPI-00283, Communication 2.6 Agent Profile Resource
+ * An LRS will accept a POST request to the Agent Profile API
+ */
+    it('An LRS will accept a POST request to the Agent Profile Resource (Communication 2.2.s3.table1.row3.a, XAPI-00283)', function () {
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
@@ -335,6 +355,50 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
                         var body = res.body;
                         expect(body).to.be.an('array');
                         expect(body).to.have.length.above(0);
+                    })
+            });
+    });
+
+/**  XAPI-00279, Communication 2.6 Agent Profile Resource
+ * An LRS's Agent Profile API performs a Document Merge if a profileId is found and both it and the document in the POST request have type "application/json" If the merge is successful, the LRS MUST respond with HTTP status code 204 No Content.
+ * not quite, but is this close enough??
+ */
+    it('An LRS\'s Agent Profile Resource performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3, XAPI-00279)', function () {
+        var parameters = helper.buildAgentProfile(),
+            document = {
+                car: 'Honda'
+            },
+            anotherDocument = {
+                type: 'Civic'
+            };
+        return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
+            .then(function () {
+                return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, anotherDocument, 204)
+                    .then(function () {
+                        return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
+                            .then(function (res) {
+                                var body = res.body;
+                                expect(body).to.eql({
+                                    car: 'Honda',
+                                    type: 'Civic'
+                                })
+                            });
+                    });
+            });
+    });
+
+/**  XAPI-00280, Communication 2.6 Agent Profile Resource
+ * An LRS's Agent Profile API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document.Returning 204 No Content
+ */
+    it('An LRS\'s Agent Profile Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (Communication 2.2.s7, XAPI-00280)', function () {
+        var parameters = helper.buildAgentProfile(),
+            document = helper.buildDocument();
+        return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
+            .then(function () {
+                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
+                    .then(function (res) {
+                        var body = res.body;
+                        expect(body).to.eql(document);
                     })
             });
     });

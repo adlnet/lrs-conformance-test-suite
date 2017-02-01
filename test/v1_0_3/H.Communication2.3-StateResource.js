@@ -46,7 +46,7 @@
  * XAPI-00219 - below
  * XAPI-00220 - below
  * XAPI-00221 - below
- * XAPI-00222 - not yet found - The State API's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present
+ * XAPI-00222 - duplicate of XAPI-00195 - The State API's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present
  * XAPI-00223 - No 'since' property with DELETE in the State Resource
  * XAPI-00224 - look in parameter folder - An LRS's State API rejects a DELETE request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
  * XAPI-00225 - look in parameters folder - An LRS's State API rejects a GET request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
@@ -54,15 +54,26 @@
  * XAPI-00227 - below
  * XAPI-00228 - look in parameters folder - An LRS's State API rejects a PUT request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
  * XAPI-00229 - below
- * XAPI-00230 - in Communication2.2-DocumentResources.js
- * XAPI-00231 - in Communication2.2-DocumentResources.js
- * XAPI-00232 - in Communication2.2-DocumentResources.js
- * XAPI-00233 - in Communication2.2-DocumentResources.js
- * XAPI-00234 - in Communication2.2-DocumentResources.js
+ * XAPI-00230 - below
+ * XAPI-00231 - below
+ * XAPI-00232 - below
+ * XAPI-00233 - below
+ * XAPI-00234 - below
  * XAPI-00235 - below
  */
 
-describe('State Resource Requirements (Communication 2.3)', () => {
+describe('State Resource Requirements (Communication 2.3)', function () {
+
+/**  XAPI-00230, Communication 2.3 State Resource
+ * An LRS has a State API with endpoint "base IRI"+"/activities/state"
+ */
+    it('An LRS has a State Resource with endpoint "base IRI"+"/activities/state" (Communication 2.2.s3.table1.row1, XAPI-00230)', function () {
+        //Also covers An LRS will accept a POST request to the State Resource
+        var parameters = helper.buildState(),
+            document = helper.buildDocument();
+
+        return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
+    });
 
 /**  XAPI-00190, Communication 2.3 State Resource
 * An LRS's State API upon processing a successful PUT request returns code 204 No Content
@@ -77,6 +88,15 @@ describe('State Resource Requirements (Communication 2.3)', () => {
 * An LRS's State API upon processing a successful POST request returns code 204 No Content
 */
     it('An LRS\'s State Resource accepts POST requests (Communication 2.3, XAPI-00189)', function () {
+        var parameters = helper.buildState(),
+            document = helper.buildDocument();
+        return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
+    });
+
+/**  XAPI-00231, Communication 2.3 State Resource
+ * An LRS will accept a POST request to the State API
+ */
+    it('An LRS will accept a POST request to the State Resource (Communication 2.2.s3.table1.row1.a, XAPI-00231)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204);
@@ -477,6 +497,63 @@ describe('State Resource Requirements (Communication 2.3)', () => {
                 }
             });
         });
+    });
+
+/**  XAPI-00232, Communication 2.3 State Resource
+ * An LRS's State API, rejects a POST request if the document is found and either document's type is not "application/json" with error code 400 Bad Request
+ */
+    it('An LRS\'s State Resource, rejects a POST request if the document is found and either document\'s type is not "application/json" with error code 400 Bad Request (Communication 2.2.s8.b1, XAPI-00232)', function () {
+        var parameters = helper.buildState(),
+            document = helper.buildDocument(),
+            anotherDocument = 'abc';
+        return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
+            .then(function () {
+                return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, anotherDocument, 400);
+            });
+    });
+
+
+/**  XAPI-00233, Communication 2.3 State Resource
+ * An LRS's State API, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document. Returning 204 No Content
+ */
+    it('An LRS\'s State Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document (Communication 2.2.s7, XAPI-00233)', function () {
+        var parameters = helper.buildState(),
+            document = helper.buildDocument();
+        return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
+            .then(function () {
+                return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
+                    .then(function (res) {
+                        var body = res.body;
+                        expect(body).to.eql(document);
+                    });
+            });
+    });
+
+/**  XAPI-00234, Communication 2.3 State Resource
+ * An LRS's State API performs a Document Merge if a profileId is found and both it and the document in the POST request have type "application/json". If the merge is successful, the LRS MUST respond with HTTP status code 204 No Content.
+ */
+    it('An LRS\'s State Resource performs a Document Merge if a document is found and both it and the document in the POST request have type "application/json" (Communication 2.2.s7.b1, Communication 2.2.s7.b2, Communication 2.2.s7.b3, XAPI-00234)', function () {
+        var parameters = helper.buildState(),
+            document = {
+                car: 'Honda'
+            },
+            anotherDocument = {
+                type: 'Civic'
+            };
+        return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
+            .then(function () {
+                return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, anotherDocument, 204)
+                    .then(function () {
+                        return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
+                            .then(function (res) {
+                                var body = res.body;
+                                expect(body).to.eql({
+                                    car: 'Honda',
+                                    type: 'Civic'
+                                })
+                            });
+                    });
+            });
     });
 
 /**  XAPI-00235, Communication 2.3 State Resource
