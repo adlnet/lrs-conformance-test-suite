@@ -69,22 +69,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
  * XAPI-00145 - below
  */
 
-    describe('An LRS\'s Statement Resource accepts PUT requests (Communication 2.1.1.s1)', function () {
-        it('should persist statement using "PUT"', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = helper.generateUUID();
-
-            request(helper.getEndpointAndAuth())
-                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(204, done);
-        });
-    });
 
 /**  XAPI-00143, Communication 2.1.1 PUT Statements
  * An LRS's Statement API upon processing a valid PUT request successfully returns code 204 No Content
@@ -138,38 +122,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
 
             request(helper.getEndpointAndAuth())
                 .put(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(400, done);
-        });
-    });
-
-    describe('An LRS\'s Statement Resource accepts PUT requests only if the "statementId" parameter is a String (Type, Communication 2.1.1.s1.table1.row1)', function () {
-        it('should fail statement using "statementId" parameter as boolean', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = true;
-
-            request(helper.getEndpointAndAuth())
-                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(400, done);
-        });
-
-        it('should fail statement using "statementId" parameter as object', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = {key: 'should fail'};
-
-            request(helper.getEndpointAndAuth())
-                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
                 .headers(helper.addAllHeaders({}))
                 .json(data)
                 .expect(400, done);
@@ -276,64 +228,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                             });
                         }
                     });
-                }
-            });
-        });
-    });
-
-    describe('An LRS\'s Statement Resource rejects with error code 409 Conflict any Statement with the "statementID" parameter equal to a Statement in the LRS already **Implicit** (Communication 2.1.1.s2.b2)', function () {
-        it('should return 409 or 204 when statement ID already exists on POST', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = helper.generateUUID();
-
-            request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .expect(200)
-            .end()
-            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else if (res.statusCode === 409 || res.statusCode === 204) {
-                    done();
-                } else {
-                    done(new Error('Received status code: ' + res.statusCode));
-                }
-            });
-        });
-
-        it('should return 409 or 204 when statement ID already exists on PUT', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = helper.generateUUID();
-
-            request(helper.getEndpointAndAuth())
-            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .expect(204)
-            .end()
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else if (res.statusCode === 409 || res.statusCode === 204) {
-                    done();
-                } else {
-                    done(new Error('Received status code: ' + res.statusCode));
                 }
             });
         });
@@ -862,50 +756,6 @@ StatementResult Object.
             });
         });
 
-    });
-
-    it('An LRS\'s Statement Resource, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, Communication 2.1.3.s1)', function (done){
-
-        var query = helper.getUrlEncoding(
-            {limit:1}
-        );
-
-        request(helper.getEndpointAndAuth())
-        .get(helper.getEndpointStatements() + '?' + query)
-        .headers(helper.addAllHeaders({}))
-        .expect(200)
-        .end(function (err, res) {
-            if (err) {
-                done(err);
-            }
-            else {
-                var results = helper.parse(res.body, done);
-                expect(results.statements).to.exist;
-                done();
-            }
-        });
-    });
-
-    it('An LRS\'s Statement Resource, upon processing a successful GET request, will return a single "more" property (Multiplicity, Format, Communication 2.1.3.s1)', function (done){
-
-        var query = helper.getUrlEncoding(
-            {limit:1}
-        );
-
-        request(helper.getEndpointAndAuth())
-        .get(helper.getEndpointStatements() + '?' + query)
-        .headers(helper.addAllHeaders({}))
-        .expect(200)
-        .end(function (err, res) {
-            if (err) {
-                done(err);
-            }
-            else {
-                var results = helper.parse(res.body, done);
-                expect(results.more).to.exist;
-                done();
-            }
-        });
     });
 
 /**  XAPI-00158, Communication 2.1.3 GET Statements
