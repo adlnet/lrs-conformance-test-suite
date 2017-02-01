@@ -181,10 +181,30 @@
             });
         });
       });
+      describe('An LRS\'s State Resource rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
+          var invalidTypes = [1, true, { key: 'value'}, undefined];
+          invalidTypes.forEach(function (type) {
+              it('Should reject GET with "activityId" with type ' + type, function () {
+                  var parameters = helper.buildState();
+                  parameters.activityId = type;
+                  return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
+              });
+          });
+      });
 
 /**  XAPI-00224, Communication 2.3 State Resource
  * An LRS's State API rejects a DELETE request with "stateId" as a parameter if it is not type "String" with error code 400 Bad Request
  */
+        describe('An LRS\'s State Resource rejects a DELETE request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.3.s3.table1.row1)', function () {
+            var invalidTypes = [1, true, { key: 'value'}, undefined];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "activityId" with type ' + type, function () {
+                    var parameters = helper.buildState();
+                    parameters.activityId = type;
+                    return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
+                });
+            });
+        });
 
     });
 
