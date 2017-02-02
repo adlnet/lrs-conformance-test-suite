@@ -296,6 +296,38 @@
                 });
             });
         });
+/**  XAPI-00305, Communication 2.7 Activity Profile Resource
+ * An LRS's Activity Profile API rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request
+ */
+        describe('An LRS\'s Activity Profile Resource rejects a DELETE request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s4.table1.row2, XAPI-00305)', function () {
+            var document = helper.buildDocument(),
+                invalidTypes = [1, true, { key: 'value'}];
+            invalidTypes.forEach(function (type) {
+                it('Should reject DELETE with "activityId" with type ' + type, function () {
+                    var parameters = helper.buildActivityProfile();
+                    parameters.profileId = type;
+                    return helper.sendRequest('delete', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+                });
+            });
+        });
+
+
+
+/**  XAPI-00307, Communication 2.7 Activity Profile Resource
+ * An LRS's Activity Profile API rejects a PUT request with "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, 7.5.table2.row2.a)
+ */
+        //Type "String" tests likely to be reworded or removed
+        describe('An LRS\'s Activity Profile Resource rejects a PUT request without "profileId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.7.s3.table1.row2, XAPI-00307)', function () {
+          var document = helper.buildDocument(),
+              invalidTypes = [1, true, { key: 'value'}];
+          invalidTypes.forEach(function (type) {
+              it('Should reject PUT with "profileId" with type ' + type, function () {
+                  var parameters = helper.buildActivityProfile();
+                  parameters.agent = type;
+                  return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+              });
+          });
+        });
 
 
     function createFromTemplate(templates) {
