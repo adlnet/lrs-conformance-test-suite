@@ -247,7 +247,7 @@ if (!process.env.EB_NODE_COMMAND) {
                                 if (!delta) {
                                     // first time only - we use the provided headers to calculate a maximum wait time
                                     delta = new Date(res.headers.date).valueOf() - new Date(res.headers['x-experience-api-consistent-through']).valueOf();
-                                    finish = Date.now() + 10 * delta;
+                                    finish = Date.now() + 10 * Math.abs(delta);
 
                                     if (isNaN(finish)) {
                                         throw new TypeError("X-Experience-API-Consistent-Through header was missing or not a number.");
