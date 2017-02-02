@@ -10,7 +10,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-describe('About Resource Requirements (Communication 2.8)', () => {
+describe('About Resource Requirements (Communication 2.8)', function () {
 
 /**  Matchup with Conformance Requirements Document
  * XAPI-00315 - below
@@ -32,11 +32,6 @@ describe('About Resource Requirements (Communication 2.8)', () => {
 /**  XAPI-00319, Communication 2.8 About Resource
  * An LRS's About Resource accepts GET requests. Upon processing a successful GET request returns a version property and code 200 OK
  */
-    it('An LRS\'s About Resource accepts GET requests (Communication 2.8, XAPI-00319)', function () {
-        return helper.sendRequest('get', '/about', undefined, undefined, 200);
-    });
-
-    //see above
     it('An LRS\'s About Resource upon processing a successful GET request returns a version property and code 200 OK (multiplicity, Communication 2.8.s4, XAPI-00319)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
@@ -59,8 +54,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
 /**  XAPI-00317, Communication 2.8 About Resource
  * An LRS's About API's version property contains at least one string of "1.0.x"
  */
-    //moving this over for now, string value will need updated
-    it('An LRS\'s About Resource\'s version property contains at least one string of "1.0.3" (Communication 2.8.s5.b1.b1, XAPI-00317)', function () {
+    it('An LRS\'s About Resource\'s version property contains at least one string of "1.0.0" (Communication 2.8.s5.b1.b1, XAPI-00317)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
@@ -68,7 +62,7 @@ describe('About Resource Requirements (Communication 2.8)', () => {
 
                 var foundVersion = false
                 about.version.forEach(function (item) {
-                    if (item === '1.0.3') {
+                    if (item === '1.0.0') {
                         foundVersion = true;
                     }
                 })
