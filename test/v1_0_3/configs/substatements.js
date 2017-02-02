@@ -12,19 +12,6 @@
     module.exports.config = function () {
         return [
             {
-                name: 'SubStatements Verify Templates',
-                config: [
-                    {
-                        name: 'should pass statement SubStatement template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.default}}'}
-                        ],
-                        expect: [200]
-                    }
-                ]
-            },
-            {
                 name: 'A Sub-Statement is defined by the "objectType" of an "object" with value "SubStatement" (Data 2.4.4.3.s8.b1)',
                 config: [
                     {

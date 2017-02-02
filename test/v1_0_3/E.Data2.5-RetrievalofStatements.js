@@ -10,7 +10,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-describe('Retrieval of Statements (Data 2.5)', () => {
+describe('Retrieval of Statements (Data 2.5)', function () {
 
 /**  Matchup with Conformance Requirements Document
  * XAPI-00108 - below

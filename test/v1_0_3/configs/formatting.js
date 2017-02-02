@@ -67,19 +67,6 @@
     module.exports.config = function () {
         return [
             {
-                name: 'Statements Verify Templates',
-                config: [
-                    {
-                        name: 'should pass statement template',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {timestamp: '2013-05-18T05:32:34.804Z'}
-                        ],
-                        expect: [200]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00003, 2.2 Formatting Requirements
              * An LRS rejects with error code 400 Bad Request a Statement which does not contain an "actor" property
              */

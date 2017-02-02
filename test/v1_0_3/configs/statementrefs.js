@@ -16,26 +16,6 @@
     module.exports.config = function () {
         return [
             {
-                name: 'StatementRefs Verify Templates',
-                config: [
-                    {
-                        name: 'should pass statement StatementRef template',
-                        templates: [
-                            {statement: '{{statements.object_statementref}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass substatement StatementRef template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.statementref}}'}
-                        ],
-                        expect: [200]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00073, Data 2.4.4.3 when object is a statement
              * Statements that have a StatementRef or Sub-Statement as an Object MUST specify an "objectType" property. The LRS rejects with 400 Bad Request if the “objectType” property is absent and the Object is a StatementRef or Sub-Statement.
              */

@@ -6272,11 +6272,6 @@
 		"1.0.3_ref": ["Data 2.6"],
 		"1.0.3_link": ["Data.md#2.6"]
 	},
-    "Signed statement with \"RS256\"": {
-		"name": "Signed statement with \"RS256\"",
-		"1.0.3_ref": ["Data 2.6.s4.b1"],
-		"1.0.3_link": ["Data.md#2.6.s4.b1"]
-	},
     "LRS must reject with 400 a signed statement with malformed signature - bad contentType": {
 		"name": "LRS must reject with 400 a signed statement with malformed signature - bad contentType",
 		"1.0.3_ref": ["Data 2.6.s4.b1"],
@@ -6287,10 +6282,10 @@
 		"1.0.3_ref": ["Data 2.6.s4.b4"],
 		"1.0.3_link": ["Data.md#2.6.s4.b4"]
 	},
-    "LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement": {
-		"name": "LRS must reject with 400 a signed statement with malformed signature - bad JSON serialization of statement",
-		"1.0.3_ref": ["Data 2.6.s4.b3"],
-		"1.0.3_link": ["Data.md#2.6.s4.b3"]
+    "A Signed Statement MUST include a JSON web signature, JWS": {
+		"name": "A Signed Statement MUST include a JSON web signature, JWS",
+		"1.0.3_ref": ["Data 2.6.s4.b1, XAPI-00115"],
+		"1.0.3_link": ["Data.md#2.6.s4.b1"]
 	},
     "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and for any part except the first does not have a Header named \"Content-Transfer-Encoding\" with a value of \"binary\"": {
     "name": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and for any part except the first does not have a Header named \"Content-Transfer-Encoding\" with a value of \"binary\"",
