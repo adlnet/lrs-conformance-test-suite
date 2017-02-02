@@ -49,10 +49,10 @@
  * XAPI-00222 - duplicate of XAPI-00195
  * XAPI-00223 - No 'since' property with DELETE in the State Resource
  * XAPI-00224 - in Parameters folder
- * XAPI-00225 - look in Parameters folder
- * XAPI-00226 - look in Parameters folder
+ * XAPI-00225 - in Parameters folder
+ * XAPI-00226 - in Parameters folder
  * XAPI-00227 - below
- * XAPI-00228 - look in Parameters folder
+ * XAPI-00228 - in Parameters folder
  * XAPI-00229 - below
  * XAPI-00230 - below
  * XAPI-00231 - below

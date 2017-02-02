@@ -34,7 +34,7 @@ describe('Signed Statements (Data 2.6)', () => {
                 var options = {attachmentInfo: {contentType: 'text/plain; charset=ascii'}};
                 var body = helper.signStatement(data, options);
 
-                var res = request(helper.getEndpointAndAuth())
+                request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary=' + options.boundary}))
                 .body(body)
@@ -46,7 +46,7 @@ describe('Signed Statements (Data 2.6)', () => {
                 var options = {attachmentInfo: {usageType: 'http://adlnet.gov/expapi/attachments'}};
                 var body = helper.signStatement(data, options);
 
-                var res = request(helper.getEndpointAndAuth())
+                request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary=' + options.boundary}))
                 .body(body)
@@ -58,7 +58,7 @@ describe('Signed Statements (Data 2.6)', () => {
                 var options = {breakJson: true};
                 var body = helper.signStatement(data, options);
 
-                var res = request(helper.getEndpointAndAuth())
+                request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary=' + options.boundary}))
                 .body(body)
@@ -96,10 +96,10 @@ describe('Signed Statements (Data 2.6)', () => {
                 var body = helper.signStatement(data, options);
 
                 request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary='+options.boundary}))
-                    .body(body)
-                    .expect(200, done);
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary='+options.boundary}))
+                .body(body)
+                .expect(200, done);
             }); //end it good sig with "RS256"
 
             it("Accepts signed statement with \"RS384\"", function (done)
@@ -110,10 +110,10 @@ describe('Signed Statements (Data 2.6)', () => {
                 var body = helper.signStatement(data, options);
 
                 request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary='+options.boundary}))
-                    .body(body)
-                    .expect(200, done);
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary='+options.boundary}))
+                .body(body)
+                .expect(200, done);
             }); //end it good sig with "RS384"
 
             it("Accepts signed statement with \"RS512\"", function (done)
@@ -124,10 +124,10 @@ describe('Signed Statements (Data 2.6)', () => {
                 var body = helper.signStatement(data, options);
 
                 request(helper.getEndpointAndAuth())
-                    .post(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary='+options.boundary}))
-                    .body(body)
-                    .expect(200, done);
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary='+options.boundary}))
+                .body(body)
+                .expect(200, done);
             }); //end it good sig with "RS512"
 
             it('Rejects signed statement with another algorithm', function (done) {
