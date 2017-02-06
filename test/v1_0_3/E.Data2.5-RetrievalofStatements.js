@@ -6,6 +6,7 @@
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, validator) {
     // "use strict";
 
+    chai.use(require('chai-things'));
     var expect = chai.expect;
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
@@ -221,7 +222,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('verb.id',statement.verb.id);
                     done();
                 }
             });
@@ -239,7 +240,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('object.id',statement.object.id)
                     done();
                 }
             });
@@ -257,7 +258,7 @@ describe('Retrieval of Statements (Data 2.5)', () => {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('object.id',statement.object.id);
                     done();
                 }
             });
