@@ -280,7 +280,7 @@
           invalidTypes.forEach(function (type) {
               it('Should reject GET with "profileId" with type ' + type, function () {
                   var parameters = helper.buildActivityProfile();
-                  parameters.agent = type;
+                  parameters.profileId = type;
                   return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, document, 400);
               });
           });
