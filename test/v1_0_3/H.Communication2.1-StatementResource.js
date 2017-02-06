@@ -147,10 +147,10 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
             .headers(helper.addAllHeaders({}))
             .json(data)
-            .expect(200)
+            .expect(204)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -196,10 +196,10 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
-            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders({}))
             .json(data)
-            .expect(204)
+            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
