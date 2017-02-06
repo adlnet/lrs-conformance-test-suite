@@ -2430,6 +2430,7 @@ MUST have a "Content-Type" header
     describe('An LRSs Statement Resource not return attachment data and only return application/json if the "attachment" parameter set to "false" (Communication 2.1.3.s1.b1, XAPI-00161)', function () {
         var statementId = null;
         var stmtTime = null;
+
         before("store statement",function(done){
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
@@ -2451,9 +2452,9 @@ MUST have a "Content-Type" header
                         done();
                     }
                 });
-        })
+        });
+
         it('should NOT return the attachment if "attachments" is missing', function (done) {
-            // console.log('should NOT return the attachment if "attachments" is missing');
             var query = '?statementId=' + statementId;
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
@@ -2464,7 +2465,7 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-                    expect(res.headers["content-type"]).to.equal('application/json');
+                    expect(res.headers["content-type"]).to.match(/^application\/json/);
                     done();
                 }
             });
@@ -2483,9 +2484,8 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-
-             done();
-                    expect(res.headers["content-type"]).to.equal('application/json');
+                    expect(res.headers["content-type"]).to.match(/^application\/json/);
+                    done();
                 }
             });
         });
@@ -2502,8 +2502,6 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-                    //how delicate is this parsing? There is a newline as body[1], the statement as body[0]. Should we search all
-                    //parts of the body?
                     var ContentType = res.headers["content-type"];
                     var type = ContentType.split(";")[0];
                     expect(type).to.equal("multipart/mixed");
