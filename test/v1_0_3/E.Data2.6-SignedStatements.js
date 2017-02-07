@@ -41,18 +41,6 @@ describe('Signed Statements (Data 2.6)', () => {
                 .expect(400, done);
             });
 
-            it('rejects a signed statement with a malformed signature - bad usage type', function (done) {
-                data.id = helper.generateUUID();
-                var options = {attachmentInfo: {usageType: 'http://adlnet.gov/expapi/attachments'}};
-                var body = helper.signStatement(data, options);
-
-                request(helper.getEndpointAndAuth())
-                .post(helper.getEndpointStatements())
-                .headers(helper.addAllHeaders({'Content-Type': 'multipart/mixed; boundary=' + options.boundary}))
-                .body(body)
-                .expect(400, done);
-            });
-
             it('rejects a signed statement with a malformed signature - bad JWS', function (done) {
                 data.id = helper.generateUUID();
                 var options = {breakJson: true};
