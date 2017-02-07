@@ -124,7 +124,7 @@
                 ]
             },
             {   //see above
-                name: 'Statement authority shall only be an anonymous group with two members (Data 2.4.9.s3.b1)',
+                name: 'Statement authority shall only be an anonymous group with two members (Data 2.4.9.s3.b1, XAPI-00098)',
                 config: [
                     {
                         name: 'statement authority identified group is rejected',
@@ -153,7 +153,7 @@
                 ]
             },
             {   //see above
-                name: 'An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group of more than two Agents (Format, Data 2.4.9.s3.b1)',
+                name: 'An LRS rejects with error code 400 Bad Request, a Request whose "authority" is a Group of more than two Agents (Format, Data 2.4.9.s3.b1, XAPI-00098)',
                 config: [
                     {
                         name: 'statement "authority" invalid three member',

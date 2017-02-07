@@ -26,7 +26,7 @@ if (!process.env.EB_NODE_COMMAND) {
             'HMAC-SHA1'
         );
     }
-    
+
     /** Appears to use absolute path */
     var CONFIG_FOLDER = './test/' + process.env.DIRECTORY + '/configs';
 
@@ -189,6 +189,28 @@ if (!process.env.EB_NODE_COMMAND) {
                 from = to;
             });
             return from;
+        },
+        deepSearchObject: function(object, primitive)
+        {
+            var tested = [];
+
+            var _internal = function(object, primitive)
+            {   
+                tested.push(object);
+                var found = false;         
+                for(var i in object)
+                {
+                    if(object[i] == primitive) 
+                        return true;
+                    else
+                    {
+                        if(typeof object[i] == 'object' && tested.indexOf(object[i]))
+                            found = found || _internal(object[i],primitive)
+                    }
+                }
+                return found;
+            }
+            return _internal(object, primitive);
         },
         /**
          * Delays to check for "X-Experience-API-Consistent-Through" header.
@@ -588,8 +610,7 @@ if (!process.env.EB_NODE_COMMAND) {
          */
         buildFormBody: function (content, id) {
             var body = {
-                'X-Experience-API-Version': '1.0.2',
-                'Content-Type': 'application/json',
+                'X-Experience-API-Version': '1.0.3',
                 'content': JSON.stringify(content)
             }
             if (id) {

@@ -3,14 +3,14 @@
  * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
  */
 
-(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
+(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, crypto) {
     // "use strict";
 
     //Communication 2.0
 /**  Matchup with Conformance Requirements Document
  * XAPI-00139 - below
- * XAPI-00140 - not found yet - An LRS implements all of the Statement, State, Agent, and Activity Profile sub-APIs
- * XAPI-00141 - not found yet - An LRS's returned array of ids from a successful GET request all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present (7.5.table3.row2)
+ * XAPI-00140 - generic and covered by other files - An LRS implements all of the Statement, State, Agent, and Activity Profile sub-APIs
+ * XAPI-00141 - covered by XAPI-00195, XAPI-00275, XAPI-00294
  */
 
     var expect = chai.expect;
@@ -69,22 +69,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
  * XAPI-00145 - below
  */
 
-    describe('An LRS\'s Statement Resource accepts PUT requests (Communication 2.1.1.s1)', function () {
-        it('should persist statement using "PUT"', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = helper.generateUUID();
-
-            request(helper.getEndpointAndAuth())
-                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(204, done);
-        });
-    });
 
 /**  XAPI-00143, Communication 2.1.1 PUT Statements
  * An LRS's Statement API upon processing a valid PUT request successfully returns code 204 No Content
@@ -144,44 +128,12 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-    describe('An LRS\'s Statement Resource accepts PUT requests only if the "statementId" parameter is a String (Type, Communication 2.1.1.s1.table1.row1)', function () {
-        it('should fail statement using "statementId" parameter as boolean', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = true;
-
-            request(helper.getEndpointAndAuth())
-                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(400, done);
-        });
-
-        it('should fail statement using "statementId" parameter as object', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = {key: 'should fail'};
-
-            request(helper.getEndpointAndAuth())
-                .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-                .headers(helper.addAllHeaders({}))
-                .json(data)
-                .expect(400, done);
-        });
-    });
-
 /**  XAPI-00142, Communication 2.1.1 PUT Statements
  * An LRS cannot modify a Statement in the event it receives a Statement with statementID equal to a Statement in the LRS already.  To test: Send one statement with a particular statement ID. Send a second statement with the same statement ID but everything else different. Retrieve the statement before the second statement and after and both retrieved statements MUST match.
  */
     describe('An LRS cannot modify a Statement, state, or Object in the event it receives a Statement with statementID equal to a Statement in the LRS already. (Communication 2.1.1.s2.b2, XAPI-00142)', function () {
         this.timeout(0);
-        it('should not update statement with matching "statementId" on POST', function (done) {
+        it('should not update statement with matching "statementId" on PUT', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -195,10 +147,10 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
+            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
             .headers(helper.addAllHeaders({}))
             .json(data)
-            .expect(200)
+            .expect(204)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -231,7 +183,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             });
         });
 
-        it('should not update statement with matching "statementId" on PUT', function (done) {
+        it('should not update statement with matching "statementId" on POST', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -244,10 +196,10 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
-            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
+            .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders({}))
             .json(data)
-            .expect(204)
+            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -276,64 +228,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                             });
                         }
                     });
-                }
-            });
-        });
-    });
-
-    describe('An LRS\'s Statement Resource rejects with error code 409 Conflict any Statement with the "statementID" parameter equal to a Statement in the LRS already **Implicit** (Communication 2.1.1.s2.b2)', function () {
-        it('should return 409 or 204 when statement ID already exists on POST', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = helper.generateUUID();
-
-            request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .expect(200)
-            .end()
-            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else if (res.statusCode === 409 || res.statusCode === 204) {
-                    done();
-                } else {
-                    done(new Error('Received status code: ' + res.statusCode));
-                }
-            });
-        });
-
-        it('should return 409 or 204 when statement ID already exists on PUT', function (done) {
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = helper.generateUUID();
-
-            request(helper.getEndpointAndAuth())
-            .put(helper.getEndpointStatements() + '?statementId=' + data.id)
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .expect(204)
-            .end()
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else if (res.statusCode === 409 || res.statusCode === 204) {
-                    done();
-                } else {
-                    done(new Error('Received status code: ' + res.statusCode));
                 }
             });
         });
@@ -393,42 +287,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
-/**  XAPI-00182, Communication 2.2 Documents Resources
- * An LRS makes no modifications to stored data for any rejected request.
- */
-    it ('An LRS makes no modifications to stored data for any rejected request (Multiple, including Communication 2.1.2.s2.b4, XAPI-00182)', function(done){
-        this.timeout(0);
-        var templates = [
-            {statement: '{{statements.default}}'}
-        ];
-        var correct = helper.createFromTemplate(templates);
-        correct = correct.statement;
-        var incorrect = extend(true, {}, correct);
-
-        correct.id = helper.generateUUID();
-        incorrect.id = helper.generateUUID();
-
-        incorrect.verb.id = 'should fail';
-        var stmtTime = Date.now();
-
-        request(helper.getEndpointAndAuth())
-        .post(helper.getEndpointStatements())
-        .headers(helper.addAllHeaders({}))
-        .json([correct, incorrect])
-        .expect(400)
-        .end(function (err, res) {
-            if (err) {
-                done(err);
-            } else {
-                request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?statementId=' + correct.id)
-                .wait(helper.genDelay(stmtTime, '?statementId=' + correct.id, correct.id))
-                .headers(helper.addAllHeaders({}))
-                .expect(404, done);
-            }
-        });
-    });
-
     //Communication 2.1.3 GET Statements
 /**  Matchup with Conformance Requirements Document
  * XAPI-00149 - below
@@ -446,15 +304,15 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
  * XAPI-00161 - below
  * XAPI-00162 - below
  * XAPI-00163 - below
- * XAPI-00164 - not found yet - The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request
- * XAPI-00165 - not found yet - An LRS's Statement API, upon receiving a GET request, MUST have a "Content-Type" header.
+ * XAPI-00164 - covered by other specific tests
+ * XAPI-00165 - below
  * XAPI-00166 - below
  * XAPI-00167 - below
  * XAPI-00168 - below
  * XAPI-00169 - below
  * XAPI-00170 - below
  * XAPI-00171 - below
- * XAPI-00172 - not found yet - If the "Accept-Language" header is present as part of the GET request to the Statement API and the "format" parameter is set to "canonical", the LRS MUST apply this data to choose the matching language in the response.  Make sure that all the format tests are covered!
+ * XAPI-00172 - below
  * XAPI-00173 - below
  * XAPI-00174 - below
  * XAPI-00175 - below
@@ -898,50 +756,6 @@ StatementResult Object.
             });
         });
 
-    });
-
-    it('An LRS\'s Statement Resource, upon processing a successful GET request, will return a single "statements" property (Multiplicity, Format, Communication 2.1.3.s1)', function (done){
-
-        var query = helper.getUrlEncoding(
-            {limit:1}
-        );
-
-        request(helper.getEndpointAndAuth())
-        .get(helper.getEndpointStatements() + '?' + query)
-        .headers(helper.addAllHeaders({}))
-        .expect(200)
-        .end(function (err, res) {
-            if (err) {
-                done(err);
-            }
-            else {
-                var results = helper.parse(res.body, done);
-                expect(results.statements).to.exist;
-                done();
-            }
-        });
-    });
-
-    it('An LRS\'s Statement Resource, upon processing a successful GET request, will return a single "more" property (Multiplicity, Format, Communication 2.1.3.s1)', function (done){
-
-        var query = helper.getUrlEncoding(
-            {limit:1}
-        );
-
-        request(helper.getEndpointAndAuth())
-        .get(helper.getEndpointStatements() + '?' + query)
-        .headers(helper.addAllHeaders({}))
-        .expect(200)
-        .end(function (err, res) {
-            if (err) {
-                done(err);
-            }
-            else {
-                var results = helper.parse(res.body, done);
-                expect(results.more).to.exist;
-                done();
-            }
-        });
     });
 
 /**  XAPI-00158, Communication 2.1.3 GET Statements
@@ -1481,7 +1295,7 @@ StatementResult Object.
                         expect(stmts).to.be.an('array');
                         stmts.forEach(function(stmt) {
                             if (stmt.id === id) {
-                                expect(Object.keys(stmt.actor).length).to.eql(2);
+                                expect(Object.keys(stmt.actor).length).to.be.within(1, 2);
                                 expect(Object.keys(stmt.object.actor).length).to.eql(2);
                                 expect(Object.keys(stmt.object.object).length).to.eql(1);
                                 /*  Removed since spec 1.0.3 is SHOULD*
@@ -1489,7 +1303,9 @@ StatementResult Object.
                                 expect(Object.keys(stmt.object.verb).length).to.eql(1);
                                 */
                                 expect(stmt.actor.mbox).to.eql(agent.mbox);
-                                expect(stmt.actor.objectType).to.eql(agent.objectType);
+                                if (stmt.actor.objectType) {
+                                    expect(stmt.actor.objectType).to.eql(agent.objectType);
+                                }
                                 expect(stmt.verb.id).to.eql(verb1.id);
                                 expect(stmt.object.actor.mbox).to.eql(group.mbox);
                                 expect(stmt.object.actor.objectType).to.eql(group.objectType);
@@ -1507,12 +1323,53 @@ StatementResult Object.
  * An LRS's Statement API can process a GET request with "attachments" as a parameter. The Statement API MUST return 200 OK, StatementResult Object and use the multipart response format and include all attachments if the attachment parameter is set to true
  */
     describe('An LRS\'s Statement Resource can process a GET request with "attachments" as a parameter  (**Implicit**, Communication 2.1.3.s1.table1.row13, XAPI-00167)', function () {
-        it('should process using GET with "attachments"', function (done) {
-            var query = helper.getUrlEncoding({attachments: true});
+
+        var stmtTime, stmtId;
+
+        before('set up statement with two attachments for test', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'},
+                attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_two_multipart_attachments_valid.part', {encoding: 'binary'});
+            stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .headers(helper.addAllHeaders({}))
-                .expect(200, done);
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders(header))
+            .body(attachment)
+            .expect(200, function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    stmtId = helper.parse(res.body, done)[0];
+                    done();
+                }
+            });
+        });
+
+        it('should process using GET with "attachments"', function (done) {
+            var query = helper.getUrlEncoding({attachments: true, statementId: stmtId});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?statementId=' + stmtId, stmtId))
+            .headers(helper.addAllHeaders({}))
+            .expect(200, function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    // Find the boundary
+                    var b = res.headers['content-type'].split(';');
+                    var boundary = b[1].trim().substring(b[1].indexOf('='));
+                    // Use boundary to get first part of response, excluding "--"
+                    var x = res.body.split(boundary);
+                    var c = x[1].substring(x[1].indexOf('{'), x[1].lastIndexOf('}') + 1);
+                    var result = helper.parse(c, done);
+                    expect(result).to.have.property('statements');
+                    // Hardcoded SHAs from file being used to send statement with two attachments
+                    var hash1 = '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
+                    hash2 = '7063d0a4cfa93373753ad2f5a6ffcf684559fb1df3c2f0473a14ece7d4edb06a';
+                    expect(res.body).to.contain(hash1);
+                    expect(res.body).to.contain(hash2);
+                    done();
+                }
+            });
         });
     });
 
@@ -2573,6 +2430,7 @@ MUST have a "Content-Type" header
     describe('An LRSs Statement Resource not return attachment data and only return application/json if the "attachment" parameter set to "false" (Communication 2.1.3.s1.b1, XAPI-00161)', function () {
         var statementId = null;
         var stmtTime = null;
+
         before("store statement",function(done){
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
@@ -2594,9 +2452,9 @@ MUST have a "Content-Type" header
                         done();
                     }
                 });
-        })
+        });
+
         it('should NOT return the attachment if "attachments" is missing', function (done) {
-            // console.log('should NOT return the attachment if "attachments" is missing');
             var query = '?statementId=' + statementId;
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
@@ -2607,7 +2465,7 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-                    expect(res.headers["content-type"]).to.equal('application/json');
+                    expect(res.headers["content-type"]).to.match(/^application\/json/);
                     done();
                 }
             });
@@ -2626,9 +2484,8 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-
-             done();
-                    expect(res.headers["content-type"]).to.equal('application/json');
+                    expect(res.headers["content-type"]).to.match(/^application\/json/);
+                    done();
                 }
             });
         });
@@ -2645,8 +2502,6 @@ MUST have a "Content-Type" header
                 if (err) {
                     done(err);
                 } else {
-                    //how delicate is this parsing? There is a newline as body[1], the statement as body[0]. Should we search all
-                    //parts of the body?
                     var ContentType = res.headers["content-type"];
                     var type = ContentType.split(";")[0];
                     expect(type).to.equal("multipart/mixed");
@@ -2934,4 +2789,4 @@ MUST have a "Content-Type" header
 
 });
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('crypto')));

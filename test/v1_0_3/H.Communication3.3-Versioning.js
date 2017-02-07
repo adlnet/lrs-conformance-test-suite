@@ -15,7 +15,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
 /**  Matchup with Conformance Requirements Document
  * XAPI-00330 - below
  * XAPI-00331 - below
- * XAPI-00332 - below - additional test created for Data 2.4.10
+ * XAPI-00332 - in Data 2.4.10 Statements Version Property
  * XAPI-00333 - below
  */
 
@@ -178,53 +178,6 @@ describe('Versioning Requirements (Communication 3.3)', () => {
             request(helper.getEndpointAndAuth())
                 .put(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
                 .json(data).expect(400, done);
-        });
-    });
-
-/**  XAPI-00332, Comminication 3.3 Versioning
- * Statements returned by an LRS MUST retain the version property they are accepted with.
- */
-    it ('Statements returned by an LRS MUST retain the header version they are accepted with (Format, Communication 3.3.s3.b1, Communication 3.3.s3.b2, XAPI-00332)', function (done){
-        this.timeout(0);
-        var stmtTime = Date.now();
-
-        var statementTemplates = [
-          {statement: '{{statements.default}}'}
-        ];
-
-        var version = helper.addAllHeaders({})['X-Experience-API-Version'];
-        var id = helper.generateUUID();
-
-        var statement = helper.createFromTemplate(statementTemplates);
-        statement = statement.statement;
-        statement.id = id;
-
-        var query = helper.getUrlEncoding({statementId: id});
-
-        request(helper.getEndpointAndAuth())
-        .post(helper.getEndpointStatements())
-        .headers(helper.addAllHeaders({}))
-        .json(statement)
-        .expect(200)
-        .end(function (err, res) {
-            if (err) {
-                done(err);
-            } else {
-                request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .wait(helper.genDelay(stmtTime, '?' + query, id))
-                .headers(helper.addAllHeaders({}))
-                .expect(200)
-                .end(function(err,res){
-                    if (err){
-                        done(err);
-                    }
-                    else{
-                        expect(res.headers['x-experience-api-version']).to.equal(version);
-                        done();
-                    }
-                });
-            }
         });
     });
 

@@ -17,28 +17,6 @@
     module.exports.config = function () {
         return [
             {
-                name: 'Verbs Verify Templates',
-                config: [
-                    {
-                        name: 'should pass statement verb template',
-                        templates: [
-                            {statement: '{{statements.verb}}'},
-                            {verb: '{{verbs.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass substatement verb template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.verb}}'},
-                            {verb: '{{verbs.default}}'}
-                        ],
-                        expect: [200]
-                    }
-                ]
-            },
-            {
             /** XAPI-00044, Data 2.4.3 Verb
              * A "verb" object contains an "id" property which is required to be an IRI. An LRS rejects with 400 Bad Request if a statement uses the Verb Object and “id” is absent or “id” is present, but the value is an invalid IRI.
              * Covers this and next suite

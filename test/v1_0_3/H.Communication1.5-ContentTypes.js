@@ -10,7 +10,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-describe('Content Type Requirements (Communication 1.5)', () => {
+describe('Content Type Requirements (Communication 1.5)', function () {
 
     //Communication 1.5.1
 /**  Matchup with Conformance Requirements Document
@@ -28,7 +28,7 @@ describe('Content Type Requirements (Communication 1.5)', () => {
  * XAPI-00134 - below
  * XAPI-00135 - below
  * there is no XAPI-00136
- * XAPI-00137 - not found yet - An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a body header named "MIME-Version" with a value of "1.0" or greater
+ * XAPI-00137 - removed
  * XAPI-00138 - removed
  */
 
@@ -143,25 +143,24 @@ describe('Content Type Requirements (Communication 1.5)', () => {
         });
     });
 
-    describe('A Boundary is defined as the value of the body header named "boundary" (Definition, Data 2.4.11, RFC 2046, Communication 1.5.2.s2.b2)', function () {
-        it('should fail if boundary not provided in header', function (done) {
-            var header = {'Content-Type': 'multipart/mixed;'};
-            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
+/**  XAPI-00130, Communication 1.5.2 Multipart/Mixed
+ * An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a Boundary before each "Content-Type" header
+ */
+    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a Boundary before each "Content-Type" header (Communication 1.5.2.s2.b2, Data 2.4.11, RFC 2046, XAPI-00130)', function () {
+
+        it('should fail if boundary not provided in body', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_middle_part_no_boundary.part', {encoding: 'binary'});
 
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders(header))
             .body(attachment).expect(400, done);
         });
-    });
 
-/**  XAPI-00130, Communication 1.5.2 Multipart/Mixed
- * An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a Boundary before each "Content-Type" header
- */
-    describe('An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a "Content Type" header with value "multipart/mixed", and does not have a Boundary before each "Content-Type" header (Communication 1.5.2.s2.b2, Data 2.4.11, RFC 2046, XAPI-00130)', function () {
-        it('should fail if boundary not provided in body', function (done) {
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
-            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_invalid_middle_part_no_boundary.part', {encoding: 'binary'});
+        it('should fail if boundary not provided in header', function (done) {
+            var header = {'Content-Type': 'multipart/mixed;'};
+            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
 
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())

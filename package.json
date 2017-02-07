@@ -23,6 +23,7 @@
   "dependencies": {
     "chai": "^2.3.0",
     "chai-as-promised": "^4.1.1",
+    "chai-things": "^0.2.0",
     "colors": "^1.1.2",
     "comb": "^1.0.1",
     "commander": "^2.6.0",
@@ -30,6 +31,7 @@
     "cookie-parser": "^1.4.1",
     "dirty-chai": "^1.0.0",
     "exit": "^0.1.2",
+    "express": "^4.14.1",
     "extend": "^2.0.0",
     "form-data": "^1.0.0-rc4",
     "form-urlencoded": "0.0.7",
