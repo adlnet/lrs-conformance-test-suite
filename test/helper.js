@@ -190,6 +190,28 @@ if (!process.env.EB_NODE_COMMAND) {
             });
             return from;
         },
+        deepSearchObject: function(object, primitive)
+        {
+            var tested = [];
+
+            var _internal = function(object, primitive)
+            {   
+                tested.push(object);
+                var found = false;         
+                for(var i in object)
+                {
+                    if(object[i] == primitive) 
+                        return true;
+                    else
+                    {
+                        if(typeof object[i] == 'object' && tested.indexOf(object[i]))
+                            found = found || _internal(object[i],primitive)
+                    }
+                }
+                return found;
+            }
+            return _internal(object, primitive);
+        },
         /**
          * Delays to check for "X-Experience-API-Consistent-Through" header.
          *
