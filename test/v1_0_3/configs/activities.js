@@ -32,12 +32,6 @@
         'id': 'valid',
         'description': INVALID_STRING
     };
-    var VALID_DESCRIPTION = {
-        'description': {
-            'en-GB': 'An example meeting that happened on a specific occasion with certain people present.',
-            'en-US': 'An example meeting that happened on a specific occasion with certain people present.'
-        }
-    };
     var INVALID_INTERACTION_COMPONENT_DUPLICATE_ID = [
         {
             'id': 'valid'
@@ -47,146 +41,16 @@
         }
     ];
     var VALID_ACTIVITY = {id: 'http://www.example.com/meetings/occurances/34534'};
-    var VALID_EXTENSIONS = {
-        extensions: {
-            'http://example.com/profiles/meetings/extension/location': 'X:\\meetings\\minutes\\examplemeeting.one',
-            'http://example.com/profiles/meetings/extension/reporter': {
-                'name': 'Thomas',
-                'id': 'http://openid.com/342'
-            }
-        }
-    };
     var VALID_INTERACTION_COMPONENT = {
         'id': 'valid',
         'description': {
             'en-US': 'valid'
         }
     }
-    var VALID_INTERACTION_TYPE = {
-        'interactionType': 'fill-in',
-        'correctResponsesPattern': [
-            'Bob"s your uncle'
-        ]
-    };
-    var VALID_MORE_INFO = {moreInfo: 'http://virtualmeeting.example.com/345256'};
-    var VALID_NAME = {
-        'name': {
-            'en-GB': 'example meeting',
-                'en-US': 'example meeting'
-        }
-    };
-    var VALID_TYPE = {type: 'http://adlnet.gov/expapi/activities/meeting'};
 
     // configures tests
     module.exports.config = function () {
         return [
-            {
-                name: 'Activities Verify Templates',
-                config: [
-                    {
-                        name: 'should pass statement activity default template',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement activity default template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement activity choice template',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.choice}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement activity likert template',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.likert}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement activity matching template',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.matching}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement activity performance template',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.performance}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement activity sequencing template',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.sequencing}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement activity choice template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.choice}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement activity likert template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.likert}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement activity matching template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.matching}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement activity performance template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.performance}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement activity sequencing template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.sequencing}}'}
-                        ],
-                        expect: [200]
-                    }
-                ]
-            },
             {
             /**  XAPI-00047, Data 2.4.4.1 when the objectType is activity
              * An "object" property uses the "id" property exactly one time. The LRS must reject with 400 Bad Request an otherwise legal statement if the object's objectType is Activity and the object's “id” is not an IRI or the object’s “id” is absent
@@ -301,144 +165,6 @@
                             {definition: INVALID_STRING}
                         ],
                         expect: [400]
-                    }
-                ]
-            },
-            {
-                name: 'An Activity Definition contains at least one of the following properties: name, description, type, moreInfo, interactionType, or extensions (Format, Data 2.4.4.1.s2)',
-                config: [
-                    {
-                        name: 'statement activity "definition" missing all properties',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: {}}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement activity "definition" contains "name"',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_NAME}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement activity "definition" contains "description"',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_DESCRIPTION}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement activity "definition" contains "type"',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_TYPE}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement activity "definition" contains "moreInfo"',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_MORE_INFO}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement activity "definition" contains "extensions"',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_EXTENSIONS}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement activity "definition" contains "interactionType"',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_INTERACTION_TYPE}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement substatement activity "definition" missing all properties',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: {}}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement substatement activity "definition" contains "name"',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_NAME}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement substatement activity "definition" contains "description"',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_DESCRIPTION}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement substatement activity "definition" contains "type"',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_TYPE}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement substatement activity "definition" contains "moreInfo"',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_MORE_INFO}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement substatement activity "definition" contains "extensions"',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_EXTENSIONS}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement substatement activity "definition" contains "interactionType"',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: VALID_INTERACTION_TYPE}
-                        ],
-                        expect: [200]
                     }
                 ]
             },

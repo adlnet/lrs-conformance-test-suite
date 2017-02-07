@@ -31,7 +31,7 @@ describe('Formatting Requirements (Data 2.2)', () => {
  * XAPI-00011 - below
  * XAPI-00012 - below
  * XAPI-00013 - in formatting.js
- * XAPI-00014 - below - best ref in spec is Data 2.1
+ * XAPI-00014 - below and in verify.js
  * XAPI-00015 - in Communication 1.4 - should stay in Comm 1.4 Encoding
  */
 
@@ -151,22 +151,27 @@ describe('Formatting Requirements (Data 2.2)', () => {
 /**  XAPI-00014, Data 2.2 Formatting Requirements
  * All Objects are well-created JSON Objects (Nature of Binding)
  */
-    it('All Objects are well-created JSON Objects (Nature of binding, Data 2.1, XAPI-00014) **Implicit**', function (done) {
-        var verbTemplate = 'http://adlnet.gov/expapi/test/unicode/target/';
-        var verb = verbTemplate + helper.generateUUID();
-        var malformedTemplates = [
-            {statement: '{{statements.default}}'}
-        ];
-        var malformed = helper.createFromTemplate(malformedTemplates);
-        malformed = malformed.statement;
-        var string = "\"objectType\": \"Agent\"";
-        malformed.actor.objectType = string;
+    describe('All Objects are well-created JSON Objects (Nature of binding, Data 2.1, XAPI-00014) **Implicit**', function () {
 
-        request(helper.getEndpointAndAuth())
-        .post(helper.getEndpointStatements())
-        .headers(helper.addAllHeaders({}))
-        .json(malformed)
-        .expect(400, done)
+        templatingSelection.createTemplate('verify.js');
+
+        it('An LRS rejects a not well-created JSON Object', function(done) {
+            var verbTemplate = 'http://adlnet.gov/expapi/test/unicode/target/';
+            var verb = verbTemplate + helper.generateUUID();
+            var malformedTemplates = [
+                {statement: '{{statements.default}}'}
+            ];
+            var malformed = helper.createFromTemplate(malformedTemplates);
+            malformed = malformed.statement;
+            var string = "\"objectType\": \"Agent\"";
+            malformed.actor.objectType = string;
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(malformed)
+            .expect(400, done)
+        });
     });
 
 /**  XAPI-00011, Data 2.2 Formatting Requirements

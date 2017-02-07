@@ -10,7 +10,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-describe('Agents Resource Requirements (Communication 2.4)', () => {
+describe('Agents Resource Requirements (Communication 2.4)', function () {
 
 /**  Matchup with Conformance Requirements Document
  * XAPI-00236 - below
@@ -52,14 +52,6 @@ describe('Agents Resource Requirements (Communication 2.4)', () => {
  */
     it('An LRS\'s Agents Resource accepts GET requests (Communication 2.4.s2, XAPI-00236)', function () {
         return helper.sendRequest('get', helper.getEndpointAgents(), helper.buildAgent(), undefined, 200);
-    });
-
-    it('A Person Object is an Object (Communication 2.4.s2)', function () {
-        return helper.sendRequest('get', helper.getEndpointAgents(), helper.buildAgent(), undefined, 200)
-            .then(function (res) {
-                var person = res.body;
-                expect(person).to.be.an('object');
-            });
     });
 
 /**  XAPI-00248, Communication 2.4 Agents Resource
@@ -267,7 +259,6 @@ describe('Agents Resource Requirements (Communication 2.4)', () => {
         delete parameter.agent.account;
         return helper.sendRequest('get', helper.getEndpointAgents(), parameter, undefined, 400);
     });
-
 
 });
 
