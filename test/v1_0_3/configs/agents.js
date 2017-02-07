@@ -23,63 +23,6 @@
     module.exports.config = function () {
         return [
             {
-                name: 'Agents Verify Templates',
-                config: [
-                    {
-                        name: 'should pass statement actor template',
-                        templates: [
-                            {statement: '{{statements.actor}}'},
-                            {actor: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement authority template',
-                        templates: [
-                            {statement: '{{statements.authority}}'},
-                            {authority: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement context instructor template',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement as agent template',
-                        templates: [
-                            {statement: '{{statements.object_actor}}'},
-                            {object: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement"s agent template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.actor}}'},
-                            {actor: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'should pass statement substatement"s context instructor template',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.context}}'},
-                            {context: '{{contexts.instructor}}'},
-                            {instructor: '{{agents.default}}'}
-                        ],
-                        expect: [200]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00032, Data 2.4.2.1 when the actor objectType is agent
              * An "objectType" property is a String. If present, the LRS must validate and reject with 400 Bad Request if invalid
              */
@@ -593,7 +536,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent is defined by "objectType" of an "actor" property or "object" property with value "Agent" (Data 2.4.2.1.s2.table1.row1)',
+                name: 'An Agent is defined by "objectType" of an "actor" property or "object" property with value "Agent" (Data 2.4.2.1.s2.table1.row1, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor does not require objectType',
@@ -663,7 +606,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2)',
+                name: 'An Agent does not use the "mbox" property if "mbox_sha1sum", "openid", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor "mbox" cannot be used with "account"',
@@ -842,7 +785,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2)',
+                name: 'An Agent does not use the "mbox_sha1sum" property if "mbox", "openid", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor "mbox_sha1sum" cannot be used with "account"',
@@ -1021,7 +964,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, Data 2.4.2.1.s2.b2)',
+                name: 'An Agent does not use the "account" property if "mbox", "mbox_sha1sum", or "openid" are used (Multiplicity, Data 2.4.2.1.s2.b2, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor "account" cannot be used with "mbox"',
@@ -1200,7 +1143,7 @@
                 ]
             },
             {   //see above
-                name: 'An Agent does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2)',
+                name: 'An Agent does not use the "openid" property if "mbox", "mbox_sha1sum", or "account" are used (Multiplicity, Data 2.4.2.1.s2.b2, XAPI-00034)',
                 config: [
                     {
                         name: 'statement actor "openid" cannot be used with "account"',

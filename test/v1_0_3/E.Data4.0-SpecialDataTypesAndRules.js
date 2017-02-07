@@ -10,7 +10,7 @@
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
 
-describe('Special Data Types and Rules (Data 4.0)', () => {
+describe('Special Data Types and Rules (Data 4.0)', function () {
 
     //Data 4.1
 /**  Matchup with Conformance Requirements Document

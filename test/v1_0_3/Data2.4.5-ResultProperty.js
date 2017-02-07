@@ -21,13 +21,14 @@ describe('Result Property Requirements (Data 2.4.5)', () => {
  * XAPI-00078 - in results.js
 
  * Data 2.4.5.1 Score
- * XAPI-00079 - in results.js
- * XAPI-00080 - in results.js
- * XAPI-00081 - in results.js
- * XAPI-00082 - in results.js
- * XAPI-00083 - in results.js
+ * XAPI-00079 - in scores.js
+ * XAPI-00080 - in scores.js
+ * XAPI-00081 - in scores.js
+ * XAPI-00082 - in scores.js
+ * XAPI-00083 - in scores.js
  */
     templatingSelection.createTemplate('results.js');
+    templatingSelection.createTemplate('scores.js');
 
 });
 
