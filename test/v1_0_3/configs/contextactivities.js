@@ -139,18 +139,18 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement context "contextActivities" accepts all property keys "parent", "grouping", "category", and "other"',
+                        name: 'statement substatement context "contextActivities" accepts all property keys "parent", "grouping", "category", and "other"',
                         templates: [
-                            {statement: '{{statements.context}}'},
+                            {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.all_activities}}'}
                         ],
-                        expect: [400]
+                        expect: [200]
                     },
                     {
-                        name: 'statement context "contextActivities" rejects any property key other than "parent", "grouping", "category", or "other"',
+                        name: 'statement substatement context "contextActivities" rejects any property key other than "parent", "grouping", "category", or "other"',
                         templates: [
-                            {statement: '{{statements.context}}'},
+                            {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.invalid_activity}}'}
                         ],
