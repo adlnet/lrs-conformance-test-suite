@@ -1358,6 +1358,13 @@ StatementResult Object.
                     // Find the boundary
                     var b = res.headers['content-type'].split(';');
                     var boundary = b[1].trim().substring(b[1].indexOf('='));
+                    // Verify we have the statement we asked for
+                    // Use boundary to the first part of response, excluding "--"
+                    var x = res.body.split(boundary);
+                    var c = x[1].substring(x[1].indexOf('{'), x[1].lastIndexOf('}') + 1);
+                    var result = helper.parse(c, done);
+                    expect(result).to.have.property('id');
+                    expect(result.id).to.equal(stmtId);
                     // Hardcoded SHAs from file being used to send statement with two attachments
                     var hash1 = '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
                     hash2 = '7063d0a4cfa93373753ad2f5a6ffcf684559fb1df3c2f0473a14ece7d4edb06a';
