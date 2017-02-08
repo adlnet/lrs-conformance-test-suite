@@ -1354,19 +1354,28 @@ StatementResult Object.
                 if (err) {
                     done(err);
                 } else {
+                    expect(res.headers['content-type']).to.include('multipart/mixed');
                     // Find the boundary
                     var b = res.headers['content-type'].split(';');
                     var boundary = b[1].trim().substring(b[1].indexOf('='));
-                    // Use boundary to get first part of response, excluding "--"
+                    // Verify we have the statement we asked for
+                    // Use boundary to the first part of response, excluding "--"
                     var x = res.body.split(boundary);
                     var c = x[1].substring(x[1].indexOf('{'), x[1].lastIndexOf('}') + 1);
                     var result = helper.parse(c, done);
-                    expect(result).to.have.property('statements');
+                    expect(result).to.have.property('id');
+                    expect(result.id).to.equal(stmtId);
                     // Hardcoded SHAs from file being used to send statement with two attachments
                     var hash1 = '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
                     hash2 = '7063d0a4cfa93373753ad2f5a6ffcf684559fb1df3c2f0473a14ece7d4edb06a';
-                    expect(res.body).to.contain(hash1);
-                    expect(res.body).to.contain(hash2);
+                    // Create an array of global matches of the pattern, the length of which is equal to the number of times that pattern appears in the given string
+                    var regex1 = new RegExp(hash1, 'g');
+                    var regex2 = new RegExp(hash2, 'g');
+                    var match1 = (res.body.match(regex1) || []).length;
+                    var match2 = (res.body.match(regex2) || []).length;
+                    // Comnpare that number to 2 the number of times it is expected for a given has to appear in the response, once in the attachments property, and once along with the attachment
+                    expect(match1).to.eql(2);
+                    expect(match2).to.eql(2);
                     done();
                 }
             });
