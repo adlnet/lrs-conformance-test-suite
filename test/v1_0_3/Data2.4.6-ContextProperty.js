@@ -31,7 +31,7 @@ describe('Context Property Requirements (Data 2.4.6)', function () {
 /**  Matchup with Conformance Requirements Document
  * XAPI-00093 - in contextactivities.js
  * XAPI-00094 - in contextactivities.js
- * XAPI-00095 - in contextactivities.js
+ * XAPI-00095 - removed per 02/08/2017 spec call
  * XAPI-00096 - below
  */
     templatingSelection.createTemplate('contextactivities.js');
