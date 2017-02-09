@@ -61,10 +61,48 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
 /**  XAPI-00293, Communication 2.7 Activity Profile Resource
  * An LRS's Activity Profile API accepts PUT requests
  */
-    it('An LRS\'s Activity Profile Resource accepts PUT requests (Communication 2.7, XAPI-00287, XAPI-00293)', function () {
-        var parameters = helper.buildActivityProfile(),
-            document = helper.buildDocument();
-        return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 204);
+    describe('An LRS\'s Activity Profile Resource accepts PUT requests (Communication 2.7, XAPI-00287, XAPI-00293)', function () {
+        it('passes with 204 no content', function (done) {
+            var parameters = helper.buildActivityProfile(),
+                document = helper.buildDocument();
+            // return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 204);
+
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointActivitiesProfile() + "?" + helper.getUrlEncoding(parameters))
+            .headers(helper.addAllHeaders({"If-None-Match": "*"}))
+            .json(document)
+            .expect(204, done);
+        });
+
+        it('fails without ETag header', function (done) {
+            var parameters = helper.buildActivityProfile(),
+                document = helper.buildDocument();
+            // return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 204);
+
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointActivitiesProfile() + "?" + helper.getUrlEncoding(parameters))
+            .headers(helper.addAllHeaders())
+            .json(document)
+            .expect(204, done);
+        });
+
+        it('what does it do with If-Match ETag header', function (done) {
+            var parameters = helper.buildActivityProfile(),
+                document = helper.buildDocument();
+            // return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 204);
+
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointActivitiesProfile() + "?" + helper.getUrlEncoding(parameters))
+            .headers(helper.addAllHeaders())
+            .expect(200, function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    console.log('Its the end of the world as we know it, and I feel fine.');
+                    done();
+                }
+            });
+        });
     });
 
 /**  XAPI-00286, Communication 2.7 Activity Profile Resource
@@ -324,7 +362,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             var parameters = helper.buildActivityProfile();
 
             request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointActivitiesProfile()+ '?' + helper.getUrlEncoding(parameters) )
+            .post(helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters))
             .headers(helper.addAllHeaders({}))
             .json(document)
             .expect(204, function (err,res) {

@@ -54,21 +54,60 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  * An LRS's Agent Profile API accepts valid GET requests with code 200 OK, Profile document
  */
         it('An LRS\'s Agent Profile Resource accepts GET requests (Communication 2.6.s2, XAPI-00274)', function () {
-        var parameters = helper.buildAgentProfile(),
-            document = helper.buildDocument();
-        return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-            .then(function () {
-                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200);
-            });
-    });
+            var parameters = helper.buildAgentProfile(),
+                document = helper.buildDocument();
+            return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
+                .then(function () {
+                    return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200);
+                });
+        });
 
 /**  XAPI-00273, Communication 2.6 Agent Profile Resource
  * An LRS's Agent Profile API upon processing a successful PUT request returns code 204 No Content
  */
-        it('An LRS\'s Agent Profile Resource upon processing a successful PUT request returns code 204 No Content (Communication 2.6.s3, XAPI-00273)', function () {
-        var parameters = helper.buildAgentProfile(),
-            document = helper.buildDocument();
-        return helper.sendRequest('put', helper.getEndpointAgentsProfile(), parameters, document, 204);
+        it('An LRS\'s Agent Profile Resource upon processing a successful PUT request returns code 204 No Content (Communication 2.6.s3, XAPI-00273)', function (done) {
+            var parameters = helper.buildAgentProfile(),
+                document = helper.buildDocument();
+            // return helper.sendRequest('put', helper.getEndpointAgentsProfile(), parameters, document, 204);
+
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointAgentsProfile() + "?" + helper.getUrlEncoding(parameters))
+            .headers(helper.addAllHeaders({"If-None-Match": "*"}))
+            .json(document)
+            .expect(204, done);
+        });
+
+        // Test without the header for rejection
+        it('An LRS\'s Agent Profile Resource upon processing a PUT request without an ETag header returns an error code and message (Communication 2.6.s3, XAPI-00273)', function (done) {
+            var parameters = helper.buildAgentProfile(),
+                document = helper.buildDocument();
+            // return helper.sendRequest('put', helper.getEndpointAgentsProfile(), parameters, document, 204);
+
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointAgentsProfile() + "?" + helper.getUrlEncoding(parameters))
+            .headers(helper.addAllHeaders({}))
+            .json(document)
+            .expect(204, done);
+        });
+
+        it('what does it do with If-Match ETag header (Communication 2.6.s3, XAPI-00273)', function (done) {
+            var parameters = helper.buildAgentProfile(),
+                document = helper.buildDocument();
+            // return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 204);
+
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointAgentsProfile() + "?" + helper.getUrlEncoding(parameters))
+            .headers(helper.addAllHeaders())
+            .expect(200, function (err, res) {
+                if (err) {
+                    console.log('Whoa there, try again');
+                    done(err);
+                } else {
+                    console.log('Its the end of the world as we know it, and I feel fine.');
+                    done();
+                }
+            });
+        });
     });
 
 /**  XAPI-00272, Communication 2.6 Agent Profile Resource
@@ -90,9 +129,9 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
             var parameters = helper.buildAgentProfile(),
                 document = helper.buildDocument();
             return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-                .then(function () {
-                    return helper.sendRequest('delete', helper.getEndpointAgentsProfile(), parameters, undefined, 204)
-                });
+            .then(function () {
+                return helper.sendRequest('delete', helper.getEndpointAgentsProfile(), parameters, undefined, 204)
+            });
         });
     });
 
