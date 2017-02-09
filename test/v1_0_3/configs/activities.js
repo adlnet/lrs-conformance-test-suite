@@ -214,242 +214,129 @@
                     }
                 ]
             },
-            {
-            /**  XAPI-00062, Data 2.4.4.1 when objectType is activity
-             * An Interaction Component’s "description" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Interaction Component's "description" property is present and is an invalid Language Map.
-             */
-                name: 'An Interaction Component\'s "description" property is a Language Map. (Type, Data 2.4.4.1.s15.table1.row2, XAPI-00062)',
-                config: [
-                    {
-                        name: 'statement object interaction component choice "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.choice}}'},
-                            {definition: {choices: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component choice "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.choice}}'},
-                            {definition: {choices: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component sequencing "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.sequencing}}'},
-                            {definition: {choices: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component sequencing "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.sequencing}}'},
-                            {definition: {choices: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component likert "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.likert}}'},
-                            {definition: {scale: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component likert "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.likert}}'},
-                            {definition: {scale: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component matching source "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.matching}}'},
-                            {definition: {source: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component matching source "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.matching}}'},
-                            {definition: {source: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component matching target "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.matching}}'},
-                            {definition: {target: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component matching target "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.matching}}'},
-                            {definition: {target: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component performance "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.performance}}'},
-                            {definition: {steps: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement object interaction component performance "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.performance}}'},
-                            {definition: {steps: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component choice "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.choice}}'},
-                            {definition: {choices: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component choice "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.choice}}'},
-                            {definition: {choices: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component sequencing "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.sequencing}}'},
-                            {definition: {choices: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component sequencing "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.sequencing}}'},
-                            {definition: {choices: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component likert "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.likert}}'},
-                            {definition: {scale: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component likert "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.likert}}'},
-                            {definition: {scale: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component matching source "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.matching}}'},
-                            {definition: {source: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component matching source "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.matching}}'},
-                            {definition: {source: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component matching target "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.matching}}'},
-                            {definition: {target: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component matching target "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.matching}}'},
-                            {definition: {target: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component performance "description" language map is numeric',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.performance}}'},
-                            {definition: {steps: [{description: INVALID_NUMERIC}]}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement object interaction component performance "description" language map is string',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.performance}}'},
-                            {definition: {steps: [{description: INVALID_STRING}]}}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
+            // This test is on hold until verification of valid interaction components for testing and expecting a good response
+            // {
+            // /**  XAPI-00062, Data 2.4.4.1 when objectType is activity
+            //  * An Interaction Component’s "description" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Interaction Component's "description" property is present and is an invalid Language Map.
+            //  */
+            //     name: 'An Interaction Component\'s "description" property is a Language Map. (Type, Data 2.4.4.1.s15.table1.row2, XAPI-00062)',
+            //     config: [
+            //         {
+            //             name: 'statement object interaction component choice "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_activity}}'},
+            //                 {object: '{{activities.choice}}'},
+            //                 {definition: {choices: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement object interaction component sequencing "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_activity}}'},
+            //                 {object: '{{activities.sequencing}}'},
+            //                 {definition: {choices: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement object interaction component likert "description" language map is VALID_INTERACTION_COMPONENT',
+            //             templates: [
+            //                 {statement: '{{statements.object_activity}}'},
+            //                 {object: '{{activities.likert}}'},
+            //                 {definition: {scale: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement object interaction component matching source "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_activity}}'},
+            //                 {object: '{{activities.matching}}'},
+            //                 {definition: {source: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement object interaction component matching target "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_activity}}'},
+            //                 {object: '{{activities.matching}}'},
+            //                 {definition: {target: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement object interaction component performance "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_activity}}'},
+            //                 {object: '{{activities.performance}}'},
+            //                 {definition: {steps: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement substatement object interaction component choice "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_substatement}}'},
+            //                 {object: '{{substatements.activity}}'},
+            //                 {object: '{{activities.choice}}'},
+            //                 {definition: {choices: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement substatement object interaction component sequencing "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_substatement}}'},
+            //                 {object: '{{substatements.activity}}'},
+            //                 {object: '{{activities.sequencing}}'},
+            //                 {definition: {choices: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement substatement object interaction component likert "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_substatement}}'},
+            //                 {object: '{{substatements.activity}}'},
+            //                 {object: '{{activities.likert}}'},
+            //                 {definition: {scale: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement substatement object interaction component matching source "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_substatement}}'},
+            //                 {object: '{{substatements.activity}}'},
+            //                 {object: '{{activities.matching}}'},
+            //                 {definition: {source: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement substatement object interaction component matching target "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_substatement}}'},
+            //                 {object: '{{substatements.activity}}'},
+            //                 {object: '{{activities.matching}}'},
+            //                 {definition: {target: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         },
+            //         {
+            //             name: 'statement substatement object interaction component performance "description" language map is valid',
+            //             templates: [
+            //                 {statement: '{{statements.object_substatement}}'},
+            //                 {object: '{{substatements.activity}}'},
+            //                 {object: '{{activities.performance}}'},
+            //                 {definition: {steps: [VALID_INTERACTION_COMPONENT]}}
+            //             ],
+            //             expect: [200]
+            //         }
+            //     ]
+            // },
             {
             /**  XAPI-00059, Data 2.4.4.1 when objectType is activity
              * An Activity Definition's "description" property is a Language Map. The LRS rejects with 400 Bad Request an otherwise legal statement if the Activity Definition's "description" property is present and is an invalid Language Map.
