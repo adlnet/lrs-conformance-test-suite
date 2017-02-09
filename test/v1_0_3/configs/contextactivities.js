@@ -22,33 +22,6 @@
     module.exports.config = function () {
         return [
             {
-            /**  XAPI-00095, Data 2.4.6.2 ContextActivities Property
-             * A "contextActivities" property contains one or more key/value pairs. The LRS rejects with 400 Bad Request a statement which has an empty “contextActivities” property.
-             */
-                name: 'A "contextActivities" property contains one or more key/value pairs (Format, Data 2.4.6.2.s4.b2, XAPI-00095)',
-                config: [
-                    {
-                        name: 'statement context "contextActivities" is empty',
-                        templates: [
-                            {statement: '{{statements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {contextActivities: {}}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement context "contextActivities" is empty',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.context}}'},
-                            {context: '{{contexts.default}}'},
-                            {contextActivities: {}}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00093, Data 2.4.6.2 ContextActivities Property
              * A "contextActivities" property's "key" has a value of "parent", "grouping", "category", or "other". The LRS rejects with 400 Bad Request a statement which has a key other than "parent", "grouping", "category", or "other" for the “contextActivities” property
              */
@@ -139,18 +112,18 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement context "contextActivities" accepts all property keys "parent", "grouping", "category", and "other"',
+                        name: 'statement substatement context "contextActivities" accepts all property keys "parent", "grouping", "category", and "other"',
                         templates: [
-                            {statement: '{{statements.context}}'},
+                            {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.all_activities}}'}
                         ],
-                        expect: [400]
+                        expect: [200]
                     },
                     {
-                        name: 'statement context "contextActivities" rejects any property key other than "parent", "grouping", "category", or "other"',
+                        name: 'statement substatement context "contextActivities" rejects any property key other than "parent", "grouping", "category", or "other"',
                         templates: [
-                            {statement: '{{statements.context}}'},
+                            {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.context}}'},
                             {context: '{{contexts.invalid_activity}}'}
                         ],

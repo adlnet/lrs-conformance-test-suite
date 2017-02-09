@@ -278,7 +278,7 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 409);
             });
 
-            it('Return plaintext body explaining the situation', function () {
+            it('Return error message explaining the situation', function () {
                 return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 409)
                 .then(function (res) {
                     expect(res).to.have.property('text');
