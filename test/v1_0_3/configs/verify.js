@@ -560,7 +560,7 @@
                 ]
             },
             {   //see above
-                name: 'An Activity Definition contains uses the following properties: name, description, type, moreInfo, interactionType, or extensions (Format, Data 2.4.4.1.s2)',
+                name: 'An Activity Definition uses the following properties: name, description, type, moreInfo, interactionType, or extensions (Format, Data 2.4.4.1.s2)',
                 config: [
                     {
                         name: 'statement activity "definition" missing all properties',
