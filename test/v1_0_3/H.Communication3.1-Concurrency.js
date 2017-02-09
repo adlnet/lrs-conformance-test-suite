@@ -151,39 +151,7 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 });
             });
 
-            it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains an etag', function () {
-                document = helper.buildDocument();
-                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, document, 200)
-                .then(function (res) {
-                    var goodTag = res.headers.etag;
-
-                    var document = helper.buildDocument();
-
-                    var reqUrl = parameters ? (helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointAgentsProfile();
-                    var data = {'If-None-Match': goodTag};
-                    var headers = helper.addAllHeaders(data);
-                    var pre = request['put'](reqUrl);
-                    helper.extendRequestWithOauth(pre);
-                    pre.send(document);
-                    pre.set('If-None-Match', headers['If-None-Match']);
-                    pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-                    if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                        pre.set('Authorization', headers['Authorization']);
-                    }
-                    //If we're doing oauth, set it up!
-                    try {
-                        if (global.OAUTH) {
-                            pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-                        }
-                    } catch (e) {
-                        console.log(e);
-                    }
-                    return pre.expect(412)
-                });
-            });
-        });
-
-        it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains “*”', function () {
+        it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains "*"', function () {
             var parameters = helper.buildActivityProfile(),
                 document = helper.buildDocument();
 
