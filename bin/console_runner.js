@@ -112,6 +112,7 @@ function start(options)
 
 	testRunner.on('message', function(msg)
 	{
+       
 		if(msg.action === 'log'){
 			console.log(msg.payload);
 		}

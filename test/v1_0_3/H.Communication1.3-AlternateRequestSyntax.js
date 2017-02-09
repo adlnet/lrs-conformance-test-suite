@@ -115,24 +115,22 @@ describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s
 
         it('will fail PUT with content body which is not url encoded', function (done) {
             var headers = helper.addAllHeaders({});
-            var auth = headers['Authorization'];
             var query = helper.getUrlEncoding({method: 'PUT'});
-
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
             var data = helper.createFromTemplate(templates).statement;
+            headers['content-type'] = 'application/x-www-form-urlencoded';
 
             var form = {
                 statementId: helper.generateUUID(),
                 content: JSON.stringify(data),
-                'X-Experience-API-Version': '1.0.3',
-                Authorization: auth
+                'X-Experience-API-Version': '1.0.3'
             }
 
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements() + '?' + query)
-            .headers({'content-type': 'application/x-www-form-urlencoded'})
+            .headers(headers)
             .body(JSON.stringify(form))
             .expect(400, done);
         });

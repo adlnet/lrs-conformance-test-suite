@@ -6,6 +6,7 @@
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, validator) {
     // "use strict";
 
+    chai.use(require('chai-things'));
     var expect = chai.expect;
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
@@ -138,6 +139,15 @@ describe('Retrieval of Statements (Data 2.5)', function () {
             ];
             var data = helper.createFromTemplate(templates);
             statement = data.statement;
+            
+            //randomize data to prevent old results from breaking assertion logic
+            statement.context.contextActivities.category.id += helper.generateUUID();
+            statement.verb.id += helper.generateUUID();
+            statement.actor.mbox =  "mailto:" + helper.generateUUID() + "@adlnet.gov";
+            statement.context.registration =  helper.generateUUID();
+            statement.context.instructor.mbox = "mailto:" +  helper.generateUUID() + "@adlnet.gov";
+            statement.object.id +=  helper.generateUUID(); 
+            
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
 
             request(helper.getEndpointAndAuth())
@@ -160,6 +170,18 @@ describe('Retrieval of Statements (Data 2.5)', function () {
             ];
             var data = helper.createFromTemplate(templates);
             substatement = data.statement;
+
+            //randomize data to prevent old results from breaking assertion logic
+            substatement.verb.id += helper.generateUUID();
+            substatement.actor.mbox =  "mailto:" + helper.generateUUID() + "@adlnet.gov";
+            
+            substatement.object.verb.id += helper.generateUUID();
+            substatement.object.actor.mbox =  "mailto:" + helper.generateUUID() + "@adlnet.gov";
+            substatement.object.object.id +=   helper.generateUUID();
+
+           
+            
+           
             substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
             stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
@@ -188,7 +210,7 @@ describe('Retrieval of Statements (Data 2.5)', function () {
 
         it('should return StatementResult with statements as array using GET with "agent"', function (done) {
             var templates = [
-                {agent: '{{agents.default}}'}
+                {agent: statement.actor}
             ];
             var data = helper.createFromTemplate(templates);
 
@@ -203,7 +225,7 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('actor.mbox',statement.actor.mbox);
                     done();
                 }
             });
@@ -221,7 +243,7 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('verb.id',statement.verb.id);
                     done();
                 }
             });
@@ -239,7 +261,7 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('object.id',statement.object.id)
                     done();
                 }
             });
@@ -257,7 +279,7 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('context.registration',statement.context.registration);
                     done();
                 }
             });
@@ -278,7 +300,15 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i in statements)
+                        {
+                           if(!helper.deepSearchObject(statements[i], statement.context.contextActivities.category.id))
+                           return false 
+                        }
+                        return true;
+                    });
                     done();
                 }
             });
@@ -299,7 +329,15 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i in statements)
+                        {
+                           if(!helper.deepSearchObject(statements[i], statement.context.instructor.mbox))
+                           return false; 
+                        }
+                        return true;
+                    });
                     done();
                 }
             });
@@ -317,7 +355,15 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i in statements)
+                        {
+                           if((new Date(statements[i].stored) < new Date('2012-06-01T19:09:13.245Z')))
+                           return false; 
+                        }
+                        return true;
+                    });
                     done();
                 }
             });
@@ -335,7 +381,15 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i in statements)
+                        {
+                           if((new Date(statements[i].stored) > new Date('2012-06-01T19:09:13.245Z')))
+                           return false; 
+                        }
+                        return true;
+                    });
                     done();
                 }
             });
@@ -353,7 +407,7 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.have.length(1);
                     done();
                 }
             });
@@ -371,12 +425,24 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i =0; i < statements.length-1; i++)
+                        {
+                            var s1 = statements[i].stored;
+                            var s2 = statements[i+1].stored;
+
+                           if((new Date(s1) > new Date(s2)))
+                           return false; 
+                        }
+                        return true;
+                    });
                     done();
                 }
             });
         });
 
+        //I think there is another test that covers the formatting requirements
         it('should return StatementResult with statements as array using GET with "format"', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
