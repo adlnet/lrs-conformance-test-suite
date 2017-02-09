@@ -5473,32 +5473,6 @@
     "should fail on GET statement when not using \"ascending\"": {
         "name": "should fail on GET statement when not using \"ascending\""
     },
-    "An LRS rejects with error code 405 Method Not Allowed to any request to an Resource which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**": {
-        "name": "An LRS rejects with error code 405 Method Not Allowed to any request to an Resource which uses a method not in this specification **Implicit ONLY in that HTML normally does this behavior**",
-        "1.0.2_ref": "Implicit",
-        "1.0.3_ref": "Implicit"
-    },
-    "should fail with statement \"DELETE\"": {
-        "name": "should fail with statement \"DELETE\""
-    },
-    "should fail with activities \"DELETE\"": {
-        "name": "should fail with activities \"DELETE\""
-    },
-    "should fail with activities \"POST\"": {
-        "name": "should fail with activities \"POST\""
-    },
-    "should fail with activities \"PUT\"": {
-        "name": "should fail with activities \"PUT\""
-    },
-    "should fail with agents \"DELETE\"": {
-        "name": "should fail with agents \"DELETE\""
-    },
-    "should fail with agents \"POST\"": {
-        "name": "should fail with agents \"POST\""
-    },
-    "should fail with agents \"PUT\"": {
-        "name": "should fail with agents \"PUT\""
-    },
     "An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing": {
         "name": "An LRS does not process any batch of Statements in which one or more Statements is rejected and if necessary, restores the LRS to the state in which it was before the batch began processing",
         "1.0.2_ref_text": "7.0.c, **Implicit**",
