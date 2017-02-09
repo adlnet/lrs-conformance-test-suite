@@ -98,8 +98,8 @@
             "Data.md#2.4.4.1.s1.table1.row3"
         ]
     },
-    "An Activity Definition contains at least one of the following properties: name, description, type, moreInfo, interactionType, or extensions": {
-        "name": "An Activity Definition contains at least one of the following properties: name, description, type, moreInfo, interactionType, or extensions",
+    "An Activity Definition contains uses the following properties: name, description, type, moreInfo, interactionType, or extensions": {
+        "name": "An Activity Definition contains uses the following properties: name, description, type, moreInfo, interactionType, or extensions",
         "1.0.2_ref_text": "Format, 4.1.4.1.table2, 4.1.4.1.table3",
         "1.0.2_ref": "4.1.4.1.table2, 4.1.4.1.table3",
         "1.0.3_ref": "Data 2.4.4.1.s2",
