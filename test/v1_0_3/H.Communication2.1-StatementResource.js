@@ -292,7 +292,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
  * XAPI-00149 - below
  * XAPI-00150 - below
  * XAPI-00151 - below
- * XAPI-00152 - below
+ * XAPI-00152 - removed per spec call 2/8/17
  * XAPI-00153 - below
  * XAPI-00154 - below
  * XAPI-00155 - below
@@ -1826,39 +1826,6 @@ MUST have a "Content-Type" header
                 } else {
                     var result = helper.parse(res.body, done);
                     expect(result).to.have.property('statements').to.be.an('array').to.be.length(0);
-                    done();
-                }
-            });
-        });
-    });
-
-/**  XAPI-00152, Communication 2.1.3 GET Statements
- * An LRS's "X-Experience-API-Consistent-Through" header's value is not before (temporal) any of the "stored" values of any of the returned Statements.
- */
-    describe('An LRS\'s "X-Experience-API-Consistent-Through" header\'s value is not before (temporal) any of the "stored" values of any of the returned Statements (Communication 2.1.3.s2.b5, XAPI-00152).', function () {
-        it('should return "X-Experience-API-Consistent-Through" when using GET for statements', function (done) {
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var value = res.headers['x-experience-api-consistent-through'];
-                    expect(value).to.be.ok;
-                    var through = moment(value, moment.ISO_8601);
-                    expect(through).to.be.ok;
-                    var results = helper.parse(res.body, done);
-                    expect(results).to.have.property('statements');
-                    var statements = results.statements;
-                    for (var i = 0; i < statements.length; i++) {
-                        var statement = statements[i];
-                        expect(statement).to.have.property('stored');
-                        var stored =  moment(statement.stored, moment.ISO_8601);
-                        expect(stored.isValid()).to.be.true;
-                        expect(stored.isBefore(through) || stored.isSame(through)).to.be.true;
-                    }
                     done();
                 }
             });
