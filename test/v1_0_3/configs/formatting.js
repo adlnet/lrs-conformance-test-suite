@@ -698,14 +698,6 @@
                         expect: [200]
                     },
                     {
-                        name: 'interaction components\' description should fail given invalid language code',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.choice_invalid_language_map}}'}
-                        ],
-                        expect: [400]
-                    },
-                    {
                         name: 'context.language should pass given three letter cmn language code',
                         templates: [
                             {statement: '{{statements.context}}'},
@@ -810,14 +802,6 @@
                             {object: '{{substatements.interaction_component_valid_language_map}}'}
                         ],
                         expect: [200]
-                    },
-                    {
-                        name: 'substatement interaction components\' description should fail given invalid language code',
-                        templates: [
-                            {statement: '{{statements.object_substatement_default}}'},
-                            {object: '{{substatements.interaction_component_invalid_language_map}}'}
-                        ],
-                        expect: [400]
                     },
                     {
                         name: 'substatement context.language should pass given two letter fr-CA language-region code',

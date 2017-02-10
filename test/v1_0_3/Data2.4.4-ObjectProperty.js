@@ -76,6 +76,21 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
                 .json(choice).expect(400, done);
         });
 
+        it ('Activity Definition uses fill-in without "interactionType" property',function(done){
+            id = helper.generateUUID();
+            var fillintemplates = [
+                {statement: '{{statements.default}}'},
+                {object: '{{activities.fill_in}}'}
+            ];
+            fillin = helper.createFromTemplate(fillintemplates);
+            fillin = fillin.statement;
+            delete fillin.object.definition.interactionType;
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(fillin).expect(400, done);
+        });
+
         it ('Activity Definition uses scale without "interactionType" property',function(done){
             id = helper.generateUUID();
             var scaletemplates = [
@@ -89,6 +104,21 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders({}))
                 .json(scale).expect(400, done);
+        });
+
+        it ('Activity Definition uses long-fill-in without "interactionType" property',function(done){
+            id = helper.generateUUID();
+            var fillintemplates = [
+                {statement: '{{statements.default}}'},
+                {object: '{{activities.long_fill_in}}'}
+            ];
+            fillin = helper.createFromTemplate(fillintemplates);
+            fillin = fillin.statement;
+            delete fillin.object.definition.interactionType;
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(fillin).expect(400, done);
         });
 
         it ('Activity Definition uses source without "interactionType" property',function(done){
@@ -121,7 +151,37 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
                 .json(target).expect(400, done);
         });
 
-        it ('Activity Definition uses steps without "interactionType" property',function(done){
+        it ('Activity Definition uses numeric without "interactionType" property',function(done){
+            id = helper.generateUUID();
+            var numerictemplates = [
+                {statement: '{{statements.default}}'},
+                {object: '{{activities.numeric}}'}
+            ];
+            numeric = helper.createFromTemplate(numerictemplates);
+            numeric = numeric.statement;
+            delete numeric.object.definition.interactionType;
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(numeric).expect(400, done);
+        });
+
+        it ('Activity Definition uses other without "interactionType" property',function(done){
+            id = helper.generateUUID();
+            var othertemplates = [
+                {statement: '{{statements.default}}'},
+                {object: '{{activities.other}}'}
+            ];
+            other = helper.createFromTemplate(othertemplates);
+            other = other.statement;
+            delete other.object.definition.interactionType;
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(other).expect(400, done);
+        });
+
+        it ('Activity Definition uses performance without "interactionType" property',function(done){
             id = helper.generateUUID();
             var stepstemplates = [
                 {statement: '{{statements.default}}'},
@@ -135,6 +195,37 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
                 .headers(helper.addAllHeaders({}))
                 .json(steps).expect(400, done);
         });
+
+        it ('Activity Definition uses sequencing without "interactionType" property',function(done){
+            id = helper.generateUUID();
+            var seqtemplates = [
+                {statement: '{{statements.default}}'},
+                {object: '{{activities.sequencing}}'}
+            ];
+            seq = helper.createFromTemplate(seqtemplates);
+            seq = seq.statement;
+            delete seq.object.definition.interactionType;
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(seq).expect(400, done);
+        });
+
+        it ('Activity Definition uses true-false without "interactionType" property',function(done){
+            id = helper.generateUUID();
+            var tftemplates = [
+                {statement: '{{statements.default}}'},
+                {object: '{{activities.true_false}}'}
+            ];
+            tf = helper.createFromTemplate(tftemplates);
+            tf = tf.statement;
+            delete tf.object.definition.interactionType;
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(tf).expect(400, done);
+        });
+
 
     });
 
