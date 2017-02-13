@@ -3,28 +3,28 @@
  * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
  */
 
- (function (process, request, should, chai, isEmail, helper) {
-     'use strict';
+(function (process, request, should, chai, isEmail, helper) {
+    'use strict';
 
-     var expect = chai.expect;
+    var expect = chai.expect;
 
-     var MAIL_TO = 'mailto:';
+    var MAIL_TO = 'mailto:';
 
-     var request = request(helper.getEndpoint());
-     var oauth;
-     if (global.OAUTH) {
-         var OAuth = require('oauth');
+    var request = request(helper.getEndpoint());
+    var oauth;
+    if (global.OAUTH) {
+        var OAuth = require('oauth');
 
-         oauth = new OAuth.OAuth(
-             "",
-             "",
-             global.OAUTH.consumer_key,
-             global.OAUTH.consumer_secret,
-             '1.0',
-             null,
-             'HMAC-SHA1'
-         );
-     }
+        oauth = new OAuth.OAuth(
+            "",
+            "",
+            global.OAUTH.consumer_key,
+            global.OAUTH.consumer_secret,
+            '1.0',
+            null,
+            'HMAC-SHA1'
+        );
+    }
 
 describe('Concurrency Requirements (Communication 3.1)', () => {
 
@@ -150,6 +150,7 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                     return pre.expect(204);
                 });
             });
+        });
 
         it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains "*"', function () {
             var parameters = helper.buildActivityProfile(),
