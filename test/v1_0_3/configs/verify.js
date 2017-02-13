@@ -481,6 +481,22 @@
                         expect: [200]
                     },
                     {
+                        name: 'should pass statement activity fill-in template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.fill_in}}'}
+                        ],
+                        expect: [200]
+                    },                    
+                    {
+                        name: 'should pass statement activity numeric template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.numeric}}'}
+                        ],
+                        expect: [200]
+                    },                    
+                    {
                         name: 'should pass statement activity likert template',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
@@ -489,6 +505,14 @@
                         expect: [200]
                     },
                     {
+                        name: 'should pass statement activity long-fill-in template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.long_fill_in}}'}
+                        ],
+                        expect: [200]
+                    },                    
+                    {
                         name: 'should pass statement activity matching template',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
@@ -496,6 +520,14 @@
                         ],
                         expect: [200]
                     },
+                    {
+                        name: 'should pass statement activity other template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.other}}'}
+                        ],
+                        expect: [200]
+                    },                    
                     {
                         name: 'should pass statement activity performance template',
                         templates: [
@@ -512,6 +544,14 @@
                         ],
                         expect: [200]
                     },
+                    {
+                        name: 'should pass statement activity true-false template',
+                        templates: [
+                            {statement: '{{statements.object_activity}}'},
+                            {object: '{{activities.true_false}}'}
+                        ],
+                        expect: [200]
+                    },                    
                     {
                         name: 'should pass statement substatement activity choice template',
                         templates: [
