@@ -556,28 +556,6 @@
                         expect: [400]
                     }
                 ]
-            },
-            {
-                name: 'An LRS generates an "objectType" property of "Activity" to any "object" property if none is provided (Modify, Data 2.4.4.s2)',
-                config: [
-                    {
-                        name: 'statement activity without "objectType" is valid',
-                        templates: [
-                            {statement: '{{statements.no_object}}'},
-                            {object: VALID_ACTIVITY}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement substatement activity without "objectType" is valid',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.no_object}}'},
-                            {object: VALID_ACTIVITY}
-                        ],
-                        expect: [200]
-                    }
-                ]
             }
         ];
     };
