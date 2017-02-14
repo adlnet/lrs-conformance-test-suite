@@ -91,32 +91,8 @@
                 ]
             },
             {
-                name: 'An Activity Definition is defined as the contents of a "definition" property object of an Activity (Format, Data 2.4.4.1.s1.table1.row3)',
-                config: [
-                    {
-                        name: 'statement activity "definition" not object',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement activity "definition" not object',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00048, Data 2.4.4.1 when objectType is activity
-             * An "object" property uses the "definition" property at most one time. The LRS rejects with 400 Bad Request an otherwise legal statement if the object's “definition” property is an invalid object.
+             * An "object" property uses the "definition" property at most one time. The LRS rejects with 400 Bad Request an otherwise legal statement if the object's "definition" property is an invalid object.
              */
                 name: 'An Activity\'s "definition" property is an Object (Type, Data 2.4.4.1.s1.table1.row3, XAPI-00048)',
                 config: [
