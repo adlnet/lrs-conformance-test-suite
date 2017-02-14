@@ -136,11 +136,16 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
 /**  XAPI-00264, Communication 2.6 Agent Profile Resource
  * An LRS's Agent Profile API rejects a PUT request without "agent" as a parameter with error code 400 Bad Request
  */
-    it('An LRS\'s Agent Profile Resource rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.6.s3.table1.row1, XAPI-00264)', function () {
+    it('An LRS\'s Agent Profile Resource rejects a PUT request without "agent" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.6.s3.table1.row1, XAPI-00264)', function (done) {
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
         delete parameters.agent;
-        return helper.sendRequest('put', helper.getEndpointAgentsProfile(), parameters, document, 400);
+
+        request(helper.getEndpointAndAuth())
+        .put(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+        .headers(helper.addAllHeaders({"If-None-Match": "*"}))
+        .json(document)
+        .expect(400, done);
     });
 
 /**  XAPI-00257, Communication 2.6 Agent Profile Resource
@@ -150,10 +155,15 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
         var document = helper.buildDocument(),
             invalidTypes = [1, true, 'not Agent', { key: 'value'}];
         invalidTypes.forEach(function (type) {
-            it('Should reject PUT with "agent" with type ' + type, function () {
+            it('Should reject PUT with "agent" with type ' + type, function (done) {
                 var parameters = helper.buildAgentProfile();
                 parameters.agent = type;
-                return helper.sendRequest('put', helper.getEndpointAgentsProfile(), parameters, document, 400);
+
+                request(helper.getEndpointAndAuth())
+                .put(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+                .headers(helper.addAllHeaders({"If-None-Match": "*"}))
+                .json(document)
+                .expect(400, done);
             });
         });
     });
@@ -225,11 +235,16 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
 /** XAPI-00267, Communication 2.6 Agent Profile Resource
  * An LRS's Agent Profile API rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request
  */
-    it('An LRS\'s Agent Profile Resource rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.6.s3.table1.row2, XAPI-00267)', function () {
+    it('An LRS\'s Agent Profile Resource rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.6.s3.table1.row2, XAPI-00267)', function (done) {
         var parameters = helper.buildAgentProfile(),
             document = helper.buildDocument();
         delete parameters.profileId;
-        return helper.sendRequest('put', helper.getEndpointAgentsProfile(), parameters, document, 400);
+
+        request(helper.getEndpointAndAuth())
+        .put(helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters))
+        .headers(helper.addAllHeaders({"If-None-Match": "*"}))
+        .json(document)
+        .expect(400, done);
     });
 
 /**  XAPI-00266, Communication 2.6 Agent Profile Resource
@@ -420,7 +435,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
         it("If the existing document does not have a Content-Type of application/json but the document being posted to the Agent Profile Resource does the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.", function (done) {
             var parameters = helper.buildAgentProfile();
             var attachment = "/ asdf / undefined";
-            var header = {'content-type': 'application/octet-stream'};
+            var header = {'content-type': 'application/octet-stream', 'If-None-Match': '*'};
 
             request(helper.getEndpointAndAuth())
             .put(helper.getEndpointAgentsProfile()+ '?' + helper.getUrlEncoding(parameters) )
