@@ -88,7 +88,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
 /**  XAPI-00286, Communication 2.7 Activity Profile Resource
  * An LRS's Activity Profile API upon processing a successful POST request returns code 204 No Content
  */
-/**  XAPI-00292, Communication 2.7 Agent Profile Resource
+/**  XAPI-00292, Communication 2.7 Activity Profile Resource
  * An LRS's Activity Profile API accepts POST requests
  */
 /**  XAPI-00312, Communication 2.7 Activity Profile Resource
