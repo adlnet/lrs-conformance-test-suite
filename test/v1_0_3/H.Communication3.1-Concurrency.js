@@ -7,10 +7,6 @@
     'use strict';
 
     var expect = chai.expect;
-    // if(global.OAUTH)
-    //     request = helper.OAuthRequest(request);
-
-    //  var MAIL_TO = 'mailto:';
 
     var request = request(helper.getEndpoint());
     var oauth;
@@ -221,10 +217,7 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
             it('Return HTTP 412 (Precondition Failed)', function () {
                 var badTag = '"1111111111111111111111111111111111111111"';
                 var document2 = helper.buildDocument();
-console.log(etag);
-console.log(badTag);
-console.log(document);
-console.log(document2);
+
                 var reqUrl = helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters);
                 var data = {'If-Match': badTag};
                 var headers = helper.addAllHeaders(data);
