@@ -127,8 +127,7 @@
                         name: 'statement object "name" language map is numeric',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_NUMERIC}
+                            {object: '{{activities.numeric_name}}'}
                         ],
                         expect: [400]
                     },
@@ -136,8 +135,7 @@
                         name: 'statement object "name" language map is string',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_STRING}
+                            {object: '{{activities.string_name}}'}
                         ],
                         expect: [400]
                     },
@@ -146,8 +144,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_NUMERIC}
+                            {object: '{{activities.numeric_name}}'}
                         ],
                         expect: [400]
                     },
@@ -156,8 +153,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_STRING}
+                            {object: '{{activities.string_name}}'}
                         ],
                         expect: [400]
                     }
@@ -173,8 +169,7 @@
                         name: 'statement object "description" language map is numeric',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_NUMERIC}
+                            {object: '{{activities.numeric_description}}'}
                         ],
                         expect: [400]
                     },
@@ -182,8 +177,7 @@
                         name: 'statement object "description" language map is string',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_STRING}
+                            {object: '{{activities.string_description}}'}
                         ],
                         expect: [400]
                     },
@@ -192,8 +186,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_NUMERIC}
+                            {object: '{{activities.numeric_description}}'}
                         ],
                         expect: [400]
                     },
@@ -202,8 +195,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_STRING}
+                            {object: '{{activities.string_description}}'}
                         ],
                         expect: [400]
                     }
