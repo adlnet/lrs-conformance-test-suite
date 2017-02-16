@@ -12,7 +12,7 @@
     "moreInfo": "http://virtualmeeting.example.com/345256",
     "interactionType": "numeric",
     "correctResponsesPattern": [
-      "4:"
+      "4[:]"
     ],
     "extensions": {
       "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
