@@ -173,30 +173,58 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
             });
         });
 
-        it('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains "*"', function () {
-            var parameters = helper.buildActivityProfile(),
-                document = helper.buildDocument();
+        describe('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains "*"', function () {
+            var parameters = helper.buildActivityProfile();
 
-            var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
-            var data = {'If-None-Match': "*"};
-            var headers = helper.addAllHeaders(data);
-            var pre = request['put'](reqUrl);
-            helper.extendRequestWithOauth(pre);
-            pre.send(document);
-            pre.set('If-None-Match', headers['If-None-Match']);
-            pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-            if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                pre.set('Authorization', headers['Authorization']);
-            }
-            //If we're doing oauth, set it up!
-            try {
-                if (global.OAUTH) {
-                    pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+            it('succeeds when no document exists', function () {
+                var document = helper.buildDocument();
+
+                var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
+                var data = {'If-None-Match': "*"};
+                var headers = helper.addAllHeaders(data);
+                var pre = request['put'](reqUrl);
+                helper.extendRequestWithOauth(pre);
+                pre.send(document);
+                pre.set('If-None-Match', headers['If-None-Match']);
+                pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
+                if (process.env.BASIC_AUTH_ENABLED === 'true') {
+                    pre.set('Authorization', headers['Authorization']);
                 }
-            } catch (e) {
-                console.log(e);
-            }
-            return pre.expect(204)
+                //If we're doing oauth, set it up!
+                try {
+                    if (global.OAUTH) {
+                        pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+                return pre.expect(204)
+            });
+
+            it('rejects if a document already exists', function () {
+                var document = helper.buildDocument();
+
+                var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
+                var data = {'If-None-Match': "*"};
+                var headers = helper.addAllHeaders(data);
+                var pre = request['put'](reqUrl);
+                helper.extendRequestWithOauth(pre);
+                pre.send(document);
+                pre.set('If-None-Match', headers['If-None-Match']);
+                pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
+                if (process.env.BASIC_AUTH_ENABLED === 'true') {
+                    pre.set('Authorization', headers['Authorization']);
+                }
+                //If we're doing oauth, set it up!
+                try {
+                    if (global.OAUTH) {
+                        pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+                return pre.expect(412);
+            });
         });
 
         describe('If Header precondition in PUT Requests for RFC2616 fail', function () {
