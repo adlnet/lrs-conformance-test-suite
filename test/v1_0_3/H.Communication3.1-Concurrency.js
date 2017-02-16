@@ -202,14 +202,14 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
             });
 
             it('rejects if a document already exists', function () {
-                var document = helper.buildDocument();
+                var document2 = helper.buildDocument();
 
                 var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
                 var data = {'If-None-Match': "*"};
                 var headers = helper.addAllHeaders(data);
                 var pre = request['put'](reqUrl);
                 helper.extendRequestWithOauth(pre);
-                pre.send(document);
+                pre.send(document2);
                 pre.set('If-None-Match', headers['If-None-Match']);
                 pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
                 if (process.env.BASIC_AUTH_ENABLED === 'true') {
