@@ -61,16 +61,34 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
 /**  XAPI-00293, Communication 2.7 Activity Profile Resource
  * An LRS's Activity Profile API accepts PUT requests
  */
-    it('An LRS\'s Activity Profile Resource accepts PUT requests (Communication 2.7, XAPI-00287, XAPI-00293)', function () {
-        var parameters = helper.buildActivityProfile(),
-            document = helper.buildDocument();
-        return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 204);
-    });
+    describe('An LRS\'s Activity Profile Resource accepts PUT requests (Communication 2.7, XAPI-00287, XAPI-00293)', function () {
+        it('passes with 204 no content', function (done) {
+            var parameters = helper.buildActivityProfile(),
+                document = helper.buildDocument();
+
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointActivitiesProfile() + "?" + helper.getUrlEncoding(parameters))
+            .headers(helper.addAllHeaders({"If-None-Match": "*"}))
+            .json(document)
+            .expect(204, done);
+        });
+
+        it('fails without ETag header', function (done) {
+            var parameters = helper.buildActivityProfile(),
+                document = helper.buildDocument();
+
+            request(helper.getEndpointAndAuth())
+            .put(helper.getEndpointActivitiesProfile() + "?" + helper.getUrlEncoding(parameters))
+            .headers(helper.addAllHeaders())
+            .json(document)
+            .expect(400, done);
+        });
+    }); // describe
 
 /**  XAPI-00286, Communication 2.7 Activity Profile Resource
  * An LRS's Activity Profile API upon processing a successful POST request returns code 204 No Content
  */
-/**  XAPI-00292, Communication 2.7 Agent Profile Resource
+/**  XAPI-00292, Communication 2.7 Activity Profile Resource
  * An LRS's Activity Profile API accepts POST requests
  */
 /**  XAPI-00312, Communication 2.7 Activity Profile Resource
@@ -125,11 +143,16 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
 /**  XAPI-00299, Communication 2.7 Activity Profile Resource
  * An LRS's Activity Profile API rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request
  */
-    it('An LRS\'s Activity Profile Resource rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1, XAPI-00299)', function () {
+    it('An LRS\'s Activity Profile Resource rejects a PUT request without "activityId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row1, XAPI-00299)', function (done) {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         delete parameters.activityId;
-        return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+
+        request(helper.getEndpointAndAuth())
+        .put(helper.getEndpointActivitiesProfile() + "?" + helper.getUrlEncoding(parameters))
+        .headers(helper.addAllHeaders({'If-None-Match': '*'}))
+        .json(document)
+        .expect(400, done);
     });
 
 /**  XAPI-00298, Communication 2.7 Activity Profile Resources
@@ -163,11 +186,16 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
 /**  XAPI-00302, Communication 2.7 Activity Profile Resource
  * An LRS's Activity Profile API rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request
  */
-    it('An LRS\'s Activity Profile Resource rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row2, XAPI-00302)', function () {
+    it('An LRS\'s Activity Profile Resource rejects a PUT request without "profileId" as a parameter with error code 400 Bad Request (multiplicity, Communication 2.7.s3.table1.row2, XAPI-00302)', function (done) {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         delete parameters.profileId;
-        return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document, 400);
+
+        request(helper.getEndpointAndAuth())
+        .put(helper.getEndpointActivitiesProfile() + "?" + helper.getUrlEncoding(parameters))
+        .headers(helper.addAllHeaders({'If-None-Match': '*'}))
+        .json(document)
+        .expect(400, done);
     });
 
 /**  XAPI-00301, Communication 2.7 Activity Profile Resource
@@ -324,7 +352,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             var parameters = helper.buildActivityProfile();
 
             request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointActivitiesProfile()+ '?' + helper.getUrlEncoding(parameters) )
+            .post(helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters))
             .headers(helper.addAllHeaders({}))
             .json(document)
             .expect(204, function (err,res) {
@@ -363,7 +391,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         it("If the existing document does not have a Content-Type of application/json but the document being posted to the Activity Profile Resource does the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.", function (done) {
             var parameters = helper.buildActivityProfile();
             var attachment = "/ asdf / undefined";
-            var header = {'content-type': 'application/octet-stream'};
+            var header = {'content-type': 'application/octet-stream', 'If-None-Match': '*'};
 
             request(helper.getEndpointAndAuth())
             .put(helper.getEndpointActivitiesProfile()+ '?' + helper.getUrlEncoding(parameters) )

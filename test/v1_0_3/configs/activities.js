@@ -91,32 +91,8 @@
                 ]
             },
             {
-                name: 'An Activity Definition is defined as the contents of a "definition" property object of an Activity (Format, Data 2.4.4.1.s1.table1.row3)',
-                config: [
-                    {
-                        name: 'statement activity "definition" not object',
-                        templates: [
-                            {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    },
-                    {
-                        name: 'statement substatement activity "definition" not object',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_definition}}'},
-                            {definition: INVALID_STRING}
-                        ],
-                        expect: [400]
-                    }
-                ]
-            },
-            {
             /**  XAPI-00048, Data 2.4.4.1 when objectType is activity
-             * An "object" property uses the "definition" property at most one time. The LRS rejects with 400 Bad Request an otherwise legal statement if the object's “definition” property is an invalid object.
+             * An "object" property uses the "definition" property at most one time. The LRS rejects with 400 Bad Request an otherwise legal statement if the object's "definition" property is an invalid object.
              */
                 name: 'An Activity\'s "definition" property is an Object (Type, Data 2.4.4.1.s1.table1.row3, XAPI-00048)',
                 config: [
@@ -151,8 +127,7 @@
                         name: 'statement object "name" language map is numeric',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_NUMERIC}
+                            {object: '{{activities.numeric_name}}'}
                         ],
                         expect: [400]
                     },
@@ -160,8 +135,7 @@
                         name: 'statement object "name" language map is string',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_STRING}
+                            {object: '{{activities.string_name}}'}
                         ],
                         expect: [400]
                     },
@@ -170,8 +144,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_NUMERIC}
+                            {object: '{{activities.numeric_name}}'}
                         ],
                         expect: [400]
                     },
@@ -180,8 +153,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_STRING}
+                            {object: '{{activities.string_name}}'}
                         ],
                         expect: [400]
                     }
@@ -197,8 +169,7 @@
                         name: 'statement object "description" language map is numeric',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_NUMERIC}
+                            {object: '{{activities.numeric_description}}'}
                         ],
                         expect: [400]
                     },
@@ -206,8 +177,7 @@
                         name: 'statement object "description" language map is string',
                         templates: [
                             {statement: '{{statements.object_activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_STRING}
+                            {object: '{{activities.string_description}}'}
                         ],
                         expect: [400]
                     },
@@ -216,8 +186,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_NUMERIC}
+                            {object: '{{activities.numeric_description}}'}
                         ],
                         expect: [400]
                     },
@@ -226,8 +195,7 @@
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.activity}}'},
-                            {object: '{{activities.no_languages}}'},
-                            {definition: INVALID_STRING}
+                            {object: '{{activities.string_description}}'}
                         ],
                         expect: [400]
                     }
@@ -578,28 +546,6 @@
                             {definition: {extensions: VALID_EXTENSION_COMPONENT}}
                         ],
                         expect: [400]
-                    }
-                ]
-            },
-            {
-                name: 'An LRS generates an "objectType" property of "Activity" to any "object" property if none is provided (Modify, Data 2.4.4.s2)',
-                config: [
-                    {
-                        name: 'statement activity without "objectType" is valid',
-                        templates: [
-                            {statement: '{{statements.no_object}}'},
-                            {object: VALID_ACTIVITY}
-                        ],
-                        expect: [200]
-                    },
-                    {
-                        name: 'statement substatement activity without "objectType" is valid',
-                        templates: [
-                            {statement: '{{statements.object_substatement}}'},
-                            {object: '{{substatements.no_object}}'},
-                            {object: VALID_ACTIVITY}
-                        ],
-                        expect: [200]
                     }
                 ]
             }

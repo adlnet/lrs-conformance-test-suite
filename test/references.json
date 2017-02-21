@@ -4655,7 +4655,16 @@
         "name": "An LRS's Agent Profile Resource upon processing a successful PUT request returns code 204 No Content",
         "1.0.2_ref_text": "7.6.e",
         "1.0.2_ref": "7.6.e",
-        "1.0.3_ref": "Communication 2.6.s3",
+        "1.0.3_ref": "Communication 2.6.s3, XAPI-00273",
+        "1.0.3_link": [
+            "Communication.md#2.6.s3"
+        ]
+    },
+    "An LRS's Agent Profile Resource upon processing a PUT request without an ETag header returns an error code and message": {
+        "name": "An LRS's Agent Profile Resource upon processing a PUT request without an ETag header returns an error code and message",
+        "1.0.2_ref_text": "7.6.e",
+        "1.0.2_ref": "7.6.e",
+        "1.0.3_ref": "Communication 2.6.s3, XAPI-00273",
         "1.0.3_link": [
             "Communication.md#2.6.s3"
         ]
