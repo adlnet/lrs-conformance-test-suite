@@ -750,7 +750,6 @@ StatementResult Object.
                 } else {
                     var results = helper.parse(res.body);
                     expect(results).to.have.property('statements');
-                    expect(results).to.have.property('more');
                     done();
                 }
             });
