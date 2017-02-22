@@ -153,6 +153,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
         it('should fail when Statement GET without header "X-Experience-API-Version"', function (done) {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
+                .headers(helper.addBasicAuthenicationHeader({}))
                 .expect(400, done);
         });
 
@@ -165,6 +166,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
+                .headers(helper.addBasicAuthenicationHeader({}))
                 .json(data).expect(400, done);
         });
 
@@ -177,6 +179,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
 
             request(helper.getEndpointAndAuth())
                 .put(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
+                .headers(helper.addBasicAuthenicationHeader({}))
                 .json(data).expect(400, done);
         });
     });
