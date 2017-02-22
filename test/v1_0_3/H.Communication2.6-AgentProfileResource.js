@@ -302,6 +302,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
         return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
             .then(function () {
                 parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString();
+                delete parameters.profileId
                 return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200);
             });
     });
