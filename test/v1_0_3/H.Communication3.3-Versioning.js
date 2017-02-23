@@ -22,7 +22,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
 /**  XAPI-00333, Communication 3.3 Versioning
  * An LRS sends a header response with "X-Experience-API-Version" as the name and latest patch version after 1.0.0 as the value
  */
-    it ('An LRS sends a header response with "X-Experience-API-Version" as the name and "1.0.3" as the value (Format, Communication 3.3.s3.b1, Communication 3.3.s3.b2, XAPI-00333)', function (done){
+    it ('An LRS sends a header response with "X-Experience-API-Version" as the name and the latest patch version after "1.0.0" as the value (Format, Communication 3.3.s3.b1, Communication 3.3.s3.b2, XAPI-00333)', function (done){
         this.timeout(0);
         var id = helper.generateUUID();
         var statementTemplates = [
@@ -55,43 +55,11 @@ describe('Versioning Requirements (Communication 3.3)', () => {
                     }
                     else{
                         expect(res.headers).to.have.property('x-experience-api-version');
-                        expect(res.headers['x-experience-api-version']).to.equal("1.0.3");
+                        expect(res.headers['x-experience-api-version']).to.equal(helper.getXapiVersion());
                         done();
                     }
                 });
             }
-        });
-    });
-
-    describe('An LRS MUST set the X-Experience-API-Version header to the latest patch version (Communication 3.3.s3.b2)', function () {
-        it('should respond with header "version" set to "1.0.3"', function (done) {
-            this.timeout(0);
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            data = data.statement;
-            data.id = helper.generateUUID();
-            var query = '?statementId=' + data.id;
-            var stmtTime = Date.now();
-
-            request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .json(data)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    request(helper.getEndpointAndAuth())
-                    .get(helper.getEndpointStatements() + '?statementId=' + data.id)
-                    .wait(helper.genDelay(stmtTime, query, data.id))
-                    .headers(helper.addAllHeaders({}))
-                    .expect(200)
-                    .expect('x-experience-api-version', '1.0.3', done);
-                }
-            });
         });
     });
 
@@ -153,6 +121,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
         it('should fail when Statement GET without header "X-Experience-API-Version"', function (done) {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
+                .headers(helper.addBasicAuthenicationHeader({}))
                 .expect(400, done);
         });
 
@@ -165,6 +134,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
+                .headers(helper.addBasicAuthenicationHeader({}))
                 .json(data).expect(400, done);
         });
 
@@ -177,6 +147,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
 
             request(helper.getEndpointAndAuth())
                 .put(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
+                .headers(helper.addBasicAuthenicationHeader({}))
                 .json(data).expect(400, done);
         });
     });
