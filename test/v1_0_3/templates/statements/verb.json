@@ -1,7 +1,7 @@
 {
   "actor": {
     "objectType": "Agent",
-    "name": "xAPI account",
+    "name": "xAPI mbox",
     "mbox": "mailto:xapi@adlnet.gov"
   },
   "verb": { },
