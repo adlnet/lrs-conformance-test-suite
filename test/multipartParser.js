@@ -22,14 +22,17 @@
             {
                 field: 'boundary',
                 fn: function (part) {
-                    var s = S(part);
 
+                    var s = S(part);
                     var match;
                     if (s.contains('boundary=')) {
                         var index = s.toString().indexOf('boundary=');
                         var indexSemicolon = s.toString().indexOf(';', index);
                         var endIndex = (indexSemicolon < 0 ? s.toString().length : indexSemicolon);
                         match = part.substring(index + 'boundary='.length, endIndex);
+                        if (match.charAt(0) === '"') {
+                            match = match.substring(1, match.length - 1);
+                        }
                     }
                     return match;
                 }
@@ -151,7 +154,6 @@
      */
     module.exports.getBoundary = function getBoundary(string) {
         var boundary = '';
-
         for (var i = 0; i < headerParts.length; i++) {
             var header = headerParts[i];
 
