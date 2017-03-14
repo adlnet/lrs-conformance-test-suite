@@ -1,19 +1,14 @@
 {
   "objectType": "Activity",
-  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "id": "http://www.example.com/meetings/occurances/34534",
   "definition": {
-    "name": {
-      "en": "Performance"
-    },
+    "type": "http://adlnet.gov/expapi/activities/meeting",
+    "name": "this is not a language map",
     "description": {
-      "en": "This interaction measures performance over a day of RS sports:"
+      "en-GB": "An example meeting that happened on a specific occasion with certain people present.",
+      "en-US": "An example meeting that happened on a specific occasion with certain people present."
     },
-    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
     "moreInfo": "http://virtualmeeting.example.com/345256",
-    "interactionType": "performance",
-    "correctResponsesPattern": [
-      "pong[.]1:[,]dg[.]:10[,]lunch[.]"
-    ],
     "extensions": {
       "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
       "http://example.com/profiles/meetings/extension/reporter": {

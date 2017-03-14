@@ -1,19 +1,14 @@
 {
   "objectType": "Activity",
-  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "id": "http://www.example.com/meetings/occurances/34534",
   "definition": {
-    "name": {
-      "en": "Choice"
-    },
+    "type": "http://adlnet.gov/expapi/activities/meeting",
+    "name": 1234,
     "description": {
-      "en": "Which of these prototypes are available at the beta site?"
+      "en-GB": "An example meeting that happened on a specific occasion with certain people present.",
+      "en-US": "An example meeting that happened on a specific occasion with certain people present."
     },
-    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
     "moreInfo": "http://virtualmeeting.example.com/345256",
-    "interactionType": "choice",
-    "correctResponsesPattern": [
-      "golf[,]tetris"
-    ],
     "extensions": {
       "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
       "http://example.com/profiles/meetings/extension/reporter": {

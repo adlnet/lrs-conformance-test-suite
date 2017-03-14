@@ -1,19 +1,14 @@
 {
   "objectType": "Activity",
-  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "id": "http://www.example.com/meetings/occurances/34534",
   "definition": {
+    "type": "http://adlnet.gov/expapi/activities/meeting",
     "name": {
-      "en": "Likert"
+      "en-GB": "example meeting",
+      "en-US": "example meeting"
     },
-    "description": {
-      "en": "How awesome is Experience API?"
-    },
-    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+    "description": 1234,
     "moreInfo": "http://virtualmeeting.example.com/345256",
-    "interactionType": "likert",
-    "correctResponsesPattern": [
-      "likert_3"
-    ],
     "extensions": {
       "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
       "http://example.com/profiles/meetings/extension/reporter": {

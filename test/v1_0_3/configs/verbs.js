@@ -10,7 +10,7 @@
 
     // defines overwriting data
     var INVALID_URI = 'ab=c://should.fail.com';
-    var INVALID_LANGUAGE_MAP_NUMERIC = {'display': 'a12345'};
+    var INVALID_LANGUAGE_MAP_NUMERIC = {'display': 12345};
     var INVALID_LANGUAGE_MAP_STRING = {'display': 'a12345 attended'};
 
     // configures tests
