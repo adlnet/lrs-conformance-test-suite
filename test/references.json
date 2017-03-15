@@ -6029,10 +6029,10 @@
     "should return valid \"X-Experience-API-Consistent-Through\" using GET": {
         "name": "should return valid \"X-Experience-API-Consistent-Through\" using GET"
     },
-    "The Statements within the \"statements\" property will correspond to the filtering criterion sent in with the GET request **Implicit**": {
-        "name": "The Statements within the \"statements\" property will correspond to the filtering criterion sent in with the GET request **Implicit**",
-        "1.0.3_ref": "Data 2.5.s1, Communication 2.1.3.s1",
-        "1.0.3_link": ["Data.md#2.5.s1","Communication.md#2.1.3.s1"]
+    "The Statements within the \"statements\" property will correspond to the filtering criterion sent in with the GET request: {
+        "name": "The Statements within the \"statements\" property will correspond to the filtering criterion sent in with the GET request,
+        "1.0.3_ref": "Communication 2.1.3.s1, XAPI-00164",
+        "1.0.3_link": ["Communication.md#2.1.3.s1"]
     },
     "A \"statements\" property which is too large for a single page will create a container for each additional page": {
         "name": "A \"statements\" property which is too large for a single page will create a container for each additional page",
