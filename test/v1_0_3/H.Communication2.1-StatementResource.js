@@ -1356,9 +1356,16 @@ StatementResult Object.
                     expect(res.headers['content-type']).to.include('multipart/mixed');
                     // Find the boundary
                     var b = res.headers['content-type'].split(';');
-                    var boundary = b[1].trim().substring(b[1].indexOf('='));
+                    var boundary;
+                    var quotes = b[1].match(/"/g);
+                    if (quotes) {
+                        boundary = b[1].trim().match(/"([^"]+)"/)[1];
+                    } else {
+                        var temp = b[1].trim();
+                        boundary = temp.substring(temp.indexOf('=') + 1);
+                    }
                     // Verify we have the statement we asked for
-                    // Use boundary to the first part of response, excluding "--"
+                    // Use boundary to get the first part of response, excluding "--"
                     var x = res.body.split(boundary);
                     var c = x[1].substring(x[1].indexOf('{'), x[1].lastIndexOf('}') + 1);
                     var result = helper.parse(c, done);
