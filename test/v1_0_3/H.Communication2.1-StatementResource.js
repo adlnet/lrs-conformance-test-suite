@@ -304,7 +304,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
  * XAPI-00161 - below
  * XAPI-00162 - below
  * XAPI-00163 - below
- * XAPI-00164 - covered by other specific tests
+ * XAPI-00164 - below
  * XAPI-00165 - below
  * XAPI-00166 - below
  * XAPI-00167 - below
@@ -2767,6 +2767,369 @@ MUST have a "Content-Type" header
                 }
             });
         });
+    });
+
+/**  XAPI-00164, Communication 2.1.3 GET Statements
+ * The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request
+ */
+    describe('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request (Communication 2.1.3.s1, XAPI-00164)', function () {
+        var statement, substatement, stmtTime;
+        this.timeout(0);
+
+        before('persist statement', function (done) {
+            var templates = [
+                {statement: '{{statements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:pri@adlnet.gov"
+                }}
+            ];
+            var data = helper.createFromTemplate(templates);
+            statement = data.statement;
+
+            //randomize data to prevent old results from breaking assertion logic
+            statement.context.contextActivities.category.id += helper.generateUUID();
+            statement.verb.id += helper.generateUUID();
+            statement.actor.mbox =  "mailto:" + helper.generateUUID() + "@adlnet.gov";
+            statement.context.registration =  helper.generateUUID();
+            statement.context.instructor.mbox = "mailto:" +  helper.generateUUID() + "@adlnet.gov";
+            statement.object.id +=  helper.generateUUID();
+
+            statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(statement)
+            .expect(200, done);
+        });
+
+        before('persist substatement', function (done) {
+            var templates = [
+                {statement: '{{statements.object_substatement}}'},
+                {object: '{{substatements.context}}'},
+                {context: '{{contexts.category}}'},
+                {instructor: {
+                    "objectType": "Agent",
+                    "name": "xAPI mbox",
+                    "mbox": "mailto:sub@adlnet.gov"
+                }}
+            ];
+            var data = helper.createFromTemplate(templates);
+            substatement = data.statement;
+
+            //randomize data to prevent old results from breaking assertion logic
+            substatement.verb.id += helper.generateUUID();
+            substatement.actor.mbox =  "mailto:" + helper.generateUUID() + "@adlnet.gov";
+
+            substatement.object.verb.id += helper.generateUUID();
+            substatement.object.actor.mbox =  "mailto:" + helper.generateUUID() + "@adlnet.gov";
+            substatement.object.object.id +=   helper.generateUUID();
+
+
+
+
+            substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
+            stmtTime = Date.now();
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(substatement)
+            .expect(200, done);
+        });
+
+        it('should return StatementResult with statements as array using GET with "agent"', function (done) {
+            var templates = [
+                {agent: statement.actor}
+            ];
+            var data = helper.createFromTemplate(templates);
+
+            var query = helper.getUrlEncoding(data);
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('actor.mbox',statement.actor.mbox);
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "verb"', function (done) {
+            var query = helper.getUrlEncoding({verb: statement.verb.id});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('verb.id',statement.verb.id);
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "activity"', function (done) {
+            var query = helper.getUrlEncoding({activity: statement.object.id});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('object.id',statement.object.id)
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "registration"', function (done) {
+            var query = helper.getUrlEncoding({registration: statement.context.registration});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('context.registration',statement.context.registration);
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "related_activities"', function (done) {
+            var query = helper.getUrlEncoding({
+                activity: statement.context.contextActivities.category.id,
+                related_activities: true
+            });
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i in statements)
+                        {
+                           if(!helper.deepSearchObject(statements[i], statement.context.contextActivities.category.id))
+                           return false
+                        }
+                        return true;
+                    });
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "related_agents"', function (done) {
+            var query = helper.getUrlEncoding({
+                agent: statement.context.instructor,
+                related_agents: true
+            });
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i in statements)
+                        {
+                           if(!helper.deepSearchObject(statements[i], statement.context.instructor.mbox))
+                           return false;
+                        }
+                        return true;
+                    });
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "since"', function (done) {
+            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i in statements)
+                        {
+                           if((new Date(statements[i].stored) < new Date('2012-06-01T19:09:13.245Z')))
+                           return false;
+                        }
+                        return true;
+                    });
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "until"', function (done) {
+            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i in statements)
+                        {
+                           if((new Date(statements[i].stored) > new Date('2012-06-01T19:09:13.245Z')))
+                           return false;
+                        }
+                        return true;
+                    });
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "limit"', function (done) {
+            var query = helper.getUrlEncoding({limit: 1});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.have.length(1);
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "ascending"', function (done) {
+            var query = helper.getUrlEncoding({ascending: true});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
+                    {
+                        for(var i =0; i < statements.length-1; i++)
+                        {
+                            var s1 = statements[i].stored;
+                            var s2 = statements[i+1].stored;
+
+                           if((new Date(s1) > new Date(s2)))
+                           return false;
+                        }
+                        return true;
+                    });
+                    done();
+                }
+            });
+        });
+
+        //I think there is another test that covers the formatting requirements
+        it('should return StatementResult with statements as array using GET with "format"', function (done) {
+            var query = helper.getUrlEncoding({format: 'ids'});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array');
+                    done();
+                }
+            });
+        });
+
+        it('should return StatementResult with statements as array using GET with "attachments"', function (done) {
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
+            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
+            var query = helper.getUrlEncoding({attachments: true});
+            var stmtTime = Date.now();
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders(header))
+            .body(attachment)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements() + '?' + query)
+                    .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+                    .headers(helper.addAllHeaders({}))
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            var boundary = multipartParser.getBoundary(res.headers['content-type']);
+                            expect(boundary).to.be.ok;
+                            var parsed = multipartParser.parseMultipart(boundary, res.body);
+                            expect(parsed).to.be.ok;
+                            var results = helper.parse(parsed[0].body, done);
+                            expect(results).to.have.property('statements');
+                            done();
+                        }
+                    });
+                }
+            });
+        });
+
     });
 
 });

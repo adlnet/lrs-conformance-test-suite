@@ -23,61 +23,6 @@ describe('Retrieval of Statements (Data 2.5)', function () {
  * XAPI-00114 - below
  */
 
-    it('The Statements within the "statements" property will correspond to the filtering criterion sent in with the GET request **Implicit** (Data 2.5.s1, Communication 2.1.3.s1)', function (done){
-        //tests most of the filtering criteria, can add additional tests for missing criteria if necessary
-        this.timeout(0);
-        var statementTemplates = [
-            {statement: '{{statements.default}}'},
-            {context: '{{contexts.default}}'}
-        ];
-        var id = helper.generateUUID();
-        var statement = helper.createFromTemplate(statementTemplates);
-        statement = statement.statement;
-        statement.id = id;
-
-        var data = {
-            limit: 1,
-            agent: statement.actor,
-            verb: statement.verb.id,
-            activity: statement.object.id,
-            registration: statement.context.registration,
-            related_activities: true,
-            since: '2012-06-01T19:09:13.245Z',
-            format: 'ids',
-            attachments: false
-        };
-
-        var query = helper.getUrlEncoding(data);
-        var stmtTime = Date.now();
-
-        request(helper.getEndpointAndAuth())
-        .post(helper.getEndpointStatements())
-        .headers(helper.addAllHeaders({}))
-        .json(statement)
-        .expect(200)
-        .end(function (err, res) {
-            if (err) {
-                done(err);
-            } else {
-                request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .wait(helper.genDelay(stmtTime, '?' + query, null))
-                .headers(helper.addAllHeaders({}))
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    }
-                    else {
-                        var results = helper.parse(res.body, done);
-                        expect(results.statements[0].id).to.equal(id);
-                        done();
-                    }
-                });
-            }
-        });
-    });
-
 /**  XAPI-00113, Data 2.5 Retrieval of Statements
  * An LRS's Statement API, upon processing a successful GET request, will return a single "statements" property and a single "more" property. A single "more" property must be present if there are additional results available.
  */
@@ -139,15 +84,15 @@ describe('Retrieval of Statements (Data 2.5)', function () {
             ];
             var data = helper.createFromTemplate(templates);
             statement = data.statement;
-            
+
             //randomize data to prevent old results from breaking assertion logic
             statement.context.contextActivities.category.id += helper.generateUUID();
             statement.verb.id += helper.generateUUID();
             statement.actor.mbox =  "mailto:" + helper.generateUUID() + "@adlnet.gov";
             statement.context.registration =  helper.generateUUID();
             statement.context.instructor.mbox = "mailto:" +  helper.generateUUID() + "@adlnet.gov";
-            statement.object.id +=  helper.generateUUID(); 
-            
+            statement.object.id +=  helper.generateUUID();
+
             statement.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/pri';
 
             request(helper.getEndpointAndAuth())
@@ -174,14 +119,14 @@ describe('Retrieval of Statements (Data 2.5)', function () {
             //randomize data to prevent old results from breaking assertion logic
             substatement.verb.id += helper.generateUUID();
             substatement.actor.mbox =  "mailto:" + helper.generateUUID() + "@adlnet.gov";
-            
+
             substatement.object.verb.id += helper.generateUUID();
             substatement.object.actor.mbox =  "mailto:" + helper.generateUUID() + "@adlnet.gov";
             substatement.object.object.id +=   helper.generateUUID();
 
-           
-            
-           
+
+
+
             substatement.object.context.contextActivities.category.id = 'http://www.example.com/test/array/statements/sub';
             stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
@@ -208,295 +153,6 @@ describe('Retrieval of Statements (Data 2.5)', function () {
             });
         });
 
-        it('should return StatementResult with statements as array using GET with "agent"', function (done) {
-            var templates = [
-                {agent: statement.actor}
-            ];
-            var data = helper.createFromTemplate(templates);
-
-            var query = helper.getUrlEncoding(data);
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('actor.mbox',statement.actor.mbox);
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "verb"', function (done) {
-            var query = helper.getUrlEncoding({verb: statement.verb.id});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('verb.id',statement.verb.id);
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "activity"', function (done) {
-            var query = helper.getUrlEncoding({activity: statement.object.id});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('object.id',statement.object.id)
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "registration"', function (done) {
-            var query = helper.getUrlEncoding({registration: statement.context.registration});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('context.registration',statement.context.registration);
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "related_activities"', function (done) {
-            var query = helper.getUrlEncoding({
-                activity: statement.context.contextActivities.category.id,
-                related_activities: true
-            });
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
-                    {
-                        for(var i in statements)
-                        {
-                           if(!helper.deepSearchObject(statements[i], statement.context.contextActivities.category.id))
-                           return false 
-                        }
-                        return true;
-                    });
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "related_agents"', function (done) {
-            var query = helper.getUrlEncoding({
-                agent: statement.context.instructor,
-                related_agents: true
-            });
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
-                    {
-                        for(var i in statements)
-                        {
-                           if(!helper.deepSearchObject(statements[i], statement.context.instructor.mbox))
-                           return false; 
-                        }
-                        return true;
-                    });
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "since"', function (done) {
-            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
-                    {
-                        for(var i in statements)
-                        {
-                           if((new Date(statements[i].stored) < new Date('2012-06-01T19:09:13.245Z')))
-                           return false; 
-                        }
-                        return true;
-                    });
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "until"', function (done) {
-            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
-                    {
-                        for(var i in statements)
-                        {
-                           if((new Date(statements[i].stored) > new Date('2012-06-01T19:09:13.245Z')))
-                           return false; 
-                        }
-                        return true;
-                    });
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "limit"', function (done) {
-            var query = helper.getUrlEncoding({limit: 1});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.have.length(1);
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "ascending"', function (done) {
-            var query = helper.getUrlEncoding({ascending: true});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.satisfy(function(statements)
-                    {
-                        for(var i =0; i < statements.length-1; i++)
-                        {
-                            var s1 = statements[i].stored;
-                            var s2 = statements[i+1].stored;
-
-                           if((new Date(s1) > new Date(s2)))
-                           return false; 
-                        }
-                        return true;
-                    });
-                    done();
-                }
-            });
-        });
-
-        //I think there is another test that covers the formatting requirements
-        it('should return StatementResult with statements as array using GET with "format"', function (done) {
-            var query = helper.getUrlEncoding({format: 'ids'});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult with statements as array using GET with "attachments"', function (done) {
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
-            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
-            var query = helper.getUrlEncoding({attachments: true});
-            var stmtTime = Date.now();
-
-            request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders(header))
-            .body(attachment)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    request(helper.getEndpointAndAuth())
-                    .get(helper.getEndpointStatements() + '?' + query)
-                    .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-                    .headers(helper.addAllHeaders({}))
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            done(err);
-                        } else {
-                            var boundary = multipartParser.getBoundary(res.headers['content-type']);
-                            expect(boundary).to.be.ok;
-                            var parsed = multipartParser.parseMultipart(boundary, res.body);
-                            expect(parsed).to.be.ok;
-                            var results = helper.parse(parsed[0].body, done);
-                            expect(results).to.have.property('statements');
-                            done();
-                        }
-                    });
-                }
-            });
-        });
     });
 
 /**  XAPI-00114, Data 2.5 Retrieval of Statements
@@ -545,55 +201,6 @@ describe('Retrieval of Statements (Data 2.5)', function () {
                     }
                 });
             }
-        });
-    });
-
-    describe('A "more" property is an IRL (Format, Data 2.5.s2.table1.row2)', function () {
-        it('should return "more" property as an IRL', function (done) {
-            this.timeout(0);
-            var templates = [
-                {statement: '{{statements.default}}'}
-            ];
-            var data = helper.createFromTemplate(templates);
-            var statement = data.statement;
-            var stmtTime = Date.now();
-
-            request(helper.getEndpointAndAuth())
-            .post(helper.getEndpointStatements())
-            .headers(helper.addAllHeaders({}))
-            .json([statement, statement])
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    request(helper.getEndpointAndAuth())
-                    .get(helper.getEndpointStatements() + '?limit=1')
-                    .wait(helper.genDelay(stmtTime, '?limit=1', undefined))
-                    .headers(helper.addAllHeaders({}))
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            done(err);
-                        } else {
-                            var result = helper.parse(res.body, done);
-                            expect(result).to.have.property('more');
-                            expect(validator.isURL(result.more, {
-                                protocols: [],
-                                require_tld: false,
-                                require_protocol: false,
-                                require_host: false,
-                                require_valid_protocol: false,
-                                allow_underscores: true,
-                                host_whitelist: false,
-                                host_blacklist: false,
-                                allow_trailing_dot: false,
-                                allow_protocol_relative_urls: true })).to.be.truthy;
-                            done();
-                        }
-                    });
-                }
-            });
         });
     });
 
