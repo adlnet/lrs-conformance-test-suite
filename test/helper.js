@@ -564,7 +564,8 @@ if (!process.env.EB_NODE_COMMAND) {
                             done(err);
                             return err;
                         } else {
-                            lrsTime = new Date(res.headers.date);
+                            var result = JSON.parse(res.body);
+                            lrsTime = new Date(result.stored);
                             TIME_MARGIN = suiteTime - lrsTime;
                             done(err, TIME_MARGIN);
                         }
