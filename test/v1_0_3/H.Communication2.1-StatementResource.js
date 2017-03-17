@@ -2677,9 +2677,7 @@ MUST have a "Content-Type" header
 
         // reworded the test to be more generic, shouldn't have to stay in here
         it('should only return statements stored at or before designated "before" timestamp when using "until" parameter', function (done) {
-            // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Until');
             var query = helper.getUrlEncoding({
-                // verb: "http://adlnet.gov/expapi/verbs/voided",
                 verb: verb,
                 until: untilVoidingTime
             });
@@ -2695,12 +2693,10 @@ MUST have a "Content-Type" header
                     try {
                         var results = helper.parse(res.body, done);
                         expect(results).to.have.property('statements');
-                        // console.log(results.statements.length, statementRefId, voidingId, voidedId);
                         var ids = [];
                         results.statements.forEach(function(stmt) {
                             ids.push(stmt.id)
                         });
-                        // console.log(ids);
                         expect(ids).to.contain(statementRefId);
                         expect(ids).to.contain(voidingId);
                         expect(ids).to.not.contain(voidedId);
