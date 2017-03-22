@@ -3,7 +3,7 @@ LRS Conformance Test Suite
 
 ### Description
 
-This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec) and is based on the ADL [testing requirements](https://github.com/adlnet/xapi-lrs-conformance-requirements) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite only supports basic authentication. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
+This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-About.md#experience-api) and is based on the ADL [testing requirements](https://adl.gitbooks.io/xapi-lrs-conformance-requirements/content/) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite only supports basic authentication. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
 
 ### Installation  
 
@@ -83,7 +83,7 @@ $ node bin/console_runner.js --endpoint <http://localhost/xapi> --basicAuth --au
 **Note:** The default log contains results from every test run in the suite both passed and failed.  The --errors option filters the log to contain only tests which have failed.
 
 ## Contributing to the project
-We welcome contributions to this project. Fork this repository, make changes, and submit pull requests. If you're not comfortable with editing the code, please [submit an issue](https://github.com/adlnet/lrs-conformance-test-suite/issues) and we'll be happy to address it.
+We welcome contributions to this project. Fork this repository, make changes, and submit pull requests. If you're not comfortable with editing the code, please [submit an issue](mailto:adlhelpdesk@adlnet.gov) and we'll be happy to address it.
 
 ### License
 MIT License
