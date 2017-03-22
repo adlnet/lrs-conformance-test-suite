@@ -103,6 +103,11 @@ process.on('exit', function() {
 
 function start(options)
 {
+    //These are already used to fetch the access token, and are not needed by the runer
+    delete options.request_token_path ;
+    delete options.auth_token_path ;
+    delete options.authorization_path ;
+
 	testRunner = new TestRunner('console', null, options);
     testRunner.start();
 
