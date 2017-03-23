@@ -46,7 +46,7 @@ server.on('connection', function (socket) {
 
  //close the server and destroy all the open sockets
 function killserver() {
-    console.log("U killed me but I'll take my revenge soon!!");
+    
   // Close the server
   server.close(function () { console.log('Server closed!'); });
   // Destroy all open sockets
