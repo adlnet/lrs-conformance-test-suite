@@ -24,7 +24,38 @@ function doOAuth1(config, callback) {
 
     })
 
-    eapp.listen(3000);
+    var server = eapp.listen(3000);
+
+    // Maintain a hash of all connected sockets
+var sockets = {}, nextSocketId = 0;
+server.on('connection', function (socket) {
+  // Add a newly connected socket
+  var socketId = nextSocketId++;
+  sockets[socketId] = socket;
+  console.log('socket', socketId, 'opened');
+
+  // Remove the socket when it closes
+  socket.on('close', function () {
+    console.log('socket', socketId, 'closed');
+    delete sockets[socketId];
+  });
+
+  // Extend socket lifetime for demo purposes
+  socket.setTimeout(4000);
+});
+
+ //close the server and destroy all the open sockets
+function killserver() {
+    console.log("U killed me but I'll take my revenge soon!!");
+  // Close the server
+  server.close(function () { console.log('Server closed!'); });
+  // Destroy all open sockets
+  for (var socketId in sockets) {
+    console.log('socket', socketId, 'destroyed');
+    sockets[socketId].destroy();
+  }
+};
+
     // Get the request token                    
     consumer.getOAuthRequestToken(function(err, orauth_token, orauth_token_secret, results) {
 
@@ -35,9 +66,12 @@ function doOAuth1(config, callback) {
 
         eapp.on('authorized', function(verifier, oauth_token) {
 
+
+            
+
             consumer.getOAuthAccessToken(orauth_token, orauth_token_secret, verifier, function(err, oauth_token, oauth_token_secret, results) {
                 //server.close();
-
+                killserver();
                 if (err)
                     return callback(err);
                 console.log("Request Token", orauth_token);
