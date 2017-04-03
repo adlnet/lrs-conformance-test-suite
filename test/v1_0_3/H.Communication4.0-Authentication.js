@@ -9,14 +9,18 @@
 	describe('Authentication Requirements (Communication 4.0)', function()
 	{
 
-		if (!global.OAUTH)
+		/**  XAPI-00334, Communication 2.1.3 GET Statements
+		 * An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized
+		 */
+		describe('An LRS rejects a Statement of bad authorization, either authentication needed or failed credentials, with error code 401 Unauthorized (Authentication, Communication 4.0, XAPI-00334)', function()
 		{
-			/**  XAPI-00334, Communication 2.1.3 GET Statements
-			 * An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized
-			 */
-			describe('An LRS rejects a Statement of bad authorization, either authentication needed or failed credentials, with error code 401 Unauthorized (Authentication, Communication 4.0, XAPI-00334)', function()
+			it("fails when given a random name pass pair", function(done)
 			{
-				it("fails when given a random name pass pair", function(done)
+				if (global.OAUTH)
+				{
+					done();
+				}
+				else
 				{
 					var templates = [
 					{
@@ -39,9 +43,16 @@
 						.headers(headers)
 						.json(data)
 						.expect(401, done);
-				});
+				}
+			});
 
-				it('fails with a malformed header', function(done)
+			it('fails with a malformed header', function(done)
+			{
+				if (global.OAUTH)
+				{
+					done();
+				}
+				else
 				{
 					var templates = [
 					{
@@ -64,14 +75,21 @@
 						.headers(headers)
 						.json(data)
 						.expect(401, done);
-				});
+				}
 			});
+		});
 
-			/**  XAPI-00335, Communication 2.1.3 GET Statements
-			 * An LRS must support HTTP Basic Authentication
-			 */
-			//WARNING: This might not be a great test. OAUTH will override it
-			it('An LRS must support HTTP Basic Authentication (Authentication, Communication 4.0, XAPI-00335)', function(done)
+		/**  XAPI-00335, Communication 2.1.3 GET Statements
+		 * An LRS must support HTTP Basic Authentication
+		 */
+		//WARNING: This might not be a great test. OAUTH will override it
+		it('An LRS must support HTTP Basic Authentication (Authentication, Communication 4.0, XAPI-00335)', function(done)
+		{
+			if (global.OAUTH)
+			{
+				done();
+			}
+			else
 			{
 				var templates = [
 				{
@@ -88,8 +106,9 @@
 					.headers(headers)
 					.json(data)
 					.expect(204, done);
-			});
-		}
+			}
+		});
+
 	});
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
