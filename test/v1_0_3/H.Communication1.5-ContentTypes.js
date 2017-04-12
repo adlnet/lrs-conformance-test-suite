@@ -60,7 +60,7 @@ describe('Content Type Requirements (Communication 1.5)', function () {
             data = helper.createFromTemplate(templates);
             data = data.statement;
 
-            attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+            attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_p2.jpeg', {encoding: 'binary'});
         });
 
         it('should succeed when attachment uses "fileUrl" and request content-type is "application/json"', function (done) {
@@ -82,10 +82,23 @@ describe('Content Type Requirements (Communication 1.5)', function () {
         it('should succeed when attachment is raw data and request content-type is "multipart/mixed"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
+            const crypto = require('crypto');
+            delete data.attachments[0].fileUrl;
+            data.attachments[0].contentType = 'image/jpeg';
+            var stats = fs.statSync('test/v1_0_3/templates/attachments/basic_image_p2.jpeg');
+            var sizebytes = stats.size;
+            data.attachments[0].length = sizebytes;
+            data.attachments[0].sha2 = crypto.createHash('SHA256').update(attachment).digest('hex');
+
+            var dashes = '--';
+            var crlf = '\r\n';
+            var boundary = '-------314159265358979323846'
+            var msg = dashes + boundary + crlf + 'Content-Type: application/json' + crlf + crlf + JSON.stringify(data) + crlf + dashes + boundary + crlf + 'Content-Type: image/jpeg' + crlf + 'Content-Transfer-Encoding: binary' + crlf + 'X-Experience-API-Hash: ' + data.attachments[0].sha2 + crlf + crlf + attachment + crlf + dashes + boundary + dashes + crlf;
+
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders(header))
-            .body(attachment).expect(200, done);
+            .body(msg).expect(200, done);
         });
 
         it('should fail when attachment is raw data and request content-type is "multipart/form-data"', function (done) {
