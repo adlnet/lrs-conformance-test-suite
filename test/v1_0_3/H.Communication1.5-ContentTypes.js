@@ -3,7 +3,7 @@
  * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
  */
 
-(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
+(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, crypto) {
     // "use strict";
 
     var expect = chai.expect;
@@ -39,6 +39,7 @@ describe('Content Type Requirements (Communication 1.5)', function () {
     describe('An LRS rejects with error code 400 Bad Request, a Request which uses Attachments and does not have a "Content-Type" header with value "application/json" or "multipart/mixed" (Format, Data 2.4.11, XAPI-00127)', function () {
         var data;
         var attachment;
+        var msg;
 
         before('create attachment templates', function () {
             var templates = [
@@ -60,7 +61,8 @@ describe('Content Type Requirements (Communication 1.5)', function () {
             data = helper.createFromTemplate(templates);
             data = data.statement;
 
-            attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_multipart_attachment_valid.part', {encoding: 'binary'});
+            attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_image_p2.jpeg', {encoding: 'binary'});
+
         });
 
         it('should succeed when attachment uses "fileUrl" and request content-type is "application/json"', function (done) {
@@ -82,19 +84,62 @@ describe('Content Type Requirements (Communication 1.5)', function () {
         it('should succeed when attachment is raw data and request content-type is "multipart/mixed"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
+            const crypto = require('crypto');
+            delete data.attachments[0].fileUrl;
+            data.attachments[0].contentType = 'image/jpeg';
+            var stats = fs.statSync('test/v1_0_3/templates/attachments/basic_image_p2.jpeg');
+            var sizebytes = stats.size;
+            data.attachments[0].length = sizebytes;
+            data.attachments[0].sha2 = crypto.createHash('SHA256').update(attachment).digest('hex');
+
+            var dashes = '--';
+            var crlf = '\r\n';
+            var boundary = '-------314159265358979323846'
+
+            var msg = dashes + boundary + crlf;
+            msg += 'Content-Type: application/json' + crlf + crlf;
+            msg += JSON.stringify(data) + crlf;
+            msg += dashes + boundary + crlf;
+            msg += 'Content-Type: image/jpeg' + crlf;
+            msg += 'Content-Transfer-Encoding: binary' + crlf;
+            msg += 'X-Experience-API-Hash: ' + data.attachments[0].sha2 + crlf + crlf;
+            msg += attachment + crlf;
+            msg += dashes + boundary + dashes + crlf;
+
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders(header))
-            .body(attachment).expect(200, done);
+            .body(msg).expect(200, done);
         });
 
         it('should fail when attachment is raw data and request content-type is "multipart/form-data"', function (done) {
             var header = {'Content-Type': 'multipart/form-data; boundary=-------314159265358979323846'};
 
+            delete data.attachments[0].fileUrl;
+            data.attachments[0].contentType = 'image/jpeg';
+            var stats = fs.statSync('test/v1_0_3/templates/attachments/basic_image_p2.jpeg');
+            var sizebytes = stats.size;
+            data.attachments[0].length = sizebytes;
+            data.attachments[0].sha2 = crypto.createHash('SHA256').update(attachment).digest('hex');
+
+            var dashes = '--';
+            var crlf = '\r\n';
+            var boundary = '-------314159265358979323846'
+
+            var msg = dashes + boundary + crlf;
+            msg += 'Content-Type: application/json' + crlf + crlf;
+            msg += JSON.stringify(data) + crlf;
+            msg += dashes + boundary + crlf;
+            msg += 'Content-Type: image/jpeg' + crlf;
+            msg += 'Content-Transfer-Encoding: binary' + crlf;
+            msg += 'X-Experience-API-Hash: ' + data.attachments[0].sha2 + crlf + crlf;
+            msg += attachment + crlf;
+            msg += dashes + boundary + dashes + crlf;
+
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders(header))
-            .body(attachment).expect(400, done);
+            .body(msg).expect(400, done);
         });
     });
 
@@ -239,4 +284,4 @@ describe('Content Type Requirements (Communication 1.5)', function () {
     });
 });
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('crypto')));
