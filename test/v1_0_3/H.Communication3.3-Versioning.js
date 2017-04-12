@@ -136,18 +136,17 @@ describe('Versioning Requirements (Communication 3.3)', () => {
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?statementId=' + stmtId)
                 .headers(helper.addBasicAuthenicationHeader({}))
-                // .expect(400, done);
                 .end(function (err, res) {
                     if (err) {
                         done(err);
                     } else if (res.statusCode === 400) {
-                        expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.3$/)
+                        expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.3$|^0\.95?$/)
                         done();
                     } else if (res.statusCode === 404) {
                         expect(res.headers['x-experience-api-version']).to.match(/^0\.95?$/);
                         done();
                     } else {
-                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 1.0.3 with status code 400 or version header 0.9 or 0.95 with status code 404.`);
+                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 1.0.3 with status code 400 or version header 0.9 or 0.95 with status code either 400 or 404.`);
                         done();
                     }
                 });
@@ -168,13 +167,13 @@ describe('Versioning Requirements (Communication 3.3)', () => {
                     if (err) {
                         done(err);
                     } else if (res.statusCode === 400) {
-                        expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.3$/);
+                        expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.3$|^0\.95?$/);
                         done();
                     } else if (res.statusCode === 404) {
                         expect(res.headers['x-experience-api-version']).to.match(/^0\.95?$/);
                         done();
                     } else {
-                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 1.0.3 with status code 400 or version header 0.9 or 0.95 with status code 404.`);
+                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 1.0.3 with status code 400 or version header 0.9 or 0.95 with status code either 400 or 404.`);
                         done();
                     }
                 });
@@ -195,13 +194,13 @@ describe('Versioning Requirements (Communication 3.3)', () => {
                     if (err) {
                         done(err);
                     } else if (res.statusCode === 400) {
-                        expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.3$/);
+                        expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.3$|^0\.95?$/);
                         done();
                     } else if (res.statusCode === 404) {
                         expect(res.headers['x-experience-api-version']).to.match(/^0\.95?$/);
                         done();
                     } else {
-                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 1.0.3 with status code 400 or version header 0.9 or 0.95 with status code 404.`)
+                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 1.0.3 with status code 400 or version header 0.9 or 0.95 with status code either 400 or 404.`);
                         done();
                     }
                 });
