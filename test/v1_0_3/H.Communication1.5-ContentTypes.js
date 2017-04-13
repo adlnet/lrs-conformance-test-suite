@@ -84,7 +84,6 @@ describe('Content Type Requirements (Communication 1.5)', function () {
         it('should succeed when attachment is raw data and request content-type is "multipart/mixed"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
 
-            const crypto = require('crypto');
             delete data.attachments[0].fileUrl;
             data.attachments[0].contentType = 'image/jpeg';
             var stats = fs.statSync('test/v1_0_3/templates/attachments/basic_image_p2.jpeg');
