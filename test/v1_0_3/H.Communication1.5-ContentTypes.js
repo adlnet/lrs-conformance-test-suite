@@ -560,7 +560,7 @@ describe('Content Type Requirements (Communication 1.5)', function () {
             msg += JSON.stringify(data) + crlf;
             msg += dashes + boundary + crlf;            
             msg += 'Content-Type: text/plain' + crlf;
-            msg += 'Content-Transfer-Encoding: binary' + crlf;
+            msg += 'Content-Transfer-Encoding: binary' + crlf + crlf;
             msg += txtAtt1 + crlf;
             msg += dashes + boundary + dashes + crlf
 
