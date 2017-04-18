@@ -1326,13 +1326,72 @@ StatementResult Object.
         var stmtTime, stmtId;
 
         before('set up statement with two attachments for test', function (done) {
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'},
-                attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_two_multipart_attachments_valid.part', {encoding: 'binary'});
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};            
+            var templates = [
+                {statement: '{{statements.attachment}}'},
+                {
+                    attachments: [
+                        {
+                            "usageType":"http://example.com/attachment-usage/test",
+                            "display":{"en-US":"A test attachment"},
+                            "contentType":"text/plain",
+                            "length":0,
+                            "sha2":"",
+                            "description":{"en-US":"A test attachment (description)"}
+                        },
+                        {
+                            "usageType":"http://example.com/attachment-usage/test",
+                            "display":{"en-US":"A test attachment"},
+                            "contentType":"text/plain",
+                            "length":0,
+                            "sha2":"",
+                            "description":{"en-US":"A test attachment (description)"}
+                        }
+                    ]
+                }
+            ];
+            data = helper.createFromTemplate(templates);
+            data = data.statement;
+
+            txtAtt1 = fs.readFileSync('test/v1_0_3/templates/attachments/simple_text1.txt');
+            var t1stats = fs.statSync('test/v1_0_3/templates/attachments/simple_text1.txt');
+            t1attSize = t1stats.size;
+            t1attHash = crypto.createHash('SHA256').update(txtAtt1).digest('hex');
+            
+            txtAtt2 = fs.readFileSync('test/v1_0_3/templates/attachments/simple_text2.txt');
+            var t2stats = fs.statSync('test/v1_0_3/templates/attachments/simple_text2.txt');
+            t2attSize = t2stats.size;
+            t2attHash = crypto.createHash('SHA256').update(txtAtt2).digest('hex');
+
+            data.attachments[0].length = t1attSize;
+            data.attachments[0].sha2 = t1attHash;
+            data.attachments[1].length = t2attSize;
+            data.attachments[1].sha2 = t2attHash;
+
+            var dashes = '--';
+            var crlf = '\r\n';
+            var boundary = '-------314159265358979323846'
+
+            var msg = dashes + boundary + crlf;
+            msg += 'Content-Type: application/json' + crlf + crlf;
+            msg += JSON.stringify(data) + crlf;
+            msg += dashes + boundary + crlf;
+            msg += 'Content-Type: text/plain' + crlf;
+            msg += 'Content-Transfer-Encoding: binary' + crlf;
+            msg += 'X-Experience-API-Hash: ' + data.attachments[0].sha2 + crlf + crlf;
+            msg += txtAtt1 + crlf;
+            msg += dashes + boundary + crlf;
+            msg += 'Content-Type: text/plain' + crlf;
+            msg += 'Content-Transfer-Encoding: binary' + crlf;
+            msg += 'X-Experience-API-Hash: ' + data.attachments[1].sha2 + crlf + crlf;            
+            msg += txtAtt2 + crlf;
+            msg += dashes + boundary + dashes + crlf;
+
             stmtTime = Date.now();
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders(header))
-            .body(attachment)
+            .body(msg)
             .expect(200, function (err, res) {
                 if (err) {
                     done(err);
@@ -1371,12 +1430,9 @@ StatementResult Object.
                     var result = helper.parse(c, done);
                     expect(result).to.have.property('id');
                     expect(result.id).to.equal(stmtId);
-                    // Hardcoded SHAs from file being used to send statement with two attachments
-                    var hash1 = '495395e777cd98da653df9615d09c0fd6bb2f8d4788394cd53c56a3bfdcd848a',
-                    hash2 = '7063d0a4cfa93373753ad2f5a6ffcf684559fb1df3c2f0473a14ece7d4edb06a';
                     // Create an array of global matches of the pattern, the length of which is equal to the number of times that pattern appears in the given string
-                    var regex1 = new RegExp(hash1, 'g');
-                    var regex2 = new RegExp(hash2, 'g');
+                    var regex1 = new RegExp(t1attHash, 'g');
+                    var regex2 = new RegExp(t2attHash, 'g');
                     var match1 = (res.body.match(regex1) || []).length;
                     var match2 = (res.body.match(regex2) || []).length;
                     // Comnpare that number to 2 the number of times it is expected for a given has to appear in the response, once in the attachments property, and once along with the attachment
@@ -2415,12 +2471,51 @@ MUST have a "Content-Type" header
 
         before("store statement",function(done){
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
-            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
+            var templates = [
+                {statement: '{{statements.attachment}}'},
+                {
+                    attachments: [
+                        {
+                            "usageType": "http://example.com/attachment-usage/test",
+                            "display": {"en-US": "A test attachment"},
+                            "description": {"en-US": "A test attachment (description)"},
+                            "contentType": "text/plain",
+                            "length": 0,
+                            "sha2": "",
+                            "fileUrl": "http://over.there.com/file.txt"
+                        }
+                    ]
+                }
+            ];
+            data = helper.createFromTemplate(templates);
+            data = data.statement;
+
+            txtAtt1 = fs.readFileSync('test/v1_0_3/templates/attachments/simple_text1.txt');
+            var t1stats = fs.statSync('test/v1_0_3/templates/attachments/simple_text1.txt');
+            t1attSize = t1stats.size;
+            t1attHash = crypto.createHash('SHA256').update(txtAtt1).digest('hex');
+
+            data.attachments[0].length = t1attSize;
+            data.attachments[0].sha2 = t1attHash;
+
+            var dashes = '--';
+            var crlf = '\r\n';
+            var boundary = '-------314159265358979323846'
+
+            var msg = dashes + boundary + crlf;
+            msg += 'Content-Type: application/json' + crlf + crlf;
+            msg += JSON.stringify(data) + crlf;
+            msg += dashes + boundary + crlf;
+            msg += 'Content-Type: text/plain' + crlf;
+            msg += 'Content-Transfer-Encoding: binary' + crlf;
+            msg += 'X-Experience-API-Hash: ' + data.attachments[0].sha2 + crlf + crlf;
+            msg += txtAtt1 + crlf;
+            msg += dashes + boundary + dashes + crlf;
 
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
-                .body(attachment)
+                .body(msg)
                 .expect(200,function(err,res)
                 {
                     if(err)
@@ -3091,14 +3186,55 @@ MUST have a "Content-Type" header
 
         it('should return StatementResult with statements as array using GET with "attachments"', function (done) {
             var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
-            var attachment = fs.readFileSync('test/v1_0_3/templates/attachments/basic_text_multipart_attachment_valid.part', {encoding: 'binary'});
+            var templates = [
+                {statement: '{{statements.attachment}}'},
+                {
+                    attachments: [
+                        {
+                            "usageType": "http://example.com/attachment-usage/test",
+                            "display": {"en-US": "A test attachment"},
+                            "description": {"en-US": "A test attachment (description)"},
+                            "contentType": "text/plain",
+                            "length": 0,
+                            "sha2": "",
+                            "fileUrl": "http://over.there.com/file.txt"
+                        }
+                    ]
+                }
+            ];
+            data = helper.createFromTemplate(templates);
+            data = data.statement;
+
+            txtAtt1 = fs.readFileSync('test/v1_0_3/templates/attachments/simple_text1.txt');
+            var t1stats = fs.statSync('test/v1_0_3/templates/attachments/simple_text1.txt');
+            t1attSize = t1stats.size;
+            t1attHash = crypto.createHash('SHA256').update(txtAtt1).digest('hex');
+
+            data.attachments[0].length = t1attSize;
+            data.attachments[0].sha2 = t1attHash;
+
+            var dashes = '--';
+            var crlf = '\r\n';
+            var boundary = '-------314159265358979323846'
+
+            var msg = dashes + boundary + crlf;
+            msg += 'Content-Type: application/json' + crlf + crlf;
+            msg += JSON.stringify(data) + crlf;
+            msg += dashes + boundary + crlf;
+            msg += 'Content-Type: text/plain' + crlf;
+            msg += 'Content-Transfer-Encoding: binary' + crlf;
+            msg += 'X-Experience-API-Hash: ' + data.attachments[0].sha2 + crlf + crlf;
+            msg += txtAtt1 + crlf;
+            msg += dashes + boundary + dashes + crlf;
+
+
             var query = helper.getUrlEncoding({attachments: true});
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
             .post(helper.getEndpointStatements())
             .headers(helper.addAllHeaders(header))
-            .body(attachment)
+            .body(msg)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
