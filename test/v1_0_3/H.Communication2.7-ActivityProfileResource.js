@@ -270,7 +270,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         parameters.activityId = parameters.activityId + helper.generateUUID();
-        var since = new Date().toISOString();
+        var since = new Date(Date.now() - 5000 - helper.getTimeMargin()).toISOString();
 
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
             .then(function () {

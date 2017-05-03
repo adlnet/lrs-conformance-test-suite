@@ -705,7 +705,7 @@ it("An LRS must reject with 400 Bad Request a POST request to the State Resource
  */
     it('An LRS\'s returned array of ids from a successful GET request to the State Resource all refer to documents stored after the TimeStamp in the "since" parameter of the GET request (Communication 2.3.s4.table1.row4, XAPI-00195)', function () {
         var document = helper.buildDocument();
-        var since = new Date().toISOString();
+        var since = new Date(Date.now() - 5000 - helper.getTimeMargin()).toISOString();
 
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), helper.buildState(), document, 204)
             .then(function () {
