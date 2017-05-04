@@ -119,10 +119,37 @@ describe('Versioning Requirements (Communication 3.3)', () => {
         });
 
         it('should fail when Statement GET without header "X-Experience-API-Version"', function (done) {
+            var stmtId = helper.generateUUID();
+            before('placing the statement to be gotten', function (done) {
+                var templates = [
+                    {statement: '{{statements.default}}'}
+                ];
+                var data = helper.createFromTemplate(templates).statement;
+
+                request(helper.getEndpointAndAuth())
+                .put(helper.getEndpointStatements() + '?statementId=' + stmtId)
+                .headers(helper.addAllHeaders({}))
+                .json(data)
+                .expect(200, done);
+            });
+
             request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
+                .get(helper.getEndpointStatements() + '?statementId=' + stmtId)
                 .headers(helper.addBasicAuthenicationHeader({}))
-                .expect(400, done);
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else if (res.statusCode === 400) {
+                        expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.3$|^0\.95?$/)
+                        done();
+                    } else if (res.statusCode === 404) {
+                        expect(res.headers['x-experience-api-version']).to.match(/^0\.95?$/);
+                        done();
+                    } else {
+                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 1.0.3 with status code 400 or version header 0.9 or 0.95 with status code either 400 or 404.`);
+                        done();
+                    }
+                });
         });
 
         it('should fail when Statement POST without header "X-Experience-API-Version"', function (done) {
@@ -135,7 +162,21 @@ describe('Versioning Requirements (Communication 3.3)', () => {
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addBasicAuthenicationHeader({}))
-                .json(data).expect(400, done);
+                .json(data)
+                .end(function(err, res) {
+                    if (err) {
+                        done(err);
+                    } else if (res.statusCode === 400) {
+                        expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.3$|^0\.95?$/);
+                        done();
+                    } else if (res.statusCode === 404) {
+                        expect(res.headers['x-experience-api-version']).to.match(/^0\.95?$/);
+                        done();
+                    } else {
+                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 1.0.3 with status code 400 or version header 0.9 or 0.95 with status code either 400 or 404.`);
+                        done();
+                    }
+                });
         });
 
         it('should fail when Statement PUT without header "X-Experience-API-Version"', function (done) {
@@ -148,7 +189,21 @@ describe('Versioning Requirements (Communication 3.3)', () => {
             request(helper.getEndpointAndAuth())
                 .put(helper.getEndpointStatements() + '?statementId=' + helper.generateUUID())
                 .headers(helper.addBasicAuthenicationHeader({}))
-                .json(data).expect(400, done);
+                .json(data)
+                .end(function(err, res) {
+                    if (err) {
+                        done(err);
+                    } else if (res.statusCode === 400) {
+                        expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.3$|^0\.95?$/);
+                        done();
+                    } else if (res.statusCode === 404) {
+                        expect(res.headers['x-experience-api-version']).to.match(/^0\.95?$/);
+                        done();
+                    } else {
+                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 1.0.3 with status code 400 or version header 0.9 or 0.95 with status code either 400 or 404.`);
+                        done();
+                    }
+                });
         });
     });
 
