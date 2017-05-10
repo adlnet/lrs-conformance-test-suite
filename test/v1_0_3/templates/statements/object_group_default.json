@@ -1,7 +1,7 @@
 {
   "actor": {
     "objectType": "Agent",
-    "name": "xAPI account",
+    "name": "xAPI mbox",
     "mbox": "mailto:xapi@adlnet.gov"
   },
   "verb": {
@@ -13,7 +13,7 @@
   },
   "object": {
     "objectType": "Group",
-    "name": "Group Anonymous",
-    "mbox": "mailto:xapi@adlnet.gov"
+    "name": "Group Identified",
+    "mbox": "mailto:group@adlnet.gov"
   }
 }
