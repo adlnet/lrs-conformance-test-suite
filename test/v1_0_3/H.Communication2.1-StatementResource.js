@@ -387,7 +387,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
 
         before('persist voided statement', function (done) {
             var templates = [
-                {statement: '{{statements.default}}'}
+                {statement: '{{statements.voided}}'}
             ];
             var voided = helper.createFromTemplate(templates);
             voided = voided.statement;
@@ -800,7 +800,7 @@ StatementResult Object.
 
         before('persist voided statement', function (done) {
             var templates = [
-                {statement: '{{statements.default}}'}
+                {statement: '{{statements.voided}}'}
             ];
             var voided = helper.createFromTemplate(templates);
             voided = voided.statement;
@@ -1682,7 +1682,7 @@ MUST have a "Content-Type" header
 
         before('persist voided statement', function (done) {
             var templates = [
-                {statement: '{{statements.default}}'}
+                {statement: '{{statements.voided}}'}
             ];
             var voided = helper.createFromTemplate(templates);
             voided = voided.statement;
@@ -2608,7 +2608,7 @@ MUST have a "Content-Type" header
 
         before('persist voided statement', function (done) {
             var templates = [
-                {statement: '{{statements.default}}'}
+                {statement: '{{statements.voided}}'}
             ];
             var voided = helper.createFromTemplate(templates);
             voided = voided.statement;
@@ -2666,7 +2666,7 @@ MUST have a "Content-Type" header
             // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Ed Before');
             sinceVoidingTime = new Date(Date.now() - helper.getTimeMargin() - 4000).toISOString();
             var voidedTemplates = [
-                {statement: '{{statements.default}}'}
+                {statement: '{{statements.voided}}'}
             ];
             var voided = helper.createFromTemplate(voidedTemplates);
             voided = voided.statement;
