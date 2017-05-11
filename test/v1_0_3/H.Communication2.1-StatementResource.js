@@ -402,8 +402,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
 
         before('persist voiding statement', function (done) {
             var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
+                {statement: '{{statements.voiding}}'}
             ];
             var voiding = helper.createFromTemplate(templates);
             voiding = voiding.statement;
@@ -815,8 +814,7 @@ StatementResult Object.
 
         before('persist voiding statement', function (done) {
             var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
+                {statement: '{{statements.voiding}}'}
             ];
             var voiding = helper.createFromTemplate(templates);
             voiding = voiding.statement;
@@ -1326,7 +1324,7 @@ StatementResult Object.
         var stmtTime, stmtId;
 
         before('set up statement with two attachments for test', function (done) {
-            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};            
+            var header = {'Content-Type': 'multipart/mixed; boundary=-------314159265358979323846'};
             var templates = [
                 {statement: '{{statements.attachment}}'},
                 {
@@ -1357,7 +1355,7 @@ StatementResult Object.
             var t1stats = fs.statSync('test/v1_0_3/templates/attachments/simple_text1.txt');
             t1attSize = t1stats.size;
             t1attHash = crypto.createHash('SHA256').update(txtAtt1).digest('hex');
-            
+
             txtAtt2 = fs.readFileSync('test/v1_0_3/templates/attachments/simple_text2.txt');
             var t2stats = fs.statSync('test/v1_0_3/templates/attachments/simple_text2.txt');
             t2attSize = t2stats.size;
@@ -1383,7 +1381,7 @@ StatementResult Object.
             msg += dashes + boundary + crlf;
             msg += 'Content-Type: text/plain' + crlf;
             msg += 'Content-Transfer-Encoding: binary' + crlf;
-            msg += 'X-Experience-API-Hash: ' + data.attachments[1].sha2 + crlf + crlf;            
+            msg += 'X-Experience-API-Hash: ' + data.attachments[1].sha2 + crlf + crlf;
             msg += txtAtt2 + crlf;
             msg += dashes + boundary + dashes + crlf;
 
@@ -1697,7 +1695,7 @@ MUST have a "Content-Type" header
 
         before('persist voiding statement', function (done) {
             var templates = [
-                {statement: '{{statements.voided}}'}
+                {statement: '{{statements.voiding}}'}
             ];
             var voiding = helper.createFromTemplate(templates);
             voiding = voiding.statement;
@@ -2623,8 +2621,7 @@ MUST have a "Content-Type" header
 
         before('persist voiding statement', function (done) {
             var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
+                {statement: '{{statements.voiding}}'}
             ];
             var voiding = helper.createFromTemplate(templates);
             voiding = voiding.statement;
@@ -2683,8 +2680,7 @@ MUST have a "Content-Type" header
         before('persist voiding statement', function (done) {
             // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Ing Before');
             var voidingTemplates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
+                {statement: '{{statements.voiding}}'}
             ];
             var voiding = helper.createFromTemplate(voidingTemplates);
             voiding = voiding.statement;
