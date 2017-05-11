@@ -93,11 +93,9 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
     //Also note: using an it over and it nullifies the inner its, consider using a describe.
     it('An LRS\'s Activities Resource rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.5.s1.table1.row1)', function () {
 
-        it('Should reject GET with "activityId" with type true', function () {
+        it('Should reject GET with "activityId" with invalid value', function () {
             var parameters = helper.buildActivity();
-            // console.log(parameters);
             parameters.activityId = true;
-            // console.log(parameters);
             return helper.sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 400);
         });
     });

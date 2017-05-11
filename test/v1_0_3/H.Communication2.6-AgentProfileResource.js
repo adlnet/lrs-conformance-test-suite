@@ -153,7 +153,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  */
     describe('An LRS\'s Agent Profile Resource rejects a PUT request with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, Communication 2.6.s3.table1.row1, XAPI-00257)', function () {
 
-        it('Should reject PUT with "agent" with type true', function (done) {
+        it('Should reject PUT with "agent" with invalid value', function (done) {
             var document = helper.buildDocument();
             var parameters = helper.buildAgentProfile();
             parameters.agent = true;
@@ -181,7 +181,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  */
     it('An LRS\'s Agent Profile Resource rejects a POST request with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, Communication 2.6.s3.table1.row1, XAPI-00256)', function () {
 
-        it('Should reject POST with "agent" with type true', function () {
+        it('Should reject POST with "agent" with invalid value', function () {
             var document = helper.buildDocument();
             var parameters = helper.buildAgentProfile();
             parameters.agent = true;
@@ -203,7 +203,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  */
     describe('An LRS\'s Agent Profile Resource rejects a DELETE request with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request (format, Communication 2.6.s3.table1.row1, XAPI-00255)', function () {
 
-        it('Should reject DELETE with "agent" with type true', function () {
+        it('Should reject DELETE with "agent" with invalid value', function () {
             var document = helper.buildDocument();
             var parameters = helper.buildAgentProfile();
             parameters.agent = true;
@@ -215,7 +215,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  * An LRS's Agent Profile API rejects a GET request with "agent" as a parameter if it is not an Agent Object with error code 400 Bad Request
  */
     describe('An LRS\'s Agent Profile Resource rejects a GET request with "agent" as a parameter if it is a valid, in structure, Agent with error code 400 Bad Request (multiplicity, Communication 2.6.s4.table1.row1, Communication 2.6.s3.table1.row1, XAPI-00258)', function () {
-        it('Should reject GET with "agent" with type true', function () {
+        it('Should reject GET with "agent" with invalid value', function () {
             var parameters = helper.buildAgentProfile();
             parameters.agent = true;
             return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 400);
@@ -300,7 +300,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  * An LRS's Agent Profile API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request
  */
     describe('An LRS\'s Agent Profile Resource rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication 2.6.s4.table1.row2, XAPI-00260)', function () {
-        it('Should reject GET with "since" with type true', function () {
+        it('Should reject GET with "since" with invalid value', function () {
             var parameters = helper.buildAgentProfile();
             delete parameters.profileId
             parameters.since = true;

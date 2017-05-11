@@ -228,7 +228,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
  */
     describe('An LRS\'s State Resource rejects a POST request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2, XAPI-00198)', function () {
 
-        it('Should reject POST State with agent type true', function () {
+        it('Should reject POST State with agent invalid value', function () {
             var document = helper.buildDocument();
             var parameters = helper.buildState();
             parameters.agent = true;
@@ -250,7 +250,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
  */
     describe('An LRS\'s State Resource rejects a GET request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2, XAPI-00197)', function () {
 
-        it('Should reject GET with "agent" with type true', function () {
+        it('Should reject GET with "agent" with invalid value', function () {
             var parameters = helper.buildState();
             parameters.agent = true;
             return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
@@ -271,7 +271,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
  */
     describe('An LRS\'s State Resource rejects a DELETE request with "agent" as a parameter if it is not in JSON format with error code 400 Bad Request (format, Communication 2.3.s3.table1.row2, XAPI-00196)', function () {
 
-        it('Should reject DELETE with "agent" with type true', function () {
+        it('Should reject DELETE with "agent" with invalid value', function () {
             var parameters = helper.buildState();
             parameters.agent = true;
             return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
@@ -293,7 +293,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
  */
     describe('An LRS\'s State Resource rejects a PUT request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request(format, Communication 2.3.s3.table1.row3, XAPI-00203)', function () {
 
-        it('Should reject PUT with "registration" with type true', function () {
+        it('Should reject PUT with "registration" with invalid value', function () {
             var document = helper.buildDocument();
             var parameters = helper.buildState();
             parameters.registration = true;
@@ -532,7 +532,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
  */
     describe('An LRS\'s State Resource rejects a POST request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, Communication 2.3.s3.table1.row3, XAPI-00202)', function () {
 
-        it('Should reject POST with "registration" with type true', function () {
+        it('Should reject POST with "registration" with invalid value', function () {
             var document = helper.buildDocument();
             var parameters = helper.buildState();
             parameters.registration = true;
@@ -562,7 +562,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
  */
     describe('An LRS\'s State Resource rejects a GET request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, Communication 2.3.s3.table1.row3, XAPI-00201)', function () {
 
-        it('Should reject GET with "registration" with type true', function () {
+        it('Should reject GET with "registration" with invalid value', function () {
             var parameters = helper.buildState();
             parameters.registration = true;
             return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 400);
@@ -587,7 +587,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
  */
     describe('An LRS\'s State Resource rejects a DELETE request with "registration" as a parameter if it is not a UUID with error code 400 Bad Request (format, Communication 2.3.s3.table1.row3, XAPI-00200)', function () {
 
-        it('Should reject DELETE with "registration" with type ' + true, function () {
+        it('Should reject DELETE with "registration" with invalid value', function () {
             var parameters = helper.buildState();
             parameters.registration = true;
             return helper.sendRequest('delete', helper.getEndpointActivitiesState(), parameters, undefined, 400);
