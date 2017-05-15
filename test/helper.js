@@ -195,12 +195,12 @@ if (!process.env.EB_NODE_COMMAND) {
             var tested = [];
 
             var _internal = function(object, primitive)
-            {   
+            {
                 tested.push(object);
-                var found = false;         
+                var found = false;
                 for(var i in object)
                 {
-                    if(object[i] == primitive) 
+                    if(object[i] == primitive)
                         return true;
                     else
                     {
@@ -555,21 +555,26 @@ if (!process.env.EB_NODE_COMMAND) {
                 if (err) {
                     done(err);
                 } else {
-                    request(module.exports.getEndpointAndAuth())
-                    .get(module.exports.getEndpointStatements() + '?' + query)
-                    .headers(module.exports.addAllHeaders({}))
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            done(err);
-                            return err;
-                        } else {
-                            var result = JSON.parse(res.body);
-                            lrsTime = new Date(result.stored);
-                            TIME_MARGIN = suiteTime - lrsTime;
-                            done(err, TIME_MARGIN);
-                        }
-                    });
+                    function redo () {
+                        request(module.exports.getEndpointAndAuth())
+                        .get(module.exports.getEndpointStatements() + '?' + query)
+                        .headers(module.exports.addAllHeaders({}))
+                        // .expect(200)
+                        .end(function (err, res) {
+                            // res.statusCode = 404;
+                            if (err) {
+                                done(err);
+                                return err;
+                            } else if (res.statusCode === 200){
+                                var result = JSON.parse(res.body);
+                                lrsTime = new Date(result.stored);
+                                TIME_MARGIN = suiteTime - lrsTime;
+                                done(err, TIME_MARGIN);
+                            } else {
+                                redo();
+                            }
+                        });
+                    } redo();
                 }
             });
         },
