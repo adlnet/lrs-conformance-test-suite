@@ -556,12 +556,14 @@ if (!process.env.EB_NODE_COMMAND) {
                     done(err);
                 } else {
                     function redo () {
+                        console.log(`at the beginning of redo ${Date.now()}`);
                         request(module.exports.getEndpointAndAuth())
                         .get(module.exports.getEndpointStatements() + '?' + query)
                         .headers(module.exports.addAllHeaders({}))
                         // .expect(200)
                         .end(function (err, res) {
-                            // res.statusCode = 404;
+                            res.statusCode = 404;
+                            console.log(`in the result phase ${Date.now()}`);
                             if (err) {
                                 done(err);
                                 return err;
@@ -571,7 +573,9 @@ if (!process.env.EB_NODE_COMMAND) {
                                 TIME_MARGIN = suiteTime - lrsTime;
                                 done(err, TIME_MARGIN);
                             } else {
-                                redo();
+                                // redo();
+                                console.log(`ready to redo ${Date.now()}`);
+                                setTimeout(redo, 2000);
                             }
                         });
                     } redo();
