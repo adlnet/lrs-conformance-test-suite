@@ -92,17 +92,11 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
     //Note: tests focusing on type "String" as a parameter are likely to be stricken or reworded before final release.
     //Also note: using an it over and it nullifies the inner its, consider using a describe.
     it('An LRS\'s Activities Resource rejects a GET request with "activityId" as a parameter if it is not type "String" with error code 400 Bad Request (format, Communication 2.5.s1.table1.row1)', function () {
-        var invalidTypes = [1, true, { key: 'value'}];
-        invalidTypes.forEach(function (type) {
-            it('Should reject GET with "activityId" with type ' + type, function () {
-                var parameters = helper.buildActivity();
-                // console.log(parameters);
-                parameters.activityId = type;
-                // console.log(parameters);
-                return helper.sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 400).then((res) => {
-                    // console.log('howdy', res.text);
-                });
-            });
+
+        it('Should reject GET with "activityId" with invalid value', function () {
+            var parameters = helper.buildActivity();
+            parameters.activityId = true;
+            return helper.sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 400);
         });
     });
 

@@ -39,7 +39,7 @@ describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s
     it('An LRS rejects an alternate request syntax not issued as a POST', function () {
         var parameters = {method: 'POST'};
         var formBody = helper.buildFormBody(helper.buildStatement());
-        return helper.sendRequest('get', helper.getEndpointStatements(), parameters, formBody, 400);
+        return helper.sendRequest('put', helper.getEndpointStatements(), parameters, formBody, 400);
     });
 
     it('An LRS accepts an alternate request syntax PUT issued as a POST', function () {

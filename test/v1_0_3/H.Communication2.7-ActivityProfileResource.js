@@ -253,13 +253,10 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
  * An LRS's Activity Profile API rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request
  */
     describe('An LRS\'s Activity Profile Resource rejects a GET request with "since" as a parameter if it is not a "TimeStamp", with error code 400 Bad Request (format, Communication 2.7.s4.table1.row2, XAPI-00295)', function () {
-        var invalidTypes = [1, true, 'not Timestamp'];
-        invalidTypes.forEach(function (type) {
-            it('Should reject GET with "since" with type ' + type, function () {
-                var parameters = helper.buildActivityProfile();
-                parameters.since = type;
-                return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 400);
-            });
+        it('Should reject GET with "since" with invalid value', function () {
+            var parameters = helper.buildActivityProfile();
+            parameters.since = true;
+            return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 400);
         });
     });
 
@@ -270,7 +267,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         var parameters = helper.buildActivityProfile(),
             document = helper.buildDocument();
         parameters.activityId = parameters.activityId + helper.generateUUID();
-        var since = new Date().toISOString();
+        var since = new Date(Date.now() - 5000 - helper.getTimeMargin()).toISOString();
 
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
             .then(function () {
