@@ -563,7 +563,6 @@ if (!process.env.EB_NODE_COMMAND) {
                         .end(function (err, res) {
                             if (err) {
                                 done(err);
-                                return err;
                             } else if (res.statusCode === 200){
                                 var result = JSON.parse(res.body);
                                 lrsTime = new Date(result.stored);
