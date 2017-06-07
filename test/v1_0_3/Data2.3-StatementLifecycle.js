@@ -32,7 +32,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
         before('persist voided statement', function (done) {
             var templates = [
-                {statement: '{{statements.default}}'}
+                {statement: '{{statements.voided}}'}
             ];
             var voided = helper.createFromTemplate(templates);
             voided = voided.statement;
@@ -103,7 +103,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
         before('persist voided statement', function (done) {
             var templates = [
-                {statement: '{{statements.default}}'}
+                {statement: '{{statements.voided}}'}
             ];
             var data = helper.createFromTemplate(templates);
             data = data.statement;
