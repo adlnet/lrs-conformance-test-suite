@@ -195,12 +195,12 @@ if (!process.env.EB_NODE_COMMAND) {
             var tested = [];
 
             var _internal = function(object, primitive)
-            {   
+            {
                 tested.push(object);
-                var found = false;         
+                var found = false;
                 for(var i in object)
                 {
-                    if(object[i] == primitive) 
+                    if(object[i] == primitive)
                         return true;
                     else
                     {
@@ -527,6 +527,7 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /*
          * Calculates the difference between the lrs time and the suite time and sets a variable for use with since and until requests.
+         * Now will repeat the GET request every 2 seconds until it receives a 200 or times out at 15 seconds.
         */
         setTimeMargin: function (done) {
             var request = require('super-request'),
@@ -555,21 +556,23 @@ if (!process.env.EB_NODE_COMMAND) {
                 if (err) {
                     done(err);
                 } else {
-                    request(module.exports.getEndpointAndAuth())
-                    .get(module.exports.getEndpointStatements() + '?' + query)
-                    .headers(module.exports.addAllHeaders({}))
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            done(err);
-                            return err;
-                        } else {
-                            var result = JSON.parse(res.body);
-                            lrsTime = new Date(result.stored);
-                            TIME_MARGIN = suiteTime - lrsTime;
-                            done(err, TIME_MARGIN);
-                        }
-                    });
+                    function redo () {
+                        request(module.exports.getEndpointAndAuth())
+                        .get(module.exports.getEndpointStatements() + '?' + query)
+                        .headers(module.exports.addAllHeaders({}))
+                        .end(function (err, res) {
+                            if (err) {
+                                done(err);
+                            } else if (res.statusCode === 200){
+                                var result = JSON.parse(res.body);
+                                lrsTime = new Date(result.stored);
+                                TIME_MARGIN = suiteTime - lrsTime;
+                                done(err, TIME_MARGIN);
+                            } else {
+                                setTimeout(redo, 2000);
+                            }
+                        });
+                    } redo();
                 }
             });
         },

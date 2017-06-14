@@ -47,8 +47,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
         before('persist voiding statement', function (done) {
             var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
+                {statement: '{{statements.voiding}}'}
             ];
             var voiding = helper.createFromTemplate(templates);
             voiding = voiding.statement;
@@ -123,8 +122,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
         before('persist voiding statement', function (done) {
             var templates = [
-                {statement: '{{statements.object_statementref}}'},
-                {verb: '{{verbs.voided}}'}
+                {statement: '{{statements.voiding}}'}
             ];
             var data = helper.createFromTemplate(templates);
             data = data.statement;
