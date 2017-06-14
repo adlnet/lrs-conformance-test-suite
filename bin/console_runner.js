@@ -117,7 +117,7 @@ function start(options)
 
 	testRunner.on('message', function(msg)
 	{
-       
+
 		if(msg.action === 'log'){
 			console.log(msg.payload);
 		}
@@ -176,10 +176,11 @@ function start(options)
 
             fs.mkdir(outDir, 0o775, function(){
 				var outPath = libpath.join(outDir, testRunner.uuid+'.log');
-				fs.writeFile(outPath, output);
-				console.log('Full run log written to', outPath);
+				fs.writeFile(outPath, output, (err, data) => {
+					if (err) console.log(err);
+					console.log('Full run log written to', outPath);
+				});
 			});
-
 		}
 	});
 }
