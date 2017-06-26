@@ -636,13 +636,17 @@ describe('State Resource Requirements (Communication 2.3)', function () {
     it('An LRS\'s State Resource can process a GET request with "since" as a parameter (multiplicity, Communication 2.3.s4.table1.row4, XAPI-00221)', function () {
         var parameters = helper.buildState(),
             document = helper.buildDocument();
+        var stateId = parameters.stateId;
+
         return helper.sendRequest('post', helper.getEndpointActivitiesState(), parameters, document, 204)
             .then(function () {
                 parameters.since = new Date(Date.now() - 60 * 1000 - helper.getTimeMargin()).toISOString(); // Date 1 minute ago
+                delete parameters.stateId;
+
                 return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
                     .then(function (res) {
                         var body = res.body;
-                        expect(body).to.eql(document);
+                        expect(body).to.contain(stateId);
                     });
             });
     });
