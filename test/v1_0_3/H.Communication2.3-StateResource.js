@@ -646,6 +646,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
                 return helper.sendRequest('get', helper.getEndpointActivitiesState(), parameters, undefined, 200)
                     .then(function (res) {
                         var body = res.body;
+                        expect(body).to.be.an('Array');
                         expect(body).to.contain(stateId);
                     });
             });
@@ -696,12 +697,14 @@ describe('State Resource Requirements (Communication 2.3)', function () {
  */
     it('An LRS\'s returned array of ids from a successful GET request to the State Resource all refer to documents stored after the TimeStamp in the "since" parameter of the GET request (Communication 2.3.s4.table1.row4, XAPI-00195)', function () {
         var document = helper.buildDocument();
-        var since = new Date(Date.now() - 5000 - helper.getTimeMargin()).toISOString();
+        var state1 = helper.buildState();
+        var state2 = helper.buildState();
+        var since = new Date(Date.now() - 60 * 1000 - helper.getTimeMargin()).toISOString();    //Date 1  minute ago
 
-        return helper.sendRequest('post', helper.getEndpointActivitiesState(), helper.buildState(), document, 204)
-            .then(function () {
-                return helper.sendRequest('post', helper.getEndpointActivitiesState(), helper.buildState(), document, 204)
-                    .then(function () {
+        return helper.sendRequest('post', helper.getEndpointActivitiesState(), state1, document, 204)
+            .then(function (res) {
+                return helper.sendRequest('post', helper.getEndpointActivitiesState(), state2, document, 204)
+                    .then(function (res) {
                         var parameters = helper.buildState();
                         delete parameters.stateId;
                         parameters.since = since;
@@ -710,6 +713,8 @@ describe('State Resource Requirements (Communication 2.3)', function () {
                                 var body = res.body;
                                 expect(body).to.be.an('array');
                                 expect(body).to.have.length.above(1);
+                                expect(body).to.contain(state1.stateId);
+                                expect(body).to.contain(state2.stateId);
                             });
                     });
             });
