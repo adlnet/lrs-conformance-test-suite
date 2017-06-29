@@ -244,7 +244,9 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
             .then(function () {
-                parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString();
+                delete parameters.profileId;
+                parameters.since = new Date(Date.now() - 60 * 1000 - helper.getTimeMargin()).toISOString(); //Date one minute ago
+
                 return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200);
             });
     });
@@ -256,6 +258,8 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
         it('Should reject GET with "since" with invalid value', function () {
             var parameters = helper.buildActivityProfile();
             parameters.since = true;
+            delete parameters.profileId;
+
             return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 400);
         });
     });
@@ -265,9 +269,10 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
  */
     it('An LRS\'s returned array of ids from a successful GET request to the Activity Profile Resource all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present (Communication 2.7.s4.table1.row2, XAPI-00294)', function () {
         var parameters = helper.buildActivityProfile(),
+            profile1 = parameters.profileId;
             document = helper.buildDocument();
         parameters.activityId = parameters.activityId + helper.generateUUID();
-        var since = new Date(Date.now() - 5000 - helper.getTimeMargin()).toISOString();
+        var since = new Date(Date.now() - 60 * 1000 - helper.getTimeMargin()).toISOString();
 
         return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
             .then(function () {
@@ -278,6 +283,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
                         var body = res.body;
                         expect(body).to.be.an('array');
                         expect(body).to.be.length.above(0);
+                        expect(body).to.contain(profile1);
                     });
             });
     });

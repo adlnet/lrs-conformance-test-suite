@@ -290,7 +290,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
             document = helper.buildDocument();
         return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
             .then(function () {
-                parameters.since = new Date(Date.now() - 1000 - helper.getTimeMargin()).toISOString();
+                parameters.since = new Date(Date.now() - 60 * 1000 - helper.getTimeMargin()).toISOString(); //Date one minute ago
                 delete parameters.profileId
                 return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200);
             });
@@ -313,8 +313,9 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
  */
     it('An LRS\'s returned array of ids from a successful GET request to the Agent Profile Resource all refer to documents stored after the TimeStamp in the "since" parameter of the GET request if such a parameter was present (Communication 2.6.s4.table1.row2, XAPI-00275)', function () {
         var parameters = helper.buildAgentProfile(),
+            profile1 = parameters.profileId;
             document = helper.buildDocument();
-        var since = new Date(Date.now() - 5000 - helper.getTimeMargin()).toISOString();
+        var since = new Date(Date.now() - 60 * 1000 - helper.getTimeMargin()).toISOString();    //Date one minute ago
 
         return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
             .then(function () {
@@ -325,6 +326,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
                         var body = res.body;
                         expect(body).to.be.an('array');
                         expect(body).to.have.length.above(0);
+                        expect(body).to.contain(profile1);
                     })
             });
     });
