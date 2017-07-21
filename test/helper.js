@@ -224,7 +224,7 @@ if (!process.env.EB_NODE_COMMAND) {
             // console.log("Checking LRS for Consistency");
             var comb = require('comb'),
                 request = require('super-request');
-
+// console.log(new Date(time).toISOString(), new Date(time - module.exports.getTimeMargin()).toISOString());
             var delay = function(val)
             {
                 var p = new comb.Promise();
@@ -245,6 +245,7 @@ if (!process.env.EB_NODE_COMMAND) {
                     //we don't expect anything, we just want a response
                     .end(function(err, res)
                     {
+                        // console.log(`${res.statusCode}\n${res.body}\n${res.headers['x-experience-api-consistent-through']}\n${res.req.path}`);
                         if (err) {
                         //if there was an error, we quit and go home
                             throw err;
@@ -257,12 +258,15 @@ if (!process.env.EB_NODE_COMMAND) {
                             }
                             if (id && result.id && (result.id === id)) {
                             //if we find a single statement and the id we are looking for, then we're good we can continue with the testing
+                            // console.log('statement found by id');
                                 p.resolve();
                             } else if (id && result.statements && stmtFound(result.statements, id)) {
                             //if we find a block of statements and the id we are looking for, then we're good and we can continue with the testing
+                            // console.log('statement found in array of returned statments');
                                 p.resolve();
                             } else if ((new Date(res.headers['x-experience-api-consistent-through'])).valueOf() + module.exports.getTimeMargin() >= time) {
                             //if the desired statement has not been found, we check the con-thru header to find if the lrs is up to date and we should move on
+                            // console.log('con-thru greater than stored time\n', new Date().toISOString(), '\n', new Date(time).toISOString(), '\n', res.headers['x-experience-api-consistent-through']);
                                 p.resolve();
                             } else {
                             //otherwise we give the lrs a second to catch up and try again
@@ -280,6 +284,7 @@ if (!process.env.EB_NODE_COMMAND) {
                                 //    console.log('Exceeded the maximum time limit (' + delta * 10 + ')- continue test');
                                     p.resolve()
                                 } else //must be careful to never restart this timer if the promise is resolved;
+                                // console.log('going round again\n');
                                     setTimeout(doRequest, 1000);
                             }
                         }
