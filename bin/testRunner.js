@@ -84,7 +84,7 @@ class TestRunner extends EventEmitter
 		this.proc = child_process.fork( libpath.join(__dirname, "lrs-test.js"),
 			["--debug"],
 			{
-				execArgv:[/*"--debug-brk=5959"*/],
+				execArgv:[/*"--inspect-brk"*/],
 				cwd: libpath.join(__dirname,"/../")
 			}
 		);
