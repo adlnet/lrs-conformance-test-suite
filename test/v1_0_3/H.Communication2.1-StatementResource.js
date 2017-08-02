@@ -1401,7 +1401,6 @@ StatementResult Object.
         });
 
         it('should process using GET with "attachments"', function (done) {
-            // console.log('begin the test');
             this.timeout(0);
             var query = helper.getUrlEncoding({attachments: true, statementId: stmtId});
             request(helper.getEndpointAndAuth())
@@ -2512,7 +2511,6 @@ MUST have a "Content-Type" header
             msg += 'X-Experience-API-Hash: ' + data.attachments[0].sha2 + crlf + crlf;
             msg += txtAtt1 + crlf;
             msg += dashes + boundary + dashes + crlf;
-// console.log(statementId, stmtTime);
             stmtTime = Date.now() ;
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
@@ -2534,7 +2532,6 @@ MUST have a "Content-Type" header
         });
 
         it('should NOT return the attachment if "attachments" is missing', function (done) {
-            // console.log(statementId, stmtTime);
             var query = '?statementId=' + statementId;
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
@@ -2552,7 +2549,6 @@ MUST have a "Content-Type" header
         });
 
         it('should NOT return the attachment if "attachments" is false', function (done) {
-// console.log(statementId, stmtTime);
             var query = '?statementId=' + statementId + "&attachments=false";
 
             request(helper.getEndpointAndAuth())
@@ -2571,7 +2567,6 @@ MUST have a "Content-Type" header
         });
 
         it('should return the attachment when "attachment" is true', function (done) {
-            // console.log(statementId, stmtTime);
             var query = '?statementId=' + statementId + "&attachments=true";
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
