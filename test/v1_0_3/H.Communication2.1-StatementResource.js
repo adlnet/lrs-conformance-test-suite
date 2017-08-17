@@ -1403,10 +1403,11 @@ StatementResult Object.
         });
 
         it('should process using GET with "attachments"', function (done) {
+            this.timeout(0);
             var query = helper.getUrlEncoding({attachments: true, statementId: stmtId});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?statementId=' + stmtId, stmtId))
+            .wait(helper.genDelay(stmtTime, '?' + query, stmtId))
             .headers(helper.addAllHeaders({}))
             .expect(200, function (err, res) {
                 if (err) {
@@ -1435,7 +1436,7 @@ StatementResult Object.
                     var regex2 = new RegExp(t2attHash, 'g');
                     var match1 = (res.body.match(regex1) || []).length;
                     var match2 = (res.body.match(regex2) || []).length;
-                    // Comnpare that number to 2 the number of times it is expected for a given has to appear in the response, once in the attachments property, and once along with the attachment
+                    // Compare that number to 2 the number of times it is expected for a given has to appear in the response, once in the attachments property, and once along with the attachment
                     expect(match1).to.eql(2);
                     expect(match2).to.eql(2);
                     done();
@@ -1911,7 +1912,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements())
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -1944,7 +1944,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?LIMIT=1')
             .headers(helper.addAllHeaders({}))
-            .expect(400)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -1966,7 +1965,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -1983,7 +1981,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2000,7 +1997,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2017,7 +2013,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2034,7 +2029,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2051,7 +2045,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2068,7 +2061,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2085,7 +2077,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2102,7 +2093,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2119,7 +2109,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2136,7 +2125,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2446,7 +2434,7 @@ MUST have a "Content-Type" header
             var query = helper.getUrlEncoding({attachments: true, limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
-
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
             .headers(helper.addAllHeaders({}))
             .expect(200)
             .end(function (err, res) {
@@ -2468,6 +2456,7 @@ MUST have a "Content-Type" header
  * An LRS's Statement API not return attachment data and only return application/json if the "attachment" parameter set to "false"
  */
     describe('An LRSs Statement Resource does not return attachment data and only returns application/json if the "attachment" parameter set to "false" (Communication 2.1.3.s1.b1, XAPI-00161)', function () {
+        this.timeout(0);
         var statementId = null;
         var stmtTime = null;
 
@@ -2513,7 +2502,7 @@ MUST have a "Content-Type" header
             msg += 'X-Experience-API-Hash: ' + data.attachments[0].sha2 + crlf + crlf;
             msg += txtAtt1 + crlf;
             msg += dashes + boundary + dashes + crlf;
-
+            stmtTime = Date.now() ;
             request(helper.getEndpointAndAuth())
                 .post(helper.getEndpointStatements())
                 .headers(helper.addAllHeaders(header))
@@ -2537,7 +2526,7 @@ MUST have a "Content-Type" header
             var query = '?statementId=' + statementId;
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
-            .wait(helper.genDelay(stmtTime, '?statementId=' + statementId, statementId))
+            .wait(helper.genDelay(stmtTime, query, statementId))
             .headers(helper.addAllHeaders())
             .expect(200)
             .end((err, res) => {
@@ -2551,12 +2540,11 @@ MUST have a "Content-Type" header
         });
 
         it('should NOT return the attachment if "attachments" is false', function (done) {
-
             var query = '?statementId=' + statementId + "&attachments=false";
 
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
-            .wait(helper.genDelay(stmtTime, '?statementId=' + statementId, statementId))
+            .wait(helper.genDelay(stmtTime, query, statementId))
             .headers(helper.addAllHeaders())
             .expect(200)
             .end(function(err, res){
@@ -2570,11 +2558,10 @@ MUST have a "Content-Type" header
         });
 
         it('should return the attachment when "attachment" is true', function (done) {
-
             var query = '?statementId=' + statementId + "&attachments=true";
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + query)
-            .wait(helper.genDelay(stmtTime, '?statementId=' + statementId, statementId))
+            .wait(helper.genDelay(stmtTime, query, statementId))
             .headers(helper.addAllHeaders())
             .expect(200)
             .end((err, res) => {
