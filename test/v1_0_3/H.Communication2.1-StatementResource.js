@@ -1910,7 +1910,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements())
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -1926,7 +1925,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?LIMIT=1')
             .headers(helper.addAllHeaders({}))
-            .expect(400)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -1948,7 +1946,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -1965,7 +1962,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -1982,7 +1978,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -1999,7 +1994,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2016,7 +2010,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2033,7 +2026,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2050,7 +2042,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2067,7 +2058,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2084,7 +2074,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2101,7 +2090,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2118,7 +2106,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
@@ -2135,7 +2122,6 @@ MUST have a "Content-Type" header
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
-            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     done(err);
