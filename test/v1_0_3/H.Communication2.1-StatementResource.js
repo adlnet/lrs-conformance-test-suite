@@ -322,6 +322,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
  * XAPI-00179 - below
  * XAPI-00180 - below
  * XAPI-00181 - below
+ * XAPI-00337 - below
  */
 
 /**  XAPI-00159, Communication 2.1.3 GET Statements
@@ -3148,7 +3149,8 @@ MUST have a "Content-Type" header
             });
         });
 
-        //there is another test that covers the formatting requirements
+        // there other other tests that cover the formatting requirements
+        // see XAPI-00168, 00169, 00170, 00171, & 00172
         it('should return StatementResult with statements as array using GET with "format"', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
@@ -3245,6 +3247,49 @@ MUST have a "Content-Type" header
             });
         });
 
+    });
+/**  XAPI-00337, Communication 2.1.3 GET Statements
+
+ * When queried with only an IFI as the agent parameter, an LRS will return any agent or group containing the IFI as part of an actor or object property. (Communication 2.1.3.s1.table1.row3, XAPI-00337)
+ */
+    describe('When queried with only an IFI as the agent parameter, an LRS will return any agent or group containing the IFI as part of an actor or object. (Communication 2.1.3.s1.table1.row3, XAPI-00337)', function () {
+        // Persist 3 Statements for testing
+        var mboxes, accounts, groups;
+        var mbox, mbox_sha1sum, openid, account;
+        // 1 - mbox in actor and mbox_sha1sum in object
+        before('persist statement with mbox and mbox_sha1sum as actor and object respectively', function(done) {
+
+        });
+
+        // 2 - openid in actor and account in object
+        before('persist statement with openid and account as actor and object respectively', function(done) {
+
+        });
+
+        // 3 - two groups with ifis rearranged in actor and object
+        before('persist statement with two groups containing same ifis but rearranged in actor and object properties', function(done) {
+
+        });
+
+        // query for mbox, expect to find statment ids of mboxes and groups in statements returned
+        it('query for mbox should return statement ids of mboxes and groups', function (done) {
+
+        });
+
+        // query for mbox_sha1sum, expect to find statment ids of mboxes and groups in statements returned
+        it('query for mbox_sha1sum should return statement ids of mboxes and groups', function (done) {
+
+        });
+
+        // query for openid, expect to find statment ids of accounts and groups in statements returned
+        it('query for openid should return statement ids of accounts and groups', function (done) {
+
+        });
+
+        // query for account, expect to find statment ids of accounts and groups in statements returned
+        it('query for account should return statement ids of accounts and groups', function (done) {
+
+        });
     });
 
 });
