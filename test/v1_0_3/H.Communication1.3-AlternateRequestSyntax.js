@@ -51,7 +51,7 @@ describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s
         return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(formBody), 204);
     });
 
-    it('During an alternate request syntax the LRS treats the listed form parameters, \'Authorization\', \'X-Experience-API-Version\', \'Content-Type\', \'Content-Length\', \'If-Match\' and \'If-None-Match\', as header parameters (Communictation 1.3.s3.b7)', function () {
+    it('During an alternate request syntax the LRS treats the listed form parameters, \'Authorization\', \'X-Experience-API-Version\', \'Content-Type\', \'Content-Length\', \'If-Match\' and \'If-None-Match\', as header parameters (Communication 1.3.s3.b7)', function () {
         var parameters = {method: 'PUT'};
         var sID = helper.generateUUID();
         var query = '?statementId=' + sID;

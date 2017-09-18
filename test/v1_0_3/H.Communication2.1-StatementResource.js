@@ -504,13 +504,31 @@ StatementResult Object.
                 });
         });
 
+        it('should return StatementResult using GET with "limit"', function (done) {
+            var query = helper.getUrlEncoding({limit: 1});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var result = helper.parse(res.body, done);
+                    expect(result).to.have.property('statements').to.be.an('array');
+                    done();
+                }
+            });
+        });
+
         it('should return StatementResult using GET with "agent"', function (done) {
             var templates = [
                 {agent: '{{agents.default}}'}
             ];
             var data = helper.createFromTemplate(templates);
 
-            var query = helper.getUrlEncoding(data);
+            var query = helper.getUrlEncoding(data) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -528,7 +546,7 @@ StatementResult Object.
         });
 
         it('should return StatementResult using GET with "verb"', function (done) {
-            var query = helper.getUrlEncoding({verb: statement.verb.id});
+            var query = helper.getUrlEncoding({verb: statement.verb.id, limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -546,7 +564,7 @@ StatementResult Object.
         });
 
         it('should return StatementResult using GET with "activity"', function (done) {
-            var query = helper.getUrlEncoding({activity: statement.object.id});
+            var query = helper.getUrlEncoding({activity: statement.object.id, limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -564,7 +582,7 @@ StatementResult Object.
         });
 
         it('should return StatementResult using GET with "registration"', function (done) {
-            var query = helper.getUrlEncoding({registration: statement.context.registration});
+            var query = helper.getUrlEncoding({registration: statement.context.registration, limit: 1});
             request(helper.getEndpointAndAuth())
                 .get(helper.getEndpointStatements() + '?' + query)
                 .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -584,7 +602,8 @@ StatementResult Object.
         it('should return StatementResult using GET with "related_activities"', function (done) {
             var query = helper.getUrlEncoding({
                 activity: statement.context.contextActivities.category.id,
-                related_activities: true
+                related_activities: true,
+                limit: 1
             });
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
@@ -605,7 +624,8 @@ StatementResult Object.
         it('should return StatementResult using GET with "related_agents"', function (done) {
             var query = helper.getUrlEncoding({
                 agent: statement.context.instructor,
-                related_agents: true
+                related_agents: true,
+                limit: 1
             });
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
@@ -624,7 +644,7 @@ StatementResult Object.
         });
 
         it('should return StatementResult using GET with "since"', function (done) {
-            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z', limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -642,25 +662,7 @@ StatementResult Object.
         });
 
         it('should return StatementResult using GET with "until"', function (done) {
-            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array');
-                    done();
-                }
-            });
-        });
-
-        it('should return StatementResult using GET with "limit"', function (done) {
-            var query = helper.getUrlEncoding({limit: 1});
+            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z', limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -678,7 +680,7 @@ StatementResult Object.
         });
 
         it('should return StatementResult using GET with "ascending"', function (done) {
-            var query = helper.getUrlEncoding({ascending: true});
+            var query = helper.getUrlEncoding({ascending: true, limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -696,7 +698,7 @@ StatementResult Object.
         });
 
         it('should return StatementResult using GET with "format"', function (done) {
-            var query = helper.getUrlEncoding({format: 'ids'});
+            var query = helper.getUrlEncoding({format: 'ids', limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -714,7 +716,7 @@ StatementResult Object.
         });
 
         it('should return multipart response format StatementResult using GET with "attachments" parameter as true', function (done) {
-            var query = helper.getUrlEncoding({attachments: true});
+            var query = helper.getUrlEncoding({attachments: true, limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -737,7 +739,7 @@ StatementResult Object.
         });
 
         it('should not return multipart response format using GET with "attachments" parameter as false', function (done) {
-            var query = helper.getUrlEncoding({attachments: false});
+            var query = helper.getUrlEncoding({attachments: false, limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -1921,6 +1923,23 @@ MUST have a "Content-Type" header
             });
         });
 
+        it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
+            var query = helper.getUrlEncoding({limit: 1});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var through = res.headers['x-experience-api-consistent-through'];
+                    expect(through).to.be.ok;
+                    done();
+                }
+            });
+        });
+
         it('should return "X-Experience-API-Consistent-Through" misusing GET (status code 400)', function (done) {
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?LIMIT=1')
@@ -1938,11 +1957,11 @@ MUST have a "Content-Type" header
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "agent"', function (done) {
             var templates = [
-                {agent: '{{agents.default}}'}
+                {agent: '{{agents.default}}'},
             ];
             var data = helper.createFromTemplate(templates);
+            var query = helper.getUrlEncoding(data) + '&limit=1';
 
-            var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -1958,7 +1977,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "verb"', function (done) {
-            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -1974,7 +1993,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "activity"', function (done) {
-            var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
+            var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -1990,7 +2009,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "registration"', function (done) {
-            var query = helper.getUrlEncoding({registration: helper.generateUUID()});
+            var query = helper.getUrlEncoding({registration: helper.generateUUID()}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -2006,7 +2025,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_activities"', function (done) {
-            var query = helper.getUrlEncoding({related_activities: true});
+            var query = helper.getUrlEncoding({related_activities: true}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -2022,7 +2041,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_agents"', function (done) {
-            var query = helper.getUrlEncoding({related_agents: true});
+            var query = helper.getUrlEncoding({related_agents: true}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -2038,7 +2057,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
-            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -2054,23 +2073,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "until"', function (done) {
-            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .headers(helper.addAllHeaders({}))
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var through = res.headers['x-experience-api-consistent-through'];
-                    expect(through).to.be.ok;
-                    done();
-                }
-            });
-        });
-
-        it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
-            var query = helper.getUrlEncoding({limit: 1});
+            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -2086,7 +2089,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "ascending"', function (done) {
-            var query = helper.getUrlEncoding({ascending: true});
+            var query = helper.getUrlEncoding({ascending: true}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -2102,7 +2105,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "format"', function (done) {
-            var query = helper.getUrlEncoding({format: 'ids'});
+            var query = helper.getUrlEncoding({format: 'ids'}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -2118,7 +2121,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "attachments"', function (done) {
-            var query = helper.getUrlEncoding({attachments: true});
+            var query = helper.getUrlEncoding({attachments: true}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .headers(helper.addAllHeaders({}))
@@ -2183,13 +2186,34 @@ MUST have a "Content-Type" header
             });
         });
 
+        it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
+            var query = helper.getUrlEncoding({limit: 1});
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+            .headers(helper.addAllHeaders({}))
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    var value = res.headers['x-experience-api-consistent-through'];
+                    expect(value).to.be.ok;
+                    var through = moment(value, moment.ISO_8601);
+                    expect(through).to.be.ok;
+                    expect(through.isValid()).to.be.true;
+                    done();
+                }
+            });
+        });
+
         it('should return "X-Experience-API-Consistent-Through" using GET with "agent"', function (done) {
             var templates = [
                 {agent: '{{agents.default}}'}
             ];
             var data = helper.createFromTemplate(templates);
+            var query = helper.getUrlEncoding(data) + '&limit=1';
 
-            var query = helper.getUrlEncoding(data);
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -2210,7 +2234,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "verb"', function (done) {
-            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'});
+            var query = helper.getUrlEncoding({verb: 'http://adlnet.gov/expapi/non/existent'}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -2231,7 +2255,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "activity"', function (done) {
-            var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'});
+            var query = helper.getUrlEncoding({activity: 'http://www.example.com/meetings/occurances/12345'}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -2252,7 +2276,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "registration"', function (done) {
-            var query = helper.getUrlEncoding({registration: helper.generateUUID()});
+            var query = helper.getUrlEncoding({registration: helper.generateUUID()}) + '&limit=1';
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -2275,7 +2299,8 @@ MUST have a "Content-Type" header
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_activities"', function (done) {
             var query = helper.getUrlEncoding({
                 activity: statement.context.contextActivities.category.id,
-                related_activities: true
+                related_activities: true,
+                limit:1
             });
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
@@ -2299,7 +2324,8 @@ MUST have a "Content-Type" header
         it('should return "X-Experience-API-Consistent-Through" using GET with "related_agents"', function (done) {
             var query = helper.getUrlEncoding({
                 agent: statement.context.instructor,
-                related_agents: true
+                related_agents: true,
+                limit: 1
             });
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
@@ -2321,7 +2347,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "since"', function (done) {
-            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z'});
+            var query = helper.getUrlEncoding({since: '2012-06-01T19:09:13.245Z', limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -2342,28 +2368,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "until"', function (done) {
-            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z'});
-            request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-            .headers(helper.addAllHeaders({}))
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    done(err);
-                } else {
-                    var value = res.headers['x-experience-api-consistent-through'];
-                    expect(value).to.be.ok;
-                    var through = moment(value, moment.ISO_8601);
-                    expect(through).to.be.ok;
-                    expect(through.isValid()).to.be.true;
-                    done();
-                }
-            });
-        });
-
-        it('should return "X-Experience-API-Consistent-Through" using GET with "limit"', function (done) {
-            var query = helper.getUrlEncoding({limit: 1});
+            var query = helper.getUrlEncoding({until: '2012-06-01T19:09:13.245Z', limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -2384,7 +2389,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "ascending"', function (done) {
-            var query = helper.getUrlEncoding({ascending: true});
+            var query = helper.getUrlEncoding({ascending: true, limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -2405,7 +2410,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "format"', function (done) {
-            var query = helper.getUrlEncoding({format: 'ids'});
+            var query = helper.getUrlEncoding({format: 'ids', limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -2426,7 +2431,7 @@ MUST have a "Content-Type" header
         });
 
         it('should return "X-Experience-API-Consistent-Through" using GET with "attachments"', function (done) {
-            var query = helper.getUrlEncoding({attachments: true});
+            var query = helper.getUrlEncoding({attachments: true, limit: 1});
             request(helper.getEndpointAndAuth())
             .get(helper.getEndpointStatements() + '?' + query)
             .wait(helper.genDelay(stmtTime, '?' + query, undefined))
@@ -2719,7 +2724,6 @@ MUST have a "Content-Type" header
             });
         });
 
-        // reworded the test to be more generic, shouldn't have to stay in here
         it('should only return statements stored after designated "since" timestamp when using "since" parameter', function (done) {
             // Need to use statementRefId verb b/c initial voided statement comes before voidingTime
             // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Since');
@@ -2752,7 +2756,6 @@ MUST have a "Content-Type" header
             });
         });
 
-        // reworded the test to be more generic, shouldn't have to stay in here
         it('should only return statements stored at or before designated "before" timestamp when using "until" parameter', function (done) {
             var query = helper.getUrlEncoding({
                 verb: verb,
@@ -2788,7 +2791,6 @@ MUST have a "Content-Type" header
             });
         });
 
-        // reworded the test to be more generic, shouldn't have to stay in here
         it('should return the number of statements listed in "limit" parameter', function (done) {
             // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' Limit');
             var query = helper.getUrlEncoding({
@@ -2813,7 +2815,6 @@ MUST have a "Content-Type" header
             });
         });
 
-        // i think this can be removed
         it('should return StatementRef and voiding statement when not using "since", "until", "limit"', function (done) {
             // console.log(new Date(Date.now() - helper.getTimeMargin()).toISOString() + ' None');
             var query = helper.getUrlEncoding({
@@ -2930,7 +2931,7 @@ MUST have a "Content-Type" header
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('actor.mbox',statement.actor.mbox);
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('actor.mbox', statement.actor.mbox);
                     done();
                 }
             });
@@ -2948,7 +2949,7 @@ MUST have a "Content-Type" header
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('verb.id',statement.verb.id);
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('verb.id', statement.verb.id);
                     done();
                 }
             });
@@ -2966,7 +2967,7 @@ MUST have a "Content-Type" header
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('object.id',statement.object.id)
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('object.id', statement.object.id)
                     done();
                 }
             });
@@ -2984,7 +2985,7 @@ MUST have a "Content-Type" header
                     done(err);
                 } else {
                     var result = helper.parse(res.body, done);
-                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('context.registration',statement.context.registration);
+                    expect(result).to.have.property('statements').to.be.an('array').to.all.have.deep.property('context.registration', statement.context.registration);
                     done();
                 }
             });
@@ -3147,7 +3148,7 @@ MUST have a "Content-Type" header
             });
         });
 
-        //I think there is another test that covers the formatting requirements
+        //there is another test that covers the formatting requirements
         it('should return StatementResult with statements as array using GET with "format"', function (done) {
             var query = helper.getUrlEncoding({format: 'ids'});
             request(helper.getEndpointAndAuth())
