@@ -3249,46 +3249,242 @@ MUST have a "Content-Type" header
 
     });
 /**  XAPI-00337, Communication 2.1.3 GET Statements
-
  * When queried with only an IFI as the agent parameter, an LRS will return any agent or group containing the IFI as part of an actor or object property. (Communication 2.1.3.s1.table1.row3, XAPI-00337)
  */
     describe('When queried with only an IFI as the agent parameter, an LRS will return any agent or group containing the IFI as part of an actor or object. (Communication 2.1.3.s1.table1.row3, XAPI-00337)', function () {
         // Persist 3 Statements for testing
-        var mboxes, accounts, groups;
-        var mbox, mbox_sha1sum, openid, account;
+        var mboxes, accounts, groups, stmtTime;
+        var mboxesId, accountsId, groupsId;
+        var mbox, mbox_sha1sum, openid, account, idgroup, anongroup;
+        this.timeout(0);
         // 1 - mbox in actor and mbox_sha1sum in object
         before('persist statement with mbox and mbox_sha1sum as actor and object respectively', function(done) {
 
+            var templates = [
+                {statement: '{{statements.default}}'},
+                {actor: '{{agents.mbox}}'}
+            ],
+                temp2 = [
+                {statement: '{{statements.default}}'},
+                {actor: '{{agents.openid}}'}
+            ],
+                temp3 = [
+                {statement: '{{statements.default}}'},
+                {actor: '{{groups.identified_all}}'}
+            ];
+            mboxes = helper.createFromTemplate(templates).statement;
+            accounts = helper.createFromTemplate(temp2).statement;
+            groups = helper.createFromTemplate(temp3).statement;
+            delete accounts.actor.mbox;
+            delete groups.actor.mbox;
+            mbox = require('./templates/agents/mbox');
+            mbox_sha1sum = require('./templates/agents/mbox_sha1sum');
+            mboxes.object = mbox_sha1sum;
+            openid = require('./templates/agents/openid');
+            account = require('./templates/agents/account');
+            accounts.object = account;
+            idgroup = require('./templates/groups/identified_all');
+            anongroup = require('./templates/groups/anonymous_all');
+            groups.object = anongroup;
+            var schmata = [];
+            schmata.push(mboxes);
+            schmata.push(accounts);
+            schmata.push(groups);
+            // console.log(schmata.length, JSON.stringify(schmata, null, ' '));
+
+// This snippet gets us a sha1_sum has printed to the console for use elsewhere
+// var txt = 'mailto:tom@example.com';
+// console.log(crypto.createHash('SHA1').update(txt).digest('hex'));
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(schmata)
+            .expect(200, (err, res) => {
+                if (err) {
+                    console.log(err);
+                    done(err);
+                } else {
+// console.log(schmata.length, schmata);
+                    console.log(res.statusCode, res.body);
+                    mboxesId = res.body[0];
+                    accountsId = res.body[1];
+                    groupsId = res.body[2];
+                    // console.log(mboxesId, accountsId, groupsId);
+                    done();
+                }
+            });
+
         });
 
-        // 2 - openid in actor and account in object
-        before('persist statement with openid and account as actor and object respectively', function(done) {
-
-        });
-
-        // 3 - two groups with ifis rearranged in actor and object
-        before('persist statement with two groups containing same ifis but rearranged in actor and object properties', function(done) {
-
-        });
+//         // 2 - openid in actor and account in object
+//         before('persist statement with openid and account as actor and object respectively', function(done) {
+// console.log('before2');
+// done();
+//         });
+//
+//         // 3 - two groups with ifis rearranged in actor and object
+//         before('persist statement with two groups containing same ifis but rearranged in actor and object properties', function(done) {
+// console.log('before3');
+// done();
+//         });
 
         // query for mbox, expect to find statment ids of mboxes and groups in statements returned
-        it('query for mbox should return statement ids of mboxes and groups', function (done) {
-
-        });
-
-        // query for mbox_sha1sum, expect to find statment ids of mboxes and groups in statements returned
-        it('query for mbox_sha1sum should return statement ids of mboxes and groups', function (done) {
-
-        });
-
-        // query for openid, expect to find statment ids of accounts and groups in statements returned
-        it('query for openid should return statement ids of accounts and groups', function (done) {
-
-        });
+//         it('query for mbox should return statement ids of mboxes and groups', function (done) {
+// console.log('it1');
+//             var query = helper.getUrlEncoding({agent: {"mbox":mbox.mbox}, limit:3});
+//
+//             request(helper.getEndpointAndAuth())
+//             .get(helper.getEndpointStatements() + '?' + query)
+//             .wait(helper.genDelay(stmtTime, '?' + query, groupsId))
+//             .headers(helper.addAllHeaders({}))
+//             .expect(200, function (err, res) {
+//                 if (err) {
+//                     done(err);
+//                 } else {
+//                     var results = JSON.parse(res.body).statements;
+//                     // var nl = '\n';
+//                     // console.log(nl, mboxes, nl, accounts, nl, groups, nl, mbox, nl, mbox_sha1sum, nl, openid, nl, account);
+//                     console.log(results.length);
+//                     for (stmt in results) {
+//                         console.log(results[stmt].id);
+//                         if (results[stmt].id === mboxesId || results[stmt].id === groupsId) {
+//                             console.log('if1');
+//                             expect(results).to.have.own.deep.property('actor', mbox);
+//                         } else if (results[stmt].id === accountsId) {
+//                             console.log('else1');
+//                             expect(results).to.not.have.own.deep.property('actor', mbox);
+//                         }
+//                     }
+//                     done();
+//                 }
+//             });
+//         });
+//
+//         // query for mbox_sha1sum, expect to find statment ids of mboxes and groups in statements returned
+//         it('query for mbox_sha1sum should return statement ids of mboxes and groups', function (done) {
+// console.log('it2');
+//             var query = helper.getUrlEncoding({agent: {"mbox_sha1sum":mbox_sha1sum.mbox_sha1sum}, limit:3});
+//
+//             request(helper.getEndpointAndAuth())
+//             .get(helper.getEndpointStatements() + '?' + query)
+//             .wait(helper.genDelay(stmtTime, '?' + query, groupsId))
+//             .headers(helper.addAllHeaders({}))
+//             .expect(200, function (err, res) {
+//                 if (err) {
+//                     done(err);
+//                 } else {
+//                     var results = JSON.parse(res.body).statements;
+//                     // var nl = '\n';
+//                     // console.log(nl, mboxes, nl, accounts, nl, groups, nl, mbox, nl, mbox_sha1sum, nl, openid, nl, account);
+//                     console.log(results.length);
+//                     for (stmt in results) {
+//                         console.log(results[stmt].id);
+//                         if (results[stmt].id === mboxesId || results[stmt].id === groupsId) {
+//                             console.log('if2');
+//                             expect(results).to.have.own.deep.property('actor', mbox_sha1sum);
+//                         } else if (results[stmt].id === accountsId) {
+//                             console.log('else2');
+//                             expect(results).to.not.have.own.deep.property('actor', mbox_sha1sum);
+//                         }
+//                     }
+//                     done();
+//                 }
+//             });
+//         });
+//
+//         // query for openid, expect to find statment ids of accounts and groups in statements returned
+//         it('query for openid should return statement ids of accounts and groups', function (done) {
+// console.log('it3');
+//             var query = helper.getUrlEncoding({agent: {"openid":openid.openid}, limit:3});
+//
+//             request(helper.getEndpointAndAuth())
+//             .get(helper.getEndpointStatements() + '?' + query)
+//             .wait(helper.genDelay(stmtTime, '?' + query, groupsId))
+//             .headers(helper.addAllHeaders({}))
+//             .expect(200, function (err, res) {
+//                 if (err) {
+//                     done(err);
+//                 } else {
+//                     var results = JSON.parse(res.body).statements;
+//                     // var nl = '\n';
+//                     // console.log(nl, mboxes, nl, accounts, nl, groups, nl, mbox, nl, mbox_sha1sum, nl, openid, nl, account);
+//                     console.log(results.length);
+//                     for (stmt in results) {
+//                         console.log(results[stmt].id);
+//                         if (results[stmt].id === accountsId || results[stmt].id === groupsId) {
+//                             console.log('if3');
+//                             expect(results).to.have.own.deep.property('actor', openid);
+//                         } else if (results[stmt].id === mboxesId) {
+//                             console.log('else3');
+//                             expect(results).to.not.have.own.deep.property('actor', openid);
+//                         }
+//                     }
+//                     done();
+//                 }
+//             });
+//         });
 
         // query for account, expect to find statment ids of accounts and groups in statements returned
         it('query for account should return statement ids of accounts and groups', function (done) {
+console.log('it4');
+            var query = helper.getUrlEncoding({agent: {"account":account.account}, limit:3});
 
+            request(helper.getEndpointAndAuth())
+            .get(helper.getEndpointStatements() + '?' + query)
+            .wait(helper.genDelay(stmtTime, '?' + query, groupsId))
+            .headers(helper.addAllHeaders({}))
+            .expect(200, function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    // we grab the statements and leave the more alone
+                    var results = JSON.parse(res.body).statements;
+                    // console.log(results, results.length);
+                    // make some flags for testing
+                    var goodAccounts = false,
+                        goodGroups = false;
+                    // now we go through our array of statements looking for an id to match
+                    console.log(results.length);
+                    for (stmt of results) {
+                        console.log(stmt.id);
+                        if (stmt.id === accountsId) {
+                            console.log('if4', stmt, account);
+                            // found a match of ids, let's see if we get the full agent back
+                            expect(stmt.object.name).to.equal(account.name);
+                            console.log('one');
+                            expect(stmt.object.objectType).to.equal(account.objectType);
+                            console.log('two');
+                            expect(stmt.object.account.name).to.equal(account.account.name);
+                            console.log('three');
+                            expect(stmt.object.account.homePage).to.equal(account.account.homePage);
+                            console.log('four');
+                            goodAccounts = true;
+                        } else if (stmt.id === groupsId) {
+                            console.log('elseif4');
+                            for (ifi of stmt.actor.member) {
+                                expect(stmt.actor.member[ifi].name).to.equal(account.name);
+                                expect(stmt.actor.member[ifi].objectType).to.equal(account.objectType);
+                                expect(stmt.actor.member[ifi].account.name).to.equal(account.account.name);
+                                expect(stmt.actor.member[ifi].account.homePage).to.equal(account.account.homePage);
+                                expect(stmt.object.member[ifi].name).to.equal(account.name);
+                                expect(stmt.object.member[ifi].objectType).to.equal(account.objectType);
+                                expect(stmt.object.member[ifi].account.name).to.equal(account.account.name);
+                                expect(stmt.object.member[ifi].account.homePage).to.equal(account.account.homePage);
+                            }
+                            goodGroups = true;
+                        } else {
+                            console.log('else4');
+                            // goodAccounts = false;
+                            // goodGroups = false;
+                        }
+                    }
+                    console.log(JSON.stringify(groups, null, '   '));
+                    expect(goodAccounts).to.be.true;
+                    // expect(goodGroups).to.be.true;
+                    done();
+                }
+            });
         });
     });
 

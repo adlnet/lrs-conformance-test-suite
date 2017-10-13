@@ -1,0 +1,29 @@
+{
+  "objectType": "Group",
+  "name": "Group Anonymous with each IFI",
+  "member": [
+    {
+      "objectType": "Agent",
+      "name": "xAPI mbox",
+      "mbox": "mailto:xapi@adlnet.gov"
+    },
+    {
+      "objectType": "Agent",
+      "name": "xAPI mbox_sha1sum",
+      "mbox_sha1sum": "9a126c1d3d446da553231de4461791ca0a3b8b3f"
+    },
+    {
+      "objectType": "Agent",
+      "name": "xAPI openid",
+      "openid": "http://openid.xapi.adlnet.gov"
+    },
+    {
+      "objectType": "Agent",
+      "name": "xAPI account",
+      "account": {
+          "homePage": "http://account.xapi.adlnet.gov",
+          "name": "xAPI"
+      }
+    }
+  ]
+}
