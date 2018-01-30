@@ -174,11 +174,15 @@ function start(options)
 
             // console.log(require("util").inspect(JSON.parse(JSON.stringify(cleanLog,function(k,v){if(k=="log" && v && v.constructor == String) return undefined; return v})),{depth:10}));
 
-            fs.mkdir(outDir, 0o775, function(){
+			fs.mkdir(outDir, 0o775, function(){
 				var outPath = libpath.join(outDir, testRunner.uuid+'.log');
 				fs.writeFile(outPath, output, (err, data) => {
-					if (err) return console.log(err);
+					if (err) {
+						console.log(err);
+						return process.exit(1);
+					}
 					console.log('Full run log written to', outPath);
+					return process.exit(testRunner.summary.failed);
 				});
 			});
 		}
