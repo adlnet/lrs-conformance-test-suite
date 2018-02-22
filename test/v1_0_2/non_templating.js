@@ -3718,14 +3718,42 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
                 .expect(400, done)
         });
 
-        if(!global.OAUTH)
-        {
+        if (!global.OAUTH) {
             //This test appears to only make sense in the case of http basic Auth. Should we have additional tests for bad OAUTH, which is more complicated?
             it('An LRS rejects a Statement of bad authorization (either authentication needed or failed credentials) with error code 401 Unauthorized (7.1)', function (done) {
+
+                // This test was not allowing for different, non-standardized prioritizations of request statuses
+                // when rejecting Requests based on Authentication.  An LRS may receive a request with bad credentials,
+                // but place higher priority on an improper header -- returning 400 for that header violation.  This test
+                // has been updated to first check that bad credentials receive a 401 and then check that bad credentials
+                // AND invalid headers receive either 400 or 401.
+                //
+                // Identical changes were made to the 1.0.3 tests for Authentication.
+                //
+                // If authorization is bad and everything else is fine, we'll expect a 401
+                let badAuthHeaders = helper.addAllHeaders({}, true);
+
                 request(helper.getEndpointAndAuth())
                     .get(helper.getEndpointStatements())
-                    .headers(helper.addAllHeaders({}, true))
-                    .expect(401, done);
+                    .headers(headers)
+                    .expect(401)
+                    .end();
+
+                // In the case of BOTH a bad header situation AND bad auth, the LRS can return either 401 or 400
+                badAuthHeaders["X-Experience-API-Version"] = "BAD";
+
+                request(helper.getEndpointAndAuth())
+                    .get(helper.getEndpointStatements())
+                    .headers(headers)
+                    .end(function (err, res) {
+
+                        if (res.statusCode === 400 || res.statusCode === 401) {
+                            done();
+                        } else {
+                            done("Response should have been either 401 or 400.");
+                        }
+
+                    });
             });
         }
 
