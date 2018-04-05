@@ -11,7 +11,8 @@
     // defines overwriting data
     var INVALID_DATE = '01/011/2015';
     var INVALID_STRING = 'should fail';
-    var INVALID_DATE_OFFSET = "2008-09-15T15:53:00-00";
+    var INVALID_DATE_0000 = "2008-09-15T15:53:00-0000";
+    var INVALID_DATE_00_00 = "2008-09-15T15:53:00-00:00";
 
     // configures tests
     module.exports.config = function () {
@@ -39,10 +40,18 @@
                         expect: [400]
                     },
                     {
-                        name: 'statement "template" invalid date',
+                        name: 'statement "template" invalid date in timestamp',
                         templates: [
                             {statement: '{{statements.default}}'},
-                            {timestamp: INVALID_DATE_OFFSET}
+                            {timestamp: INVALID_DATE_0000}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "template" invalid date in timestamp',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_00_00}
                         ],
                         expect: [400]
                     },
@@ -63,10 +72,18 @@
                         expect: [400]
                     },
                     {
-                        name: 'substatement "template" invalid date in timestamp',
+                        name: 'statement "template" invalid date in timestamp',
                         templates: [
                             {statement: '{{statements.default}}'},
-                            {timestamp: INVALID_DATE_OFFSET}
+                            {timestamp: INVALID_DATE_0000}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "template" invalid date in timestamp',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_00_00}
                         ],
                         expect: [400]
                     },
