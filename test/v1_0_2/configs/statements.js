@@ -22,8 +22,9 @@
     var VALID_VERSION_1_0_9 = '1.0.9';
 
     // From SPEC Issue: https://github.com/adlnet/xAPI-Spec/issues/1073
-    var INVALID_DATE_0000 = "2008-09-15T15:53:00-0000";
-    var INVALID_DATE_00_00 = "2008-09-15T15:53:00-00:00";
+    var INVALID_DATE_00 = "2008-09-15T15:53:00.601-00";
+    var INVALID_DATE_0000 = "2008-09-15T15:53:00.601-0000";
+    var INVALID_DATE_00_00 = "2008-09-15T15:53:00.601-00:00";
 
     // configures tests
     module.exports.config = function () {
@@ -135,6 +136,14 @@
                         templates: [
                             {statement: '{{statements.default}}'},
                             {timestamp: INVALID_DATE}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "template" invalid date',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_00}
                         ],
                         expect: [400]
                     },
