@@ -20,6 +20,7 @@
     var VALID_EXTENSION = {extensions: {'http://example.com/null': null}};
     var VALID_VERSION_1_0 = '1.0';
     var VALID_VERSION_1_0_9 = '1.0.9';
+    var INVALID_DATE_OFFSET = "2008-09-15T15:53:00-00";
 
     // configures tests
     module.exports.config = function () {
@@ -133,7 +134,15 @@
                             {timestamp: INVALID_DATE}
                         ],
                         expect: [400]
-                    }
+                    },
+                    {
+                        name: 'statement "template" invalid date',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_OFFSET}
+                        ],
+                        expect: [400]
+                    },
                 ]
             },
             {
@@ -154,7 +163,15 @@
                             {timestamp: INVALID_DATE}
                         ],
                         expect: [400]
-                    }
+                    },
+                    {
+                        name: 'statement "template" invalid date',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_OFFSET}
+                        ],
+                        expect: [400]
+                    },
                 ]
             },
             {
@@ -183,7 +200,15 @@
                             {stored: '2013-05-18T05:32:34.804Z'}
                         ],
                         expect: [400]
-                    }
+                    },
+                    {
+                        name: 'statement "template" invalid date',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_OFFSET}
+                        ],
+                        expect: [400]
+                    },
                 ]
             },
             {

@@ -11,6 +11,7 @@
     // defines overwriting data
     var INVALID_DATE = '01/011/2015';
     var INVALID_STRING = 'should fail';
+    var INVALID_DATE_OFFSET = "2008-09-15T15:53:00-00";
 
     // configures tests
     module.exports.config = function () {
@@ -38,6 +39,14 @@
                         expect: [400]
                     },
                     {
+                        name: 'statement "template" invalid date',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_OFFSET}
+                        ],
+                        expect: [400]
+                    },
+                    {
                         name: 'substatement "template" invalid string in timestamp',
                         templates: [
                             {statement: '{{statements.default}}'},
@@ -52,7 +61,15 @@
                             {timestamp: INVALID_DATE}
                         ],
                         expect: [400]
-                    }
+                    },
+                    {
+                        name: 'substatement "template" invalid date in timestamp',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_OFFSET}
+                        ],
+                        expect: [400]
+                    },
                 ]
             }
         ];
