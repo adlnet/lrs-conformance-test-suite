@@ -184,14 +184,6 @@
                         ],
                         expect: [400]
                     },
-                    {
-                        name: 'test good timestamp data (predict will still be rejected because of "stored" property)',
-                        templates: [
-                            {statement: '{{statements.default}}'},
-                            {stored: '2013-05-18T05:32:34.804Z'}
-                        ],
-                        expect: [400]
-                    }
                 ]
             },
             {
@@ -213,6 +205,14 @@
                         ],
                         expect: [400]
                     },
+                    {
+                        name: 'test good timestamp data (predict will still be rejected because of "stored" property)',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {stored: '2013-05-18T05:32:34.804Z'}
+                        ],
+                        expect: [400]
+                    }
                 ]
             },
             {
