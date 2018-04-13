@@ -41,7 +41,7 @@
                     if (global.OAUTH)
                         request = require('.\\super-request');
                     else
-                        headers["Authorization"] = 'Basic ' + new Buffer('RobCIsNot:AUserOnThisLRS').toString('base64');
+                        headers["Authorization"] = 'Basic ' + new Buffer('RobCIsNot:AUserOnThisLRS123').toString('base64');
 
                     // Assuming everything is fine, minus the auth credentials
                     request(helper.getEndpointAndAuth())
