@@ -11,6 +11,9 @@
     // defines overwriting data
     var INVALID_DATE = '01/011/2015';
     var INVALID_STRING = 'should fail';
+    var INVALID_DATE_00 = "2008-09-15T15:53:00.601-00";
+    var INVALID_DATE_0000 = "2008-09-15T15:53:00.601-0000";
+    var INVALID_DATE_00_00 = "2008-09-15T15:53:00.601-00:00";
 
     // configures tests
     module.exports.config = function () {
@@ -38,6 +41,30 @@
                         expect: [400]
                     },
                     {
+                        name: 'statement "template" invalid date in timestamp: did not reject statement timestmap with -00 offset',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_00}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "template" invalid date in timestamp: did not reject statement timestmap with -0000 offset',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_0000}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'statement "template" invalid date in timestamp: did not reject statement timestmap with -00:00 offset',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_00_00}
+                        ],
+                        expect: [400]
+                    },
+                    {
                         name: 'substatement "template" invalid string in timestamp',
                         templates: [
                             {statement: '{{statements.default}}'},
@@ -52,7 +79,31 @@
                             {timestamp: INVALID_DATE}
                         ],
                         expect: [400]
-                    }
+                    },
+                    {
+                        name: 'substatement "template" invalid date in timestamp: did not reject substatement timestamp with -00 offset',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_00}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'substatement "template" invalid date in timestamp: did not reject substatement timestamp with  -0000 offset',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_0000}
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'substatement "template" invalid date in timestamp: did not reject substatement timestamp with  -00:00 offset',
+                        templates: [
+                            {statement: '{{statements.default}}'},
+                            {timestamp: INVALID_DATE_00_00}
+                        ],
+                        expect: [400]
+                    },
                 ]
             }
         ];
