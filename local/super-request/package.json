@@ -1,67 +1,33 @@
 {
-  "_from": "git+https://github.com/rchadwic/super-request.git#ipc",
-  "_id": "super-request@0.0.8",
-  "_inBundle": false,
-  "_location": "/super-request",
-  "_phantomChildren": {
-    "ctype": "0.5.3",
-    "json-stringify-safe": "5.0.1",
-    "node-uuid": "1.4.8",
-    "tough-cookie": "2.3.4"
-  },
-  "_requested": {
-    "type": "git",
-    "raw": "super-request@git+https://github.com/rchadwic/super-request.git#ipc",
     "name": "super-request",
-    "escapedName": "super-request",
-    "rawSpec": "git+https://github.com/rchadwic/super-request.git#ipc",
-    "saveSpec": "git+https://github.com/rchadwic/super-request.git#ipc",
-    "fetchSpec": "https://github.com/rchadwic/super-request.git",
-    "gitCommittish": "ipc"
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "git+https://github.com/rchadwic/super-request.git#1c8e002a3babd42b59938b4e60474cfb8886130b",
-  "_spec": "super-request@git+https://github.com/rchadwic/super-request.git#ipc",
-  "_where": "D:\\ADL\\lrs-conformance-test-suite-wrapper\\lrs-conformance-test-suite",
-  "author": {
-    "name": "Doug Martin"
-  },
-  "bugs": {
-    "url": "https://github.com/doug-martin/super-request/issues"
-  },
-  "bundleDependencies": false,
-  "dependencies": {
-    "comb": "~0.3.0",
-    "methods": "0.1.0",
-    "request": "~2.34.0"
-  },
-  "deprecated": false,
-  "description": "Wrapper on top of request for testing HTTP servers",
-  "devDependencies": {
-    "express": "~3.0.5",
-    "it": "~0.2.0"
-  },
-  "homepage": "https://github.com/doug-martin/super-request#readme",
-  "keywords": [
-    "request",
-    "rest",
-    "test",
-    "testing",
-    "http",
-    "tdd",
-    "bdd"
-  ],
-  "license": "MIT",
-  "main": "index.js",
-  "name": "super-request",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/doug-martin/super-request.git"
-  },
-  "scripts": {
-    "test": "it -r dotmatrix"
-  },
-  "version": "0.0.8"
+    "version": "0.0.8",
+    "description": "Wrapper on top of request for testing HTTP servers",
+    "main": "index.js",
+    "scripts": {
+        "test": "it -r dotmatrix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:doug-martin/super-request.git"
+    },
+    "keywords": [
+        "request",
+        "rest",
+        "test",
+        "testing",
+        "http",
+        "tdd",
+        "bdd"
+    ],
+    "author": "Doug Martin",
+    "license": "MIT",
+    "dependencies": {
+        "comb": "~0.3.0",
+        "request": "~2.34.0",
+        "methods": "0.1.0"
+    },
+    "devDependencies": {
+        "it": "~0.2.0",
+        "express": "~3.0.5"
+    }
 }
