@@ -54,9 +54,9 @@
     "request": "^2.37.0",
     "should": "^4.0.4",
     "string": "^3.1.0",
-    "super-request": "git+https://github.com/rchadwic/super-request.git#ipc",
+    "super-request": "1.2.0",
     "superagent-oauth": "^0.2.3",
-    "supertest": "git+https://github.com/rchadwic/supertest.git#ipc",
+    "supertest": "3.0.0",
     "supertest-as-promised": "^1.0.0",
     "uuid": "^2.0.1",
     "validator": "^5.7.0"
