@@ -28,3 +28,7 @@ node_modules
 
 # vim recovery files
 *.swp
+/local/super-request/.gitignore
+/local/super-request/.npmignore
+/local/supertest/.gitignore
+/package-lock.json
