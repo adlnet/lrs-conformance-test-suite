@@ -1,0 +1,79 @@
+{
+  "_from": "git+https://github.com/rchadwic/supertest.git#ipc",
+  "_id": "supertest@1.2.0",
+  "_inBundle": false,
+  "_location": "/supertest",
+  "_phantomChildren": {
+    "combined-stream": "1.0.6",
+    "component-emitter": "1.2.1",
+    "core-util-is": "1.0.2",
+    "debug": "2.6.9",
+    "inherits": "2.0.3",
+    "methods": "1.1.2",
+    "mime-types": "2.1.18",
+    "reduce-component": "1.0.1"
+  },
+  "_requested": {
+    "type": "git",
+    "raw": "supertest@git+https://github.com/rchadwic/supertest.git#ipc",
+    "name": "supertest",
+    "escapedName": "supertest",
+    "rawSpec": "git+https://github.com/rchadwic/supertest.git#ipc",
+    "saveSpec": "git+https://github.com/rchadwic/supertest.git#ipc",
+    "fetchSpec": "https://github.com/rchadwic/supertest.git",
+    "gitCommittish": "ipc"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/rchadwic/supertest.git#2a2346bc82d3c7233d363c265c5bf3b1be6ee5b2",
+  "_spec": "supertest@git+https://github.com/rchadwic/supertest.git#ipc",
+  "_where": "D:\\ADL\\lrs-conformance-test-suite-wrapper\\lrs-conformance-test-suite",
+  "author": {
+    "name": "TJ Holowaychuk"
+  },
+  "bugs": {
+    "url": "https://github.com/visionmedia/supertest/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "methods": "1.x",
+    "superagent": "^1.7.2"
+  },
+  "deprecated": false,
+  "description": "Super-agent driven library for testing HTTP servers",
+  "devDependencies": {
+    "body-parser": "~1.15.0",
+    "cookie-parser": "~1.4.1",
+    "eslint": "^2.8.0",
+    "eslint-config-airbnb": "^7.0.0",
+    "express": "~4.13.4",
+    "mocha": "~2.4.5",
+    "should": "~8.3.1"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "homepage": "https://github.com/visionmedia/supertest#readme",
+  "keywords": [
+    "superagent",
+    "request",
+    "tdd",
+    "bdd",
+    "http",
+    "test",
+    "testing"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "supertest",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/visionmedia/supertest.git"
+  },
+  "scripts": {
+    "pretest": "npm install",
+    "test": "eslint lib/**/*.js test/**/*.js && mocha --require should --reporter spec --check-leaks"
+  },
+  "version": "1.2.0"
+}
