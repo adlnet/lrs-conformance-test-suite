@@ -35,6 +35,7 @@
     "extend": "^2.0.0",
     "form-data": "^1.0.0-rc4",
     "form-urlencoded": "0.0.7",
+    "growl": "^1.10.0",
     "isemail": "^1.1.1",
     "joi": "^6.4.1",
     "jsonschema": "^1.1.0",
