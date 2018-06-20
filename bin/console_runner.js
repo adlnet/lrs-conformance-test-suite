@@ -29,6 +29,7 @@ program
     .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint)')
     .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
     .option('-g, --grep [string]', 'Only run tests that match the given pattern')
+    .option('-i, --invert', 'Invert the grep pattern match')
     .option('-b, --bail', 'Abort the battery if one test fails')
     .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, ['v1_0_3'])
     .option('-z, --errors', 'Results log of failing tests only')
@@ -46,6 +47,7 @@ var options = {
         auth_token_path: program.auth_token_path,
         authorization_path: program.authorization_path,
         grep: program.grep,
+        invert: program.invert,
         bail: program.bail,
         directory: program.directory,
 		errors: program.errors
