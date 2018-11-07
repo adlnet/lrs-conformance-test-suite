@@ -225,18 +225,44 @@ describe('Object Property Requirements (Data 2.4.4)', () => {
                 .headers(helper.addAllHeaders({}))
                 .json(tf).expect(400, done);
         });
+    });
 
+     /**  XAPI-00064, Data 2.4.4.1 when objectType is activity
+     * An Activity Definition uses the "interactionType" property if correctResponsesPattern is present. An LRS rejects a statement with 400 Bad Request if a correctResponsePattern is present and interactionType is not.
+     */
+    describe('The Interaction Activity properties "correctResponsesPattern", "choices", "scale", "source", "target", and "steps" are optional and may be omitted ' + 
+        'even in the presence of an "interactionType" property. (Multiplicity, Data 2.4.4.1.s9, XAPI-00064) **Implicit**', function () {
 
+        it ('Interaction Property validation should not require properties other than "interactionType"',function(done){
+            id = helper.generateUUID();
+            var tftemplates = [
+                {statement: '{{statements.default}}'},
+                {object: '{{activities.true_false}}'}
+            ];
+            tf = helper.createFromTemplate(tftemplates);
+            tf = tf.statement;
+
+            // Make sure we don't have either of these.  Doesn't matter which of these we use
+            if (tf.object.definition.true_false !== undefined)
+                delete tf.object.definition.true_false;
+            if (tf.object.definition.correctResponsesPattern !== undefined)
+                delete tf.object.definition.correctResponsesPattern;
+            
+            request(helper.getEndpointAndAuth())
+                .post(helper.getEndpointStatements())
+                .headers(helper.addAllHeaders({}))
+                .json(tf).expect(200, done);
+        });
     });
 
     //Data 2.4.4.2 - when the object is an agent or a group
-/**  Matchup with Conformance Requirements Document
- * XAPI-00065 - below
- */
+    /**  Matchup with Conformance Requirements Document
+     * XAPI-00065 - below
+     */
 
-/** XAPI-00065, Data 2.4.4.2 when the object is an agent or a group
- * Statements that use an Agent or Group as an Object MUST specify an "objectType" property. The LRS rejects with 400 Bad Request if the “objectType” property is absent and the Object is an Agent Object or Group Object.
- */
+    /** XAPI-00065, Data 2.4.4.2 when the object is an agent or a group
+     * Statements that use an Agent or Group as an Object MUST specify an "objectType" property. The LRS rejects with 400 Bad Request if the “objectType” property is absent and the Object is an Agent Object or Group Object.
+     */
     describe('Statements that use an Agent or Group as an Object MUST specify an "objectType" property. (Data 2.4.4.2.s1.b1, XAPI-00065)', function () {
 
         it('should fail when using agent as object and no objectType', function (done) {
