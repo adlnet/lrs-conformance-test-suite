@@ -23,11 +23,11 @@
     "license": "MIT",
     "dependencies": {
         "comb": "~0.3.0",
-        "request": "~2.34.0",
+        "request": "~2.68.0",
         "methods": "0.1.0"
     },
     "devDependencies": {
         "it": "~0.2.0",
-        "express": "~3.0.5"
+        "express": "~3.11.0"
     }
 }
