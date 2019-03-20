@@ -1,0 +1,33 @@
+{
+    "name": "super-request",
+    "version": "0.0.8",
+    "description": "Wrapper on top of request for testing HTTP servers",
+    "main": "index.js",
+    "scripts": {
+        "test": "it -r dotmatrix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:doug-martin/super-request.git"
+    },
+    "keywords": [
+        "request",
+        "rest",
+        "test",
+        "testing",
+        "http",
+        "tdd",
+        "bdd"
+    ],
+    "author": "Doug Martin",
+    "license": "MIT",
+    "dependencies": {
+        "comb": "~0.3.0",
+        "request": "~2.34.0",
+        "methods": "0.1.0"
+    },
+    "devDependencies": {
+        "it": "~0.2.0",
+        "express": "~3.0.5"
+    }
+}
