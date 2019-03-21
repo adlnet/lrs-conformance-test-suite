@@ -23,7 +23,7 @@
     "license": "MIT",
     "dependencies": {
         "comb": "~0.3.0",
-        "request": "~2.34.0",
+        "request": "~2.68.0",
         "methods": "0.1.0"
     },
     "devDependencies": {

@@ -45,8 +45,8 @@
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
             grep: Joi.string(),
             optional: Joi.array().items(Joi.string().required()),
-            basicAuth: Joi.any(true, false),
-            oAuth1: Joi.any(true, false),
+            basicAuth: Joi.bool(),
+            oAuth1: Joi.bool(),
             authUser: Joi.string().when('basicAuth', {
                 is: 'true',
                 then: Joi.required()
