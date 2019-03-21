@@ -9,17 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/TryxAPI/lrs-conformance-tests.git"
+    "url": "git://github.com/adlnet/lrs-conformance-test-suite.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TryxAPI/lrs-conformance-tests/issues"
+    "url": "https://github.com/adlnet/lrs-conformance-test-suite/issues"
   },
   "bin": {
     "lrs-test": "./bin/console_runner.js"
   },
-  "homepage": "https://github.com/TryxAPI/lrs-conformance-tests",
+  "homepage": "https://github.com/adlnet/lrs-conformance-test-suite",
   "dependencies": {
     "chai": "^2.3.0",
     "chai-as-promised": "^4.1.1",
