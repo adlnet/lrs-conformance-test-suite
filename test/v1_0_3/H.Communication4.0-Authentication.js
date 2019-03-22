@@ -59,9 +59,7 @@
                         .headers(headers)
                         .end(function (err, res) {
 
-                            if (res.statusCode === 400 || res.statusCode === 401) {
-                                done();
-                            } else {
+                            if (res.statusCode !== 400 && res.statusCode !== 401) {
                                 done("Response should have been either 401 or 400.");
                             }
 
@@ -106,9 +104,7 @@
                         .headers(headers)
                         .end(function (err, res) {
 
-                            if (res.statusCode === 400 || res.statusCode === 401) {
-                                done();
-                            } else {
+                            if (res.statusCode !== 400 || res.statusCode !== 401) {
                                 done("Response should have been either 401 or 400.");
                             }
 
