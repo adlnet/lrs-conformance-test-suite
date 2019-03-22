@@ -3747,9 +3747,7 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
                     .headers(headers)
                     .end(function (err, res) {
 
-                        if (res.statusCode === 400 || res.statusCode === 401) {
-                            done();
-                        } else {
+                        if (res.statusCode !== 400 && res.statusCode !== 401) {
                             done("Response should have been either 401 or 400.");
                         }
 
