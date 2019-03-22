@@ -104,7 +104,7 @@
                         .headers(headers)
                         .end(function (err, res) {
 
-                            if (res.statusCode !== 400 || res.statusCode !== 401) {
+                            if (res.statusCode !== 400 && res.statusCode !== 401) {
                                 done("Response should have been either 401 or 400.");
                             }
 
