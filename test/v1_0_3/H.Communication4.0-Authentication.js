@@ -49,19 +49,23 @@
                         .headers(headers)
                         .json(data)
                         .expect(401)
-                        .end();
-
-                    // In the case of BOTH a bad header situation AND bad auth, the LRS can return either 401 or 400
-                    headers["X-Experience-API-Version"] = "BAD";
-
-                    request(helper.getEndpointAndAuth())
-                        .get(helper.getEndpointStatements())
-                        .headers(headers)
                         .end(function (err, res) {
 
-                            if (res.statusCode !== 400 && res.statusCode !== 401) {
-                                done("Response should have been either 401 or 400.");
-                            }
+                            // Allow a bad version after ensuring that 401 is from an incorrect auth
+                            headers["X-Experience-API-Version"] = "BAD";
+
+                            request(helper.getEndpointAndAuth())
+                                .get(helper.getEndpointStatements())
+                                .headers(headers)
+                                .end(function (err, res) {
+
+                                    if (res.statusCode === 400 || res.statusCode === 401) {
+                                        done();
+                                    } else {
+                                        done("Response should have been either 401 or 400.");
+                                    }
+
+                                });
 
                         });
                 }
@@ -94,19 +98,23 @@
                         .headers(headers)
                         .json(data)
                         .expect(401)
-                        .end();
-
-                    // Same as above
-                    headers["X-Experience-API-Version"] = "BAD";
-
-                    request(helper.getEndpointAndAuth())
-                        .get(helper.getEndpointStatements())
-                        .headers(headers)
                         .end(function (err, res) {
 
-                            if (res.statusCode !== 400 && res.statusCode !== 401) {
-                                done("Response should have been either 401 or 400.");
-                            }
+                            // Allow a bad version after ensuring that 401 is from an incorrect auth
+                            headers["X-Experience-API-Version"] = "BAD";
+
+                            request(helper.getEndpointAndAuth())
+                                .get(helper.getEndpointStatements())
+                                .headers(headers)
+                                .end(function (err, res) {
+
+                                    if (res.statusCode === 400 || res.statusCode === 401) {
+                                        done();
+                                    } else {
+                                        done("Response should have been either 401 or 400.");
+                                    }
+
+                                });
 
                         });
                 }
