@@ -3733,27 +3733,31 @@ console.log('nonT test3 blah blah blah blah:', attachment, typeof(attachment), '
                 // If authorization is bad and everything else is fine, we'll expect a 401
                 let badAuthHeaders = helper.addAllHeaders({}, true);
 
+		badAuthHeaders["Authorization"] = 'Basic ' + new Buffer('RobCIsNot:AUserOnThisLRS123').toString('base64');
+		    
                 request(helper.getEndpointAndAuth())
                     .get(helper.getEndpointStatements())
-                    .headers(headers)
+                    .headers(badAuthHeaders)
                     .expect(401)
-                    .end();
-
-                // In the case of BOTH a bad header situation AND bad auth, the LRS can return either 401 or 400
-                badAuthHeaders["X-Experience-API-Version"] = "BAD";
-
-                request(helper.getEndpointAndAuth())
-                    .get(helper.getEndpointStatements())
-                    .headers(headers)
                     .end(function (err, res) {
 
-                        if (res.statusCode === 400 || res.statusCode === 401) {
-                            done();
-                        } else {
-                            done("Response should have been either 401 or 400.");
-                        }
+                            // Allow a bad version after ensuring that 401 is from an incorrect auth
+                            badAuthHeaders["X-Experience-API-Version"] = "BAD";
 
-                    });
+                            request(helper.getEndpointAndAuth())
+                                .get(helper.getEndpointStatements())
+                                .headers(badAuthHeaders)
+                                .end(function (err, res) {
+
+                                    if (res.statusCode === 400 || res.statusCode === 401) {
+                                        done();
+                                    } else {
+                                        done("Response should have been either 401 or 400.");
+                                    }
+
+                                });
+
+                        });
             });
         }
 
