@@ -1,0 +1,13 @@
+{
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/attended",
+    "display": {
+      "en-GB": "attended",
+      "en-US": "attended"
+    }
+  },
+  "object": {
+    "objectType": "Activity",
+    "id": "http://www.example.com/meetings/occurances/34534"
+  }
+}

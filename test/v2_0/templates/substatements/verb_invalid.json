@@ -1,0 +1,20 @@
+{
+  "objectType": "SubStatement",
+  "actor": {
+    "objectType": "Agent",
+    "name": "xAPI mbox_sha1sum",
+    "mbox_sha1sum": "cd9b00a5611f94eaa7b1661edab976068e364975"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/reported",
+    "display": {
+      "en-GB": "reported",
+      "en-US": "reported",
+      "s-something": "пријавио"
+    }
+  },
+  "object": {
+    "objectType": "Activity",
+    "id": "http://www.example.com/meetings/occurances/34534"
+  }
+}

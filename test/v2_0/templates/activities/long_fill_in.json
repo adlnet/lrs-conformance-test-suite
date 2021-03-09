@@ -1,0 +1,25 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "definition": {
+    "name": {
+      "en": "Long-Fill-In"
+    },
+    "description": {
+      "en": "What is the purpose of the xAPI?"
+    },
+    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+    "moreInfo": "http://virtualmeeting.example.com/345256",
+    "interactionType": "long-fill-in",
+    "correctResponsesPattern": [
+      "{case_matters=false}{lang=en}To store and provide access to learning experiences."
+    ],
+    "extensions": {
+      "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+      "http://example.com/profiles/meetings/extension/reporter": {
+        "name": "Thomas",
+        "id": "http://openid.com/342"
+      }
+    }
+  }
+}

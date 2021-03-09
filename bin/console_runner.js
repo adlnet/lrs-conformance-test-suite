@@ -18,20 +18,20 @@ function clean_dir(val, dir) {
 
 program
     .version('0.0.1')
-    .option('-e, --endpoint [url]', 'xAPI endpoint')
+    .option('-e, --endpoint [url]', 'xAPI Endpoint')
     .option('-u, --authUser [string]', 'Basic Auth Username')
     .option('-p, --authPassword [string]', 'Basic Auth Password')
     .option('-a, --basicAuth', 'Enable Basic Auth')
     .option('-o, --oAuth1', 'Enable oAuth 1')
     .option('-c, --consumer_key [string]', 'oAuth 1 Consumer Key')
     .option('-s, --consumer_secret [string]', 'oAuth 1 Consumer Secret')
-    .option('-r, --request_token_path [string]', 'Path to OAuth request token endpoint (relative to endpoint)')
-    .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint)')
-    .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
-    .option('-g, --grep [string]', 'Only run tests that match the given pattern')
-    .option('-b, --bail', 'Abort the battery if one test fails')
-    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, ['v1_0_3'])
-    .option('-z, --errors', 'Results log of failing tests only')
+    .option('-r, --request_token_path [string]', 'Path to OAuth request token endpoint (relative to endpoint).')
+    .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint).')
+    .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint).')
+    .option('-g, --grep [string]', 'Only run tests that match the given pattern.')
+    .option('-b, --bail', 'Abort the battery if one test fails.')
+    .option('-d, --directory [value]', 'Specific directories of tests (as a comma-separated list with no spaces).', clean_dir, ['v2_0'])
+    .option('-z, --errors', 'Results log of failing tests only.')
     .parse(process.argv);
 
 var options = {
@@ -90,9 +90,9 @@ if (valid.errors.length) {
 
 var testRunner = null;
 
-//catches ctrl+c event
+// Catches Ctrl+C event.
 process.on('SIGINT', function() {
-    console.log(colors.white('Aborting tests'));
+    console.log(colors.white('Aborting tests.'));
 	testRunner.cancel();
 });
 
@@ -147,7 +147,7 @@ function start(options)
 				return temp;
 			}
 
-			// write log to file
+			// Write log to file.
 			var cleanLog = testRunner.getCleanRecord();
 			var output;
 			if (options.errors) {

@@ -122,7 +122,7 @@
         console.log("Grep is " + grep);
         process.env.DIRECTORY = options.directory[0];
 
-        //adds optional tests to the front in ascending order
+        // Adds optional tests to the front in ascending order.
         if (options.optional){
           options.optional.reverse().forEach(function(dir) {
               options.directory.unshift(dir);

@@ -9,15 +9,13 @@ const child_process = require('child_process'),
 	SpecRefs = require('../test/references.json');
 
 class Suite {
-	constructor(title)
-	{
+	constructor(title) {
 		var match;
 		this.log = "";
 		this.title = title;
-		if(match = /\(([^\)]*\d[^\)]*)\)/.exec(title))
-		{
+		if (match = /\(([^\)]*\d[^\)]*)\)/.exec(title)) {
 			this.name = title.slice(0, match.index).trim();
-			if(SpecRefs[this.name]){
+			if (SpecRefs[this.name]) {
 				var data = SpecRefs[this.name];
 				this.requirement = data['1.0.3_link'] || data['1.0.3_ref'] || data['1.0.2_ref_text'];
 			}
@@ -33,20 +31,17 @@ class Suite {
 		this.parent = null;
 		this.tests = [];
 	}
-	addTest(test){
+	addTest(test) {
 		this.tests.push(test);
 		test.parent = this;
 	}
-	_log(data)
-	{
-		this.log+=data;
+	_log(data) {
+		this.log += data;
 	}
 }
 
-class TestRunner extends EventEmitter
-{
-	constructor(name, owner, flags, lrsSettingsUUID,options, rollupRule)
-	{
+class TestRunner extends EventEmitter {
+	constructor(name, owner, flags, lrsSettingsUUID, options, rollupRule) {
 		super();
 
 		this.proc = null;
@@ -75,144 +70,135 @@ class TestRunner extends EventEmitter
 		this.activeTest = null;
 	}
 
-	start()
-	{
-		if(this.state !== 'notStarted') return;
+	start() {
+		if (this.state !== 'notStarted') return;
 		this.state = 'started';
 
-		// spin up the child process
-		this.proc = child_process.fork( libpath.join(__dirname, "lrs-test.js"),
+		// Spin up the child process.
+		this.proc = child_process.fork(libpath.join(__dirname, "lrs-test.js"),
 			["--debug"],
 			{
-				execArgv:[/*"--debug-brk=5959"*/],
-				cwd: libpath.join(__dirname,"/../")
+				execArgv: [/*"--debug-brk=5959"*/],
+				cwd: libpath.join(__dirname, "/../")
 			}
 		);
 
-		// hook up listeners
+		// Hook up listeners.
 		this._registerStatusUpdates();
 
-		// kick off tests when ready
-		this.proc.on('message', function(msg)
-		{
-			if(msg.action === 'ready'){
+		// Kick off tests when ready.
+		this.proc.on('message', function (msg) {
+			if (msg.action === 'ready') {
 				//this is still a bit of a mess - we'll build the actual settings from this.flags and this.options
 				var flags = JSON.parse(JSON.stringify(this.flags));
-				if(this.options && this.options.grep)
+				if (this.options && this.options.grep)
 					flags.grep = this.options.grep;
-				if(this.options && this.options.optional)
+				if (this.options && this.options.optional)
 					flags.optional = this.options.optional;
 
-				this.proc.send({action: 'runTests', payload: flags});
+				this.proc.send({ action: 'runTests', payload: flags });
 			}
 		}.bind(this));
 	}
 
-	_registerStatusUpdates()
-	{
+	_registerStatusUpdates() {
 
 
-		this.proc.on('message', function(msg)
-		{
+		this.proc.on('message', function (msg) {
 
 			var action = msg.action, payload = msg.payload;
-			switch(action)
-			{
-			case 'start':
+			switch (action) {
+				case 'start':
 
-				// initialize counters
-				this.summary.total = payload;
-				this.summary.passed = 0;
-				this.summary.failed = 0;
-				this.startTime = Date.now();
-				this.summary.version = version.versionNumber;
-				break;
-
-			case 'data':
-
-				if(this.activeTest)
-					this.activeTest._log(payload);
-				break;
-
-			case 'end':
-
-				this.endTime = Date.now();
-				this.duration = this.endTime - this.startTime;
-				this.state = 'finished';
-				break;
-
-			case 'suite start':
-
-				// start a new suite
-				var newSuite = new Suite(payload);
-
-				// add to log
-				if(this.activeTest)
-					this.activeTest.addTest(newSuite);
-				else
-					this.log = newSuite;
-
-				this.activeTest = newSuite;
-				break;
-
-			case 'suite end':
-
-				if(this.activeTest)
-				{
-					// finish the suite
-					if(this.activeTest.title === payload)
-					{
-						// roll up test status
-						this.activeTest.status = rollup[this.rollupRule](this.activeTest);
-
-						// move test cursor
-						this.activeTest = this.activeTest.parent;
-					}
-					else
-						console.error('Dangling suite end!', this.activeTest.title);
-				}
-				break;
-
-			case 'test start':
-
-				// start a new test
-				var newTest = new Suite(payload);
-
-				// add to log
-				if(this.activeTest)
-					this.activeTest.addTest(newTest);
-				else
-					this.log = newTest;
-
-				this.activeTest = newTest;
-				break;
-
-			case 'test end':
-
-				if(this.activeTest)
-				{
-					if(this.activeTest.title === payload)
-						this.activeTest = this.activeTest.parent;
-					else
-						console.error('Dangling test end!', this.activeTest.title);
+					// initialize counters
+					this.summary.total = payload;
+					this.summary.passed = 0;
+					this.summary.failed = 0;
+					this.startTime = Date.now();
+					this.summary.version = version.versionNumber;
 					break;
-				}
 
-			case 'test pass':
-				if(this.activeTest)
-				{
-					this.activeTest.status = 'passed';
-					this.summary.passed++;
-				}
-				break;
+				case 'data':
 
-			case 'test fail':
-				if(this.activeTest){ //careful - cancel can blank this, then the message comes in
-					this.activeTest.status = 'failed';
-					this.activeTest.error = payload.message;
-					this.summary.failed++;
-				}
-				break;
+					if (this.activeTest)
+						this.activeTest._log(payload);
+					break;
+
+				case 'end':
+
+					this.endTime = Date.now();
+					this.duration = this.endTime - this.startTime;
+					this.state = 'finished';
+					break;
+
+				case 'suite start':
+
+					// start a new suite
+					var newSuite = new Suite(payload);
+
+					// add to log
+					if (this.activeTest)
+						this.activeTest.addTest(newSuite);
+					else
+						this.log = newSuite;
+
+					this.activeTest = newSuite;
+					break;
+
+				case 'suite end':
+
+					if (this.activeTest) {
+						// finish the suite
+						if (this.activeTest.title === payload) {
+							// roll up test status
+							this.activeTest.status = rollup[this.rollupRule](this.activeTest);
+
+							// move test cursor
+							this.activeTest = this.activeTest.parent;
+						}
+						else
+							console.error('Dangling suite end!', this.activeTest.title);
+					}
+					break;
+
+				case 'test start':
+
+					// start a new test
+					var newTest = new Suite(payload);
+
+					// add to log
+					if (this.activeTest)
+						this.activeTest.addTest(newTest);
+					else
+						this.log = newTest;
+
+					this.activeTest = newTest;
+					break;
+
+				case 'test end':
+
+					if (this.activeTest) {
+						if (this.activeTest.title === payload)
+							this.activeTest = this.activeTest.parent;
+						else
+							console.error('Dangling test end!', this.activeTest.title);
+						break;
+					}
+
+				case 'test pass':
+					if (this.activeTest) {
+						this.activeTest.status = 'passed';
+						this.summary.passed++;
+					}
+					break;
+
+				case 'test fail':
+					if (this.activeTest) { //careful - cancel can blank this, then the message comes in
+						this.activeTest.status = 'failed';
+						this.activeTest.error = payload.message;
+						this.summary.failed++;
+					}
+					break;
 			};
 
 			// pass along the event
@@ -220,50 +206,43 @@ class TestRunner extends EventEmitter
 
 		}.bind(this));
 
-		this.proc.on("close", function(w)
-		{
-			if(this.state == "cancelled" || this.state == "finished")
-			{
+		this.proc.on("close", function (w) {
+			if (this.state == "cancelled" || this.state == "finished") {
 				return;
 			}
-			else
-			{
+			else {
 				this.state = "error";
-				this.emit('message', {action: 'end'});
+				this.emit('message', { action: 'end' });
 				this.emit('close');
 			}
 		}.bind(this));
 	}
 
-	cancel()
-	{
-		if(this.proc)
-		{
+	cancel() {
+		if (this.proc) {
 
 			this.endTime = Date.now();
 			this.duration = this.endTime - this.startTime;
 
-			// evaluate all in-progress suites to "cancelled"
+			// Evaluate all in-progress suites to "cancelled".
 			this.state = 'cancelled';
 			this.proc.kill();
-			if(this.activeTest)
-			{
+			if (this.activeTest) {
 				this.activeTest.status = 'cancelled';
 				this.activeTest = this.activeTest.parent;
 			}
-			while(this.activeTest){
+			while (this.activeTest) {
 				this.activeTest.status = rollup[this.rollupRule](this.activeTest);
-				this.emit('message', {action: 'suite end', payload: this.activeTest.title});
+				this.emit('message', { action: 'suite end', payload: this.activeTest.title });
 				this.activeTest = this.activeTest.parent;
 			}
 
-			this.emit('message', {action: 'end'});
+			this.emit('message', { action: 'end' });
 			this.emit('close');
 		}
 	}
 
-	getCleanRecord()
-	{
+	getCleanRecord() {
 
 
 		var runRecord = {
@@ -275,10 +254,10 @@ class TestRunner extends EventEmitter
 				authUser: this.flags.authUser,
 				oAuth1: this.flags.oAuth1,
 				consumer_key: this.flags.consumer_key,
-				grep:this.flags.grep,
+				grep: this.flags.grep,
 				optional: this.flags.optional
 			},
-			options:this.options,
+			options: this.options,
 			lrsSettingsUUID: this.lrsSettingsUUID,
 			rollupRule: this.rollupRule,
 
@@ -295,15 +274,14 @@ class TestRunner extends EventEmitter
 			}
 		};
 
-		function cleanLog(log)
-		{
-			if(!log) return undefined;
+		function cleanLog(log) {
+			if (!log) return undefined;
 
 			return {
 				title: log.title,
 				name: log.name,
 				requirement: log.requirement,
-				log:log.log,
+				log: log.log,
 				status: log.status,
 				error: log.error,
 				tests: log.tests.map(cleanLog)
