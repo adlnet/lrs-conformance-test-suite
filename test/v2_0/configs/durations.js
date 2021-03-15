@@ -20,7 +20,11 @@
         return [
             {
             /**  XAPI-00124, Data 2.4.5 result
-             * A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2. The alternative format (in conformity with the format used for time points and described in ISO 8601:2004(E) section 4.4.3.3) MUST NOT be used. The LRS rejects with 400 a statement which includes the “duration” property and the value does not validate to ISO 8601:2004(E) section 4.4.3.2.
+             * A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2.
+             * The alternative format (in conformity with the format used for time points and described in ISO 8601:2004(E) section 4.4.3.3)
+             * MUST NOT be used.
+             * The LRS rejects with 400 a statement which includes the “duration” property and the value does not validate to
+             * ISO 8601:2004(E) section 4.4.3.2.
              */
                 name: 'A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2. (Type, Data 4.6.s1.b1, XAPI-00124)',
                 config: [
