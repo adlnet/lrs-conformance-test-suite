@@ -24,7 +24,7 @@ describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s
         .post(helper.getEndpointStatements() + "?method=GET")
         .headers(helper.addAllHeaders({}))
         .form({limit: 1})
-        .expect(200).end(function (err, res) {
+        .expect(400, done)/* .end(function (err, res) {
             if (err) {
                 done(err);
             } else {
@@ -33,7 +33,7 @@ describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s
                 expect(results).to.have.property('more');
                 done();
             }
-        });
+        }); */
     });
 
     it('An LRS rejects an alternate request syntax not issued as a POST', function () {
@@ -42,13 +42,13 @@ describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s
         return helper.sendRequest('put', helper.getEndpointStatements(), parameters, formBody, 400);
     });
 
-    it('An LRS accepts an alternate request syntax PUT issued as a POST', function () {
+    it('An LRS REJECTS an alternate request syntax PUT issued as a POST', function () {
         var parameters = {method: 'PUT'};
         var formBody = {
             statementId: helper.generateUUID(),
             content: helper.buildStatement()
         }
-        return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(formBody), 204);
+        return helper.sendRequest('post', helper.getEndpointStatements(), parameters, helper.getUrlEncoding(formBody), 400);
     });
 
     it('During an alternate request syntax the LRS treats the listed form parameters, \'Authorization\', \'X-Experience-API-Version\', \'Content-Type\', \'Content-Length\', \'If-Match\' and \'If-None-Match\', as header parameters (Communictation 1.3.s3.b7)', function () {
@@ -105,7 +105,7 @@ describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s
             .post(helper.getEndpointStatements() + '?' + query)
             .headers({'content-type': 'application/x-www-form-urlencoded'})
             .form(form)
-            .expect(204, done);
+            .expect(400, done);
         });
 
         it('will fail PUT with no content body', function () {
