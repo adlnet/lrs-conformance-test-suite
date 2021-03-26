@@ -1,6 +1,6 @@
 /**
  * Description : This is a test suite that tests an LRS endpoint based on the testing requirements document
- * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
+ * found at https://github.com/adlnet/xapi-lrs-conformance-requirements.
  */
 
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
@@ -15,11 +15,11 @@ describe('Alternate Request Syntax Requirements (Communication 1.3)', function (
 /**  XAPI-00336, Communication 1.3 Alternate Request Syntax
  * The LRS MUST support the Alternate Request Syntax.
  */
-describe('The LRS MUST support the Alternate Request Syntax (Communication 1.3.s3.b15, XAPI-00336)', function () {
+describe('The LRS does NOT allow Alternate Request Syntax in xAPI 2.0', function () {
     /**  XAPI-00148, Communication 2.1.2 POST Statements
      * An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object.
      */
-    it('An LRS accepts a valid POST request containing a GET request returning 200 OK and the StatementResult Object. (Communication 1.3, Communication 2.1.2.s2.b3, XAPI-00148)', function (done) {
+    it('An LRS rejects POST requests containing method query parameters', function (done) {
         request(helper.getEndpointAndAuth())
         .post(helper.getEndpointStatements() + "?method=GET")
         .headers(helper.addAllHeaders({}))
