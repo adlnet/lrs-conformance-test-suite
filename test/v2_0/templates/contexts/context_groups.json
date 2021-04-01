@@ -1,0 +1,82 @@
+{
+    "registration": "ec531277-b57b-4c15-8d91-d292c5b2b8f7",
+    "platform": "Example football team.",
+    "language": "tlh",
+    "statement": {
+        "objectType": "StatementRef",
+        "id": "6690e6c9-3ef0-4ed3-8b37-7f3964730bee"
+    },
+    "contextAgents": [
+        {
+            "objectType": "contextAgent",
+            "agent": {
+                "objectType": "Agent",
+                "mbox": "mailto:player-1@example.com"
+            },
+            "relevantTypes": [
+                "https://example.com/xapi/american-footbal/activity-types/personnel/player",
+                "https://example.com/xapi/american-footbal/activity-types/position/quarterback"
+            ]
+        },
+        {
+            "objectType": "contextAgent",
+            "agent": {
+                "objectType": "Agent",
+                "mbox": "mailto:player-2@example.com"
+            },
+            "relevantTypes": [
+                "https://example.com/xapi/american-footbal/activity-types/personnel/player",
+                "https://example.com/xapi/american-footbal/activity-types/position/wide-receiver"
+            ]
+        },
+        {
+            "objectType": "contextAgent",
+            "agent": {
+                "objectType": "Agent",
+                "mbox": "mailto:player-3@example.com"
+            },
+            "relevantTypes": [
+                "https://example.com/xapi/american-footbal/activity-types/personnel/player",
+                "https://example.com/xapi/american-footbal/activity-types/position/cornerback"
+            ]
+        }
+    ],
+    "contextGroups": [
+        {
+            "objectType": "contextGroup",
+            "group": {
+                "objectType": "Group",
+                "mbox": "mailto:team-1@example.com"
+            },
+            "member": [
+                {
+                    "objectType": "Agent",
+                    "mbox": "mailto:player-1@example.com"
+                },
+                {
+                    "objectType": "Agent",
+                    "mbox": "mailto:player-2@example.com"
+                }
+            ],
+            "relevantTypes": [
+                "https://example.com/xapi/american-footbal/activity-types/team/a"
+            ]
+        },
+        {
+            "objectType": "contextGroup",
+            "group": {
+                "objectType": "Group",
+                "mbox": "mailto:team-2@example.com"
+            },
+            "member": [
+                {
+                    "objectType": "Agent",
+                    "mbox": "mailto:player-3@example.com"
+                }
+            ],
+            "relevantTypes": [
+                "https://example.com/xapi/american-footbal/activity-types/team/b"
+            ]
+        }
+    ]
+}
