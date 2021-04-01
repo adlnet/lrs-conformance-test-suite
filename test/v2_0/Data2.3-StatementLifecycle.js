@@ -30,7 +30,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
         var voidedId = helper.generateUUID();
         var stmtTime;
 
-        before('persist voided statement', function (done) {
+        before('Persist voided statement', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -45,7 +45,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
                 .expect(200, done);
         });
 
-        before('persist voiding statement', function (done) {
+        before('Persist voiding statement', function (done) {
             var templates = [
                 {statement: '{{statements.voiding}}'}
             ];
@@ -61,7 +61,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
                 .expect(200, done);
         });
 
-        it('should return a voided statement when using GET "voidedStatementId"', function (done) {
+        it('Should return a voided statement when using GET "voidedStatementId"', function (done) {
             this.timeout(0);
             var query = helper.getUrlEncoding({voidedStatementId: voidedId});
             request(helper.getEndpointAndAuth())
@@ -80,7 +80,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
                 });
         });
 
-        it('should return 404 when using GET with "statementId"', function (done) {
+        it('Should return 404 when using GET with "statementId"', function (done) {
             this.timeout(0);
             var query = helper.getUrlEncoding({statementId: voidedId});
             request(helper.getEndpointAndAuth())
@@ -100,7 +100,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
     describe('A Voiding Statement cannot Target another Voiding Statement (Data 2.3.2.s2.b7, XAPI-00016)', function () {
         var voidedId, voidingId;
 
-        before('persist voided statement', function (done) {
+        before('Persist voided statement', function (done) {
             var templates = [
                 {statement: '{{statements.default}}'}
             ];
@@ -120,7 +120,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
             });
         });
 
-        before('persist voiding statement', function (done) {
+        before('Persist voiding statement', function (done) {
             var templates = [
                 {statement: '{{statements.voiding}}'}
             ];
@@ -141,7 +141,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
             });
         });
 
-        it('should not void an already voided statement', function (done) {
+        it('Should not void an already voided statement', function (done) {
             this.timeout(0);
             var templates = [
                 {statement: '{{statements.object_statementref}}'},
@@ -169,7 +169,7 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
             });
         });
 
-        it('should not void a voiding statement', function (done) {
+        it('Should not void a voiding statement', function (done) {
             this.timeout(0);
             var templates = [
                 {statement: '{{statements.object_statementref}}'},

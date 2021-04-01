@@ -133,7 +133,7 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
             });
         });
 
-        describe('With a valid etag', function () {
+        describe('With a valid ETag', function () {
             var parameters, document;
             before('before', function() {
                 parameters = helper.buildAgentProfile();

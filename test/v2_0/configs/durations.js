@@ -29,7 +29,7 @@
                 name: 'A Duration MUST be expressed using the format for Duration in ISO 8601:2004(E) section 4.4.3.2. (Type, Data 4.6.s1.b1, XAPI-00124)',
                 config: [
                     {
-                        name: 'statement result "duration" property is valid',
+                        name: 'Statement result "duration" property is valid',
                         templates: [
                             {statement: '{{statements.result}}'},
                             {result: '{{results.default}}'},
@@ -38,7 +38,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'statement substatement result "duration" property is valid',
+                        name: 'Statement substatement result "duration" property is valid',
                         templates: [
                             {statement: '{{statements.object_substatement}}'},
                             {object: '{{substatements.result}}'},

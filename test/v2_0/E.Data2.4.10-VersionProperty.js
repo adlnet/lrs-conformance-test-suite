@@ -30,7 +30,7 @@ describe('Version Property Requirements (Data 2.4.10)', () => {
             {statement: '{{statements.default}}'}
         ];
 
-        var version = '1.0.3';
+        var version = '2.0.0';
         var id = helper.generateUUID();
 
         var statement = helper.createFromTemplate(statementTemplates);

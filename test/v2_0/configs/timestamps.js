@@ -66,7 +66,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'statement "template" valid RFC 3339 date in timestamp',
+                        name: 'Statement "template" valid RFC 3339 date in timestamp',
                         templates: [
                             {statement: '{{statements.default}}'},
                             {timestamp: VALID_RFC}
@@ -114,7 +114,7 @@
                         expect: [400]
                     },
                     {
-                        name: 'substatement "template" valid RFC 3339 date in timestamp',
+                        name: 'Substatement "template" valid RFC 3339 date in timestamp',
                         templates: [
                             {statement: '{{statements.default}}'},
                             {timestamp: VALID_RFC}

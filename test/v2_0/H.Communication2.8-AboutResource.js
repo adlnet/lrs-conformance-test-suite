@@ -54,7 +54,7 @@ describe('About Resource Requirements (Communication 2.8)', function () {
 /**  XAPI-00317, Communication 2.8 About Resource
  * An LRS's About API's version property contains at least one string of "1.0.x"
  */
-    it('An LRS\'s About Resource\'s version property contains at least one string of "1.0.3" (Communication 2.8.s5.b1.b1, XAPI-00317)', function () {
+    it('An LRS\'s About Resource\'s version property contains at least one string of "2.0.0" (Communication 2.8.s5.b1.b1, XAPI-00317)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
@@ -62,7 +62,7 @@ describe('About Resource Requirements (Communication 2.8)', function () {
 
                 var foundVersion = false
                 about.version.forEach(function (item) {
-                    if (item === '1.0.3') {
+                    if (item === '2.0.0') {
                         foundVersion = true;
                     }
                 })
@@ -73,12 +73,12 @@ describe('About Resource Requirements (Communication 2.8)', function () {
 /**  XAPI-00316, Communication 2.8 About Resource
  * An LRS's About API's version property can only have values of "0.9", "0.95", "1.0.0", or “1.0.x” with
  */
-    it('An LRS\'s About Resource\'s version property can only have values of "0.9", "0.95", "1.0.0", or ""1.0." + X" with (Communication 2.8.s5.b1.b1, XAPI-00316)', function () {
+    it('An LRS\'s About Resource\'s version property can only have values of "0.9", "0.95", "1.0.0", ""1.0." + X", or "2.0.0" with (Communication 2.8.s5.b1.b1, XAPI-00316)', function () {
         return helper.sendRequest('get', '/about', undefined, undefined, 200)
             .then(function (res) {
                 var about = res.body;
                 expect(about).to.have.property('version').to.be.an('array');
-                var validVersions = ['0.9', '0.95', '1.0.0', '1.0.1', '1.0.2', '1.0.3'];
+                var validVersions = ['0.9', '0.95', '1.0.0', '1.0.1', '1.0.2', '1.0.3', '2.0.0'];
                 about.version.forEach(function (item) {
                     expect(validVersions).to.include(item);
                 })
@@ -98,26 +98,27 @@ describe('About Resource Requirements (Communication 2.8)', function () {
                 if (err) {
                     done(err);
                 } else if (res.statusCode === 400) {
-                    // if the status code is a 400, we expect that the request was handled and rejected by a 1.0.x compliant lrs and test for that version in the result headers or that the the request was forwarded to a 0.9x lrs and rejected
+                    // If the status code is a 400, we expect that the request was handled and rejected by a 2.0.x compliant LRS
+                    // and test for that version in the result headers or that the the request was forwarded to a 0.9x or 1.0.x LRS and rejected.
                     expect(res.statusCode).to.eql(400);
                     expect(res.headers['x-experience-api-version']).to.exist;
-                    expect(res.headers['x-experience-api-version']).to.match(/^1\.0\.\d+$|^0?\.9\d*?$/);
+                    expect(res.headers['x-experience-api-version']).to.match(/^2\.0\.\d+$|^0?\.9\d*?$/);
                     done();
                 } else if (res.statusCode === 200) {
-                    // if the status code is a 200, we expect that the request was rerouted to a 0.9x compliant lrs and test for that version in the result headers
+                    // If the status code is a 200, we expect that the request was rerouted to a 1.0.x or 0.9x compliant LRS and test for that version in the result headers.
                     expect(res.statusCode).to.eql(200);
                     expect(res.headers['x-experience-api-version']).to.exist;
                     expect(res.headers['x-experience-api-version']).to.match(/^0?\.9\d*?$/);
                     done();
                 } else {
-                    // at this point there was some error and we pass along the message
+                    // At this point there was some error and we pass along the message.
                     var str = 'Received: status code - ' + res.statusCode + ' from LRS of version ';
                     if (res.headers['x-experience-api-version']) {
                         str += res.headers['x-experience-api-version'];
                     } else {
                         str += 'missing';
                     }
-                    str += '.\nExpected: either 400 with LRS version 1.0.x, or 200 with LRS version 0.9x.';
+                    str += '.\nExpected: Either 400 with LRS version 1.0.x, or 200 with LRS version 0.9x.';
                     done(new Error(str));
                 }
             });
@@ -132,7 +133,7 @@ describe('About Resource Requirements (Communication 2.8)', function () {
         });
         */
 
-        it ('using Activities Endpoint', function(done){
+        it ('Using Activities Endpoint', function(done){
             request(helper.getEndpointAndAuth())
               .get(helper.getEndpointActivities())
               .headers(helper.addBasicAuthenicationHeader({}))
@@ -165,7 +166,7 @@ describe('About Resource Requirements (Communication 2.8)', function () {
               });
         });
 
-        it ('using Activities Profile Endpoint', function(done){
+        it ('Using Activities Profile Endpoint', function(done){
             request(helper.getEndpointAndAuth())
               .get(helper.getEndpointActivitiesProfile())
               .headers(helper.addBasicAuthenicationHeader({}))
@@ -198,7 +199,7 @@ describe('About Resource Requirements (Communication 2.8)', function () {
               });
         });
 
-        it ('using Activities State Endpoint', function(done){
+        it ('Using Activities State Endpoint', function(done){
             request(helper.getEndpointAndAuth())
               .get(helper.getEndpointActivitiesState())
               .headers(helper.addBasicAuthenicationHeader({}))
@@ -231,7 +232,7 @@ describe('About Resource Requirements (Communication 2.8)', function () {
               });
         });
 
-        it ('using Agents Endpoint', function(done){
+        it ('Using Agents Endpoint', function(done){
             request(helper.getEndpointAndAuth())
               .get(helper.getEndpointAgents())
               .headers(helper.addBasicAuthenicationHeader({}))
@@ -264,7 +265,7 @@ describe('About Resource Requirements (Communication 2.8)', function () {
               });
         });
 
-        it ('using Agents Profile Endpoint', function(done){
+        it ('Using Agents Profile Endpoint', function(done){
             request(helper.getEndpointAndAuth())
               .get(helper.getEndpointAgentsProfile())
               .headers(helper.addBasicAuthenicationHeader({}))
