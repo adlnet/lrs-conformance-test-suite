@@ -35,6 +35,8 @@ describe('Context Property Requirements (Data 2.4.6)', function () {
  * XAPI-00096 - below
  */
     templatingSelection.createTemplate('contextactivities.js');
+    templatingSelection.createTemplate('contextagents.js');
+    templatingSelection.createTemplate('contextgroups.js');
 
 /**  XAPI-00096, Data 2.4.6.2 ContextActivities Property
  * An LRS's Statement Resource returns a ContextActivity in an array, even if only a single ContextActivity is returned.

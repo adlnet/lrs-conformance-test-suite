@@ -35,9 +35,9 @@
                         try {
                             var data = {};
                             if (test.templates) {
-                                // convert template mapping to JSON objects
+                                // Convert template mapping to JSON objects.
                                 var converted = helper.convertTemplate(test.templates);
-                                // this handles if no override
+                                // This handles if no override.
                                 var mockObject = helper.createTestObject(converted);
                                 var key = Object.keys(mockObject);
                                 data = mockObject[key];
