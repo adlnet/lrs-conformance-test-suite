@@ -5,6 +5,18 @@ LRS Conformance Test Suite
 
 This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-About.md#experience-api) and is based on the ADL [testing requirements](https://adl.gitbooks.io/xapi-lrs-conformance-requirements/content/) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite only supports basic authentication. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
 
+### xAPI 2.0 Update
+
+xAPI 2.0 changed a number of requirements for the LRS from previous versions; most of these are additions supporting new features, while others have been removed. The details of the changes may be seen in the updated xAPI Spec.
+
+The following are the major changes that warranted the creation of additional tests in the conformance suite:
+- Full support and validation for context agents and context groups
+- 2.0.x is a valid set of xAPI versions
+- Timestamps may be represented in the RFC 3339 format (changed from strict ISO 8601)
+- If a timestamp is not formatted to UTC, the LRS will convert the timestamp instead of rejecting the statement
+- Alternate Request Syntax is no longer supported and therefore not tested
+- LRS responses now include `Last-Modified` headers
+
 ### Installation  
 
 Dependency  
