@@ -8,17 +8,14 @@
 (function (module) {
     "use strict";
 
-    // defines overwriting data
-    var INVALID_LANGUAGE = {a12345: 'should fail'};
-    var INVALID_NUMERIC = 12345;
+    // Defines overwriting data.
     var INVALID_OBJECT = {key: 'should fail'};
-    var INVALID_STRING = 'should fail';
     var VALID_ACTIVITY = {
         "objectType": "Activity",
         "id": "http://www.example.com/meetings/occurances/34534"
     };
 
-    // configures tests
+    // Configures tests.
     module.exports.config = function () {
         return [
             {

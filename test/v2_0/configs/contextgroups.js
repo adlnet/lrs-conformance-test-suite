@@ -10,44 +10,44 @@
 
     // Defines overwriting data.
     var INVALID_OBJECT_TYPE = {
-        contextAgents: [
+        contextGroups: [
             {
                 objectType: "Should fail",
-                agent: {
-                    objectType: "Agent",
-                    mbox: "mailto:player-1@example.com"
-                }
+                group: {
+                    objectType: "Group",
+                    mbox: "mailto:team-1@example.com"
+                },
+                member: [
+                    {
+                        objectType: "Agent",
+                        mbox: "mailto:player-1@example.com"
+                    }
+                ],
             }
         ]
-    }
-    var INVALID_AGENT = {
+    };
+    var INVALID_GROUP = {
         contextAgents: [
             {
-                objectType: "contextAgent",
-                agent: {
+                objectType: "contextGroup",
+                group: {
                     key: "Should fail"
                 }
             }
         ]
-    }
-    var INVALID_OBJECT = { key: 'should fail' };
-    var INVALID_STRING = 'should fail';
-    var VALID_ACTIVITY = {
-        "objectType": "Activity",
-        "id": "http://www.example.com/meetings/occurances/34534"
     };
 
     // Configures tests.
     module.exports.config = function () {
         return [
             {
-                /** ContextAgents Property
-                 *  A "contextAgents" property is an array of "contextAgent" Objects.
+                /** ContextGroups Property
+                 *  A "contextGroups" property is an array of "contextGroup" Objects.
                  */
-                name: 'A "contextAgents" property is an array of "contextAgent" Objects',
+                name: 'A "contextGroups" property is an array of "contextGroup" Objects',
                 config: [
                     {
-                        name: 'Statement with "contextAgents" property has an array of valid "contextAgent" Objects',
+                        name: 'Statement with "contextGroups" property has an array of valid "contextGroup" Objects',
                         templates: [
                             { statement: '{{statements.context}}' },
                             { context: '{{contexts.context_agents}}' }
@@ -55,7 +55,7 @@
                         expect: [200]
                     },
                     {
-                        name: 'Statement substatement with "contextAgents" property has an array of valid "contextAgent" Objects',
+                        name: 'Statement substatement with "contextGroups" property has an array of valid "contextGroup" Objects',
                         templates: [
                             { statement: '{{statements.object_substatement}}' },
                             { object: '{{substatements.context}}' },
@@ -66,14 +66,14 @@
                 ]
             },
             {
-                /** ContextAgents Object
-                 *  A "contextAgents" Object must have an "objectType" property of string "contextAgent" and a valid Agent Object "agent";
+                /** ContextGroups Object
+                 *  A "contextGroups" Object must have an "objectType" property of string "contextGroup" and a valid Group Object "group";
                  *  it may also have a "relevantTypes" property as an array of Activity Type IRIs.
                  */
-                name: 'A "contextAgents" Object must have an "objectType" property of string "contextAgent" and a valid Agent Object "agent"',
+                name: 'A "contextGroups" Object must have an "objectType" property of string "contextGroup" and a valid Group Object "group"',
                 config: [
                     {
-                        name: 'Statement with "contextAgents" Object rejects statement if "objectType" property is anything other than string "contextAgent"',
+                        name: 'Statement with "contextGroups" Object rejects statement if "objectType" property is anything other than string "contextGroup"',
                         templates: [
                             { statement: '{{statements.context}}' },
                             { context: INVALID_OBJECT_TYPE }
@@ -81,15 +81,15 @@
                         expect: [400]
                     },
                     {
-                        name: 'Statement with "contextAgents" Object rejects statement if "agent" property is invalid',
+                        name: 'Statement with "contextGroups" Object rejects statement if "group" property is invalid',
                         templates: [
                             { statement: '{{statements.context}}' },
-                            { context: INVALID_AGENT }
+                            { context: INVALID_GROUP }
                         ],
                         expect: [400]
                     },
                     {
-                        name: 'Statement substatement with "contextAgents" Object rejects statement if "objectType" property is anything other than string "contextAgent"',
+                        name: 'Statement substatement with "contextGroups" Object rejects statement if "objectType" property is anything other than string "contextGroup"',
                         templates: [
                             { statement: '{{statements.object_substatement}}' },
                             { object: '{{substatements.context}}' },
@@ -98,11 +98,11 @@
                         expect: [400]
                     },
                     {
-                        name: 'Statement substatement with "contextAgents" Object rejects statement if "agent" property is invalid',
+                        name: 'Statement substatement with "contextGroups" Object rejects statement if "group" property is invalid',
                         templates: [
                             { statement: '{{statements.object_substatement}}' },
                             { object: '{{substatements.context}}' },
-                            { context: INVALID_AGENT }
+                            { context: INVALID_GROUP }
                         ],
                         expect: [400]
                     }
