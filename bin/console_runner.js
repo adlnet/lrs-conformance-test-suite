@@ -19,7 +19,7 @@ function clean_dir(val, dir) {
 
 program
     .version('0.0.1')
-    .option('-x, --xapiVersion [string]', 'Version of the xAPI Spec to test')
+    .option('-x, --xapiVersion [string]', '🌟 New: Version of the xAPI spec to test against')
     .option('-e, --endpoint [url]', 'xAPI endpoint')
     .option('-u, --authUser [string]', 'Basic Auth Username')
     .option('-p, --authPassword [string]', 'Basic Auth Password')
