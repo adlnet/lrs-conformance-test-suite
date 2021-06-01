@@ -28,6 +28,7 @@ $ node bin/console_runner.js --help
 
     -h, --help                         output usage information
     -V, --version                      output the version number
+    -x, --xapiVersion [string]         🌟 New: Version of the xAPI spec to test against
     -e, --endpoint [url]               xAPI endpoint
     -u, --authUser [string]            Basic Auth Username
     -p, --authPassword [string]        Basic Auth Password
