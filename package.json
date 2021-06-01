@@ -4,7 +4,7 @@
   "description": "lrs-conformance-tests",
   "main": "./bin/console_runner.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha test/v1_0_2/*.js --reporter nyan",
+    "test": "node node_modules/mocha/bin/mocha test/v1_0_2/*.js --reporter nyan",
     "start": "node ./bin/console_runner.js"
   },
   "repository": {

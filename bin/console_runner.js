@@ -3,8 +3,9 @@ var TestRunner = require('./testRunner.js').testRunner;
 var jsonSchema = require('jsonschema');
 var validate = jsonSchema.validate;
 var colors = require('colors');
-var libpath = require('path'),
-	fs = require('fs');
+var libpath = require('path');
+var fs = require('fs');
+const specConfig = require("../specConfig");
 
 require('pretty-error').start();
 
@@ -18,6 +19,7 @@ function clean_dir(val, dir) {
 
 program
     .version('0.0.1')
+    .option('-x, --xapiVersion [string]', 'Version of the xAPI Spec to test')
     .option('-e, --endpoint [url]', 'xAPI endpoint')
     .option('-u, --authUser [string]', 'Basic Auth Username')
     .option('-p, --authPassword [string]', 'Basic Auth Password')
@@ -30,26 +32,27 @@ program
     .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
     .option('-g, --grep [string]', 'Only run tests that match the given pattern')
     .option('-b, --bail', 'Abort the battery if one test fails')
-    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, ['v1_0_3'])
+    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, [...[]])
     .option('-z, --errors', 'Results log of failing tests only')
     .parse(process.argv);
 
 var options = {
-        endpoint: program.endpoint,
-        authUser: program.authUser,
-        authPass: program.authPassword,
-        basicAuth: program.basicAuth,
-        oAuth1: program.oAuth1,
-        consumer_key: program.consumer_key,
-        consumer_secret: program.consumer_secret,
-        request_token_path: program.request_token_path,
-        auth_token_path: program.auth_token_path,
-        authorization_path: program.authorization_path,
-        grep: program.grep,
-        bail: program.bail,
-        directory: program.directory,
-		errors: program.errors
-    }
+    xapiVersion: program.xapiVersion,
+    endpoint: program.endpoint,
+    authUser: program.authUser,
+    authPass: program.authPassword,
+    basicAuth: program.basicAuth,
+    oAuth1: program.oAuth1,
+    consumer_key: program.consumer_key,
+    consumer_secret: program.consumer_secret,
+    request_token_path: program.request_token_path,
+    auth_token_path: program.auth_token_path,
+    authorization_path: program.authorization_path,
+    grep: program.grep,
+    bail: program.bail,
+    directory: program.directory,
+    errors: program.errors
+}
 
 /*
 var valid = validate(options, {
@@ -96,7 +99,6 @@ process.on('SIGINT', function() {
 	testRunner.cancel();
 });
 
-
 process.on('exit', function() {
     console.log(colors.white('Closed'));
 })
@@ -104,9 +106,51 @@ process.on('exit', function() {
 function start(options)
 {
     //These are already used to fetch the access token, and are not needed by the runer
-    delete options.request_token_path ;
-    delete options.auth_token_path ;
-    delete options.authorization_path ;
+    delete options.request_token_path;
+    delete options.auth_token_path;
+    delete options.authorization_path;
+
+    let endpointSpecified = options.endpoint != undefined;
+    let versionSpecified = options.xapiVersion != undefined;
+    let directorySpecified = options.directory.length > 0;
+
+    let defaultDirectory = specConfig.specToFolder[specConfig.defaultVersion]
+
+    if (!endpointSpecified) {
+        console.error(`You must specify an endpoint (-e or --endpoint) for your LRS.`); 
+        console.error(`LRS endpoints typically have the form: https://lrs.net/xapi.`); 
+        process.exit(1);
+    }
+
+    if (versionSpecified && directorySpecified) {
+        console.error(`Cannot specify both an xAPI Version and a Directory.`); 
+        process.exit(1);
+    }
+
+    // Set up a directory based on whether or not we provided an xAPI version
+    if (versionSpecified) {
+        let versionFolder = specConfig.specToFolder[options.xapiVersion];
+        if (versionFolder != undefined)
+            options.directory = [versionFolder];
+        
+        else {
+            console.error(`Unknown version of the xAPI spec: ${options.xapiVersion}.  Unable to find appropriate test suite.`); 
+            process.exit(1);
+        }
+    }
+
+    if (!versionSpecified && !directorySpecified) {
+        options.xapiVersion = specConfig.defaultVersion
+        options.directory = [defaultDirectory]
+        console.warn(`No xAPI version or manual path specified -- defaulting to ${specConfig.defaultVersion}.`); 
+    }
+
+    console.log(`
+    \r\bAttempting xAPI Conformance Suite Against:
+    \r\r    xAPI Version: ${options.xapiVersion}
+    \r\r    Test Path(s): ${options.directory}
+    \r\r    LRS Endpoint: ${options.endpoint}
+    `)
 
 	testRunner = new TestRunner('console', null, options);
     testRunner.start();
