@@ -521,7 +521,7 @@
                         name: 'should fail when not using "version"',
                         templates: [
                             {statement: '{{statements.default}}'},
-                            {Version: '1.0.3'}
+                            {Version: '2.0.0'}
                         ],
                         expect: [400]
                     },

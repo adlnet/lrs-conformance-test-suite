@@ -97,7 +97,7 @@ describe('The LRS does NOT allow Alternate Request Syntax in xAPI 2.0', function
             var form = {
                 statementId: helper.generateUUID(),
                 content: JSON.stringify(data),
-                'X-Experience-API-Version': '1.0.3',
+                'X-Experience-API-Version': '2.0.0',
                 Authorization: auth
             }
 
@@ -125,7 +125,7 @@ describe('The LRS does NOT allow Alternate Request Syntax in xAPI 2.0', function
             var form = {
                 statementId: helper.generateUUID(),
                 content: JSON.stringify(data),
-                'X-Experience-API-Version': '1.0.3'
+                'X-Experience-API-Version': '2.0.0'
             }
 
             request(helper.getEndpointAndAuth())
