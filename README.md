@@ -52,6 +52,7 @@ $ node bin/console_runner.js --help
     -l, --authorization_path [string]  Path to OAuth user authorization endpoint (relative to endpoint)
     -g, --grep [string]                Only run tests that match the given pattern
     -b, --bail                         Abort the battery if one test fails
+    -x, --xapiVersion [string]         🌟 New: Version of the xAPI spec to test against
     -d, --directory [value]            Specific directories of tests (as a comma seperated list with no spaces)
     -z, --errors                       Results log of failing tests only
 ```
