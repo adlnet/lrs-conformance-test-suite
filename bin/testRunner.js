@@ -1,12 +1,11 @@
 'use strict';
 
-const child_process = require('child_process'),
-	libpath = require('path'),
-	fs = require('fs'),
-	EventEmitter = require('events').EventEmitter,
-	rollup = require('./rollupRules.js'),
-	version = require('../version.js'),
-	SpecRefs = require('../test/references.json');
+const child_process = require('child_process');	
+const libpath = require('path');
+const EventEmitter = require('events').EventEmitter;
+const rollup = require('./rollupRules.js');
+const version = require('../version.js');
+const SpecRefs = require('../test/references.json');
 
 class Suite {
 	constructor(title) {
@@ -115,7 +114,7 @@ class TestRunner extends EventEmitter {
 					this.summary.passed = 0;
 					this.summary.failed = 0;
 					this.startTime = Date.now();
-					this.summary.version = version.versionNumber;
+					this.summary.version = version.specNumber;
 					break;
 
 				case 'data':
@@ -270,7 +269,7 @@ class TestRunner extends EventEmitter {
 				total: this.summary.total,
 				passed: this.summary.passed,
 				failed: this.summary.failed,
-				version: version.versionNumber
+				version: version.specNumber
 			}
 		};
 

@@ -1,6 +1,6 @@
 module.exports = {
 
-    defaultVersion: "1.0.3",
+    defaultVersion: "2.0.0",
 
     specToFolder: {
         "1.0.2": "v1_0_2",
