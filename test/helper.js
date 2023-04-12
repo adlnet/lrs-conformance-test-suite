@@ -69,8 +69,8 @@ if (!process.env.EB_NODE_COMMAND) {
     /** Endpoint Statements */
     var URL_STATEMENTS = '/statements';
 
-    /** HTTP header xAPI Version */
-    var XAPI_VERSION = '2.0.0';
+    // /** HTTP header xAPI Version */
+    // var XAPI_VERSION = '2.0.0';
 
     module.exports = {
         /**
@@ -596,7 +596,7 @@ if (!process.env.EB_NODE_COMMAND) {
          * @returns {String}
          */
         getXapiVersion: function() {
-            return XAPI_VERSION;
+            return process.env.XAPI_VERSION;
         },
         /**
          * Performs deep compare of JSON original / other parameters to determine equivalence.
@@ -614,7 +614,7 @@ if (!process.env.EB_NODE_COMMAND) {
          */
         buildFormBody: function (content, id) {
             var body = {
-                'X-Experience-API-Version': '2.0.0',
+                'X-Experience-API-Version': process.env.XAPI_VERSION,
                 'content': JSON.stringify(content)
             }
             if (id) {

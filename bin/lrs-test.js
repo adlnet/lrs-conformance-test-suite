@@ -87,8 +87,10 @@
             process.exit();
         }
 
+        var XAPI_VERSION = "1.0.3";
         var DIRECTORY = ['v1_0_3'];
         var options = {
+            xapiVersion: _options.xapiVersion || XAPI_VERSION,
             directory: _options.directory || DIRECTORY,
             endpoint: _options.endpoint,
             basicAuth: _options.basicAuth,
@@ -132,13 +134,12 @@
 
         console.log("directory is ", options.directory);
 
-
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;
         process.env.BASIC_AUTH_USER = options.authUser;
         process.env.BASIC_AUTH_PASSWORD = options.authPass;
         process.env.OAUTH1_ENABLED = options.oAuth1;
-
+        process.env.XAPI_VERSION = options.xapiVersion;
 
         if(options.oAuth1)
         {
