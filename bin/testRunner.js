@@ -269,7 +269,7 @@ class TestRunner extends EventEmitter {
 				total: this.summary.total,
 				passed: this.summary.passed,
 				failed: this.summary.failed,
-				version: version.specNumber
+				version: this.xapiVersion
 			}
 		};
 

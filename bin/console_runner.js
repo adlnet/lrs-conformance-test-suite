@@ -115,7 +115,6 @@ function start(options)
     let versionSpecified = options.xapiVersion != undefined;
 
     let directorySpecified = options.directory.length > 0;
-
     let defaultDirectory = specConfig.specToFolder[specConfig.defaultVersion]
 
     if (!endpointSpecified) {
