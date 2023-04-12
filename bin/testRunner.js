@@ -52,6 +52,8 @@ class TestRunner extends EventEmitter {
 		this.lrsSettingsUUID = lrsSettingsUUID;
 		this.rollupRule = rollup[rollupRule] ? rollupRule : 'mustPassAll';
 
+		this.xapiVersion = (flags.xapiVersion || version.specNumber);
+
 		this.uuid = require('uuid').v4();
 		this.startTime = null;
 		this.endTime = null;
@@ -114,7 +116,7 @@ class TestRunner extends EventEmitter {
 					this.summary.passed = 0;
 					this.summary.failed = 0;
 					this.startTime = Date.now();
-					this.summary.version = version.specNumber;
+					this.summary.version = this.xapiVersion;
 					break;
 
 				case 'data':
