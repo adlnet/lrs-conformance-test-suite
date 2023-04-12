@@ -242,8 +242,6 @@ class TestRunner extends EventEmitter {
 	}
 
 	getCleanRecord() {
-
-
 		var runRecord = {
 			name: this.name || null,
 			owner: this.owner || null,

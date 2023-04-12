@@ -9,25 +9,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/TryxAPI/lrs-conformance-tests.git"
+    "url": "git://github.com/adlnet/lrs-conformance-test-suite.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TryxAPI/lrs-conformance-tests/issues"
+    "url": "https://github.com/adlnet/lrs-conformance-test-suite/issues"
   },
   "bin": {
     "lrs-test": "./bin/console_runner.js"
   },
-  "homepage": "https://github.com/TryxAPI/lrs-conformance-tests",
+  "homepage": "https://github.com/adlnet/lrs-conformance-test-suite",
   "dependencies": {
     "chai": "^2.3.0",
-    "chai-as-promised": "^4.1.1",
     "chai-things": "^0.2.0",
     "colors": "^1.1.2",
     "comb": "^1.0.1",
     "commander": "^2.6.0",
-    "concat-stream": "^1.5.1",
     "cookie-parser": "^1.4.1",
     "dirty-chai": "^1.0.0",
     "exit": "^0.1.2",
@@ -35,23 +33,18 @@
     "extend": "^2.0.0",
     "form-data": "^1.0.0-rc4",
     "form-urlencoded": "0.0.7",
-    "growl": "^1.10.0",
     "isemail": "^1.1.1",
     "joi": "^6.4.1",
     "jsonschema": "^1.1.0",
     "jws": "^3.1.3",
-    "lodash-node": "^3.2.0",
+    "lodash.isequal": "^4.5.0",
     "mocha": "^1.20.1",
     "moment": "^2.8.4",
     "node-env-file": "0.1.3",
-    "node-uuid": "^1.4.1",
     "oauth": "^0.9.14",
-    "oauth-1.0a": "^1.0.1",
     "open": "0.0.5",
     "pretty-error": "^2.0.0",
     "q": "^1.1.2",
-    "querystring": "^0.2.0",
-    "questions": "0.0.6",
     "request": "^2.37.0",
     "should": "^4.0.4",
     "string": "^3.1.0",
@@ -59,7 +52,8 @@
     "superagent-oauth": "^0.2.3",
     "supertest": "file:./local/supertest",
     "supertest-as-promised": "^1.0.0",
-    "uuid": "^2.0.1",
+    "uuid": "^9.0.0",
     "validator": "^5.7.0"
   }
 }
+

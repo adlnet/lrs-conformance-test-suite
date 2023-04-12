@@ -1,9 +1,4 @@
-var request = require("request");
-var OAuth1 = require('oauth-1.0a');
 var express = require("express");
-
-var questions = require('questions');
-
 var OAuth = require('oauth').OAuth;
 
 

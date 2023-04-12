@@ -9,7 +9,7 @@ var path = require('path');
 if (!process.env.EB_NODE_COMMAND) {
     (require('node-env-file'))(path.join(__dirname, './.env'));
 }
-(function (module, fs, extend, uuid, lodash, FormUrlencode, jws, crypto) {
+(function (module, fs, extend, uuid, lodashIsEqual, FormUrlencode, jws, crypto) {
 
 
     var oauth;
@@ -605,7 +605,7 @@ if (!process.env.EB_NODE_COMMAND) {
          * @returns {boolean}
          */
         isEqual: function (original, other) {
-            return lodash.isEqual(original, other);
+            return lodashIsEqual(original, other);
         },
         /**
          * Returns a string of a form encoded content with headers.
@@ -990,4 +990,4 @@ if (!process.env.EB_NODE_COMMAND) {
             }
         });
     }
-}(module, require('fs'), require('extend'), require('node-uuid'), require('lodash-node'), require('form-urlencoded'), require('jws'), require('crypto')));
+}(module, require('fs'), require('extend'), require('uuid'), require('lodash.isequal'), require('form-urlencoded'), require('jws'), require('crypto')));
