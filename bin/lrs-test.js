@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+const specConfig = require('../specConfig');
+
 /**
  * Description : This is the command line interface for running the lrs conformance test suite.
  *
@@ -87,11 +90,44 @@
             process.exit();
         }
 
-        var XAPI_VERSION = "1.0.3";
-        var DIRECTORY = ['v1_0_3'];
+        let endpointSpecified = _options.endpoint != undefined;
+        let versionSpecified = _options.xapiVersion != undefined;
+
+        let directorySpecified = Array.isArray(_options.directory) && _options.directory.length > 0;
+        let defaultDirectory = specConfig.specToFolder[specConfig.defaultVersion]
+
+        if (!endpointSpecified) {
+            console.error(`You must specify an endpoint (-e or --endpoint) for your LRS.`); 
+            console.error(`LRS endpoints typically have the form: https://lrs.net/xapi.`); 
+            process.exit(1);
+        }
+
+        if (versionSpecified && directorySpecified) {
+            console.error(`Cannot specify both an xAPI Version and a Directory.`); 
+            process.exit(1);
+        }
+
+        // Set up a directory based on whether or not we provided an xAPI version
+        if (versionSpecified) {
+            let versionFolder = specConfig.specToFolder[_options.xapiVersion];
+            if (versionFolder != undefined)
+                _options.directory = [versionFolder];
+
+            else {
+                console.error(`Unknown version of the xAPI spec: ${_options.xapiVersion}.  Unable to find appropriate test suite.`); 
+                process.exit(1);
+            }
+        }
+
+        if (!versionSpecified && !directorySpecified) {
+            _options.xapiVersion = specConfig.defaultVersion;
+            _options.directory = [defaultDirectory];
+            console.warn(`No xAPI version or manual path specified -- defaulting to ${specConfig.defaultVersion}.`); 
+        }
+
         var options = {
-            xapiVersion: _options.xapiVersion || XAPI_VERSION,
-            directory: _options.directory || DIRECTORY,
+            xapiVersion: _options.xapiVersion,
+            directory: _options.directory,
             endpoint: _options.endpoint,
             basicAuth: _options.basicAuth,
             authUser: _options.authUser,
@@ -122,6 +158,13 @@
             bail: options.bail
         });
 
+        console.log(`
+            \r\bAttempting xAPI Conformance Suite Against:
+            \r\r    xAPI Version: ${options.xapiVersion}
+            \r\r    Test Path(s): ${options.directory}
+            \r\r    LRS Endpoint: ${options.endpoint}
+        `);
+
         console.log("Grep is " + grep);
         process.env.DIRECTORY = options.directory[0];
 
@@ -132,7 +175,8 @@
           });
         }
 
-        console.log("directory is ", options.directory);
+        // console.log("directory is ", options.directory);
+
 
         process.env.LRS_ENDPOINT = options.endpoint;
         process.env.BASIC_AUTH_ENABLED = options.basicAuth;
