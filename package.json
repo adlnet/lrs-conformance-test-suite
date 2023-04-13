@@ -1,11 +1,12 @@
 {
   "name": "adl-lrs-conformance-tests",
-  "version": "1.2.3",
+  "version": "2.0.0-0",
   "description": "lrs-conformance-tests",
   "main": "./bin/console_runner.js",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha test/v1_0_2/*.js --reporter nyan",
-    "start": "node ./bin/console_runner.js"
+    "start": "node ./bin/console_runner.js",
+    "update-batteries": "node ./bin/update-batteries.js"
   },
   "repository": {
     "type": "git",
