@@ -44,7 +44,7 @@ const specConfig = require('../specConfig');
     function runTests(_options) {
         var optionsValidator = Joi.object({
             xapiVersion: Joi.string(),
-            directory: Joi.array().items(Joi.string().required()),
+            directory: Joi.array().items(Joi.string()),
             /* See [RFC-3986](http://tools.ietf.org/html/rfc3986#page-17) */
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
             grep: Joi.string(),
@@ -94,7 +94,7 @@ const specConfig = require('../specConfig');
         let versionSpecified = _options.xapiVersion != undefined;
 
         let directorySpecified = Array.isArray(_options.directory) && _options.directory.length > 0;
-        let defaultDirectory = specConfig.specToFolder[specConfig.defaultVersion]
+        let defaultDirectory = specConfig.specToFolder[specConfig.defaultVersion];
 
         if (!endpointSpecified) {
             console.error(`You must specify an endpoint (-e or --endpoint) for your LRS.`); 
@@ -117,6 +117,28 @@ const specConfig = require('../specConfig');
                 console.error(`Unknown version of the xAPI spec: ${_options.xapiVersion}.  Unable to find appropriate test suite.`); 
                 process.exit(1);
             }
+        }
+
+        else if (directorySpecified) {
+            let matchingSpec = undefined;
+            for (let dir of _options.directory) {
+                let spec = specConfig.getSpecFromFolder(dir);
+                if (spec != matchingSpec) {
+                    if (matchingSpec == undefined)
+                        matchingSpec = spec;
+                    else {
+                        console.error(`Multiple directories specified which refer to different versions of the xAPI spec: ${spec} vs. ${matchingSpec}`); 
+                        process.exit(1);
+                    }
+                }
+            }
+
+            if (matchingSpec == undefined) {
+                console.error(`Unable to determine which version of xAPI to test against with diectories: ${_options.directory.join(", ")}`); 
+                process.exit(1);
+            }
+
+            _options.xapiVersion = matchingSpec;
         }
 
         if (!versionSpecified && !directorySpecified) {
