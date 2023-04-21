@@ -1,4 +1,3 @@
 module.exports = {
-  "specNumber": "2.0.0",
-  "increment": "0"
+  "specNumber": "2.0.0.0"
 }
