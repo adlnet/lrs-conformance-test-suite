@@ -22,10 +22,10 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
 
     templatingSelection.createTemplate('voiding.js');
 
-/**  XAPI-00018, Data 2.3.2 Voiding
- * An LRS MUST consider a Statement it contains voided if the Statement is not itself a voiding Statement and the LRS also contains a voiding Statement referring to the first Statement.
- * Test: Void a statement and then send a GET for that statement which uses “statementId” instead of “voidedStatementId.” The statement should then not be returned in the GET request, which should return a 404.
- */
+    /**  XAPI-00018, Data 2.3.2 Voiding
+     * An LRS MUST consider a Statement it contains voided if the Statement is not itself a voiding Statement and the LRS also contains a voiding Statement referring to the first Statement.
+     * Test: Void a statement and then send a GET for that statement which uses “statementId” instead of “voidedStatementId.” The statement should then not be returned in the GET request, which should return a 404.
+     */
     describe('A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS (Data 2.3.2.s2.b3, XAPI-00018)', function () {
         var voidedId = helper.generateUUID();
         var stmtTime;
@@ -91,12 +91,12 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
         });
     });
 
-/**  XAPI-00016, Data 2.3.2 Voiding
- * A Voiding Statement cannot Target another Voiding Statement.
- * LRS behavior this new VOIDING statement MAY be rejected.
- * If the LRS accepts that statement, the violating VOIDING statement SHOULD be ignored.
- * Adjust this test accordingly
- */
+    /**  XAPI-00016, Data 2.3.2 Voiding
+     * A Voiding Statement cannot Target another Voiding Statement.
+     * LRS behavior this new VOIDING statement MAY be rejected.
+     * If the LRS accepts that statement, the violating VOIDING statement SHOULD be ignored.
+     * Adjust this test accordingly
+     */
     describe('A Voiding Statement cannot Target another Voiding Statement (Data 2.3.2.s2.b7, XAPI-00016)', function () {
         var voidedId, voidingId;
 
@@ -195,9 +195,42 @@ describe('Statement Lifecycle Requirements (Data 2.3)', () => {
                 }
             });
         });
-
     });
 
+    /**  4.2.4.1 LRS Rejection Cases
+     * Update for 2.0
+     * 
+     * Never reject a stateemnt for using the voided verb.
+     */
+    describe('An LRS SHALL NOT reject a voided statement because it cannot find the ID of the Object of that statement, nor does the LRS have to try to find it. (4.2.4.1 LRS Rejection Cases, XAPI-00016)', function () {
+
+        var nonExistentStatementID = helper.generateUUID();
+
+        it('Shall not reject a voided statement.', function (done) {
+
+            this.timeout(0);
+            var templates = [
+                {statement: '{{statements.object_statementref}}'},
+                {verb: '{{verbs.voided}}'}
+            ];
+            
+            var data = helper.createFromTemplate(templates);
+
+            data = data.statement;
+            data.object.id = nonExistentStatementID;
+
+            request(helper.getEndpointAndAuth())
+            .post(helper.getEndpointStatements())
+            .headers(helper.addAllHeaders({}))
+            .json(data).expect(200).end(function (err, res) {
+                if (err) {
+                    done(err);
+                } else {
+                    done();
+                }
+            });
+        });
+    });
 });
 
 }(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('./../templatingSelection.js')));
