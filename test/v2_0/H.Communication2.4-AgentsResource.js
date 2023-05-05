@@ -32,6 +32,11 @@ describe('Agents Resource Requirements (Communication 2.4)', function () {
 /**  XAPI-00245, Communication 2.4 Agents Resource
  * An LRS has an Agents API with endpoint "base IRI" + /agents"
  */
+    it('should have a valid IRI', function (done){
+        request(helper.getEndpointAndAuth())
+            .expect(204, done);
+    });
+
     it('An LRS has an Agents Resource with endpoint "base IRI" + /agents" (Communication 2.4, XAPI-00245) **Implicit** (in that it is not named this by the spec)', function () {
         var templates = [
             {statement: '{{statements.default}}'}
