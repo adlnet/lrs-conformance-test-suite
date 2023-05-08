@@ -59,7 +59,7 @@ const requests = {
 
     getActivityWithIRI: async(iri) => {
         let endpoint = path.join(LRS_ENDPOINT, PATH_ACTIVITIES);
-        let query = `?activityId=${iri}`;
+        let query = `?activityId=${encodeURIComponent(iri)}`;
 
         let res = await axios.get(endpoint + query, {
             headers: headerOverrides
