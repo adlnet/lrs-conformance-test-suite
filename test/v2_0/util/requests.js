@@ -68,25 +68,30 @@ else {
 const requests = {
 
     sendStatement: async(statement, headerOverrides) => {
-
         let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
-
-        return await axios.post(endpoint, statement, {
-            headers: headerOverrides
-        });
+        
+        try {
+            return await axios.post(endpoint, statement, {
+                headers: headerOverrides
+            });
+        }
+        catch (err) {
+            return err.response;
+        }
     },
 
     getActivityWithIRI: async(iri, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, PATH_ACTIVITIES);
         let query = `?activityId=${encodeURIComponent(iri)}`;
 
-        let res = await axios.get(endpoint + query, {
-            headers: headerOverrides
-        });
-
-        chai.expect(res.status).to.equal(200);
-
-        return res.data;
+        try {
+            return await axios.get(endpoint + query, {
+                headers: headerOverrides
+            });
+        }
+        catch (err) {
+            return err.response;
+        }
     },
 
     /** 
@@ -222,15 +227,25 @@ const requests = {
     getDocuments: async(resourcePath, params, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
+        
+        try {
+            let res = await axios.get(endpoint + query, {
+                headers: headerOverrides
+            });
 
-        let res = await axios.get(endpoint + query, {
-            headers: headerOverrides
-        });
-
-        return {
-            statusCode: res.status,
-            headers: res.headers,
-            data: res.data,
+            return {
+                statusCode: res.status,
+                headers: res.headers,
+                data: res.data,
+            }
+        }
+        catch (err) {
+            let res = err.response;
+            return {
+                statusCode: res.status,
+                headers: res.headers,
+                data: res.data,
+            }
         }
     },
     
@@ -245,10 +260,15 @@ const requests = {
     putDocument: async(resourcePath, document, params, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
-
-        return await axios.put(endpoint + query, document, {
-            headers: headerOverrides
-        });
+        
+        try {
+            return await axios.put(endpoint + query, document, {
+                headers: headerOverrides
+            });
+        }
+        catch (err) {
+            return err.response;
+        }
     },
     
     /**
@@ -263,9 +283,14 @@ const requests = {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
 
-        return await axios.post(endpoint + query, document, {
-            headers: headerOverrides
-        });
+        try {
+            return await axios.post(endpoint + query, document, {
+                headers: headerOverrides
+            });
+        }
+        catch (err) {
+            return err.response;
+        }
     },
     
     /**
@@ -278,10 +303,15 @@ const requests = {
     deleteDocument: async(resourcePath, params, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
-
-        return await axios.delete(endpoint + query, {
-            headers: headerOverrides
-        });
+        
+        try {
+            return await axios.delete(endpoint + query, {
+                headers: headerOverrides
+            });
+        }
+        catch (err) {
+            return err.response;
+        }
     }
 };
 
