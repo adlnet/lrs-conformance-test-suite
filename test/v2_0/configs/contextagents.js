@@ -9,7 +9,7 @@
     "use strict";
 
     // Defines overwriting data.
-    var INVALID_OBJECT_TYPE = {
+    var CONTEXT_WHOSE_contextAgents_HAS_INVALID_OBJECT_TYPE = {
         contextAgents: [
             {
                 objectType: "Should fail",
@@ -20,7 +20,7 @@
             }
         ]
     };
-    var INVALID_AGENT = {
+    var CONTEXT_WHOSE_contextAgents_HAS_INVALID_AGENT = {
         contextAgents: [
             {
                 objectType: "contextAgent",
@@ -60,7 +60,7 @@
                 ]
             },
             {
-                /** ContextGroups Object
+                /** ContextAgents Object
                  *  A "contextAgents" Object must have an "objectType" property of string "contextAgent" and a valid Agent Object "agent";
                  *  it may also have a "relevantTypes" property as an array of Activity Type IRIs.
                  */
@@ -70,7 +70,7 @@
                         name: 'Statement with "contextAgents" Object rejects statement if "objectType" property is anything other than string "contextAgent"',
                         templates: [
                             { statement: '{{statements.context}}' },
-                            { context: INVALID_OBJECT_TYPE }
+                            { context: CONTEXT_WHOSE_contextAgents_HAS_INVALID_OBJECT_TYPE }
                         ],
                         expect: [400]
                     },
@@ -78,7 +78,7 @@
                         name: 'Statement with "contextAgents" Object rejects statement if "agent" property is invalid',
                         templates: [
                             { statement: '{{statements.context}}' },
-                            { context: INVALID_AGENT }
+                            { context: CONTEXT_WHOSE_contextAgents_HAS_INVALID_AGENT }
                         ],
                         expect: [400]
                     },
@@ -87,7 +87,7 @@
                         templates: [
                             { statement: '{{statements.object_substatement}}' },
                             { object: '{{substatements.context}}' },
-                            { context: INVALID_OBJECT_TYPE }
+                            { context: CONTEXT_WHOSE_contextAgents_HAS_INVALID_OBJECT_TYPE }
                         ],
                         expect: [400]
                     },
@@ -96,7 +96,7 @@
                         templates: [
                             { statement: '{{statements.object_substatement}}' },
                             { object: '{{substatements.context}}' },
-                            { context: INVALID_AGENT }
+                            { context: CONTEXT_WHOSE_contextAgents_HAS_INVALID_AGENT }
                         ],
                         expect: [400]
                     }
