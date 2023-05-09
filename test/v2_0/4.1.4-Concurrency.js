@@ -216,8 +216,9 @@ describe('(4.2.7) Concurrency', () => {
 
         describe('If Header precondition in PUT or POST Requests for RFC2616 fail', function () {
             var etag;
-            var parameters = helper.buildAgentProfile(),
-                document = helper.buildDocument();
+            var badTag = '"1111111111111111111111111111111111111111"';
+            var parameters = helper.buildAgentProfile();
+            var document = helper.buildDocument();
 
             before('post the document and get the etag', function () {
 
@@ -230,7 +231,6 @@ describe('(4.2.7) Concurrency', () => {
             });
 
             it('Return HTTP 412 (Precondition Failed) for PUT', function () {
-                var badTag = '"1111111111111111111111111111111111111111"';
                 var document2 = helper.buildDocument();
 
                 var reqUrl = helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters);
@@ -266,7 +266,6 @@ describe('(4.2.7) Concurrency', () => {
 
             it('Return HTTP 412 (Precondition Failed) for POST', async () => {
 
-                let badTag = '"1111111111111111111111111111111111111111"';
                 let additionalHeaders = { 'If-Match': badTag };
                 let document = helper.buildDocument();
                 
@@ -276,6 +275,24 @@ describe('(4.2.7) Concurrency', () => {
             });
 
             it('Do not modify the resource after bad POST', async () => {
+                
+                let agentProfileResponse = await xapiRequests.getSingleAgentProfile(parameters);
+                
+                expect(agentProfileResponse.statusCode).to.eql(200);
+                expect(agentProfileResponse.data).to.eql(document);
+            });
+
+            it('Return HTTP 412 (Precondition Failed) for DELETE', async () => {
+
+                let additionalHeaders = { 'If-Match': badTag };
+                let document = helper.buildDocument();
+                
+                let res = await xapiRequests.deleteAgentProfile(document, parameters, additionalHeaders);
+
+                expect(res.status).to.eql(412);
+            });
+
+            it('Do not modify the resource after bad DELETE', async () => {
                 
                 let agentProfileResponse = await xapiRequests.getSingleAgentProfile(parameters);
                 
