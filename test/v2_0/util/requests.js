@@ -52,7 +52,7 @@ axios.defaults.headers.common = {
  */
 if (global.OAUTH != undefined) {
     addOAuthInterceptor(axios, {
-        algorithm: "HMAC-SHA256",
+        algorithm: "HMAC-SHA1",
         key: global.OAUTH.consumer_key,
         secret: global.OAUTH.consumer_secret,
         token: global.OAUTH.token,
