@@ -33,3 +33,4 @@ package-lock.json
 /local/super-request/.npmignore
 /local/supertest/.gitignore
 /package-lock.json
+/scratch
