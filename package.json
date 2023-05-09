@@ -23,6 +23,7 @@
   "homepage": "https://github.com/adlnet/lrs-conformance-test-suite",
   "dependencies": {
     "axios": "^1.4.0",
+    "axios-oauth-1.0a": "^0.3.6",
     "chai": "^2.3.0",
     "chai-things": "^0.2.0",
     "colors": "^1.1.2",

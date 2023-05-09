@@ -1,5 +1,6 @@
 const path = require("path");
 const axios = require("axios").default;
+const addOAuthInterceptor = require("axios-oauth-1.0a").default;
 const chai = require("chai");
 
 /** Test directory */
@@ -35,16 +36,33 @@ const PATH_AGENTS_PROFILE = '/agents/profile';
 /** Endpoint Statements */
 const PATH_STATEMENTS = '/statements';
 
-axios.defaults.headers.common["Content-Type"] = "application/json";
+/** Assign the default headers for our setup */
 axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
 
     "Content-Type": "application/json",
-    "Authorization": `Basic ${user + ':' + pass}`.toString('base64'),
     "X-Experience-API-Version": process.env.XAPI_VERSION,
 }
-axios.defaults.headers.common["X-Experience-API-Version"] = process.env.XAPI_VERSION;
 
+/**
+ * Configure our auth setup.
+ * 
+ * If they're using OAuth, then a global value will know about it,
+ * but the basic auth values are written into the process env parser.
+ */
+if (global.OAUTH != undefined) {
+    addOAuthInterceptor(axios, {
+        algorithm: "HMAC-SHA256",
+        key: global.OAUTH.consumer_key,
+        secret: global.OAUTH.consumer_secret,
+        token: global.OAUTH.token,
+        tokenSecret: global.OAUTH.token_secret,
+        verifier: global.OAUTH.verifier,
+    });
+}
+else {  
+    axios.defaults.headers.common["Authorization"] = `Basic ${user + ':' + pass}`.toString('base64');
+}
 
 const requests = {
 
