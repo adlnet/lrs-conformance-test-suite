@@ -138,7 +138,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
                 });
             });
             
-            if ("Properly handles DELETE requests with If-Match", async() => {
+            it ("Properly handles DELETE requests with If-Match", async() => {
 
                 let document = helper.buildDocument();
                 let updatedDocument = {
