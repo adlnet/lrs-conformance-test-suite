@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1400,
+    "conformanceTestCount": 1401,
     "tests": {
       "text": "",
       "children": [
@@ -6955,6 +6955,39 @@ module.exports = {
                   "children": []
                 }
               ]
+            }
+          ]
+        },
+        {
+          "text": "Activities Resource Requirements",
+          "children": [
+            {
+              "text": "An LRS has an Activities Resource with endpoint \"base IRI\" + /activities\"",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activities Resource accepts GET requests",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activities Resource upon processing a successful GET request returns the complete Activity Object",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activities Resource rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activities Resource rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "The Activity Object must contain all available information about an activity from any statements who target the same \"activityId\". For example, LRS accepts two statements each with a different language description of an activity using the exact same \"activityId\". The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that \"activityId\"",
+              "children": []
+            },
+            {
+              "text": "If an LRS does not have a canonical definition of the Activity to return, the LRS shall still return an Activity Object when queried.",
+              "children": []
             }
           ]
         },
@@ -13292,35 +13325,6 @@ module.exports = {
             },
             {
               "text": "An LRSs Agents Resource rejects a GET request with \"agent\" as a parameter if it is not a valid, in structure, Agent with error code 400 Bad Request",
-              "children": []
-            }
-          ]
-        },
-        {
-          "text": "Activities Resource Requirements",
-          "children": [
-            {
-              "text": "An LRS has an Activities Resource with endpoint \"base IRI\" + /activities\"",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activities Resource accepts GET requests",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activities Resource upon processing a successful GET request returns the complete Activity Object",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activities Resource rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activities Resource rejects a GET request with \"activityId\" as a parameter if it is not type \"String\" with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "The Activity Object must contain all available information about an activity from any statements who target the same \"activityId\". For example, LRS accepts two statements each with a different language description of an activity using the exact same \"activityId\". The LRS must return both language descriptions when a GET request is made to the Activities endpoint for that \"activityId\"",
               "children": []
             }
           ]
