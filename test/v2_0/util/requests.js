@@ -63,6 +63,9 @@ if (global.OAUTH != undefined) {
     });
 }
 else {  
+    let user = process.env.BASIC_AUTH_USER;
+    let pass = process.env.BASIC_AUTH_USER;
+
     axios.defaults.headers.common["Authorization"] = `Basic ${user + ':' + pass}`.toString('base64');
 }
 

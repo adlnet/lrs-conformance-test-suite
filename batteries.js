@@ -6676,10 +6676,587 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1379,
+    "conformanceTestCount": 1396,
     "tests": {
       "text": "",
       "children": [
+        {
+          "text": "",
+          "children": [
+            {
+              "text": "xAPI uses HTTP 1.1 entity tags (ETags) to implement optimistic concurrency control in the following resources, where PUT, POST or DELETE are allowed to overwrite or remove existing data.",
+              "children": [
+                {
+                  "text": "Concurrency for the Activity State Resource.",
+                  "children": [
+                    {
+                      "text": "An LRS responding to a GET request SHALL add an ETag HTTP header to the response.",
+                      "children": []
+                    },
+                    {
+                      "text": "When responding to a GET Request the Etag header must be enclosed in quotes",
+                      "children": []
+                    },
+                    {
+                      "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
+                      "children": [
+                        {
+                          "text": "Properly handles PUT requests with If-Match",
+                          "children": []
+                        },
+                        {
+                          "text": "Properly handles POST requests with If-Match",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "text": "If a PUT request is received without either header for a resource that already exists",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "State Resource Requirements",
+          "children": [
+            {
+              "text": "An LRS has a State Resource with endpoint \"base IRI\"+\"/activities/state\"",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource accepts PUT requests",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource accepts POST requests",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource accepts GET requests",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource accepts DELETE requests",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource upon processing a successful GET request with a valid \"stateId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource upon processing a successful DELETE request with a valid \"stateId\" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a PUT request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource can process a PUT request with \"registration\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
+              "children": []
+            },
+            {
+              "text": "An LRS must reject with 400 Bad Request a POST request to the State Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json'",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource can process a POST request with \"registration\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource can process a GET request with \"registration\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource can process a DELETE request with \"registration\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a PUT request without \"stateId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a POST request without \"stateId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource can process a GET request with \"stateId\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource can process a GET request with \"since\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource can process a DELETE request with \"stateId\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource upon processing a successful GET request without \"stateId\" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK",
+              "children": []
+            },
+            {
+              "text": "An LRS's returned array of ids from a successful GET request to the State Resource all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 204 No Content",
+              "children": []
+            },
+            {
+              "text": "An LRS's State Resource rejects a POST request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject POST State with agent invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's State Resource rejects a GET request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject GET with \"agent\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's State Resource rejects a DELETE request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject DELETE with \"agent\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's State Resource rejects a PUT request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject PUT with \"registration\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRSs State Resource, rejects a POST request if the document is found and either document is not a valid JSON Object",
+              "children": [
+                {
+                  "text": "If the document being posted to the State Resource does not have a Content-Type of application/json and the existing document does, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
+                  "children": []
+                },
+                {
+                  "text": "If the existing document does not have a Content-Type of application/json but the document being posted to the State Resource does the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
+                  "children": []
+                },
+                {
+                  "text": "If the document being posted to the State Resource has a content type of Content-Type of application/json but cannot be parsed as a JSON Object, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's State Resource rejects a POST request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject POST with \"registration\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's State Resource rejects a GET request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject GET with \"registration\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's State Resource rejects a DELETE request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject DELETE with \"registration\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "The LRS shall include a Last-Modified header indicating when the document was last modified.",
+              "children": [
+                {
+                  "text": "Returns a Last-Modified header at all",
+                  "children": []
+                },
+                {
+                  "text": "Updates the Last-Modified value when the corresponding document is updated.",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Agent Profile Resource Requirements",
+          "children": [
+            {
+              "text": "An LRS's Agent Profile Resource upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a POST request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource can process a GET request with \"since\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRS's returned array of ids from a successful GET request to the Agent Profile Resource all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object",
+              "children": []
+            },
+            {
+              "text": "An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json'",
+              "children": []
+            },
+            {
+              "text": "An LRS has an Agent Profile Resource with endpoint \"base IRI\"+\"/agents/profile\"",
+              "children": [
+                {
+                  "text": "An LRS's Agent Profile Resource accepts GET requests",
+                  "children": []
+                },
+                {
+                  "text": "An LRS's Agent Profile Resource upon processing a successful PUT request returns code 204 No Content",
+                  "children": []
+                },
+                {
+                  "text": "An LRS's Agent Profile Resource upon processing a PUT request without an ETag header returns an error code and message",
+                  "children": []
+                },
+                {
+                  "text": "An LRS's Agent Profile Resource upon processing a successful POST request returns code 204 No Content",
+                  "children": []
+                },
+                {
+                  "text": "An LRS's Agent Profile Resource upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a PUT request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject PUT with \"agent\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a DELETE request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject DELETE with \"agent\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a GET request with \"agent\" as a parameter if it is a valid, in structure, Agent with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject GET with \"agent\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Agent Profile Resource rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject GET with \"since\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRSs Agent Profile Resource, rejects a POST request if the document is found and either documents type is not \"application/json\" with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "If the document being posted to the Agent Profile Resource does not have a Content-Type of application/json and the existing document does, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
+                  "children": []
+                },
+                {
+                  "text": "If the existing document does not have a Content-Type of application/json but the document being posted to the Agent Profile Resource does the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
+                  "children": []
+                },
+                {
+                  "text": "If the document being posted to the Agent Profile Resource has a content type of Content-Type of application/json but cannot be parsed as a JSON Object, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "The LRS shall include a Last-Modified header indicating when the document was last modified.",
+              "children": [
+                {
+                  "text": "Returns a Last-Modified header at all",
+                  "children": []
+                },
+                {
+                  "text": "Updates the Last-Modified value when the corresponding document is updated.",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Activity Profile Resource Requirements",
+          "children": [
+            {
+              "text": "An LRS has an Activity Profile Resource with endpoint \"base IRI\"+\"/activities/profile\"",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource accepts POST requests",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource accepts DELETE requests",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource accepts GET requests",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource can process a GET request with \"since\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRS's returned array of ids from a successful GET request to the Activity Profile Resource all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "An LRS's must reject, with 400 Bad Request, a POST request to the Activity Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is \"application/json\"",
+              "children": []
+            },
+            {
+              "text": "An LRS's Activity Profile Resource accepts PUT requests",
+              "children": [
+                {
+                  "text": "passes with 204 no content",
+                  "children": []
+                },
+                {
+                  "text": "fails without ETag header",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Activity Profile Resource rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
+              "children": [
+                {
+                  "text": "Should reject GET with \"since\" with invalid value",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Activity Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object",
+              "children": [
+                {
+                  "text": "If the document being posted to the Activity Profile Resource does not have a Content-Type of application/json and the existing document does, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
+                  "children": []
+                },
+                {
+                  "text": "If the existing document does not have a Content-Type of application/json but the document being posted to the Activity Profile Resource does the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
+                  "children": []
+                },
+                {
+                  "text": "If the document being posted to the Activity Profile Resource has a content type of Content-Type of application/json but cannot be parsed as a JSON Object, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "The LRS shall include a Last-Modified header indicating when the document was last modified.",
+              "children": [
+                {
+                  "text": "Returns a Last-Modified header at all",
+                  "children": []
+                },
+                {
+                  "text": "Updates the Last-Modified value when the corresponding document is updated.",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "",
+          "children": [
+            {
+              "text": "IRIs",
+              "children": [
+                {
+                  "text": "When storing or comparing IRIs, LRSs shall handle them only by using one or more of the approaches described in 5.3.1 (Simple String Comparison) and 5.3.2 (Syntax-Based Normalization) of RFC 3987",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
         {
           "text": "Formatting Requirements",
           "children": [
@@ -7632,6 +8209,15 @@ module.exports = {
                 },
                 {
                   "text": "Should not void a voiding statement",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS SHALL NOT reject a voided statement because it cannot find the ID of the Object of that statement, nor does the LRS have to try to find it.",
+              "children": [
+                {
+                  "text": "Shall not reject a voided statement.",
                   "children": []
                 }
               ]
@@ -10737,11 +11323,27 @@ module.exports = {
                   "children": []
                 },
                 {
+                  "text": "Statement with \"contextAgents\" Object rejects statement if \"relevantTypes\" is empty",
+                  "children": []
+                },
+                {
+                  "text": "Statement with \"contextAgents\" Object rejects statement if \"relevantTypes\" contains non-IRI elements",
+                  "children": []
+                },
+                {
                   "text": "Statement substatement with \"contextAgents\" Object rejects statement if \"objectType\" property is anything other than string \"contextAgent\"",
                   "children": []
                 },
                 {
                   "text": "Statement substatement with \"contextAgents\" Object rejects statement if \"agent\" property is invalid",
+                  "children": []
+                },
+                {
+                  "text": "Statement substatement with \"contextAgents\" Object rejects statement if \"relevantTypes\" is empty",
+                  "children": []
+                },
+                {
+                  "text": "Statement substatement with \"contextAgents\" Object rejects statement if \"relevantTypes\" contains non-IRI elements",
                   "children": []
                 }
               ]
@@ -10771,11 +11373,27 @@ module.exports = {
                   "children": []
                 },
                 {
+                  "text": "Statement with \"contextGroups\" Object rejects statement if \"relevantTypes\" is empty",
+                  "children": []
+                },
+                {
+                  "text": "Statement with \"contextGroups\" Object rejects statement if \"relevantTypes\" contains non-IRI elements",
+                  "children": []
+                },
+                {
                   "text": "Statement substatement with \"contextGroups\" Object rejects statement if \"objectType\" property is anything other than string \"contextGroup\"",
                   "children": []
                 },
                 {
                   "text": "Statement substatement with \"contextGroups\" Object rejects statement if \"group\" property is invalid",
+                  "children": []
+                },
+                {
+                  "text": "Statement substatement with \"contextGroups\" Object rejects statement if \"relevantTypes\" is empty",
+                  "children": []
+                },
+                {
+                  "text": "Statement substatement with \"contextGroups\" Object rejects statement if \"relevantTypes\" contains non-IRI elements",
                   "children": []
                 }
               ]
@@ -12610,223 +13228,6 @@ module.exports = {
           ]
         },
         {
-          "text": "State Resource Requirements",
-          "children": [
-            {
-              "text": "An LRS has a State Resource with endpoint \"base IRI\"+\"/activities/state\"",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource accepts PUT requests",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource accepts POST requests",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource accepts GET requests",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource accepts DELETE requests",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource upon processing a successful GET request with a valid \"stateId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource upon processing a successful DELETE request with a valid \"stateId\" as a parameter deletes the document satisfying the requirements of the DELETE and returns code 204 No Content",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a PUT request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource can process a PUT request with \"registration\" as a parameter",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
-              "children": []
-            },
-            {
-              "text": "An LRS must reject with 400 Bad Request a POST request to the State Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json'",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource can process a POST request with \"registration\" as a parameter",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource can process a GET request with \"registration\" as a parameter",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource can process a DELETE request with \"registration\" as a parameter",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a PUT request without \"stateId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a POST request without \"stateId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource can process a GET request with \"stateId\" as a parameter",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource can process a GET request with \"since\" as a parameter",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource can process a DELETE request with \"stateId\" as a parameter",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource upon processing a successful GET request without \"stateId\" as a parameter returns an array of ids of state data documents satisfying the requirements of the GET and code 200 OK",
-              "children": []
-            },
-            {
-              "text": "An LRS's returned array of ids from a successful GET request to the State Resource all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource upon processing a successful DELETE request without \"stateId\" as a parameter deletes documents satisfying the requirements of the DELETE and code 204 No Content",
-              "children": []
-            },
-            {
-              "text": "An LRS's State Resource rejects a POST request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject POST State with agent invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's State Resource rejects a GET request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject GET with \"agent\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's State Resource rejects a DELETE request with \"agent\" as a parameter if it is not in JSON format with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject DELETE with \"agent\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's State Resource rejects a PUT request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject PUT with \"registration\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRSs State Resource, rejects a POST request if the document is found and either document is not a valid JSON Object",
-              "children": [
-                {
-                  "text": "If the document being posted to the State Resource does not have a Content-Type of application/json and the existing document does, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
-                  "children": []
-                },
-                {
-                  "text": "If the existing document does not have a Content-Type of application/json but the document being posted to the State Resource does the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
-                  "children": []
-                },
-                {
-                  "text": "If the document being posted to the State Resource has a content type of Content-Type of application/json but cannot be parsed as a JSON Object, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's State Resource rejects a POST request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject POST with \"registration\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's State Resource rejects a GET request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject GET with \"registration\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's State Resource rejects a DELETE request with \"registration\" as a parameter if it is not a UUID with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject DELETE with \"registration\" with invalid value",
-                  "children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
           "text": "Agents Resource Requirements",
           "children": [
             {
@@ -12909,273 +13310,6 @@ module.exports = {
           ]
         },
         {
-          "text": "Agent Profile Resource Requirements",
-          "children": [
-            {
-              "text": "An LRS's Agent Profile Resource upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a PUT request without \"agent\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a POST request without \"agent\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a POST request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a DELETE request without \"agent\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of agent profile documents satisfying the requirements of the GET and code 200 OK",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource can process a GET request with \"since\" as a parameter",
-              "children": []
-            },
-            {
-              "text": "An LRS's returned array of ids from a successful GET request to the Agent Profile Resource all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object",
-              "children": []
-            },
-            {
-              "text": "An LRS must reject with 400 Bad Request a POST request to the Activitiy Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is 'application/json'",
-              "children": []
-            },
-            {
-              "text": "An LRS has an Agent Profile Resource with endpoint \"base IRI\"+\"/agents/profile\"",
-              "children": [
-                {
-                  "text": "An LRS's Agent Profile Resource accepts GET requests",
-                  "children": []
-                },
-                {
-                  "text": "An LRS's Agent Profile Resource upon processing a successful PUT request returns code 204 No Content",
-                  "children": []
-                },
-                {
-                  "text": "An LRS's Agent Profile Resource upon processing a PUT request without an ETag header returns an error code and message",
-                  "children": []
-                },
-                {
-                  "text": "An LRS's Agent Profile Resource upon processing a successful POST request returns code 204 No Content",
-                  "children": []
-                },
-                {
-                  "text": "An LRS's Agent Profile Resource upon processing a successful DELETE request deletes the associated profile and returns code 204 No Content",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a PUT request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject PUT with \"agent\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a DELETE request with \"agent\" as a parameter if it is not an Agent Object with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject DELETE with \"agent\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a GET request with \"agent\" as a parameter if it is a valid, in structure, Agent with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject GET with \"agent\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Agent Profile Resource rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject GET with \"since\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRSs Agent Profile Resource, rejects a POST request if the document is found and either documents type is not \"application/json\" with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "If the document being posted to the Agent Profile Resource does not have a Content-Type of application/json and the existing document does, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
-                  "children": []
-                },
-                {
-                  "text": "If the existing document does not have a Content-Type of application/json but the document being posted to the Agent Profile Resource does the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
-                  "children": []
-                },
-                {
-                  "text": "If the document being posted to the Agent Profile Resource has a content type of Content-Type of application/json but cannot be parsed as a JSON Object, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
-                  "children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "text": "Activity Profile Resource Requirements",
-          "children": [
-            {
-              "text": "An LRS has an Activity Profile Resource with endpoint \"base IRI\"+\"/activities/profile\"",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource accepts POST requests",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource accepts DELETE requests",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource accepts GET requests",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource upon processing a successful GET request with a valid \"profileId\" as a parameter returns the document satisfying the requirements of the GET and code 200 OK",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource rejects a PUT request without \"activityId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource rejects a POST request without \"activityId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource rejects a DELETE request without \"activityId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource rejects a GET request without \"activityId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource rejects a PUT request without \"profileId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource rejects a POST request without \"profileId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource rejects a DELETE request without \"profileId\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource upon processing a successful GET request without \"profileId\" as a parameter returns an array of ids of activity profile documents satisfying the requirements of the GET and code 200 OK",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource can process a GET request with \"since\" as a parameter",
-              "children": []
-            },
-            {
-              "text": "An LRS's returned array of ids from a successful GET request to the Activity Profile Resource all refer to documents stored after the TimeStamp in the \"since\" parameter of the GET request if such a parameter was present",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource, upon receiving a POST request for a document not currently in the LRS, treats it as a PUT request and store a new document",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource performs a Document Merge if a document is found and both it and the document in the POST request have type \"application/json\"",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource, rejects a POST request if the document is found and either document's type is not \"application/json\" with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "An LRS's must reject, with 400 Bad Request, a POST request to the Activity Profile Resource which contains name/value pairs with invalid JSON and the Content-Type header is \"application/json\"",
-              "children": []
-            },
-            {
-              "text": "An LRS's Activity Profile Resource accepts PUT requests",
-              "children": [
-                {
-                  "text": "passes with 204 no content",
-                  "children": []
-                },
-                {
-                  "text": "fails without ETag header",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Activity Profile Resource rejects a GET request with \"since\" as a parameter if it is not a \"TimeStamp\", with error code 400 Bad Request",
-              "children": [
-                {
-                  "text": "Should reject GET with \"since\" with invalid value",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Activity Profile Resource, rejects a POST request if the document is found and either document is not a valid JSON Object",
-              "children": [
-                {
-                  "text": "If the document being posted to the Activity Profile Resource does not have a Content-Type of application/json and the existing document does, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
-                  "children": []
-                },
-                {
-                  "text": "If the existing document does not have a Content-Type of application/json but the document being posted to the Activity Profile Resource does the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
-                  "children": []
-                },
-                {
-                  "text": "If the document being posted to the Activity Profile Resource has a content type of Content-Type of application/json but cannot be parsed as a JSON Object, the LRS MUST respond with HTTP status code 400 Bad Request, and MUST NOT update the target document as a result of the request.",
-                  "children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
           "text": "About Resource Requirements",
           "children": [
             {
@@ -13195,7 +13329,7 @@ module.exports = {
               "children": []
             },
             {
-              "text": "An LRS's About Resource's version property can only have values of \"0.9\", \"0.95\", \"1.0.0\", \"\"1.0.\" + X\", or \"2.0.0\" with",
+              "text": "An LRS's About Resource's version property can only have values of \"0.9\", \"0.95\", \"1.0.0\", or \"\"1.0.\" + X\" with",
               "children": []
             },
             {
@@ -13206,74 +13340,23 @@ module.exports = {
                   "children": []
                 },
                 {
-                  "text": "Using Activities Endpoint",
+                  "text": "using Activities Endpoint",
                   "children": []
                 },
                 {
-                  "text": "Using Activities Profile Endpoint",
+                  "text": "using Activities Profile Endpoint",
                   "children": []
                 },
                 {
-                  "text": "Using Activities State Endpoint",
+                  "text": "using Activities State Endpoint",
                   "children": []
                 },
                 {
-                  "text": "Using Agents Endpoint",
+                  "text": "using Agents Endpoint",
                   "children": []
                 },
                 {
-                  "text": "Using Agents Profile Endpoint",
-                  "children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "text": "Concurrency Requirements",
-          "children": [
-            {
-              "text": "An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling Resources where PUT may overwrite existing data",
-              "children": [
-                {
-                  "text": "When responding to a GET request to Agent Profile resource, include an ETag HTTP header in the response",
-                  "children": []
-                },
-                {
-                  "text": "When responding to a GET request to Activities Profile resource, include an ETag HTTP header in the response",
-                  "children": []
-                },
-                {
-                  "text": "When returning an ETag header, the value should be calculated as a SHA1 hexadecimal value",
-                  "children": []
-                },
-                {
-                  "text": "When responding to a GET Request the Etag header must be enclosed in quotes",
-                  "children": []
-                },
-                {
-                  "text": "With a valid ETag",
-                  "children": []
-                },
-                {
-                  "text": "When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains \"*\"",
-                  "children": [
-                    {
-                      "text": "succeeds when no document exists",
-                      "children": []
-                    },
-                    {
-                      "text": "rejects if a document already exists",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "If Header precondition in PUT Requests for RFC2616 fail",
-                  "children": []
-                },
-                {
-                  "text": "If put request is received without either header for a resource that already exists",
+                  "text": "using Agents Profile Endpoint",
                   "children": []
                 }
               ]
@@ -13421,6 +13504,66 @@ module.exports = {
                   "children": []
                 }
               ]
+            }
+          ]
+        },
+        {
+          "text": "Concurrency for the Activity Profile Resource.",
+          "children": [
+            {
+              "text": "An LRS responding to a GET request SHALL add an ETag HTTP header to the response.",
+              "children": []
+            },
+            {
+              "text": "When responding to a GET Request the Etag header must be enclosed in quotes",
+              "children": []
+            },
+            {
+              "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
+              "children": [
+                {
+                  "text": "Properly handles PUT requests with If-Match",
+                  "children": []
+                },
+                {
+                  "text": "Properly handles POST requests with If-Match",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "If a PUT request is received without either header for a resource that already exists",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "Concurrency for the Agents Profile Resource.",
+          "children": [
+            {
+              "text": "An LRS responding to a GET request SHALL add an ETag HTTP header to the response.",
+              "children": []
+            },
+            {
+              "text": "When responding to a GET Request the Etag header must be enclosed in quotes",
+              "children": []
+            },
+            {
+              "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
+              "children": [
+                {
+                  "text": "Properly handles PUT requests with If-Match",
+                  "children": []
+                },
+                {
+                  "text": "Properly handles POST requests with If-Match",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "If a PUT request is received without either header for a resource that already exists",
+              "children": []
             }
           ]
         }

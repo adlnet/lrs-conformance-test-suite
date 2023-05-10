@@ -8,7 +8,6 @@ const expect = require("chai").expect;
 const helper = require("../helper");
 const xapiRequests = require("./util/requests");
 
-var expect = chai.expect;
 if (global.OAUTH)
     request = helper.OAuthRequest(request);
 
