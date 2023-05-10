@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1396,
+    "conformanceTestCount": 1397,
     "tests": {
       "text": "",
       "children": [
@@ -6700,6 +6700,10 @@ module.exports = {
                     {
                       "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
                       "children": [
+                        {
+                          "text": "Properly handles DELETE requests with If-Match",
+                          "children": []
+                        },
                         {
                           "text": "Properly handles PUT requests with If-Match",
                           "children": []
@@ -13522,6 +13526,10 @@ module.exports = {
               "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
               "children": [
                 {
+                  "text": "Properly handles DELETE requests with If-Match",
+                  "children": []
+                },
+                {
                   "text": "Properly handles PUT requests with If-Match",
                   "children": []
                 },
@@ -13551,6 +13559,10 @@ module.exports = {
             {
               "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
               "children": [
+                {
+                  "text": "Properly handles DELETE requests with If-Match",
+                  "children": []
+                },
                 {
                   "text": "Properly handles PUT requests with If-Match",
                   "children": []
