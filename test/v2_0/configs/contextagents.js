@@ -31,6 +31,33 @@
         ]
     };
 
+    var INVALID_RELEVANT_TYPE_IS_EMPTY = {
+        contextAgents: [
+            {
+                objectType: "contextAgent",
+                agent: {
+
+                    objectType: "Agent",
+                    mbox: "mailto:player-1@example.com"
+                },
+                relevantTypes: []
+            }
+        ]
+    };
+
+    var INVALID_RELEVANT_TYPE_NON_IRI_ELEMENT = {
+        contextAgents: [
+            {
+                objectType: "contextAgent",
+                agent: {
+                    objectType: "Agent",
+                    mbox: "mailto:player-1@example.com"
+                },
+                relevantTypes: ['abc']
+            }
+        ]
+    };
+
     // Configures tests.
     module.exports.config = function () {
         return [
@@ -60,7 +87,7 @@
                 ]
             },
             {
-                /** ContextGroups Object
+                /** ContextAgents Object
                  *  A "contextAgents" Object must have an "objectType" property of string "contextAgent" and a valid Agent Object "agent";
                  *  it may also have a "relevantTypes" property as an array of Activity Type IRIs.
                  */
@@ -83,6 +110,22 @@
                         expect: [400]
                     },
                     {
+                        name: 'Statement with "contextAgents" Object rejects statement if "relevantTypes" is empty',
+                        templates: [
+                            { statement: '{{statements.context}}' },
+                            { context: INVALID_RELEVANT_TYPE_IS_EMPTY }
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'Statement with "contextAgents" Object rejects statement if "relevantTypes" contains non-IRI elements',
+                        templates: [
+                            { statement: '{{statements.context}}' },
+                            { context: INVALID_RELEVANT_TYPE_NON_IRI_ELEMENT}
+                        ],
+                        expect: [400]
+                    },
+                    {
                         name: 'Statement substatement with "contextAgents" Object rejects statement if "objectType" property is anything other than string "contextAgent"',
                         templates: [
                             { statement: '{{statements.object_substatement}}' },
@@ -97,6 +140,24 @@
                             { statement: '{{statements.object_substatement}}' },
                             { object: '{{substatements.context}}' },
                             { context: INVALID_AGENT }
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'Statement substatement with "contextAgents" Object rejects statement if "relevantTypes" is empty',
+                        templates: [
+                            { statement: '{{statements.object_substatement}}' },
+                            { object: '{{substatements.context}}' },
+                            { context: INVALID_RELEVANT_TYPE_IS_EMPTY }
+                        ],
+                        expect: [400]
+                    },
+                    {
+                        name: 'Statement substatement with "contextAgents" Object rejects statement if "relevantTypes" contains non-IRI elements',
+                        templates: [
+                            { statement: '{{statements.object_substatement}}' },
+                            { object: '{{substatements.context}}' },
+                            { context: INVALID_RELEVANT_TYPE_NON_IRI_ELEMENT}
                         ],
                         expect: [400]
                     }
