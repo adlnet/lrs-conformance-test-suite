@@ -785,5 +785,42 @@ describe('State Resource Requirements (Communication 2.3)', function () {
 
             expect(headerAfterUpdate).to.be.greaterThan(headerBeforeUpdate);
         });
+
+        it("Provides the Last-Modified value matching the most recently updated document.", async() => {
+
+            let agent = {
+                "objectType": "Agent",
+                "account": {
+                    "homePage": "http://www.example.com/state/multiple-last-modified",
+                    "name": "State: Multiple Last Modified"
+                }
+            };
+
+            let stateA = {...helper.buildState(), agent};
+            let stateB = {...helper.buildState(), agent};
+            
+            await xapiRequests.postDocument(resourcePath, document, stateA);
+            await xapiRequests.postDocument(resourcePath, updatedDocument, stateB);
+
+            let resA = await xapiRequests.getDocuments(resourcePath, stateA);
+            let resB = await xapiRequests.getDocuments(resourcePath, stateB);
+
+            let modifiedA = Date.parse(resA.headers["last-modified"]);
+            let modifiedB = Date.parse(resB.headers["last-modified"]);
+
+            let earliestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
+            let latestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
+
+            let groupParams = {
+                ...stateA,
+                since: new Date(earliestTime).toUTCString()
+            };
+            delete groupParams.stateId;
+            
+            let groupRes = await xapiRequests.getDocuments(resourcePath, groupParams);
+            let groupTime = Date.parse(groupRes.headers["last-modified"]);
+
+            expect(groupTime).to.equal(latestTime);
+        });
     });
 });

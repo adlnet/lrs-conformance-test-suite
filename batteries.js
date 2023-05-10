@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1397,
+    "conformanceTestCount": 1400,
     "tests": {
       "text": "",
       "children": [
@@ -6949,6 +6949,10 @@ module.exports = {
                 {
                   "text": "Updates the Last-Modified value when the corresponding document is updated.",
                   "children": []
+                },
+                {
+                  "text": "Provides the Last-Modified value matching the most recently updated document.",
+                  "children": []
                 }
               ]
             }
@@ -7109,6 +7113,10 @@ module.exports = {
                 {
                   "text": "Updates the Last-Modified value when the corresponding document is updated.",
                   "children": []
+                },
+                {
+                  "text": "Provides the Last-Modified value matching the most recently updated document.",
+                  "children": []
                 }
               ]
             }
@@ -7241,6 +7249,10 @@ module.exports = {
                 },
                 {
                   "text": "Updates the Last-Modified value when the corresponding document is updated.",
+                  "children": []
+                },
+                {
+                  "text": "Provides the Last-Modified value matching the most recently updated document.",
                   "children": []
                 }
               ]
