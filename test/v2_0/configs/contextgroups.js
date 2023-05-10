@@ -9,7 +9,7 @@
     "use strict";
 
     // Defines overwriting data.
-    var INVALID_OBJECT_TYPE = {
+    var CONTEXT_WHOSE_contextGroups_HAS_INVALID_OBJECT_TYPE = {
         contextGroups: [
             {
                 objectType: "Should fail",
@@ -26,7 +26,7 @@
             }
         ]
     };
-    var INVALID_GROUP = {
+    var CONTEXT_WHOSE_contextGroups_HAS_INVALID_GROUP = {
         contextGroups: [
             {
                 objectType: "contextGroup",
@@ -77,7 +77,7 @@
                         name: 'Statement with "contextGroups" property has an array of valid "contextGroup" Objects',
                         templates: [
                             { statement: '{{statements.context}}' },
-                            { context: '{{contexts.context_agents}}' }
+                            { context: '{{contexts.context_groups}}' }
                         ],
                         expect: [200]
                     },
@@ -86,7 +86,7 @@
                         templates: [
                             { statement: '{{statements.object_substatement}}' },
                             { object: '{{substatements.context}}' },
-                            { context: '{{contexts.context_agents}}' }
+                            { context: '{{contexts.context_groups}}' }
                         ],
                         expect: [200]
                     }
@@ -103,7 +103,7 @@
                         name: 'Statement with "contextGroups" Object rejects statement if "objectType" property is anything other than string "contextGroup"',
                         templates: [
                             { statement: '{{statements.context}}' },
-                            { context: INVALID_OBJECT_TYPE }
+                            { context: CONTEXT_WHOSE_contextGroups_HAS_INVALID_OBJECT_TYPE }
                         ],
                         expect: [400]
                     },
@@ -111,7 +111,7 @@
                         name: 'Statement with "contextGroups" Object rejects statement if "group" property is invalid',
                         templates: [
                             { statement: '{{statements.context}}' },
-                            { context: INVALID_GROUP }
+                            { context: CONTEXT_WHOSE_contextGroups_HAS_INVALID_GROUP }
                         ],
                         expect: [400]
                     },
@@ -136,7 +136,7 @@
                         templates: [
                             { statement: '{{statements.object_substatement}}' },
                             { object: '{{substatements.context}}' },
-                            { context: INVALID_OBJECT_TYPE }
+                            { context: CONTEXT_WHOSE_contextGroups_HAS_INVALID_OBJECT_TYPE }
                         ],
                         expect: [400]
                     },
@@ -145,7 +145,7 @@
                         templates: [
                             { statement: '{{statements.object_substatement}}' },
                             { object: '{{substatements.context}}' },
-                            { context: INVALID_GROUP }
+                            { context: CONTEXT_WHOSE_contextGroups_HAS_INVALID_GROUP }
                         ],
                         expect: [400]
                     },

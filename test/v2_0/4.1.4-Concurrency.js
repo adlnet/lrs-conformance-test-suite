@@ -1,46 +1,33 @@
+'use strict';
 /**
  * Description : This is a test suite that tests an LRS endpoint based on the testing requirements document
  * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
  */
 
-(function (process, request, should, chai, isEmail, helper) {
-    'use strict';
+var request = require('supertest-as-promised');
+const expect = require('chai').expect;
+const helper = require('../helper');
+const xapiRequests = require("./util/requests");
 
-    var expect = chai.expect;
+request = request(helper.getEndpoint());
 
-    var request = request(helper.getEndpoint());
-    var oauth;
-    if (global.OAUTH) {
-        var OAuth = require('oauth');
+describe('(4.2.7) Concurrency', () => {
 
-        oauth = new OAuth.OAuth(
-            "",
-            "",
-            global.OAUTH.consumer_key,
-            global.OAUTH.consumer_secret,
-            '1.0',
-            null,
-            'HMAC-SHA1'
-        );
-    }
+    /**  Matchup with Conformance Requirements Document
+     * XAPI-00322 - below
+     */
 
-describe('Concurrency Requirements (Communication 3.1)', () => {
-
-/**  Matchup with Conformance Requirements Document
- * XAPI-00322 - below
- */
-
-/**  XAPI-00322, Communication 3.1 Concurrency
- * An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile)
- */
+    /**  XAPI-00322, Communication 3.1 Concurrency
+     * An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile)
+     */
     describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling Resources where PUT may overwrite existing data (Agent Profile, and Activity Profile, Communication 3.1, XAPI-00322)', function () {
 
         it('When responding to a GET request to Agent Profile resource, include an ETag HTTP header in the response', function () {
-            var parameters = helper.buildAgentProfile(),
-                document = helper.buildDocument();
+            var parameters = helper.buildAgentProfile();
+            var document = helper.buildDocument();
 
             var reqUrl = parameters ? (helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointAgentsProfile();
-            var headers = helper.addAllHeaders({'If-None-Match': '*'});
+            var headers = helper.addAllHeaders({ 'If-None-Match': '*' });
             var pre = request['put'](reqUrl);
             helper.extendRequestWithOauth(pre);
             pre.send(document);
@@ -58,12 +45,12 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 console.log(e);
             }
             return pre.expect(204)
-            .then(function (res) {
-                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
-                .then(function(res) {
-                    expect(res.headers).to.have.property('etag');
+                .then(function (res) {
+                    return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
+                        .then(function (res) {
+                            expect(res.headers).to.have.property('etag');
+                        });
                 });
-            });
         });
 
         it('When responding to a GET request to Activities Profile resource, include an ETag HTTP header in the response', function () {
@@ -71,7 +58,7 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 document = helper.buildDocument();
 
             var reqUrl = parameters ? (helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointActivitiesProfile();
-            var headers = helper.addAllHeaders({'If-None-Match': '*'});
+            var headers = helper.addAllHeaders({ 'If-None-Match': '*' });
             var pre = request['put'](reqUrl);
             helper.extendRequestWithOauth(pre);
             pre.send(document);
@@ -89,12 +76,12 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 console.log(e);
             }
             return pre.expect(204)
-            .then(function (res) {
-                return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
-                .then(function(res) {
-                    expect(res.headers).to.have.property('etag');
-                })
-            });
+                .then(function (res) {
+                    return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
+                        .then(function (res) {
+                            expect(res.headers).to.have.property('etag');
+                        })
+                });
         });
 
         it('When returning an ETag header, the value should be calculated as a SHA1 hexadecimal value', function () {
@@ -102,13 +89,13 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 document = helper.buildDocument();
 
             return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-            .then(function () {
-                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
-                .then(function (res) {
-                    expect(res.headers.etag).to.be.ok;
-                    expect(res.headers.etag).to.match(/\b[0-9a-fA-F]{40}\b/);
+                .then(function () {
+                    return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
+                        .then(function (res) {
+                            expect(res.headers.etag).to.be.ok;
+                            expect(res.headers.etag).to.match(/\b[0-9a-fA-F]{40}\b/);
+                        });
                 });
-            });
         });
 
         it('When responding to a GET Request the Etag header must be enclosed in quotes', function () {
@@ -116,26 +103,26 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 document = helper.buildDocument();
 
             return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-            .then(function () {
-                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
-                .then(function (res) {
-                    expect(res.headers.etag).to.be.ok;
-                    var str = res.headers.etag;
-                    //test for weak etags
-                    if (str[0] !== '"') {
-                        expect(str[0]).to.equal('W');
-                        expect(str[1]).to.equal('/');
-                        str = str.substring(2)
-                    }
-                    expect(str[0]).to.equal('"');
-                    expect(str[41]).to.equal('"');
+                .then(function () {
+                    return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
+                        .then(function (res) {
+                            expect(res.headers.etag).to.be.ok;
+                            var str = res.headers.etag;
+                            //test for weak etags
+                            if (str[0] !== '"') {
+                                expect(str[0]).to.equal('W');
+                                expect(str[1]).to.equal('/');
+                                str = str.substring(2)
+                            }
+                            expect(str[0]).to.equal('"');
+                            expect(str[41]).to.equal('"');
+                        });
                 });
-            });
         });
 
         describe('With a valid ETag', function () {
             var parameters, document;
-            before('before', function() {
+            before('before', function () {
                 parameters = helper.buildAgentProfile();
                 document = helper.buildDocument();
                 return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
@@ -144,32 +131,32 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
             it('When responding to a PUT request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag', function () {
                 document = helper.buildDocument();
                 return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, null, 200)
-                .then(function (res) {
-                    var goodTag = res.headers.etag;
+                    .then(function (res) {
+                        var goodTag = res.headers.etag;
 
-                    var document = helper.buildDocument();
+                        var document = helper.buildDocument();
 
-                    var reqUrl = parameters ? (helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointAgentsProfile();
-                    var data = {'If-Match': goodTag};
-                    var headers = helper.addAllHeaders(data);
-                    var pre = request['put'](reqUrl);
-                    helper.extendRequestWithOauth(pre);
-                    pre.send(document);
-                    pre.set('If-Match', headers['If-Match']);
-                    pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-                    if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                        pre.set('Authorization', headers['Authorization']);
-                    }
-                    //If we're doing oauth, set it up!
-                    try {
-                        if (global.OAUTH) {
-                            pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+                        var reqUrl = parameters ? (helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointAgentsProfile();
+                        var data = { 'If-Match': goodTag };
+                        var headers = helper.addAllHeaders(data);
+                        var pre = request['put'](reqUrl);
+                        helper.extendRequestWithOauth(pre);
+                        pre.send(document);
+                        pre.set('If-Match', headers['If-Match']);
+                        pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
+                        if (process.env.BASIC_AUTH_ENABLED === 'true') {
+                            pre.set('Authorization', headers['Authorization']);
                         }
-                    } catch (e) {
-                        console.log(e);
-                    }
-                    return pre.expect(204);
-                });
+                        //If we're doing oauth, set it up!
+                        try {
+                            if (global.OAUTH) {
+                                pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
+                            }
+                        } catch (e) {
+                            console.log(e);
+                        }
+                        return pre.expect(204);
+                    });
             });
         });
 
@@ -180,7 +167,7 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 var document = helper.buildDocument();
 
                 var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
-                var data = {'If-None-Match': "*"};
+                var data = { 'If-None-Match': "*" };
                 var headers = helper.addAllHeaders(data);
                 var pre = request['put'](reqUrl);
                 helper.extendRequestWithOauth(pre);
@@ -205,7 +192,7 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 var document2 = helper.buildDocument();
 
                 var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
-                var data = {'If-None-Match': "*"};
+                var data = { 'If-None-Match': "*" };
                 var headers = helper.addAllHeaders(data);
                 var pre = request['put'](reqUrl);
                 helper.extendRequestWithOauth(pre);
@@ -227,27 +214,27 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
             });
         });
 
-        describe('If Header precondition in PUT Requests for RFC2616 fail', function () {
+        describe('If Header precondition in PUT or POST Requests for RFC2616 fail', function () {
             var etag;
-            var parameters = helper.buildAgentProfile(),
-                document = helper.buildDocument();
+            var badTag = '"1111111111111111111111111111111111111111"';
+            var parameters = helper.buildAgentProfile();
+            var document = helper.buildDocument();
 
-            before('post the document and get the etag', function() {
+            before('post the document and get the etag', function () {
 
                 return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-                .then(function (res) {
-                    return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, null, 200).then(function (res) {
-                        etag = res.headers.etag;
+                    .then(function (res) {
+                        return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, null, 200).then(function (res) {
+                            etag = res.headers.etag;
+                        });
                     });
-                });
             });
 
-            it('Return HTTP 412 (Precondition Failed)', function () {
-                var badTag = '"1111111111111111111111111111111111111111"';
+            it('Return HTTP 412 (Precondition Failed) for PUT', function () {
                 var document2 = helper.buildDocument();
 
                 var reqUrl = helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters);
-                var data = {'If-Match': badTag};
+                var data = { 'If-Match': badTag };
                 var headers = helper.addAllHeaders(data);
                 var pre = request['put'](reqUrl);
 
@@ -270,11 +257,47 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
                 return pre.expect(412);
             });
 
-            it('Do not modify the resource', function () {
+            it('Do not modify the resource after bad PUT', function () {
                 return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, null, 200).then(function (res) {
                     var result = res.body;
                     expect(result).to.eql(document);
                 });
+            });
+
+            it('Return HTTP 412 (Precondition Failed) for POST', async () => {
+
+                let additionalHeaders = { 'If-Match': badTag };
+                let document = helper.buildDocument();
+                
+                let res = await xapiRequests.postAgentProfile(document, parameters, additionalHeaders);
+
+                expect(res.status).to.eql(412);
+            });
+
+            it('Do not modify the resource after bad POST', async () => {
+                
+                let agentProfileResponse = await xapiRequests.getSingleAgentProfile(parameters);
+                
+                expect(agentProfileResponse.statusCode).to.eql(200);
+                expect(agentProfileResponse.data).to.eql(document);
+            });
+
+            it('Return HTTP 412 (Precondition Failed) for DELETE', async () => {
+
+                let additionalHeaders = { 'If-Match': badTag };
+                let document = helper.buildDocument();
+                
+                let res = await xapiRequests.deleteAgentProfile(document, parameters, additionalHeaders);
+
+                expect(res.status).to.eql(412);
+            });
+
+            it('Do not modify the resource after bad DELETE', async () => {
+                
+                let agentProfileResponse = await xapiRequests.getSingleAgentProfile(parameters);
+                
+                expect(agentProfileResponse.statusCode).to.eql(200);
+                expect(agentProfileResponse.data).to.eql(document);
             });
         });
 
@@ -286,12 +309,12 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
 
             before('post the document and get the etag', function () {
                 return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
-                .then(function(res) {
-                    return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, null, 200)
                     .then(function (res) {
-                        etag = res.headers.etag;
+                        return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, null, 200)
+                            .then(function (res) {
+                                etag = res.headers.etag;
+                            });
                     });
-                });
             });
 
             it('Return 409 conflict', function () {
@@ -300,26 +323,23 @@ describe('Concurrency Requirements (Communication 3.1)', () => {
 
             it('Return error message explaining the situation', function () {
                 return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document2, 409)
-                .then(function (res) {
-                    expect(res).to.have.property('text');
-                    expect(res.text).to.have.length.above(0);
-                });
+                    .then(function (res) {
+                        expect(res).to.have.property('text');
+                        expect(res.text).to.have.length.above(0);
+                    });
             });
 
             it('Do not modify the resource', function () {
                 return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document2, 409)
-                .then(function (res) {
-                    return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, null, 200)
                     .then(function (res) {
-                        var result = res.body;
-                        expect(res.body).to.eql(document);
+                        return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, null, 200)
+                            .then(function (res) {
+                                var result = res.body;
+                                expect(res.body).to.eql(document);
+                            });
                     });
-                });
             });
         });
-
     });
-
 });
 
-}(process, require('supertest-as-promised'), require('should'), require('chai'), require('isemail'), require('./../helper')));
