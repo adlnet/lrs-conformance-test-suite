@@ -11,335 +11,251 @@ const xapiRequests = require("./util/requests");
 
 request = request(helper.getEndpoint());
 
-describe('(4.2.7) Concurrency', () => {
+async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, resourceParams) {
 
-    /**  Matchup with Conformance Requirements Document
-     * XAPI-00322 - below
-     */
+    describe(`Concurrency for the ${resourceName} Resource.`, () => {
+
+        let document = helper.buildDocument();
+
+        before('before', async() => {
+            return await xapiRequests.postDocument(resourcePath, document, resourceParams);
+        });
+
+        it('An LRS responding to a GET request SHALL add an ETag HTTP header to the response.', async() => {
+
+            let documentResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let etag = documentResponse.headers.etag;
+
+            expect(etag).to.be.a("string");
+        });
+        
+        it('When responding to a GET Request the Etag header must be enclosed in quotes', async() => {
+
+            let documentResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let etag = documentResponse.headers.etag;
+
+            expect(etag).to.be.a("string");
+
+            if (etag[0] !== '"') {
+                expect(etag[0]).to.equal('W');
+                expect(etag[1]).to.equal('/');
+                etag = str.substring(2)
+            }
+            
+            expect(etag[0]).to.equal('"');
+            expect(etag[41]).to.equal('"');
+        });
+
+        describe('When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag', async () => {
+            
+            describe("Properly handles PUT requests with If-Match", async() => {
+
+                let document = helper.buildDocument();
+                let updatedDocument = {
+                    ...document,
+                    name: "Updated Name:" + helper.generateUUID() 
+                }
+                var correctTag;
+
+                before ("Get the current ETag", async() => {
+
+                    await xapiRequests.deleteDocument(resourcePath, resourceParams);
+                    await xapiRequests.postDocument(resourcePath, document, resourceParams);
+
+                    let documentResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+                    correctTag = documentResponse.headers.etag;
+                });
+                
+                it("Should reject a PUT request with a 412 Precondition Failed when using an incorrect ETag", async() => {
+
+                    let incorrectTag = "1234";
+                    let incorrectResponse = await xapiRequests.putDocument(resourcePath, document, resourceParams, { "If-Match": incorrectTag });
+
+                    expect(incorrectResponse.status).to.equal(412);
+                });
+
+                it("Should not have modified the document for PUT requests with an incorrect ETag", async() => {
+
+                    let originalDocResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+                    expect(originalDocResponse.data.name).to.equal(originalName);
+                });
+                
+                it("Should accept a PUT request with a correct ETag", async() => {
+
+                    let correctResponse = await xapiRequests.putDocument(resourcePath, updatedDocument, resourceParams, { "If-Match": correctTag });
+                    expect(correctResponse.status).to.equal(204);
+                });
+
+                it("Should have modified the document for PUT requests with a correct ETag", async() => {
+
+                    let updatedResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+                    expect(updatedResponse.data).to.eql(updatedDocument);
+                });
+            });
+            
+            describe("Properly handles POST requests with If-Match", async() => {
+
+                let document = helper.buildDocument();
+                let updatedDocument = {
+                    ...document,
+                    name: "Updated Name:" + helper.generateUUID() 
+                }
+                var correctTag;
+
+                before ("Get the current ETag", async() => {
+
+                    await xapiRequests.deleteDocument(resourcePath, resourceParams);
+                    await xapiRequests.postDocument(resourcePath, document, resourceParams);
+
+                    let documentResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+                    correctTag = documentResponse.headers.etag;
+                });
+                
+                it("Should reject a POST request with a 412 Precondition Failed when using an incorrect ETag", async() => {
+
+                    let incorrectTag = "1234";
+                    let incorrectResponse = await xapiRequests.postDocument(resourcePath, document, resourceParams, { "If-Match": incorrectTag });
+
+                    expect(incorrectResponse.status).to.equal(412);
+                });
+
+                it("Should not have modified the document for POST requests with an incorrect ETag", async() => {
+
+                    let originalDocResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+                    expect(originalDocResponse.data.name).to.equal(originalName);
+                });
+                
+                it("Should accept a POST request with a correct ETag", async() => {
+
+                    let correctResponse = await xapiRequests.postDocument(resourcePath, updatedDocument, resourceParams, { "If-Match": correctTag });
+                    expect(correctResponse.status).to.equal(204);
+                });
+
+                it("Should have modified the document for POST requests with a correct ETag", async() => {
+
+                    let updatedResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+                    expect(updatedResponse.data).to.eql(updatedDocument);
+                });
+            });
+            
+            if ("Properly handles DELETE requests with If-Match", async() => {
+
+                let document = helper.buildDocument();
+                let updatedDocument = {
+                    ...document,
+                    name: "Updated Name:" + helper.generateUUID() 
+                }
+                var correctTag;
+
+                before ("Get the current ETag", async() => {
+
+                    await xapiRequests.deleteDocument(resourcePath, resourceParams);
+                    await xapiRequests.postDocument(resourcePath, document, resourceParams);
+
+                    let documentResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+                    correctTag = documentResponse.headers.etag;
+                });
+                
+                it("Should reject a DELETE request with a 412 Precondition Failed when using an incorrect ETag", async() => {
+
+                    let incorrectTag = "1234";
+                    let incorrectResponse = await xapiRequests.deleteDocument(resourcePath, resourceParams, { "If-Match": incorrectTag });
+
+                    expect(incorrectResponse.status).to.equal(412);
+                });
+
+                it("Should not have modified the document for DELETE requests with an incorrect ETag", async() => {
+
+                    let originalDocResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+
+                    expect(originalDocResponse.status).to.equal(200);
+                    expect(originalDocResponse.data.name).to.equal(originalName);
+                });
+                
+                it("Should accept a DELETE request with a correct ETag", async() => {
+
+                    let correctResponse = await xapiRequests.deleteDocument(resourcePath, resourceParams, { "If-Match": correctTag });
+                    expect(correctResponse.status).to.equal(204);
+                });
+
+                /**
+                 * Note, the LRS isn't actually required to return a 404.  The language is currently:
+                 * 
+                 * 404 Not Found - Indicates the requested resource was not found. 
+                 * May be returned by any method that returns a uniquely identified resource, 
+                 * for instance, any State, Agent Profile, or Activity Profile Resource request 
+                 * targeting a specific document, or the method to retrieve a single Statement.
+                 * 
+                 * Even though this is arguably the most appropriate error code for this situation,
+                 * which --is-- a requirement:
+                 * 
+                 * An LRS shall return the error code most appropriate to the error condition from the list above.
+                 */
+            });
+        });
+        
+        /**
+         * Presently, If-None-Match is not included in the spec document for xAPI 2.0's LRS requirements.
+         * 
+         * This seems to be a presumed inclusion, but it will be omitted here until the document explicitly
+         * requires its implementation by the LRS.
+         */
+
+        describe('If a PUT request is received without either header for a resource that already exists', function () {
+            var etag;
+            var parameters = helper.buildActivityProfile();
+            var originalDocument = helper.buildDocument();
+            var updatedDocument = helper.buildDocument();
+
+            before('Create the document and get the etag', async () => {
+
+                let postResponse = await xapiRequests.postState(originalDocument, parameters);
+
+                expect(postResponse.status).to.equal(204);
+                
+                let getResponse = await xapiRequests.getSingleState(parameters);
+                
+                expect(getResponse.status).to.equal(200);
+                expect(getResponse.headers.etag).to.not.be.undefined;
+
+                etag = res.headers.etag;
+            });
+
+            it('Return 409 conflict', async () => {
+                let res = await xapiRequests.putState(updatedDocument, parameters);
+                expect(res.status).to.equal(409);
+            });
+
+            it('Return error message explaining the situation', async () => {
+                let res = await xapiRequests.putState(updatedDocument, parameters);
+                let responseText = res.data;
+
+                expect(responseText).is.a("string").with.length.greaterThan(0);
+            });
+
+            it('Do not modify the resource', async () => {
+                let getResponse = await xapiRequests.getSingleState(parameters);
+                
+                expect(getResponse.data).to.eql(originalDocument);
+            });
+        });
+    });
+}
+
+describe('(4.2.7) Concurrency', () => {
 
     /**  XAPI-00322, Communication 3.1 Concurrency
      * An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile)
      */
-    describe('An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling Resources where PUT may overwrite existing data (Agent Profile, and Activity Profile, Communication 3.1, XAPI-00322)', function () {
+    describe("xAPI uses HTTP 1.1 entity tags (ETags) to implement optimistic concurrency control in the following resources, where PUT, POST or DELETE are allowed to overwrite or remove existing data.", async () => {
 
-        it('When responding to a GET request to Agent Profile resource, include an ETag HTTP header in the response', function () {
-            var parameters = helper.buildAgentProfile();
-            var document = helper.buildDocument();
+        let stateParams = helper.buildState();
+        let activityProfileParams = helper.buildState();
+        let agentsProfileParams = helper.buildState();
 
-            var reqUrl = parameters ? (helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointAgentsProfile();
-            var headers = helper.addAllHeaders({ 'If-None-Match': '*' });
-            var pre = request['put'](reqUrl);
-            helper.extendRequestWithOauth(pre);
-            pre.send(document);
-            pre.set('If-None-Match', headers['If-None-Match']);
-            pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-            if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                pre.set('Authorization', headers['Authorization']);
-            }
-            //If we're doing oauth, set it up!
-            try {
-                if (global.OAUTH) {
-                    pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-                }
-            } catch (e) {
-                console.log(e);
-            }
-            return pre.expect(204)
-                .then(function (res) {
-                    return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
-                        .then(function (res) {
-                            expect(res.headers).to.have.property('etag');
-                        });
-                });
-        });
-
-        it('When responding to a GET request to Activities Profile resource, include an ETag HTTP header in the response', function () {
-            var parameters = helper.buildActivityProfile(),
-                document = helper.buildDocument();
-
-            var reqUrl = parameters ? (helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointActivitiesProfile();
-            var headers = helper.addAllHeaders({ 'If-None-Match': '*' });
-            var pre = request['put'](reqUrl);
-            helper.extendRequestWithOauth(pre);
-            pre.send(document);
-            pre.set('If-None-Match', headers['If-None-Match']);
-            pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-            if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                pre.set('Authorization', headers['Authorization']);
-            }
-            //If we're doing oauth, set it up!
-            try {
-                if (global.OAUTH) {
-                    pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-                }
-            } catch (e) {
-                console.log(e);
-            }
-            return pre.expect(204)
-                .then(function (res) {
-                    return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, undefined, 200)
-                        .then(function (res) {
-                            expect(res.headers).to.have.property('etag');
-                        })
-                });
-        });
-
-        it('When returning an ETag header, the value should be calculated as a SHA1 hexadecimal value', function () {
-            var parameters = helper.buildAgentProfile(),
-                document = helper.buildDocument();
-
-            return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-                .then(function () {
-                    return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
-                        .then(function (res) {
-                            expect(res.headers.etag).to.be.ok;
-                            expect(res.headers.etag).to.match(/\b[0-9a-fA-F]{40}\b/);
-                        });
-                });
-        });
-
-        it('When responding to a GET Request the Etag header must be enclosed in quotes', function () {
-            var parameters = helper.buildAgentProfile(),
-                document = helper.buildDocument();
-
-            return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-                .then(function () {
-                    return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, undefined, 200)
-                        .then(function (res) {
-                            expect(res.headers.etag).to.be.ok;
-                            var str = res.headers.etag;
-                            //test for weak etags
-                            if (str[0] !== '"') {
-                                expect(str[0]).to.equal('W');
-                                expect(str[1]).to.equal('/');
-                                str = str.substring(2)
-                            }
-                            expect(str[0]).to.equal('"');
-                            expect(str[41]).to.equal('"');
-                        });
-                });
-        });
-
-        describe('With a valid ETag', function () {
-            var parameters, document;
-            before('before', function () {
-                parameters = helper.buildAgentProfile();
-                document = helper.buildDocument();
-                return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204);
-            });
-
-            it('When responding to a PUT request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag', function () {
-                document = helper.buildDocument();
-                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, null, 200)
-                    .then(function (res) {
-                        var goodTag = res.headers.etag;
-
-                        var document = helper.buildDocument();
-
-                        var reqUrl = parameters ? (helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters)) : helper.getEndpointAgentsProfile();
-                        var data = { 'If-Match': goodTag };
-                        var headers = helper.addAllHeaders(data);
-                        var pre = request['put'](reqUrl);
-                        helper.extendRequestWithOauth(pre);
-                        pre.send(document);
-                        pre.set('If-Match', headers['If-Match']);
-                        pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-                        if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                            pre.set('Authorization', headers['Authorization']);
-                        }
-                        //If we're doing oauth, set it up!
-                        try {
-                            if (global.OAUTH) {
-                                pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-                            }
-                        } catch (e) {
-                            console.log(e);
-                        }
-                        return pre.expect(204);
-                    });
-            });
-        });
-
-        describe('When responding to a PUT request, handle the If-None-Match header as described in RFC 2616, HTTP/1.1 if it contains "*"', function () {
-            var parameters = helper.buildActivityProfile();
-
-            it('succeeds when no document exists', function () {
-                var document = helper.buildDocument();
-
-                var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
-                var data = { 'If-None-Match': "*" };
-                var headers = helper.addAllHeaders(data);
-                var pre = request['put'](reqUrl);
-                helper.extendRequestWithOauth(pre);
-                pre.send(document);
-                pre.set('If-None-Match', headers['If-None-Match']);
-                pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-                if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                    pre.set('Authorization', headers['Authorization']);
-                }
-                //If we're doing oauth, set it up!
-                try {
-                    if (global.OAUTH) {
-                        pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-                    }
-                } catch (e) {
-                    console.log(e);
-                }
-                return pre.expect(204)
-            });
-
-            it('rejects if a document already exists', function () {
-                var document2 = helper.buildDocument();
-
-                var reqUrl = helper.getEndpointActivitiesProfile() + '?' + helper.getUrlEncoding(parameters);
-                var data = { 'If-None-Match': "*" };
-                var headers = helper.addAllHeaders(data);
-                var pre = request['put'](reqUrl);
-                helper.extendRequestWithOauth(pre);
-                pre.send(document2);
-                pre.set('If-None-Match', headers['If-None-Match']);
-                pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-                if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                    pre.set('Authorization', headers['Authorization']);
-                }
-                //If we're doing oauth, set it up!
-                try {
-                    if (global.OAUTH) {
-                        pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-                    }
-                } catch (e) {
-                    console.log(e);
-                }
-                return pre.expect(412);
-            });
-        });
-
-        describe('If Header precondition in PUT or POST Requests for RFC2616 fail', function () {
-            var etag;
-            var badTag = '"1111111111111111111111111111111111111111"';
-            var parameters = helper.buildAgentProfile();
-            var document = helper.buildDocument();
-
-            before('post the document and get the etag', function () {
-
-                return helper.sendRequest('post', helper.getEndpointAgentsProfile(), parameters, document, 204)
-                    .then(function (res) {
-                        return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, null, 200).then(function (res) {
-                            etag = res.headers.etag;
-                        });
-                    });
-            });
-
-            it('Return HTTP 412 (Precondition Failed) for PUT', function () {
-                var document2 = helper.buildDocument();
-
-                var reqUrl = helper.getEndpointAgentsProfile() + '?' + helper.getUrlEncoding(parameters);
-                var data = { 'If-Match': badTag };
-                var headers = helper.addAllHeaders(data);
-                var pre = request['put'](reqUrl);
-
-                helper.extendRequestWithOauth(pre);
-                pre.send(document2);
-                pre.set('If-Match', headers['If-Match']);
-                pre.set('X-Experience-API-Version', headers['X-Experience-API-Version']);
-
-                if (process.env.BASIC_AUTH_ENABLED === 'true') {
-                    pre.set('Authorization', headers['Authorization']);
-                }
-                //If we're doing oauth, set it up!
-                try {
-                    if (global.OAUTH) {
-                        pre.sign(oauth, global.OAUTH.token, global.OAUTH.token_secret)
-                    }
-                } catch (e) {
-                    console.log(e);
-                }
-                return pre.expect(412);
-            });
-
-            it('Do not modify the resource after bad PUT', function () {
-                return helper.sendRequest('get', helper.getEndpointAgentsProfile(), parameters, null, 200).then(function (res) {
-                    var result = res.body;
-                    expect(result).to.eql(document);
-                });
-            });
-
-            it('Return HTTP 412 (Precondition Failed) for POST', async () => {
-
-                let additionalHeaders = { 'If-Match': badTag };
-                let document = helper.buildDocument();
-                
-                let res = await xapiRequests.postAgentProfile(document, parameters, additionalHeaders);
-
-                expect(res.status).to.eql(412);
-            });
-
-            it('Do not modify the resource after bad POST', async () => {
-                
-                let agentProfileResponse = await xapiRequests.getSingleAgentProfile(parameters);
-                
-                expect(agentProfileResponse.statusCode).to.eql(200);
-                expect(agentProfileResponse.data).to.eql(document);
-            });
-
-            it('Return HTTP 412 (Precondition Failed) for DELETE', async () => {
-
-                let additionalHeaders = { 'If-Match': badTag };
-                let document = helper.buildDocument();
-                
-                let res = await xapiRequests.deleteAgentProfile(document, parameters, additionalHeaders);
-
-                expect(res.status).to.eql(412);
-            });
-
-            it('Do not modify the resource after bad DELETE', async () => {
-                
-                let agentProfileResponse = await xapiRequests.getSingleAgentProfile(parameters);
-                
-                expect(agentProfileResponse.statusCode).to.eql(200);
-                expect(agentProfileResponse.data).to.eql(document);
-            });
-        });
-
-        describe('If put request is received without either header for a resource that already exists', function () {
-            var etag;
-            var parameters = helper.buildActivityProfile();
-            var document = helper.buildDocument();
-            var document2 = helper.buildDocument();
-
-            before('post the document and get the etag', function () {
-                return helper.sendRequest('post', helper.getEndpointActivitiesProfile(), parameters, document, 204)
-                    .then(function (res) {
-                        return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, null, 200)
-                            .then(function (res) {
-                                etag = res.headers.etag;
-                            });
-                    });
-            });
-
-            it('Return 409 conflict', function () {
-                return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document2, 409);
-            });
-
-            it('Return error message explaining the situation', function () {
-                return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document2, 409)
-                    .then(function (res) {
-                        expect(res).to.have.property('text');
-                        expect(res.text).to.have.length.above(0);
-                    });
-            });
-
-            it('Do not modify the resource', function () {
-                return helper.sendRequest('put', helper.getEndpointActivitiesProfile(), parameters, document2, 409)
-                    .then(function (res) {
-                        return helper.sendRequest('get', helper.getEndpointActivitiesProfile(), parameters, null, 200)
-                            .then(function (res) {
-                                var result = res.body;
-                                expect(res.body).to.eql(document);
-                            });
-                    });
-            });
-        });
+        await runConcurrencyTestsForDocumentResource("Activity State", xapiRequests.resourcePaths.activityState, stateParams);
+        await runConcurrencyTestsForDocumentResource("Activity Profile", xapiRequests.resourcePaths.activityProfile, activityProfileParams);
+        await runConcurrencyTestsForDocumentResource("Agents Profile", xapiRequests.resourcePaths.agentsProfile, agentsProfileParams);
     });
 });
 

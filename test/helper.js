@@ -624,7 +624,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example Activity params.
-         * @returns {string}
          */
         buildActivity: function () {
             return {
@@ -633,7 +632,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example State params.
-         * @returns {json} state
          */
         buildState: function () {
             return {
@@ -650,7 +648,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example ActivityProfile params.
-         * @returns {json} activity profile
          */
         buildActivityProfile: function () {
             return {
@@ -660,7 +657,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example AgentProfile.
-         * @returns {json} agent profile
          */
         buildAgentProfile: function () {
             return {
@@ -676,7 +672,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example Agent params.
-         * @returns {json} agent
          */
         buildAgent: function () {
             return {
@@ -692,7 +687,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Return sample document.
-         * @returns {json} document
          */
         buildDocument: function () {
             var document = {
