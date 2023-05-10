@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1401,
+    "conformanceTestCount": 1403,
     "tests": {
       "text": "",
       "children": [
@@ -7300,6 +7300,19 @@ module.exports = {
               "children": [
                 {
                   "text": "When storing or comparing IRIs, LRSs shall handle them only by using one or more of the approaches described in 5.3.1 (Simple String Comparison) and 5.3.2 (Syntax-Based Normalization) of RFC 3987",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "Duration",
+              "children": [
+                {
+                  "text": "On receiving a Duration with more than 0.01 second precision, the LRS shall not reject the request.",
+                  "children": []
+                },
+                {
+                  "text": "On receiving a Duration with more than 0.01 second precision, the LRS may truncate the duration to 0.01 second precision.",
                   "children": []
                 }
               ]

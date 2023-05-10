@@ -77,6 +77,34 @@ const requests = {
         agentsProfile: PATH_AGENTS_PROFILE,
     },
 
+    /**
+     * POST an xAPI statement to the LRS.
+     * @param {Object} statement The xAPI statement to send. 
+     * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     */
+    getStatementExact: async(id, headerOverrides) => {
+        let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
+        let params = {
+            statementId: id
+        };
+        
+        try {
+            return await requests.getDocuments(endpoint, params, {
+                headers: headerOverrides
+            });
+        }
+        catch (err) {
+            return err.response;
+        }
+    },
+
+    /**
+     * POST an xAPI statement to the LRS.
+     * @param {Object} statement The xAPI statement to send. 
+     * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     */
     sendStatement: async(statement, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
         

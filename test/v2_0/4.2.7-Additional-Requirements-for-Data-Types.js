@@ -1,19 +1,8 @@
-const fs = require('fs');
-const extend = require('extend');
-const moment = require('moment');
 const request = require('super-request');
-const requestPromise = require('supertest-as-promised');
-const chai = require('chai');
-const liburl = require('url');
-const Joi = require('joi');
+const expect = require('chai').expect;
 const helper = require('../helper');
-const multipartParser = require('../multipartParser');
-const redirect = require('../redirect.js');
-const templatingSection = require('../templatingSelection.js');
 
-const requestHelpers = require("./util/requests");
-
-const expect = chai.expect;
+const xapiRequests = require("./util/requests");
 
 if(global.OAUTH)
     request = helper.OAuthRequest(request);
@@ -34,12 +23,12 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             let statement = helper.buildStatement();
             statement.object.id = iriB;
 
-            await requestHelpers.sendStatement(statement);
+            await xapiRequests.sendStatement(statement);
             
             // We have to receive an activity regardless here, as the 2.0 spec requires it etc.
             //
-            let resA = await requestHelpers.getActivityWithIRI(iriA);
-            let resB = await requestHelpers.getActivityWithIRI(iriB);
+            let resA = await xapiRequests.getActivityWithIRI(iriA);
+            let resB = await xapiRequests.getActivityWithIRI(iriB);
 
             let activityA = resA.data;
             let activityB = resB.data;
@@ -48,6 +37,57 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             let matchesB = activityB.id === iriB;
 
             chai.expect(matchesA || matchesB).to.be.true;
+        });
+    });
+    
+    describe("Duration", function() {
+
+        it("On receiving a Duration with more than 0.01 second precision, the LRS shall not reject the request.", async() => {
+            
+            let statement = {
+                ...helper.buildStatement(),
+                id: helper.generateUUID(),
+                result: {
+                    duration: "P1DT12H36M0.12567S"
+                }
+            };
+
+            let res = await xapiRequests.sendStatement(statement);
+
+            expect(res.status).to.eql(200);
+        });
+        
+        it("On receiving a Duration with more than 0.01 second precision, the LRS may truncate the duration to 0.01 second precision.", async() => {
+            
+            let duration = "P1DT12H36M0.12567S";
+            let statement = {
+                ...helper.buildStatement(),
+                id: helper.generateUUID(),
+                result: {
+                    duration
+                }
+            };
+
+            let _ = await xapiRequests.sendStatement(statement);
+            let getRes = await xapiRequests.getStatementExact(statement.id);
+
+            let statementFromLRS = getRes.data;
+
+            expect(statement.result).to.not.be.undefined;
+            expect(statement.result.duration).to.not.be.undefined;
+
+            let original = duration;
+            let originalTruncated = "P1DT12H36M0.12";
+            let originalRounded = "P1DT12H36M0.13";
+
+            let received = statementFromLRS.result.duration;
+
+            let matchesOriginal = (original === received);
+            let matchesTruncation = (original === originalTruncated);
+            let matchesRounded = (original === originalRounded);
+            
+            expect(matchesOriginal || matchesTruncation).to.be.true;
+            expect(matchesRounded).to.be.false("Only truncation is allowed, rounding the seconds duration to a different hundredths value is not allowed.");
         });
     });
 });
