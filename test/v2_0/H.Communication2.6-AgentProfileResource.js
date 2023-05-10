@@ -53,11 +53,6 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
 /**  XAPI-00274, Communication 2.6 Agent Profile Resource
  * An LRS's Agent Profile API accepts valid GET requests with code 200 OK, Profile document
  */
-        it('should have a valid IRI', function (done){
-            request(helper.getEndpointAndAuth())
-                .expect(204, done);
-        });
-
         it('An LRS\'s Agent Profile Resource accepts GET requests (Communication 2.6.s2, XAPI-00274)', function () {
             var parameters = helper.buildAgentProfile(),
                 document = helper.buildDocument();
