@@ -38,8 +38,11 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             
             // We have to receive an activity regardless here, as the 2.0 spec requires it etc.
             //
-            let activityA = await requestHelpers.getActivityWithIRI(iriA);
-            let activityB = await requestHelpers.getActivityWithIRI(iriB);
+            let resA = await requestHelpers.getActivityWithIRI(iriA);
+            let resB = await requestHelpers.getActivityWithIRI(iriB);
+
+            let activityA = resA.data;
+            let activityB = resB.data;
 
             let matchesA = activityA.id === iriA;
             let matchesB = activityB.id === iriB;

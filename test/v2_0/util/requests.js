@@ -90,6 +90,12 @@ const requests = {
         }
     },
 
+    /**
+     * GET an Activity from the LRS's Activity Resource endpoint.
+     * @param {string} iri IRI for the Activity. 
+     * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     */
     getActivityWithIRI: async(iri, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, PATH_ACTIVITIES);
         let query = `?activityId=${encodeURIComponent(iri)}`;
