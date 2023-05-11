@@ -73,8 +73,8 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
 
             let statementFromLRS = getRes.data;
 
-            expect(statement.result).to.not.be.undefined;
-            expect(statement.result.duration).to.not.be.undefined;
+            expect(statementFromLRS.result).to.not.be.undefined;
+            expect(statementFromLRS.result.duration).to.not.be.undefined;
 
             let original = duration;
             let originalTruncated = "P1DT12H36M0.12";
@@ -84,10 +84,15 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
 
             let matchesOriginal = (original === received);
             let matchesTruncation = (original === originalTruncated);
+
+            let matchedExpectedValue = (matchesOriginal || matchesTruncation);
             let matchesRounded = (original === originalRounded);
             
-            expect(matchesOriginal || matchesTruncation).to.be.true;
-            expect(matchesRounded).to.be.false("Only truncation is allowed, rounding the seconds duration to a different hundredths value is not allowed.");
+            expect(matchedExpectedValue).to.be.true(
+                matchesRounded
+                    ? `Only truncation is allowed, rounding the seconds duration to a different hundredths value is not allowed.`
+                    : `The LRS seems to have changed the duration from ${original} -> ${received}.  You may only truncate the seconds down to the hundredths place.`
+            );
         });
     });
 });
