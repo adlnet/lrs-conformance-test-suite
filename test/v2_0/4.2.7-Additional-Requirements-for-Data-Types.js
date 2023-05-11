@@ -77,8 +77,8 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             expect(statementFromLRS.result.duration).to.not.be.undefined;
 
             let original = duration;
-            let originalTruncated = "P1DT12H36M0.12";
-            let originalRounded = "P1DT12H36M0.13";
+            let originalTruncated = "P1DT12H36M0.12S";
+            let originalRounded = "P1DT12H36M0.13S";
 
             let received = statementFromLRS.result.duration;
 
@@ -93,6 +93,28 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
                     ? `Only truncation is allowed, rounding the seconds duration to a different hundredths value is not allowed.`
                     : `The LRS seems to have changed the duration from ${original} -> ${received}.  You may only truncate the seconds down to the hundredths place.`
             );
+        });
+
+        it("When comparing Durations (or Statements containing them), any precision beyond 0.01 second precision shall not be included in the comparison.", async() => {
+            let durationFull = "P1DT12H36M0.12345";
+            let durationShort = "P1DT12H36M0.12S";
+
+            let statement = {
+                ...helper.buildStatement(),
+                id: helper.generateUUID(),
+                result: {
+                    duration: durationShort
+                }
+            };
+            
+            let boundary = xapiRequests.generateRandomMultipartBoundary();
+
+            let shortDurationSignedBody = xapiRequests.generateSignedStatementBody(statement, boundary);
+            let fullDurationSignedBody = shortDurationSignedBody.replace(durationShort, durationFull);
+
+            let res = await xapiRequests.sendSignedStatementBody(fullDurationSignedBody, boundary);
+
+            expect(res.status).to.eql(200, "When comparing a statement to its signature, ensure that the result.duration field is only compared to the truncated hundredths place of the seconds value.");
         });
     });
 });

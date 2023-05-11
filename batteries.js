@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1403,
+    "conformanceTestCount": 1404,
     "tests": {
       "text": "",
       "children": [
@@ -7313,6 +7313,10 @@ module.exports = {
                 },
                 {
                   "text": "On receiving a Duration with more than 0.01 second precision, the LRS may truncate the duration to 0.01 second precision.",
+                  "children": []
+                },
+                {
+                  "text": "When comparing Durations (or Statements containing them), any precision beyond 0.01 second precision shall not be included in the comparison.",
                   "children": []
                 }
               ]

@@ -100,6 +100,50 @@ const requests = {
     },
 
     /**
+     * 
+     * @returns {String} Boundary string.
+     */
+    generateRandomMultipartBoundary: () => {
+        return `-------------__${oldHelpers.generateUUID()}__123__456`;
+    },
+
+    /**
+     * Create a multipart/mixed body from a given statement + a boundary.
+     * @param {Object} statement 
+     * @param {string} boundary 
+     * @returns 
+     */
+    generateSignedStatementBody: (statement, boundary) => {
+        
+        let multipartBoundary = (boundary || requests.generateRandomMultipartBoundary());
+        let multipartBody = oldHelpers.signStatement(statement, {boundary: multipartBoundary});
+        
+        return multipartBody.toString();
+    },
+    
+    /**
+     * POST an xAPI statement to the LRS.
+     * @param {Object} multipartBody The signed multipart body. 
+     * @param {string} boundary The multipart boundary used to create this body. 
+     * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     */
+    sendSignedStatementBody: async(multipartBody, boundary, headerOverrides) => {
+        
+        try {
+            return await axios.post(endpoint, multipartBody, {
+                headers: {
+                    ...headerOverrides,
+                    "Content-Type": `multipart/mixed; boundary=${boundary}`
+                }
+            });
+        }
+        catch (err) {
+            return err.response;
+        }
+    },
+
+    /**
      * POST an xAPI statement to the LRS.
      * @param {Object} statement The xAPI statement to send. 
      * @param {Object} headerOverrides Headers to override for this request. 
