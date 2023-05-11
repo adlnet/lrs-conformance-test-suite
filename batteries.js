@@ -6676,10 +6676,123 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1404,
+    "conformanceTestCount": 1407,
     "tests": {
       "text": "",
       "children": [
+        {
+          "text": "Content Type Requirements",
+          "children": [
+            {
+              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and for any part except the first does not have a Header named \"Content-Transfer-Encoding\" with a value of \"binary\"",
+              "children": []
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request, a Request which uses Attachments and does not have a \"Content-Type\" header with value \"application/json\" or \"multipart/mixed\"",
+              "children": [
+                {
+                  "text": "should succeed when attachment uses \"fileUrl\" and request content-type is \"application/json\"",
+                  "children": []
+                },
+                {
+                  "text": "should succeed when attachment uses \"fileUrl\" and request content-type is \"application/json\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when attachment uses \"fileUrl\" and request content-type is \"multipart/form-data\"",
+                  "children": []
+                },
+                {
+                  "text": "should succeed when attachment is raw data and request content-type is \"multipart/mixed\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when attachment is raw data and request content-type is \"multipart/form-data\"",
+                  "children": []
+                },
+                {
+                  "text": "should succeed when attachment uses \"fileUrl\" and request content-type is \"multipart/mixed\"",
+                  "children": []
+                },
+                {
+                  "text": "should succeed when no attachments are included, but request content-type is \"multipart/mixed\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which has excess multi-part sections that are not attachments.",
+              "children": [
+                {
+                  "text": "should fail when passing statement attachments with excess multipart sections",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has a discrepancy in the number of Attachments vs. the number of fileURL members",
+              "children": [
+                {
+                  "text": "should fail when passing statement attachments and missing attachment\"s binary",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have a body header named \"boundary\"",
+              "children": [
+                {
+                  "text": "should fail if boundary not provided in body",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have a Boundary before each \"Content-Type\" header",
+              "children": [
+                {
+                  "text": "should fail if boundary not provided in body",
+                  "children": []
+                },
+                {
+                  "text": "should fail if boundary not provided in header",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not the first document part with a \"Content-Type\" header with a value of \"application/json\"",
+              "children": [
+                {
+                  "text": "should fail when attachment is raw data and first part content type is not \"application/json\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have all of the Statements in the first document part",
+              "children": [
+                {
+                  "text": "should fail when statements separated into multiple parts",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and for any part except the first does not have a Header named \"X-Experience-API-Hash\" with a value of one of those found in a \"sha2\" property of a Statement in the first part of this document",
+              "children": [
+                {
+                  "text": "should fail when attachments missing header \"X-Experience-API-Hash\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when attachments header \"X-Experience-API-Hash\" does not match \"sha2\"",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
         {
           "text": "",
           "children": [
@@ -12516,107 +12629,6 @@ module.exports = {
             {
               "text": "All Strings are encoded and interpreted as UTF-8",
               "children": []
-            }
-          ]
-        },
-        {
-          "text": "Content Type Requirements",
-          "children": [
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and for any part except the first does not have a Header named \"Content-Transfer-Encoding\" with a value of \"binary\"",
-              "children": []
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a Request which uses Attachments and does not have a \"Content-Type\" header with value \"application/json\" or \"multipart/mixed\"",
-              "children": [
-                {
-                  "text": "should succeed when attachment uses \"fileUrl\" and request content-type is \"application/json\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when attachment uses \"fileUrl\" and request content-type is \"multipart/form-data\"",
-                  "children": []
-                },
-                {
-                  "text": "should succeed when attachment is raw data and request content-type is \"multipart/mixed\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when attachment is raw data and request content-type is \"multipart/form-data\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which has excess multi-part sections that are not attachments.",
-              "children": [
-                {
-                  "text": "should fail when passing statement attachments with excess multipart sections",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content-Type\" header with value \"application/json\", and has a discrepancy in the number of Attachments vs. the number of fileURL members",
-              "children": [
-                {
-                  "text": "should fail when passing statement attachments and missing attachment\"s binary",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have a body header named \"boundary\"",
-              "children": [
-                {
-                  "text": "should fail if boundary not provided in body",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have a Boundary before each \"Content-Type\" header",
-              "children": [
-                {
-                  "text": "should fail if boundary not provided in body",
-                  "children": []
-                },
-                {
-                  "text": "should fail if boundary not provided in header",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not the first document part with a \"Content-Type\" header with a value of \"application/json\"",
-              "children": [
-                {
-                  "text": "should fail when attachment is raw data and first part content type is not \"application/json\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and does not have all of the Statements in the first document part",
-              "children": [
-                {
-                  "text": "should fail when statements separated into multiple parts",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a PUT or POST Request which uses Attachments, has a \"Content Type\" header with value \"multipart/mixed\", and for any part except the first does not have a Header named \"X-Experience-API-Hash\" with a value of one of those found in a \"sha2\" property of a Statement in the first part of this document",
-              "children": [
-                {
-                  "text": "should fail when attachments missing header \"X-Experience-API-Hash\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when attachments header \"X-Experience-API-Hash\" does not match \"sha2\"",
-                  "children": []
-                }
-              ]
             }
           ]
         },
