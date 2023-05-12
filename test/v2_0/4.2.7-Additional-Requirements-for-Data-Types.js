@@ -117,4 +117,29 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             expect(res.status).to.eql(200, "When comparing a statement to its signature, ensure that the result.duration field is only compared to the truncated hundredths place of the seconds value.");
         });
     });
+
+    describe("Timestamps", function() {
+
+        it ("checks if the LRS converts timestamps to UTC", async() => {
+            const dateUTC = "2023-05-04T17:00:00.000Z";
+            const dateEST = "2023-05-04T12:00-05:00";
+
+            let id = helper.generateUUID();
+            let statement = helper.buildStatement();
+
+            statement.id = id;
+            statement.timestamp = dateEST;
+      
+            let res = await xapiRequests.sendStatement(statement);
+            expect(res.status).is.eql(200);
+            
+            let statementFromLRS = await xapiRequests.getStatementExact(id);
+            expect(statementFromLRS).is.not.undefined;
+            expect(statementFromLRS).is.not.null;
+
+
+            expect(statementFromLRS.timestamp).is.eql(dateUTC);
+            
+        });
+    });
 });

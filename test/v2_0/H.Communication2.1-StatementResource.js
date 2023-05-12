@@ -1005,11 +1005,7 @@ StatementResult Object.
             .headers(helper.addAllHeaders({}))
             .expect(200, done);
         });
-    });   
-    
-    
-    
-
+    });
 
 /**  XAPI-00173, Communication 2.1.3 GET Statements
  * An LRS's Statement API can process a GET request with "limit" as a parameter. The Statement API MUST return 200 OK, StatementResult Object with only the number of results set by the integer in the limit parameter. If the limit parameter is not present, the limit is defaulted to 0 which returns all results up to the server limit.
@@ -1674,45 +1670,6 @@ MUST have a "Content-Type" header
                 .expect(200, done);
         });
     });
-/**  XAPI-00???, Communication 2.1.3 GET Statements
- * An LRS's Statement API rejects a GET request with additional properties other than extensions in the locations where extensions are allowed.
- */
-describe('An LRS\'s Statement Resource rejects with error code 400 a GET request with additional properties than extensions in the locations where extensions are allowed', function () {
-    var voidedId = helper.generateUUID();
-    var stmtTime;
-    this.timeout(0);
-
-    before('persist statement', function (done) {
-        var templates = [
-            {statement: '{{statements.default}}'}
-        ];
-        var data = helper.createFromTemplate(templates);
-        data = data.statement;
-        data.id = helper.generateUUID();
-        id = data.id;
-        stmtTime = Date.now();
-
-        request(helper.getEndpointAndAuth())
-        .post(helper.getEndpointStatements())
-        .headers(helper.addAllHeaders({}))
-        .json(data)
-        .expect(200, done);
-    });
-
-    it('should fail when using "statementId" with "verb"', function (done) {
-        var data = {
-            dummy : "dummyData",
-        };
-
-        var query = helper.getUrlEncoding(data);
-        request(helper.getEndpointAndAuth())
-            .get(helper.getEndpointStatements() + '?' + query)
-            .wait(helper.genDelay(stmtTime, '?' + query, id))
-            .headers(helper.addAllHeaders({}))
-            .expect(400, done);
-    });
-
-    
 
 /**  XAPI-00150, Communication 2.1.3 GET Statements
  * An LRS's Statement API rejects a GET request with both "voidedStatementId" and anything other than "attachments" or "format" as parameters with error code 400 Bad Request.
