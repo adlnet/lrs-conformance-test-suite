@@ -3334,4 +3334,63 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         });
     });
 
+
+    /**  XAPI-00???, Communication/timestamps 2.4.7 GET Statements
+    *The "timestamp" property SHOULD* be set by the LRS to the value of the "stored" property if not provided.
+    */
+    describe('The LRS shall set the "timestamp" property to the value of the "stored" property if not provided.', function () {
+
+        it('should set timestamp property to equal "stored" value if retrieved statement does not have its own timestamp', async function (done) {
+            let id = helper.generateUUID();
+            let statement = helper.buildStatement();
+            
+            statement.timestamp = null;
+            statement.id = id;
+
+            //send a statement without a timestamp to LRS
+            xapiRequests.sendStatementPromise(statement)
+                .then( _ => {
+                    //Retrieve statement
+                    xapiRequests.getStatementExactPromise(id)
+                        .then(res => {
+                            let statementFromLRS = res.data;
+                            expect(statementFromLRS.timestamp).is.eql(statementFromLRS.stored);
+                            done();
+                        })
+                    done();
+                })
+        });
+    });
+
+    
+    /**  XAPI-00???, Communication/timestamps 2.4.7  GET Statements
+    *An LRS SHOULD* NOT reject a timestamp for having a greater value than the current time, to prevent issues due to clock errors.
+    */
+    describe('The LRS shall not reject a timestamp for having a greater value than the current time, within an acceptable margin of error', function () {
+
+        it('accepts statements with greater value than current time', function (done) {
+            //Acceptable margin of error around five minutes
+            var minutes = 5;
+            var currentdate = new Date();
+            //add five minutes to current time
+            currentdate.setMinutes(currentdate.getMinutes() + minutes);
+
+            let id = helper.generateUUID();
+            let statement = helper.buildStatement();
+            
+            statement.timestamp = currentdate;
+            statement.id = id;
+
+            //send the statement with the altered timestamp to LRS
+            xapiRequests.sendStatementPromise(statement)
+            .then(res => {
+                expect(res.status).to.eql(200);
+                done();
+            })
+        
+        });
+
+    })
 });
+            
+ 
