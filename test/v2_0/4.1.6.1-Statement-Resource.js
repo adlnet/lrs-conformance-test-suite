@@ -1295,10 +1295,12 @@ StatementResult Object.
                                 expect(Object.keys(stmt.actor).length).to.be.within(1, 2);
                                 expect(Object.keys(stmt.object.actor).length).to.eql(2);
                                 expect(Object.keys(stmt.object.object).length).to.eql(1);
-                                /*  Removed since spec 1.0.3 is SHOULD*
+
+                                /** Re-adding these as it's once again a requirement for 2.0 */
                                 expect(Object.keys(stmt.verb).length).to.eql(1);
                                 expect(Object.keys(stmt.object.verb).length).to.eql(1);
-                                */
+                                /** Re-adding these as it's once again a requirement for 2.0 */
+                                
                                 expect(stmt.actor.mbox).to.eql(agent.mbox);
                                 if (stmt.actor.objectType) {
                                     expect(stmt.actor.objectType).to.eql(agent.objectType);
