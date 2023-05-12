@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1409,
+    "conformanceTestCount": 1413,
     "tests": {
       "text": "",
       "children": [
@@ -7480,6 +7480,33 @@ module.exports = {
                   "children": []
                 }
               ]
+            },
+            {
+              "text": "An LRS's Statement Resource rejects with error code 400 a GET request with additional properties than extensions in the locations where extensions are allowed",
+              "children": [
+                {
+                  "text": "should fail when using property not defined in specification",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "The LRS shall set the \"timestamp\" property to the value of the \"stored\" property if not provided.",
+              "children": [
+                {
+                  "text": "should set timestamp property to equal \"stored\" value if retrieved statement does not have its own timestamp",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "The LRS shall not reject a timestamp for having a greater value than the current time, within an acceptable margin of error",
+              "children": [
+                {
+                  "text": "accepts statements with greater value than current time",
+                  "children": []
+                }
+              ]
             }
           ]
         },
@@ -8076,6 +8103,15 @@ module.exports = {
                 },
                 {
                   "text": "When comparing Durations (or Statements containing them), any precision beyond 0.01 second precision shall not be included in the comparison.",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "Timestamps",
+              "children": [
+                {
+                  "text": "checks if the LRS converts timestamps to UTC",
                   "children": []
                 }
               ]
