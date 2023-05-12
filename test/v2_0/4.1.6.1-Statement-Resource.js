@@ -233,18 +233,18 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                     }
                 });
         });
-        
-        it('should reject a batch of two or more statements where the same ID is used more than once.', function(done) {
+
+        it('should reject a batch of two or more statements where the same ID is used more than once.', function (done) {
 
             let statementOne = helper.buildStatement();
             let statementTwo = JSON.parse(JSON.stringify(statementOne));
-            
+
             let id = helper.generateUUID();
             statementOne.id = id;
             statementTwo.id = id;
 
             let payload = [statementOne, statementTwo];
-            
+
             xapiRequests.sendStatementPromise(payload)
                 .then(res => {
                     expect(res.status).to.eql(400);
@@ -255,13 +255,13 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                     done();
                 });
         });
-        
-        it('should include a Last-Modified header which matches the "stored" Timestamp of the statement.', function(done) {
+
+        it('should include a Last-Modified header which matches the "stored" Timestamp of the statement.', function (done) {
 
             let statement = helper.buildStatement();
             xapiRequests.sendStatementPromise(statement)
                 .then(postResponse => {
-                    
+
                     let lastModifiedStr = postResponse.headers["Last-Modified"];
                     expect(lastModifiedStr).to.not.be.undefined(
                         "The LRS did not include a Last-Modified header when responding to this statement."
@@ -271,11 +271,11 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                     expect(lastModified).to.not.be.NaN(
                         `The Last-Modified header could not be parsed -- received: ${lastModifiedStr}`
                     );
-                    
+
                     let storedId = postResponse.data[0];
                     xapiRequests.getStatementExactPromise(storedId)
                         .then(getResponse => {
-                            
+
                             let stored = Date.parse(getResponse.stored);
                             expect(stored).to.eql(lastModified);
                         });
@@ -3308,4 +3308,30 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                 });
         });
     });
+
+    /**  XAPI-00???, Communication 2.1.3 GET Statements
+    * An LRS's Statement API rejects a GET request with additional properties other than extensions in the locations where extensions are allowed.
+    */
+    describe('An LRS\'s Statement Resource rejects with error code 400 a GET request with additional properties than extensions in the locations where extensions are allowed', function () {
+
+        it('should fail when using property not defined in specification', function (done) {
+            
+            let statement = helper.buildStatement();
+            statement.dummy = "dummy";
+
+            xapiRequests.sendStatementPromise(statement)
+
+                .then(res => {
+                    expect(res.status).to.eql(400);
+                    done();
+                })
+                .catch(err => {
+                    expect(err.response).to.not.be.undefined;
+                    expect(err.response).to.eql(400);
+                    done();
+                })
+            
+        });
+    });
+
 });
