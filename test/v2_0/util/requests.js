@@ -100,6 +100,23 @@ const requests = {
     },
 
     /**
+     * POST an xAPI statement to the LRS.
+     * @param {Object} statement The xAPI statement to send. 
+     * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     */
+    getStatementExactPromise: async(id, headerOverrides) => {
+        let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
+        let params = {
+            statementId: id
+        };
+
+        return await requests.getDocuments(endpoint, params, {
+            headers: headerOverrides
+        });
+    },
+
+    /**
      * 
      * @returns {String} Boundary string.
      */
@@ -160,6 +177,19 @@ const requests = {
         catch (err) {
             return err.response;
         }
+    },
+
+    /**
+     * POST an xAPI statement to the LRS.
+     * @param {Object} statement The xAPI statement to send. 
+     * @param {Object} headerOverrides Headers to override for this request. 
+     */
+    sendStatementPromise: async(statement, headerOverrides) => {
+        let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
+        
+        return axios.post(endpoint, statement, {
+            headers: headerOverrides
+        });
     },
 
     /**

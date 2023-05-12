@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1407,
+    "conformanceTestCount": 1409,
     "tests": {
       "text": "",
       "children": [
@@ -6832,6 +6832,652 @@ module.exports = {
                       "children": []
                     }
                   ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Statement Resource Requirements",
+          "children": [
+            {
+              "text": "An LRS has a Statement Resource with endpoint \"base IRI\"+\"/statements\"",
+              "children": [
+                {
+                  "text": "should allow \"/statements\" POST",
+                  "children": []
+                },
+                {
+                  "text": "should allow \"/statements\" PUT",
+                  "children": []
+                },
+                {
+                  "text": "should allow \"/statements\" GET",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource upon processing a successful PUT request returns code 204 No Content",
+              "children": [
+                {
+                  "text": "should persist statement and return status 204",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource accepts PUT requests only if it contains a \"statementId\" parameter",
+              "children": [
+                {
+                  "text": "should persist statement using \"statementId\" parameter",
+                  "children": []
+                },
+                {
+                  "text": "should fail without using \"statementId\" parameter",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS cannot modify a Statement, state, or Object in the event it receives a Statement with statementID equal to a Statement in the LRS already.",
+              "children": [
+                {
+                  "text": "should not update statement with matching \"statementId\" on PUT",
+                  "children": []
+                },
+                {
+                  "text": "should not update statement with matching \"statementId\" on POST",
+                  "children": []
+                },
+                {
+                  "text": "should reject a batch of two or more statements where the same ID is used more than once.",
+                  "children": []
+                },
+                {
+                  "text": "should include a Last-Modified header which matches the \"stored\" Timestamp of the statement.",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource accepts POST requests",
+              "children": [
+                {
+                  "text": "should persist statement using \"POST\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit**",
+              "children": [
+                {
+                  "text": "should persist statement using \"POST\" and return array of IDs",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "LRS's Statement Resource accepts GET requests",
+              "children": [
+                {
+                  "text": "should return using GET",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource upon processing a successful GET request with a \"statementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
+              "children": [
+                {
+                  "text": "should retrieve statement using \"statementId\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource upon processing a successful GET request with a \"voidedStatementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
+              "children": [
+                {
+                  "text": "should return a voided statement when using GET \"voidedStatementId\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource upon processing a successful GET request with neither a \"statementId\" nor a \"voidedStatementId\" parameter, returns code 200 OK and a StatementResult Object.",
+              "children": [
+                {
+                  "text": "should return StatementResult using GET without \"statementId\" or \"voidedStatementId\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"agent\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"verb\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"activity\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"registration\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"related_activities\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"related_agents\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"since\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"until\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"limit\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"ascending\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult using GET with \"format\"",
+                  "children": []
+                },
+                {
+                  "text": "should return multipart response format StatementResult using GET with \"attachments\" parameter as true",
+                  "children": []
+                },
+                {
+                  "text": "should not return multipart response format using GET with \"attachments\" parameter as false",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"statementId\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"statementId\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"voidedStatementId\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"voidedStatementId\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"agent\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"agent\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"verb\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"verb\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"activity\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"activity\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"registration\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"registration\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"related_activities\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"related_activities\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"related_agents\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"related_agents\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"since\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"since\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"until\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"until\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"limit\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"limit\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "If the \"Accept-Language\" header is present as part of the GET request to the Statement API and the \"format\" parameter is set to \"canonical\", the LRS MUST apply this data to choose the matching language in the response.",
+              "children": [
+                {
+                  "text": "should apply this data to choose the matching language in the response",
+                  "children": []
+                },
+                {
+                  "text": "should NOT apply this data to choose the matching language in the response when format is not set ",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"format\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"format\" absent",
+                  "children": []
+                },
+                {
+                  "text": "should process using GET with \"format\" canonical",
+                  "children": []
+                },
+                {
+                  "text": "should process using GET with \"format\" exact",
+                  "children": []
+                },
+                {
+                  "text": "should process using GET with \"format\" ids",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"attachments\" as a parameter",
+              "children": []
+            },
+            {
+              "text": "An LRSs Statement Resource, upon receiving a GET request, MUST have a \"Content-Type\" header",
+              "children": [
+                {
+                  "text": "should contain the content-type header",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource can process a GET request with \"ascending\" as a parameter",
+              "children": [
+                {
+                  "text": "should process using GET with \"ascending\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource rejects with error code 400 a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters",
+              "children": [
+                {
+                  "text": "should fail when using \"statementId\" with \"agent\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"statementId\" with \"verb\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"statementId\" with \"activity\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"statementId\" with \"registration\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"statementId\" with \"related_activities\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"statementId\" with \"related_agents\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"statementId\" with \"since\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"statementId\" with \"until\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"statementId\" with \"limit\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"statementId\" with \"ascending\"",
+                  "children": []
+                },
+                {
+                  "text": "should pass when using \"statementId\" with \"format\"",
+                  "children": []
+                },
+                {
+                  "text": "should pass when using \"statementId\" with \"attachments\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource rejects with error code 400 a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters",
+              "children": [
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"agent\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"verb\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"activity\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"registration\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"related_activities\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"related_agents\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"since\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"until\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"limit\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when using \"voidedStatementId\" with \"ascending\"",
+                  "children": []
+                },
+                {
+                  "text": "should pass when using \"voidedStatementId\" with \"format\"",
+                  "children": []
+                },
+                {
+                  "text": "should pass when using \"voidedStatementId\" with \"attachments\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "The LRS will NOT reject a GET request which returns an empty \"statements\" property",
+              "children": [
+                {
+                  "text": "should return empty array list",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.",
+              "children": [
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" misusing GET",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"agent\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"verb\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"activity\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"registration\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"related_activities\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"related_agents\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"since\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"until\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"limit\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"ascending\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"format\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"attachments\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's \"X-Experience-API-Consistent-Through\" header is an ISO 8601 combined date and time",
+              "children": [
+                {
+                  "text": "should return valid \"X-Experience-API-Consistent-Through\" using GET",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"agent\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"verb\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"activity\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"registration\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"related_activities\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"related_agents\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"since\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"until\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"limit\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"ascending\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"format\"",
+                  "children": []
+                },
+                {
+                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"attachments\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRSs Statement Resource does not return attachment data and only returns application/json if the \"attachment\" parameter set to \"false\"",
+              "children": []
+            },
+            {
+              "text": "An LRS's Statement Resource, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request",
+              "children": [
+                {
+                  "text": "should not return a voided statement if using GET \"statementId\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS's Statement Resource, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it",
+              "children": [
+                {
+                  "text": "should only return statements stored after designated \"since\" timestamp when using \"since\" parameter",
+                  "children": []
+                },
+                {
+                  "text": "should only return statements stored at or before designated \"before\" timestamp when using \"until\" parameter",
+                  "children": []
+                },
+                {
+                  "text": "should return the number of statements listed in \"limit\" parameter",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementRef and voiding statement when not using \"since\", \"until\", \"limit\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "The Statements within the \"statements\" property will correspond to the filtering criterion sent in with the GET request",
+              "children": [
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"agent\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"verb\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"activity\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"registration\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"related_activities\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"related_agents\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"since\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"until\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"limit\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"ascending\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"format\"",
+                  "children": []
+                },
+                {
+                  "text": "should return StatementResult with statements as array using GET with \"attachments\"",
+                  "children": []
                 }
               ]
             }
@@ -12629,662 +13275,6 @@ module.exports = {
             {
               "text": "All Strings are encoded and interpreted as UTF-8",
               "children": []
-            }
-          ]
-        },
-        {
-          "text": "Statement Resource Requirements",
-          "children": [
-            {
-              "text": "An LRS has a Statement Resource with endpoint \"base IRI\"+\"/statements\"",
-              "children": [
-                {
-                  "text": "should allow \"/statements\" POST",
-                  "children": []
-                },
-                {
-                  "text": "should allow \"/statements\" PUT",
-                  "children": []
-                },
-                {
-                  "text": "should allow \"/statements\" GET",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource upon processing a successful PUT request returns code 204 No Content",
-              "children": [
-                {
-                  "text": "should persist statement and return status 204",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource accepts PUT requests only if it contains a \"statementId\" parameter",
-              "children": [
-                {
-                  "text": "should persist statement using \"statementId\" parameter",
-                  "children": []
-                },
-                {
-                  "text": "should fail without using \"statementId\" parameter",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS cannot modify a Statement, state, or Object in the event it receives a Statement with statementID equal to a Statement in the LRS already.",
-              "children": [
-                {
-                  "text": "should not update statement with matching \"statementId\" on PUT",
-                  "children": []
-                },
-                {
-                  "text": "should not update statement with matching \"statementId\" on POST",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource accepts POST requests",
-              "children": [
-                {
-                  "text": "should persist statement using \"POST\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource upon processing a successful POST request returns code 200 OK and all Statement UUIDs within the POST **Implicit**",
-              "children": [
-                {
-                  "text": "should persist statement using \"POST\" and return array of IDs",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "LRS's Statement Resource accepts GET requests",
-              "children": [
-                {
-                  "text": "should return using GET",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource upon processing a successful GET request with a \"statementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
-              "children": [
-                {
-                  "text": "should retrieve statement using \"statementId\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource upon processing a successful GET request with a \"voidedStatementId\" parameter, returns code 200 OK and a single Statement with the corresponding \"id\".",
-              "children": [
-                {
-                  "text": "should return a voided statement when using GET \"voidedStatementId\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource upon processing a successful GET request with neither a \"statementId\" nor a \"voidedStatementId\" parameter, returns code 200 OK and a StatementResult Object.",
-              "children": [
-                {
-                  "text": "should return StatementResult using GET without \"statementId\" or \"voidedStatementId\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"agent\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"verb\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"activity\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"registration\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"related_activities\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"related_agents\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"since\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"until\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"limit\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"ascending\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult using GET with \"format\"",
-                  "children": []
-                },
-                {
-                  "text": "should return multipart response format StatementResult using GET with \"attachments\" parameter as true",
-                  "children": []
-                },
-                {
-                  "text": "should not return multipart response format using GET with \"attachments\" parameter as false",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"statementId\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"statementId\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"voidedStatementId\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"voidedStatementId\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"agent\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"agent\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"verb\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"verb\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"activity\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"activity\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"registration\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"registration\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"related_activities\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"related_activities\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"related_agents\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"related_agents\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"since\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"since\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"until\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"until\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"limit\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"limit\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "If the \"Accept-Language\" header is present as part of the GET request to the Statement API and the \"format\" parameter is set to \"canonical\", the LRS MUST apply this data to choose the matching language in the response.",
-              "children": [
-                {
-                  "text": "should apply this data to choose the matching language in the response",
-                  "children": []
-                },
-                {
-                  "text": "should NOT apply this data to choose the matching language in the response when format is not set ",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"format\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"format\" absent",
-                  "children": []
-                },
-                {
-                  "text": "should process using GET with \"format\" canonical",
-                  "children": []
-                },
-                {
-                  "text": "should process using GET with \"format\" exact",
-                  "children": []
-                },
-                {
-                  "text": "should process using GET with \"format\" ids",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"attachments\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"attachments\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRSs Statement Resource, upon receiving a GET request, MUST have a \"Content-Type\" header",
-              "children": [
-                {
-                  "text": "should contain the content-type header",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource can process a GET request with \"ascending\" as a parameter",
-              "children": [
-                {
-                  "text": "should process using GET with \"ascending\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource rejects with error code 400 a GET request with both \"statementId\" and anything other than \"attachments\" or \"format\" as parameters",
-              "children": [
-                {
-                  "text": "should fail when using \"statementId\" with \"agent\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"statementId\" with \"verb\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"statementId\" with \"activity\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"statementId\" with \"registration\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"statementId\" with \"related_activities\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"statementId\" with \"related_agents\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"statementId\" with \"since\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"statementId\" with \"until\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"statementId\" with \"limit\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"statementId\" with \"ascending\"",
-                  "children": []
-                },
-                {
-                  "text": "should pass when using \"statementId\" with \"format\"",
-                  "children": []
-                },
-                {
-                  "text": "should pass when using \"statementId\" with \"attachments\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource rejects with error code 400 a GET request with both \"voidedStatementId\" and anything other than \"attachments\" or \"format\" as parameters",
-              "children": [
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"agent\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"verb\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"activity\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"registration\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"related_activities\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"related_agents\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"since\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"until\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"limit\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when using \"voidedStatementId\" with \"ascending\"",
-                  "children": []
-                },
-                {
-                  "text": "should pass when using \"voidedStatementId\" with \"format\"",
-                  "children": []
-                },
-                {
-                  "text": "should pass when using \"voidedStatementId\" with \"attachments\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "The LRS will NOT reject a GET request which returns an empty \"statements\" property",
-              "children": [
-                {
-                  "text": "should return empty array list",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource upon processing a GET request, returns a header with name \"X-Experience-API-Consistent-Through\" regardless of the code returned.",
-              "children": [
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" misusing GET",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"agent\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"verb\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"activity\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"registration\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"related_activities\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"related_agents\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"since\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"until\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"limit\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"ascending\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"format\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"attachments\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's \"X-Experience-API-Consistent-Through\" header is an ISO 8601 combined date and time",
-              "children": [
-                {
-                  "text": "should return valid \"X-Experience-API-Consistent-Through\" using GET",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"agent\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"verb\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"activity\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"registration\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"related_activities\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"related_agents\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"since\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"until\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"limit\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"ascending\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"format\"",
-                  "children": []
-                },
-                {
-                  "text": "should return \"X-Experience-API-Consistent-Through\" using GET with \"attachments\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRSs Statement Resource does not return attachment data and only returns application/json if the \"attachment\" parameter set to \"false\"",
-              "children": [
-                {
-                  "text": "should NOT return the attachment if \"attachments\" is missing",
-                  "children": []
-                },
-                {
-                  "text": "should NOT return the attachment if \"attachments\" is false",
-                  "children": []
-                },
-                {
-                  "text": "should return the attachment when \"attachment\" is true",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request",
-              "children": [
-                {
-                  "text": "should not return a voided statement if using GET \"statementId\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS's Statement Resource, upon processing a successful GET request wishing to return a Voided Statement still returns Statements which target it",
-              "children": [
-                {
-                  "text": "should only return statements stored after designated \"since\" timestamp when using \"since\" parameter",
-                  "children": []
-                },
-                {
-                  "text": "should only return statements stored at or before designated \"before\" timestamp when using \"until\" parameter",
-                  "children": []
-                },
-                {
-                  "text": "should return the number of statements listed in \"limit\" parameter",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementRef and voiding statement when not using \"since\", \"until\", \"limit\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "The Statements within the \"statements\" property will correspond to the filtering criterion sent in with the GET request",
-              "children": [
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"agent\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"verb\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"activity\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"registration\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"related_activities\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"related_agents\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"since\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"until\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"limit\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"ascending\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"format\"",
-                  "children": []
-                },
-                {
-                  "text": "should return StatementResult with statements as array using GET with \"attachments\"",
-                  "children": []
-                }
-              ]
             }
           ]
         },
