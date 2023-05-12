@@ -3320,14 +3320,13 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             statement.dummy = "dummy";
 
             xapiRequests.sendStatementPromise(statement)
-
                 .then(res => {
                     expect(res.status).to.eql(400);
                     done();
                 })
                 .catch(err => {
                     expect(err.response).to.not.be.undefined;
-                    expect(err.response).to.eql(400);
+                    expect(err.response.status).to.eql(400);
                     done();
                 })
             
@@ -3378,16 +3377,18 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             let id = helper.generateUUID();
             let statement = helper.buildStatement();
             
-            statement.timestamp = currentdate;
+            statement.timestamp = currentdate.toISOString();
             statement.id = id;
 
             //send the statement with the altered timestamp to LRS
             xapiRequests.sendStatementPromise(statement)
-            .then(res => {
-                expect(res.status).to.eql(200);
-                done();
-            })
-        
+                .then(res => {
+                    expect(res.status).to.eql(200);
+                    done();
+                })
+                .catch(_ => {
+                    done("LRS did not respond with a 200 for this request.");
+                })
         });
 
     })

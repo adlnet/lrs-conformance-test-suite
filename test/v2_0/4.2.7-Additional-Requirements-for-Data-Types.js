@@ -137,9 +137,7 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             expect(statementFromLRS).is.not.undefined;
             expect(statementFromLRS).is.not.null;
 
-
             expect(statementFromLRS.timestamp).is.eql(dateUTC);
-            
         });
     });
 });
