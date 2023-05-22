@@ -36,7 +36,7 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             let matchesA = activityA.id === iriA;
             let matchesB = activityB.id === iriB;
 
-            chai.expect(matchesA || matchesB).to.be.true;
+            expect(matchesA || matchesB).to.be.true;
         });
     });
     
