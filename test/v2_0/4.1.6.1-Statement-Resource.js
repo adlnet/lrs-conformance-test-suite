@@ -148,7 +148,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             var query = '?statementId=' + data.id;
 
             var modified = extend(true, {}, data);
-            modified.verb.id = 'different value';
+            modified.verb.id = 'http://example.com/different/verb/iri';
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
@@ -197,7 +197,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             data.id = helper.generateUUID();
             var query = '?statementId=' + data.id;
             var modified = extend(true, {}, data);
-            modified.verb.id = 'different value';
+            modified.verb.id = 'http://example.com/different/verb/iri';
             var stmtTime = Date.now();
 
             request(helper.getEndpointAndAuth())
