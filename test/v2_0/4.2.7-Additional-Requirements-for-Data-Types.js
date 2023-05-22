@@ -133,7 +133,9 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             let res = await xapiRequests.sendStatement(statement);
             expect(res.status).is.eql(200);
             
-            let statementFromLRS = await xapiRequests.getStatementExact(id);
+            let getResponse = await xapiRequests.getStatementExact(id);
+            let statementFromLRS = getResponse.data;
+            
             expect(statementFromLRS).is.not.undefined;
             expect(statementFromLRS).is.not.null;
 
