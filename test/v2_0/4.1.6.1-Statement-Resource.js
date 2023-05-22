@@ -4,6 +4,8 @@
  */
 
 const request = require('super-request');
+const extend = require("extend");
+const fs = require("fs");
 const expect = require("chai").expect;
 const helper = require("../helper");
 const xapiRequests = require("./util/requests");
