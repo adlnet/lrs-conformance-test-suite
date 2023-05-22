@@ -59,10 +59,10 @@ describe('Content Type Requirements (Communication 1.5)', function () {
      * An LRS rejects with error code 400 Bad Request, a PUT or POST Request which does not have a "Content-Type" header with value "application/json" or "multipart/mixed"
      */
     describe('An LRS rejects with error code 400 Bad Request, a Request which uses Attachments and does not have a "Content-Type" header with value "application/json" or "multipart/mixed" (Format, Data 2.4.11, XAPI-00127)', function () {
-        var data, pictureAtt, pattSize, pattHash;
+        var data, pictureAtt, pattSize, pattHash, templates;
 
         before('create attachment templates', function () {
-            var templates = [
+            templates = [
                 { statement: '{{statements.attachment}}' },
                 {
                     attachments: [
