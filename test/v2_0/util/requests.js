@@ -66,7 +66,7 @@ else {
     let user = process.env.BASIC_AUTH_USER;
     let pass = process.env.BASIC_AUTH_PASSWORD;
 
-    axios.defaults.headers.common["Authorization"] = `Basic ${user + ':' + pass}`.toString('base64');
+    axios.defaults.headers.common["Authorization"] = "Basic " + Buffer.from(user + ':' + pass).toString("base64");
 }
 
 const requests = {
