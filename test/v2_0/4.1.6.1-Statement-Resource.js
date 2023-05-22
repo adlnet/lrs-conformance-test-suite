@@ -9,6 +9,7 @@ const fs = require("fs");
 const expect = require("chai").expect;
 const helper = require("../helper");
 const xapiRequests = require("./util/requests");
+const multipartParser = require("../multipartParser");
 const crypto = require("crypto");
 const moment = require("moment");
 
