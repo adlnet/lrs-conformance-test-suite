@@ -84,12 +84,11 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getStatementExact: async(id, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
         let params = {
             statementId: id
         };
         
-        return requests.getDocuments(endpoint, params, {
+        return requests.getDocuments(PATH_STATEMENTS, params, {
             headers: headerOverrides
         })
         .catch(err => err.response);
@@ -335,6 +334,8 @@ const requests = {
     getDocuments: async(resourcePath, params, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
+
+        console.log(endpoint, query, endpoint + query);
         
         return axios.get(endpoint + query, {
             headers: headerOverrides

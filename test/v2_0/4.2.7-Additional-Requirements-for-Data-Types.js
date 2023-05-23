@@ -80,15 +80,14 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             expect(statementFromLRS.result.duration).to.not.be.undefined;
 
             let original = duration;
-
             let received = statementFromLRS.result.duration;
 
-            let matchesOriginal = (original === received);
-            let matchesTruncation = (original === durationTruncated);
+            let matchesOriginal = (received === original);
+            let matchesTruncation = (received === durationTruncated);
 
             let matchedExpectedValue = (matchesOriginal || matchesTruncation);
-            let matchesRounded = (original === durationRounded);
-            
+            let matchesRounded = (received === durationRounded);
+
             expect(matchedExpectedValue).to.be.true(
                 matchesRounded
                     ? `Only truncation is allowed, rounding the seconds duration to a different hundredths value is not allowed.`
