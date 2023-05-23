@@ -143,7 +143,8 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     sendSignedStatementBody: async(multipartBody, boundary, headerOverrides) => {
-        
+        let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
+
         return axios.post(endpoint, multipartBody, {
             headers: {
                 ...headerOverrides,
