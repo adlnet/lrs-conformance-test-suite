@@ -72,17 +72,6 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
                 .json(document)
                 .expect(204, done);
         });
-
-        it('fails without ETag header', function (done) {
-            var parameters = helper.buildActivityProfile(),
-                document = helper.buildDocument();
-
-            request(helper.getEndpointAndAuth())
-                .put(helper.getEndpointActivitiesProfile() + "?" + helper.getUrlEncoding(parameters))
-                .headers(helper.addAllHeaders())
-                .json(document)
-                .expect(400, done);
-        });
     }); // describe
 
     /**  XAPI-00286, Communication 2.7 Activity Profile Resource

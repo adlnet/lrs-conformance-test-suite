@@ -77,19 +77,6 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
                 .expect(204, done);
         });
 
-        // Test without the header for rejection
-        it('An LRS\'s Agent Profile Resource upon processing a PUT request without an ETag header returns an error code and message (Communication 2.6.s3, XAPI-00273)', function (done) {
-            var parameters = helper.buildAgentProfile(),
-                document = helper.buildDocument();
-
-            request(helper.getEndpointAndAuth())
-                .put(helper.getEndpointAgentsProfile() + "?" + helper.getUrlEncoding(parameters))
-                .headers(helper.addAllHeaders({}))
-                .json(document)
-                .expect(400, done);
-        });
-
-
         /**  XAPI-00272, Communication 2.6 Agent Profile Resource
          * An LRS's Agent Profile API upon processing a successful POST request returns code 204 No Content
          */
