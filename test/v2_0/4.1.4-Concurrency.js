@@ -207,11 +207,11 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
 
             before('Create the document and get the etag', async () => {
 
-                let postResponse = await xapiRequests.postState(originalDocument, resourceParams);
+                let postResponse = await xapiRequests.postDocument(resourcePath, originalDocument, resourceParams);
 
                 expect(postResponse.status).to.equal(204);
                 
-                let getResponse = await xapiRequests.getSingleState(resourceParams);
+                let getResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
                 
                 expect(getResponse.status).to.equal(200);
                 expect(getResponse.headers.etag).to.not.be.undefined;
@@ -220,19 +220,19 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
             });
 
             it('Return 409 conflict', async () => {
-                let res = await xapiRequests.putState(updatedDocument, resourceParams);
+                let res = await xapiRequests.putDocument(resourcePath, updatedDocument, resourceParams);
                 expect(res.status).to.equal(409);
             });
 
             it('Return error message explaining the situation', async () => {
-                let res = await xapiRequests.putState(updatedDocument, resourceParams);
+                let res = await xapiRequests.putDocument(resourcePath, updatedDocument, resourceParams);
                 let responseText = res.data;
 
                 expect(responseText).is.a("string").with.length.greaterThan(0);
             });
 
             it('Do not modify the resource', async () => {
-                let getResponse = await xapiRequests.getSingleState(resourceParams);
+                let getResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
                 
                 expect(getResponse.data).to.eql(originalDocument);
             });
