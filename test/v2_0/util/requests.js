@@ -113,7 +113,8 @@ const requests = {
 
         return await requests.getDocuments(endpoint, params, {
             headers: headerOverrides
-        });
+        })
+        .catch(error => error.response);
     },
 
     /**
@@ -189,7 +190,8 @@ const requests = {
         
         return axios.post(endpoint, statement, {
             headers: headerOverrides
-        });
+        })
+        .catch(err => err.response);
     },
 
     /**
