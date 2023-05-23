@@ -18,7 +18,8 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
         let document = helper.buildDocument();
 
         before('before', async() => {
-            return await xapiRequests.postDocument(resourcePath, document, resourceParams);
+            await xapiRequests.deleteDocument(resourcePath, resourceParams);
+            await xapiRequests.postDocument(resourcePath, document, resourceParams);
         });
 
         it('An LRS responding to a GET request SHALL add an ETag HTTP header to the response.', async() => {
@@ -207,6 +208,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
 
             before('Create the document and get the etag', async () => {
 
+                await xapiRequests.deleteDocument(resourcePath, resourceParams);
                 let postResponse = await xapiRequests.postDocument(resourcePath, originalDocument, resourceParams);
 
                 expect(postResponse.status).to.equal(204);
@@ -234,7 +236,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
 
             it('Do not modify the resource', async () => {
                 let getResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
-                
+
                 expect(getResponse.data).to.eql(originalDocument);
             });
         });
