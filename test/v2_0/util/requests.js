@@ -81,7 +81,7 @@ const requests = {
      * POST an xAPI statement to the LRS.
      * @param {Object} statement The xAPI statement to send. 
      * @param {Object} headerOverrides Headers to override for this request. 
-     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getStatementExact: async(id, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
@@ -89,21 +89,17 @@ const requests = {
             statementId: id
         };
         
-        try {
-            return await requests.getDocuments(endpoint, params, {
-                headers: headerOverrides
-            });
-        }
-        catch (err) {
-            return err.response;
-        }
+        return requests.getDocuments(endpoint, params, {
+            headers: headerOverrides
+        })
+        .catch(err => err.response);
     },
 
     /**
      * POST an xAPI statement to the LRS.
      * @param {Object} statement The xAPI statement to send. 
      * @param {Object} headerOverrides Headers to override for this request. 
-     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getStatementExactPromise: async(id, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
@@ -111,7 +107,7 @@ const requests = {
             statementId: id
         };
 
-        return await requests.getDocuments(endpoint, params, {
+        return requests.getDocuments(endpoint, params, {
             headers: headerOverrides
         })
         .catch(error => error.response);
@@ -144,46 +140,39 @@ const requests = {
      * @param {Object} multipartBody The signed multipart body. 
      * @param {string} boundary The multipart boundary used to create this body. 
      * @param {Object} headerOverrides Headers to override for this request. 
-     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     sendSignedStatementBody: async(multipartBody, boundary, headerOverrides) => {
         
-        try {
-            return await axios.post(endpoint, multipartBody, {
-                headers: {
-                    ...headerOverrides,
-                    "Content-Type": `multipart/mixed; boundary=${boundary}`
-                }
-            });
-        }
-        catch (err) {
-            return err.response;
-        }
+        return axios.post(endpoint, multipartBody, {
+            headers: {
+                ...headerOverrides,
+                "Content-Type": `multipart/mixed; boundary=${boundary}`
+            }
+        })
+        .catch(err => err.response);
     },
 
     /**
      * POST an xAPI statement to the LRS.
      * @param {Object} statement The xAPI statement to send. 
      * @param {Object} headerOverrides Headers to override for this request. 
-     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     sendStatement: async(statement, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
         
-        try {
-            return await axios.post(endpoint, statement, {
-                headers: headerOverrides
-            });
-        }
-        catch (err) {
-            return err.response;
-        }
+        return axios.post(endpoint, statement, {
+            headers: headerOverrides
+        })
+        .catch(err => err.response)
     },
 
     /**
      * POST an xAPI statement to the LRS.
      * @param {Object} statement The xAPI statement to send. 
      * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     sendStatementPromise: async(statement, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
@@ -198,20 +187,16 @@ const requests = {
      * GET an Activity from the LRS's Activity Resource endpoint.
      * @param {string} iri IRI for the Activity. 
      * @param {Object} headerOverrides Headers to override for this request. 
-     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getActivityWithIRI: async(iri, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, PATH_ACTIVITIES);
         let query = `?activityId=${encodeURIComponent(iri)}`;
 
-        try {
-            return await axios.get(endpoint + query, {
-                headers: headerOverrides
-            });
-        }
-        catch (err) {
-            return err.response;
-        }
+        return await axios.get(endpoint + query, {
+            headers: headerOverrides
+        })
+        .catch(err => err.response);
     },
 
     /** 
@@ -230,9 +215,10 @@ const requests = {
      * @param {any} state Generic state document to store. 
      * @param {ActivityStateParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     putState: async(state, params, headerOverrides) => {
-        return await requests.putDocument(PATH_ACTIVITIES_STATE, state, params, headerOverrides);
+        return requests.putDocument(PATH_ACTIVITIES_STATE, state, params, headerOverrides);
     },
 
     /**
@@ -240,37 +226,40 @@ const requests = {
      * @param {any} state Generic state document to store. 
      * @param {ActivityStateParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     postState: async(state, params, headerOverrides) => {
-        return await requests.postDocument(PATH_ACTIVITIES_STATE, state, params, headerOverrides);
+        return requests.postDocument(PATH_ACTIVITIES_STATE, state, params, headerOverrides);
     },
 
     /**
      * DELETE a document into the Activity State resource.
      * @param {ActivityStateParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     deleteState: async(params, headerOverrides) => {
-        return await requests.deleteDocument(PATH_ACTIVITIES_STATE, params, headerOverrides);
+        return requests.deleteDocument(PATH_ACTIVITIES_STATE, params, headerOverrides);
     },
     
     /**
      * GET one or multiple documents from the Activity State resource.
      * @param {ActivityStateParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
-     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getSingleState: async(params, headerOverrides) => {
-        return await requests.getDocuments(PATH_ACTIVITIES_STATE, params, headerOverrides);
+        return requests.getDocuments(PATH_ACTIVITIES_STATE, params, headerOverrides);
     },
     
     /**
      * GET one or multiple documents from the Activity State resource.
      * @param {ActivityStateGetParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getMultipleStates: async(params, headerOverrides) => {
-        return await requests.getDocuments(PATH_ACTIVITIES_STATE, params, headerOverrides);
+        return requests.getDocuments(PATH_ACTIVITIES_STATE, params, headerOverrides);
     },
     
     /** 
@@ -288,9 +277,10 @@ const requests = {
      * @param {any} document Generic state document to store. 
      * @param {AgentProfileParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     putAgentProfile: async(document, params, headerOverrides) => {
-        return await requests.putDocument(PATH_AGENTS_PROFILE, document, params, headerOverrides);
+        return requests.putDocument(PATH_AGENTS_PROFILE, document, params, headerOverrides);
     },
 
     /**
@@ -298,37 +288,40 @@ const requests = {
      * @param {any} document Generic state document to store. 
      * @param {AgentProfileParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     postAgentProfile: async(document, params, headerOverrides) => {
-        return await requests.postDocument(PATH_AGENTS_PROFILE, document, params, headerOverrides);
+        return requests.postDocument(PATH_AGENTS_PROFILE, document, params, headerOverrides);
     },
 
     /**
      * DELETE a document into the Activity State resource.
      * @param {ActivityStateParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     deleteAgentProfile: async(params, headerOverrides) => {
-        return await requests.deleteDocument(PATH_AGENTS_PROFILE, params, headerOverrides);
+        return requests.deleteDocument(PATH_AGENTS_PROFILE, params, headerOverrides);
     },
     
     /**
      * GET one or multiple documents from the Activity State resource.
      * @param {ActivityStateParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
-     * @returns {axiosBase.AxiosResponse} The LRS's simplified response.
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getSingleAgentProfile: async(params, headerOverrides) => {
-        return await requests.getDocuments(PATH_AGENTS_PROFILE, params, headerOverrides);
+        return requests.getDocuments(PATH_AGENTS_PROFILE, params, headerOverrides);
     },
     
     /**
      * GET one or multiple documents from the Activity State resource.
      * @param {AgentProfileMultipleGetParameters} params 
      * @param {Object} headerOverrides Headers to override for this request. 
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getMultipleAgentProfiles: async(params, headerOverrides) => {
-        return await requests.getDocuments(PATH_AGENTS_PROFILE, params, headerOverrides);
+        return requests.getDocuments(PATH_AGENTS_PROFILE, params, headerOverrides);
     },
     
     /**
@@ -336,20 +329,16 @@ const requests = {
      * @param {string} resourcePath Relative path to the resource endpoint, relative to the LRS's base xAPI path. 
      * @param {Object} params Query parameters for the request.
      * @param {Object} headerOverrides Optional headers to override for this request.
-     * @returns {axiosBase.AxiosResponse}
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getDocuments: async(resourcePath, params, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
         
-        try {
-            return await axios.get(endpoint + query, {
-                headers: headerOverrides
-            });
-        }
-        catch (err) {
-            return err.response;
-        }
+        return axios.get(endpoint + query, {
+            headers: headerOverrides
+        })
+        .catch(err => err.response);
     },
     
     /**
@@ -358,20 +347,16 @@ const requests = {
      * @param {any} document Document to send.
      * @param {Object} params Query parameters for the request.
      * @param {Object} headerOverrides Optional headers to override for this request.
-     * @returns {axiosBase.AxiosResponse}
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     putDocument: async(resourcePath, document, params, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
         
-        try {
-            return await axios.put(endpoint + query, document, {
-                headers: headerOverrides
-            });
-        }
-        catch (err) {
-            return err.response;
-        }
+        return axios.put(endpoint + query, document, {
+            headers: headerOverrides
+        })
+        .catch(err => err.response);
     },
     
     /**
@@ -380,20 +365,16 @@ const requests = {
      * @param {any} document Document to send.
      * @param {Object} params Query parameters for the request.
      * @param {Object} headerOverrides Optional headers to override for this request.
-     * @returns {axiosBase.AxiosResponse}
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     postDocument: async(resourcePath, document, params, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
 
-        try {
-            return await axios.post(endpoint + query, document, {
-                headers: headerOverrides
-            });
-        }
-        catch (err) {
-            return err.response;
-        }
+        return axios.post(endpoint + query, document, {
+            headers: headerOverrides
+        })
+        .catch(err => err.response);
     },
     
     /**
@@ -401,20 +382,16 @@ const requests = {
      * @param {string} resourcePath Relative path to the resource endpoint, relative to the LRS's base xAPI path. 
      * @param {Object} params Query parameters for the request.
      * @param {Object} headerOverrides Optional headers to override for this request.
-     * @returns {axiosBase.AxiosResponse}
+     * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     deleteDocument: async(resourcePath, params, headerOverrides) => {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
         
-        try {
-            return await axios.delete(endpoint + query, {
-                headers: headerOverrides
-            });
-        }
-        catch (err) {
-            return err.response;
-        }
+        return axios.delete(endpoint + query, {
+            headers: headerOverrides
+        })
+        .catch(err => err.response);
     }
 };
 
