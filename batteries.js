@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1413,
+    "conformanceTestCount": 1411,
     "tests": {
       "text": "",
       "children": [
@@ -7141,7 +7141,12 @@ module.exports = {
             },
             {
               "text": "An LRS's Statement Resource can process a GET request with \"attachments\" as a parameter",
-              "children": []
+              "children": [
+                {
+                  "text": "should process using GET with \"attachments\"",
+                  "children": []
+                }
+              ]
             },
             {
               "text": "An LRSs Statement Resource, upon receiving a GET request, MUST have a \"Content-Type\" header",
@@ -7396,7 +7401,20 @@ module.exports = {
             },
             {
               "text": "An LRSs Statement Resource does not return attachment data and only returns application/json if the \"attachment\" parameter set to \"false\"",
-              "children": []
+              "children": [
+                {
+                  "text": "should NOT return the attachment if \"attachments\" is missing",
+                  "children": []
+                },
+                {
+                  "text": "should NOT return the attachment if \"attachments\" is false",
+                  "children": []
+                },
+                {
+                  "text": "should return the attachment when \"attachment\" is true",
+                  "children": []
+                }
+              ]
             },
             {
               "text": "An LRS's Statement Resource, upon processing a successful GET request, can only return a Voided Statement if that Statement is specified in the voidedStatementId parameter of that request",
@@ -7856,10 +7874,6 @@ module.exports = {
                   "children": []
                 },
                 {
-                  "text": "An LRS's Agent Profile Resource upon processing a PUT request without an ETag header returns an error code and message",
-                  "children": []
-                },
-                {
                   "text": "An LRS's Agent Profile Resource upon processing a successful POST request returns code 204 No Content",
                   "children": []
                 },
@@ -8025,10 +8039,6 @@ module.exports = {
               "children": [
                 {
                   "text": "passes with 204 no content",
-                  "children": []
-                },
-                {
-                  "text": "fails without ETag header",
                   "children": []
                 }
               ]

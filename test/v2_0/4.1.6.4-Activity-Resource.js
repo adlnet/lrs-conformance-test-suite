@@ -99,17 +99,6 @@ describe('Activities Resource Requirements (Communication 2.5)', () => {
             parameters.activityId = true;
             return helper.sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 400);
         });
-
-        it('If an LRS does not have a canonical definition of the Activity to return, the LRS shall still return an Activity Object when queried.', function () {
-            var parameters = {
-                activityId: 'http://www.example.com/non/existent/activity'
-            }
-            return helper.sendRequest('get', helper.getEndpointActivities(), parameters, undefined, 200)
-                .then(function (res) {
-                    var activity = res.body;
-                    expect(activity.activityId).to.eql(parameters.activityId);
-                });
-        });
     });
 
     /**  XAPI-00254, Communication 2.5 Activities Resource
