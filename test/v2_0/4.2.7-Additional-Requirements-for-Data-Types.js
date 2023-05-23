@@ -60,6 +60,9 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
         it("On receiving a Duration with more than 0.01 second precision, the LRS may truncate the duration to 0.01 second precision.", async() => {
             
             let duration = "P1DT12H36M0.12567S";
+            let durationTruncated = "P1DT12H36M0.12S";
+            let durationRounded = "P1DT12H36M0.13S";
+
             let statement = {
                 ...helper.buildStatement(),
                 id: helper.generateUUID(),
@@ -77,16 +80,14 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             expect(statementFromLRS.result.duration).to.not.be.undefined;
 
             let original = duration;
-            let originalTruncated = "P1DT12H36M0.12S";
-            let originalRounded = "P1DT12H36M0.13S";
 
             let received = statementFromLRS.result.duration;
 
             let matchesOriginal = (original === received);
-            let matchesTruncation = (original === originalTruncated);
+            let matchesTruncation = (original === durationTruncated);
 
             let matchedExpectedValue = (matchesOriginal || matchesTruncation);
-            let matchesRounded = (original === originalRounded);
+            let matchesRounded = (original === durationRounded);
             
             expect(matchedExpectedValue).to.be.true(
                 matchesRounded
@@ -96,7 +97,8 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
         });
 
         it("When comparing Durations (or Statements containing them), any precision beyond 0.01 second precision shall not be included in the comparison.", async() => {
-            let durationFull = "P1DT12H36M0.12345";
+            
+            let durationFull = "P1DT12H36M0.1237S";
             let durationShort = "P1DT12H36M0.12S";
 
             let statement = {
