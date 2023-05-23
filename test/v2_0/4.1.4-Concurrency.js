@@ -51,6 +51,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
             describe("Properly handles PUT requests with If-Match", async() => {
 
                 let document = helper.buildDocument();
+                let originalName = document.name;
                 let updatedDocument = {
                     ...document,
                     name: "Updated Name:" + helper.generateUUID() 
@@ -96,6 +97,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
             describe("Properly handles POST requests with If-Match", async() => {
 
                 let document = helper.buildDocument();
+                let originalName = document.name;
                 let updatedDocument = {
                     ...document,
                     name: "Updated Name:" + helper.generateUUID() 
@@ -141,10 +143,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
             it ("Properly handles DELETE requests with If-Match", async() => {
 
                 let document = helper.buildDocument();
-                let updatedDocument = {
-                    ...document,
-                    name: "Updated Name:" + helper.generateUUID() 
-                }
+                let originalName = document.name;
                 var correctTag;
 
                 before ("Get the current ETag", async() => {
