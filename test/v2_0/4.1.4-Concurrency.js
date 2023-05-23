@@ -250,8 +250,8 @@ describe('(4.2.7) Concurrency', () => {
     describe("xAPI uses HTTP 1.1 entity tags (ETags) to implement optimistic concurrency control in the following resources, where PUT, POST or DELETE are allowed to overwrite or remove existing data.", async () => {
 
         let stateParams = helper.buildState();
-        let activityProfileParams = helper.buildState();
-        let agentsProfileParams = helper.buildState();
+        let activityProfileParams = helper.buildActivityProfile();
+        let agentsProfileParams = helper.buildAgentProfile();
 
         await runConcurrencyTestsForDocumentResource("Activity State", xapiRequests.resourcePaths.activityState, stateParams);
         await runConcurrencyTestsForDocumentResource("Activity Profile", xapiRequests.resourcePaths.activityProfile, activityProfileParams);
