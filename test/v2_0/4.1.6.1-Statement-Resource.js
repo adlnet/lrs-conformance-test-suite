@@ -281,6 +281,7 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
 
                             let stored = Date.parse(getResponse.stored);
                             expect(stored).to.eql(lastModified);
+                            done();
                         });
                 });
         });
