@@ -215,6 +215,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
                 
                 expect(getResponse.status).to.equal(200);
                 expect(getResponse.headers.etag).to.not.be.undefined;
+                expect(getResponse.data).to.eql(originalDocument);
 
                 etag = getResponse.headers.etag;
             });
