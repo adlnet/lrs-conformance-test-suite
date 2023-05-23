@@ -217,7 +217,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
                 expect(getResponse.status).to.equal(200);
                 expect(getResponse.headers.etag).to.not.be.undefined;
 
-                etag = res.headers.etag;
+                etag = getResponse.headers.etag;
             });
 
             it('Return 409 conflict', async () => {
