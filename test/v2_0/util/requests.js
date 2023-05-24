@@ -69,6 +69,17 @@ else {
     axios.defaults.headers.common["Authorization"] = "Basic " + Buffer.from(user + ':' + pass).toString("base64");
 }
 
+/**
+ * 
+ * @param {String} endpoint 
+ * @param {String} path 
+ */
+function joinPaths(endpoint, path) {
+    return path
+        ? endpoint.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '')
+        : endpoint;
+}
+
 const requests = {
     
     resourcePaths: {
@@ -101,7 +112,7 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getStatementExactPromise: async(id, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
+        let endpoint = joinPaths(LRS_ENDPOINT, PATH_STATEMENTS);
         let params = {
             statementId: id
         };
@@ -142,7 +153,11 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     sendSignedStatementBody: async(multipartBody, boundary, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
+
+        let endpoint = joinPaths(LRS_ENDPOINT, PATH_STATEMENTS);
+        
+        console.log(LRS_ENDPOINT, PATH_STATEMENTS);
+        console.log(endpoint);
 
         return axios.post(endpoint, multipartBody, {
             headers: {
@@ -160,7 +175,7 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     sendStatement: async(statement, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
+        let endpoint = joinPaths(LRS_ENDPOINT, PATH_STATEMENTS);
         
         return axios.post(endpoint, statement, {
             headers: headerOverrides
@@ -175,7 +190,7 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     sendStatementPromise: async(statement, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, PATH_STATEMENTS);
+        let endpoint = joinPaths(LRS_ENDPOINT, PATH_STATEMENTS);
         
         return axios.post(endpoint, statement, {
             headers: headerOverrides
@@ -190,7 +205,7 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getActivityWithIRI: async(iri, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, PATH_ACTIVITIES);
+        let endpoint = joinPaths(LRS_ENDPOINT, PATH_ACTIVITIES);
         let query = `?activityId=${encodeURIComponent(iri)}`;
 
         return await axios.get(endpoint + query, {
@@ -332,7 +347,7 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     getDocuments: async(resourcePath, params, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, resourcePath);
+        let endpoint = joinPaths(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
 
         return axios.get(endpoint + query, {
@@ -350,7 +365,7 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     putDocument: async(resourcePath, document, params, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, resourcePath);
+        let endpoint = joinPaths(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
         
         return axios.put(endpoint + query, document, {
@@ -368,7 +383,7 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     postDocument: async(resourcePath, document, params, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, resourcePath);
+        let endpoint = joinPaths(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
 
         return axios.post(endpoint + query, document, {
@@ -385,7 +400,7 @@ const requests = {
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
     deleteDocument: async(resourcePath, params, headerOverrides) => {
-        let endpoint = path.join(LRS_ENDPOINT, resourcePath);
+        let endpoint = joinPaths(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
         
         return axios.delete(endpoint + query, {
