@@ -335,8 +335,6 @@ const requests = {
         let endpoint = path.join(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
 
-        console.log(endpoint, query, endpoint + query);
-        
         return axios.get(endpoint + query, {
             headers: headerOverrides
         })

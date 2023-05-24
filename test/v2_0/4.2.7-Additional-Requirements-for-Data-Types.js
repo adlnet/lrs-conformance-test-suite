@@ -122,8 +122,8 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
     describe("Timestamps", function() {
 
         it ("checks if the LRS converts timestamps to UTC", async() => {
-            const dateUTC = "2023-05-04T17:00:00.000Z";
             const dateEST = "2023-05-04T12:00-05:00";
+            const dateUTC = "2023-05-04T17:00:00.000Z";
 
             let id = helper.generateUUID();
             let statement = helper.buildStatement();
@@ -140,7 +140,12 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
             expect(statementFromLRS).is.not.undefined;
             expect(statementFromLRS).is.not.null;
 
-            expect(statementFromLRS.timestamp).is.eql(dateUTC);
+            let timeReceived = Date.parse(statementFromLRS.timestamp);
+            let timeExpected = Date.parse(dateUTC);
+
+            expect(timeExpected).is.eql(timeReceived, 
+                `Statement retrieved with timestamp: ${statementFromLRS.timestamp}, expected equivalence to ${dateUTC}`
+            );
         });
     });
 });
