@@ -156,9 +156,6 @@ const requests = {
 
         let endpoint = joinPaths(LRS_ENDPOINT, PATH_STATEMENTS);
         
-        console.log(LRS_ENDPOINT, PATH_STATEMENTS);
-        console.log(endpoint);
-
         return axios.post(endpoint, multipartBody, {
             headers: {
                 ...headerOverrides,
