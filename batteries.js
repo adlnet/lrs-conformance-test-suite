@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1411,
+    "conformanceTestCount": 1408,
     "tests": {
       "text": "",
       "children": [
@@ -6819,11 +6819,45 @@ module.exports = {
                         },
                         {
                           "text": "Properly handles PUT requests with If-Match",
-                          "children": []
+                          "children": [
+                            {
+                              "text": "Should reject a PUT request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for PUT requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a PUT request with a correct ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should have modified the document for PUT requests with a correct ETag",
+                              "children": []
+                            }
+                          ]
                         },
                         {
                           "text": "Properly handles POST requests with If-Match",
-                          "children": []
+                          "children": [
+                            {
+                              "text": "Should reject a POST request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for POST requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a POST request with a correct ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should have modified the document for POST requests with a correct ETag",
+                              "children": []
+                            }
+                          ]
                         }
                       ]
                     },
@@ -7753,10 +7787,6 @@ module.exports = {
                 {
                   "text": "Updates the Last-Modified value when the corresponding document is updated.",
                   "children": []
-                },
-                {
-                  "text": "Provides the Last-Modified value matching the most recently updated document.",
-                  "children": []
                 }
               ]
             }
@@ -7946,10 +7976,6 @@ module.exports = {
                 {
                   "text": "Updates the Last-Modified value when the corresponding document is updated.",
                   "children": []
-                },
-                {
-                  "text": "Provides the Last-Modified value matching the most recently updated document.",
-                  "children": []
                 }
               ]
             }
@@ -8078,10 +8104,6 @@ module.exports = {
                 },
                 {
                   "text": "Updates the Last-Modified value when the corresponding document is updated.",
-                  "children": []
-                },
-                {
-                  "text": "Provides the Last-Modified value matching the most recently updated document.",
                   "children": []
                 }
               ]
@@ -13612,11 +13634,45 @@ module.exports = {
                 },
                 {
                   "text": "Properly handles PUT requests with If-Match",
-                  "children": []
+                  "children": [
+                    {
+                      "text": "Should reject a PUT request with a 412 Precondition Failed when using an incorrect ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should not have modified the document for PUT requests with an incorrect ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should accept a PUT request with a correct ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should have modified the document for PUT requests with a correct ETag",
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "text": "Properly handles POST requests with If-Match",
-                  "children": []
+                  "children": [
+                    {
+                      "text": "Should reject a POST request with a 412 Precondition Failed when using an incorrect ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should not have modified the document for POST requests with an incorrect ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should accept a POST request with a correct ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should have modified the document for POST requests with a correct ETag",
+                      "children": []
+                    }
+                  ]
                 }
               ]
             },
@@ -13646,11 +13702,45 @@ module.exports = {
                 },
                 {
                   "text": "Properly handles PUT requests with If-Match",
-                  "children": []
+                  "children": [
+                    {
+                      "text": "Should reject a PUT request with a 412 Precondition Failed when using an incorrect ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should not have modified the document for PUT requests with an incorrect ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should accept a PUT request with a correct ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should have modified the document for PUT requests with a correct ETag",
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "text": "Properly handles POST requests with If-Match",
-                  "children": []
+                  "children": [
+                    {
+                      "text": "Should reject a POST request with a 412 Precondition Failed when using an incorrect ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should not have modified the document for POST requests with an incorrect ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should accept a POST request with a correct ETag",
+                      "children": []
+                    },
+                    {
+                      "text": "Should have modified the document for POST requests with a correct ETag",
+                      "children": []
+                    }
+                  ]
                 }
               ]
             },
