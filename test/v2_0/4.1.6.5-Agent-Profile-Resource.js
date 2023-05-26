@@ -569,7 +569,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
             ...document,
             name: "Updated Name:" + helper.generateUUID() 
         };
-        let resourcePath = xapiRequests.resourcePaths.activityState;
+        let resourcePath = xapiRequests.resourcePaths.agentsProfile;
         let resourceParams = helper.buildAgentProfile();
 
         before ("Add the document", async() => {

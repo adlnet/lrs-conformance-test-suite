@@ -484,7 +484,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             ...document,
             name: "Updated Name:" + helper.generateUUID()
         };
-        let resourcePath = xapiRequests.resourcePaths.activityState;
+        let resourcePath = xapiRequests.resourcePaths.activityProfile;
         let resourceParams = helper.buildActivityProfile();
 
         before("Add the document", async () => {
