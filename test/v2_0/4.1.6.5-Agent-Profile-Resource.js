@@ -582,7 +582,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
 
             let res = await xapiRequests.getDocuments(resourcePath, resourceParams);
 
-            let modifiedStr = res.headers["last-modified"];
+            let modifiedStr = res.headers.get("last-modified");
             let modifiedDate = Date.parse(modifiedStr);
 
             expect(modifiedDate).to.not.be.NaN;
@@ -596,8 +596,8 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
 
             let updatedRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
 
-            let headerBeforeUpdate = Date.parse(originalRes.headers["last-modified"]);
-            let headerAfterUpdate = Date.parse(updatedRes.headers["last-modified"]);
+            let headerBeforeUpdate = Date.parse(originalRes.headers.get("last-modified"));
+            let headerAfterUpdate = Date.parse(updatedRes.headers.get("last-modified"));
 
             expect(headerAfterUpdate).to.be.greaterThan(headerBeforeUpdate);
         });
@@ -621,8 +621,8 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
             let resA = await xapiRequests.getDocuments(resourcePath, profileA);
             let resB = await xapiRequests.getDocuments(resourcePath, profileB);
 
-            let modifiedA = Date.parse(resA.headers["last-modified"]);
-            let modifiedB = Date.parse(resB.headers["last-modified"]);
+            let modifiedA = Date.parse(resA.headers.get("last-modified"));
+            let modifiedB = Date.parse(resB.headers.get("last-modified"));
 
             let earliestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
             let latestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
@@ -633,7 +633,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
             };
             
             let groupRes = await xapiRequests.getDocuments(resourcePath, groupParams);
-            let groupTime = Date.parse(groupRes.headers["last-modified"]);
+            let groupTime = Date.parse(groupRes.headers.get("last-modified"));
 
             expect(groupTime).to.equal(latestTime);
         });

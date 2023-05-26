@@ -262,28 +262,34 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         it('should include a Last-Modified header which matches the "stored" Timestamp of the statement.', function (done) {
 
             let statement = helper.buildStatement();
-            xapiRequests.sendStatementPromise(statement)
-                .then(postResponse => {
+            xapiRequests.sendStatementPromise(statement).then(postResponse => {
 
-                    let lastModifiedStr = postResponse.headers["Last-Modified"];
-                    expect(lastModifiedStr).to.not.be.undefined(
-                        "The LRS did not include a Last-Modified header when responding to this statement."
-                    );
+                let storedId = postResponse.data[0];
+                xapiRequests.getStatementExact(storedId).then(getResponse => {
 
+                    let lastModifiedStr = getResponse.headers.get("last-modified");
                     let lastModified = Date.parse(lastModifiedStr);
-                    expect(lastModified).to.not.be.NaN(
+                    expect(lastModified).to.not.eql(Number.NaN,
                         `The Last-Modified header could not be parsed -- received: ${lastModifiedStr}`
                     );
+                    
+                    let retrievedStatement = getResponse.data;
+                    let storedStr = retrievedStatement.stored;
+                    let stored = Date.parse(storedStr);
+                    expect(stored).to.not.eql(Number.NaN,
+                        `The "stored" property could not be parsed into a DateTime, received: ${storedStr}`
+                    );
 
-                    let storedId = postResponse.data[0];
-                    xapiRequests.getStatementExactPromise(storedId)
-                        .then(getResponse => {
+                    let storedWithoutMS = stored - (stored % 1000);
+                    let lastModifiedWithoutMS = lastModified - (lastModified % 1000);
 
-                            let stored = Date.parse(getResponse.stored);
-                            expect(stored).to.eql(lastModified);
-                            done();
-                        });
+                    expect(storedWithoutMS).to.eql(lastModifiedWithoutMS, 
+                        `The "stored" property did not match the Last-Modified to the seconds value: ${storedStr} vs. ${lastModifiedStr}`
+                    );
+
+                    done();
                 });
+            });
         });
     });
 
