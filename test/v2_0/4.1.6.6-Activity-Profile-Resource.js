@@ -505,14 +505,16 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
 
         it("Updates the Last-Modified value when the corresponding document is updated.", async () => {
 
-            let originalRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let originalDocRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            await xapiRequests.delay(1500);
 
-            await xapiRequests.postDocument(resourcePath, updatedDocument, resourceParams);
+            let updateRes = await xapiRequests.postDocument(resourcePath, updatedDocument, resourceParams);
+            expect(updateRes.status).to.eql(204);
 
-            let updatedRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let updatedDocRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
 
-            let headerBeforeUpdate = Date.parse(originalRes.headers.get("last-modified"));
-            let headerAfterUpdate = Date.parse(updatedRes.headers.get("last-modified"));
+            let headerBeforeUpdate = Date.parse(originalDocRes.headers.get("last-modified"));
+            let headerAfterUpdate = Date.parse(updatedDocRes.headers.get("last-modified"));
 
             expect(headerAfterUpdate).to.be.greaterThan(headerBeforeUpdate);
         });
