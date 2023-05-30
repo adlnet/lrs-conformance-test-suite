@@ -776,48 +776,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                     }
                 });
         });
-
-        it('should return multipart response format StatementResult using GET with "attachments" parameter as true', function (done) {
-            var query = helper.getUrlEncoding({ attachments: true });
-            request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-                .headers(helper.addAllHeaders({}))
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        expect(res.headers).to.have.property('content-type');
-                        var boundary = multipartParser.getBoundary(res.headers['content-type']);
-                        expect(boundary).to.be.ok;
-                        var parsed = multipartParser.parseMultipart(boundary, res.body);
-                        expect(parsed).to.be.ok;
-                        var results = helper.parse(parsed[0].body, done);
-                        expect(results).to.have.property('statements');
-                        done();
-                    }
-                });
-        });
-
-        it('should not return multipart response format using GET with "attachments" parameter as false', function (done) {
-            var query = helper.getUrlEncoding({ attachments: false });
-            request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-                .headers(helper.addAllHeaders({}))
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        var results = helper.parse(res.body);
-                        expect(results).to.have.property('statements');
-                        done();
-                    }
-                });
-        });
-
     });
 
     /**  XAPI-00158, Communication 2.1.3 GET Statements
@@ -1463,6 +1421,47 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                         done(err);
                     } else {
                         stmtId = helper.parse(res.body, done)[0];
+                        done();
+                    }
+                });
+        });
+        
+        it('should return multipart response format StatementResult using GET with "attachments" parameter as true', function (done) {
+            var query = helper.getUrlEncoding({ attachments: true });
+            request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.headers).to.have.property('content-type');
+                        var boundary = multipartParser.getBoundary(res.headers['content-type']);
+                        expect(boundary).to.be.ok;
+                        var parsed = multipartParser.parseMultipart(boundary, res.body);
+                        expect(parsed).to.be.ok;
+                        var results = helper.parse(parsed[0].body, done);
+                        expect(results).to.have.property('statements');
+                        done();
+                    }
+                });
+        });
+
+        it('should not return multipart response format using GET with "attachments" parameter as false', function (done) {
+            var query = helper.getUrlEncoding({ attachments: false });
+            request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        var results = helper.parse(res.body);
+                        expect(results).to.have.property('statements');
                         done();
                     }
                 });
