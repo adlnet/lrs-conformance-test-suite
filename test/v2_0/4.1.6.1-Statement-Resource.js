@@ -3348,25 +3348,19 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
     */
     describe('The LRS shall set the "timestamp" property to the value of the "stored" property if not provided.', function () {
 
-        it('should set timestamp property to equal "stored" value if retrieved statement does not have its own timestamp', async function (done) {
+        it('should set timestamp property to equal "stored" value if retrieved statement does not have its own timestamp', async function () {
             let id = helper.generateUUID();
             let statement = helper.buildStatement();
             
             statement.timestamp = null;
             statement.id = id;
 
-            //send a statement without a timestamp to LRS
-            xapiRequests.sendStatementPromise(statement)
-                .then( _ => {
-                    //Retrieve statement
-                    xapiRequests.getStatementExactPromise(id)
-                        .then(res => {
-                            let statementFromLRS = res.data;
-                            expect(statementFromLRS.timestamp).is.eql(statementFromLRS.stored);
-                            done();
-                        })
-                    done();
-                })
+            let _ = await xapiRequests.sendStatementPromise(statement);
+            let res = await xapiRequests.getStatementExactPromise(id);
+
+            let statementFromLRS = res.data;
+
+            expect(statementFromLRS.timestamp).is.eql(statementFromLRS.stored);
         });
     });
 
@@ -3376,10 +3370,12 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
     */
     describe('The LRS shall not reject a timestamp for having a greater value than the current time, within an acceptable margin of error', function () {
 
-        it('accepts statements with greater value than current time', function (done) {
+        it('accepts statements with greater value than current time', async function () {
+            
             //Acceptable margin of error around five minutes
             var minutes = 5;
             var currentdate = new Date();
+
             //add five minutes to current time
             currentdate.setMinutes(currentdate.getMinutes() + minutes);
 
@@ -3389,17 +3385,10 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             statement.timestamp = currentdate.toISOString();
             statement.id = id;
 
-            //send the statement with the altered timestamp to LRS
-            xapiRequests.sendStatementPromise(statement)
-                .then(res => {
-                    expect(res.status).to.eql(200);
-                    done();
-                })
-                .catch(_ => {
-                    done("LRS did not respond with a 200 for this request.");
-                })
-        });
+            let res = await xapiRequests.sendStatementPromise(statement);
 
+            expect(res.status).to.eql(200);
+        });
     })
 });
             
