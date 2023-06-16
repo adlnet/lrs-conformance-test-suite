@@ -11,7 +11,7 @@ const xapiRequests = require("./util/requests");
 if (global.OAUTH)
     request = helper.OAuthRequest(request);
 
-describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
+describe('Agent Profile Resource Requirements (Communication 2.6)', function() {
 
     /**  Matchup with Conformance
      * XAPI-00255 - below
@@ -562,7 +562,7 @@ describe('Agent Profile Resource Requirements (Communication 2.6)', () => {
             .expect(400, done);
     });
 
-    describe("The LRS shall include a Last-Modified header indicating when the document was last modified.", async() => {
+    describe("The LRS shall include a Last-Modified header indicating when the document was last modified.", function() {
         
         let document = helper.buildDocument();
         let updatedDocument = {

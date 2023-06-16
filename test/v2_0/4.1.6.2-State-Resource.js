@@ -746,7 +746,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
             });
     });
 
-    describe("The LRS shall include a Last-Modified header indicating when the document was last modified.", async() => {
+    describe("The LRS shall include a Last-Modified header indicating when the document was last modified.", function() {
         
         let document = helper.buildDocument();
         let updatedDocument = {

@@ -55,6 +55,7 @@ async function createBattery(version) {
     runnerFlags.authUser = "No:";
     runnerFlags.authPass = "User";
     runnerFlags.xapiVersion = version;
+    // runnerFlags.bail = true;
 
     const runner = new TestRunner(
         "batteryInfo",
@@ -79,6 +80,8 @@ async function createBattery(version) {
                     conformanceTestCount: record.summary.total,
                     tests: cleanLog(record.log)
                 };
+
+                console.log(`[${version}] found ${record.summary.total} tests.`);
     
                 return resolve(info);
             }
