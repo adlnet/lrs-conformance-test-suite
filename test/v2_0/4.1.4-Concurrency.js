@@ -141,7 +141,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
                 });
             });
             
-            it ("Properly handles DELETE requests with If-Match", async() => {
+            describe ("Properly handles DELETE requests with If-Match", async() => {
 
                 let document = helper.buildDocument();
                 let originalName = document.name;
@@ -243,7 +243,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
     });
 }
 
-describe('(4.2.7) Concurrency', () => {
+describe('(4.1.4) Concurrency', () => {
 
     /**  XAPI-00322, Communication 3.1 Concurrency
      * An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile)
