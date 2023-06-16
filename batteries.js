@@ -7029,14 +7029,6 @@ module.exports = {
                 {
                   "text": "should return StatementResult using GET with \"format\"",
                   "children": []
-                },
-                {
-                  "text": "should return multipart response format StatementResult using GET with \"attachments\" parameter as true",
-                  "children": []
-                },
-                {
-                  "text": "should not return multipart response format using GET with \"attachments\" parameter as false",
-                  "children": []
                 }
               ]
             },
@@ -7176,6 +7168,14 @@ module.exports = {
             {
               "text": "An LRS's Statement Resource can process a GET request with \"attachments\" as a parameter",
               "children": [
+                {
+                  "text": "should return multipart response format StatementResult using GET with \"attachments\" parameter as true",
+                  "children": []
+                },
+                {
+                  "text": "should not return multipart response format using GET with \"attachments\" parameter as false",
+                  "children": []
+                },
                 {
                   "text": "should process using GET with \"attachments\"",
                   "children": []
