@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1411,
+    "conformanceTestCount": 1442,
     "tests": {
       "text": "",
       "children": [
@@ -6814,16 +6814,225 @@ module.exports = {
                       "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
                       "children": [
                         {
-                          "text": "Properly handles DELETE requests with If-Match",
-                          "children": []
-                        },
-                        {
                           "text": "Properly handles PUT requests with If-Match",
-                          "children": []
+                          "children": [
+                            {
+                              "text": "Should reject a PUT request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for PUT requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a PUT request with a correct ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should have modified the document for PUT requests with a correct ETag",
+                              "children": []
+                            }
+                          ]
                         },
                         {
                           "text": "Properly handles POST requests with If-Match",
-                          "children": []
+                          "children": [
+                            {
+                              "text": "Should reject a POST request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for POST requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a POST request with a correct ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should have modified the document for POST requests with a correct ETag",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "text": "Properly handles DELETE requests with If-Match",
+                          "children": [
+                            {
+                              "text": "Should reject a DELETE request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for DELETE requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a DELETE request with a correct ETag",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "If a PUT request is received without either header for a resource that already exists",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Concurrency for the Activity Profile Resource.",
+                  "children": [
+                    {
+                      "text": "An LRS responding to a GET request SHALL add an ETag HTTP header to the response.",
+                      "children": []
+                    },
+                    {
+                      "text": "When responding to a GET Request the Etag header must be enclosed in quotes",
+                      "children": []
+                    },
+                    {
+                      "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
+                      "children": [
+                        {
+                          "text": "Properly handles PUT requests with If-Match",
+                          "children": [
+                            {
+                              "text": "Should reject a PUT request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for PUT requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a PUT request with a correct ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should have modified the document for PUT requests with a correct ETag",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "text": "Properly handles POST requests with If-Match",
+                          "children": [
+                            {
+                              "text": "Should reject a POST request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for POST requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a POST request with a correct ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should have modified the document for POST requests with a correct ETag",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "text": "Properly handles DELETE requests with If-Match",
+                          "children": [
+                            {
+                              "text": "Should reject a DELETE request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for DELETE requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a DELETE request with a correct ETag",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "If a PUT request is received without either header for a resource that already exists",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Concurrency for the Agents Profile Resource.",
+                  "children": [
+                    {
+                      "text": "An LRS responding to a GET request SHALL add an ETag HTTP header to the response.",
+                      "children": []
+                    },
+                    {
+                      "text": "When responding to a GET Request the Etag header must be enclosed in quotes",
+                      "children": []
+                    },
+                    {
+                      "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
+                      "children": [
+                        {
+                          "text": "Properly handles PUT requests with If-Match",
+                          "children": [
+                            {
+                              "text": "Should reject a PUT request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for PUT requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a PUT request with a correct ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should have modified the document for PUT requests with a correct ETag",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "text": "Properly handles POST requests with If-Match",
+                          "children": [
+                            {
+                              "text": "Should reject a POST request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for POST requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a POST request with a correct ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should have modified the document for POST requests with a correct ETag",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "text": "Properly handles DELETE requests with If-Match",
+                          "children": [
+                            {
+                              "text": "Should reject a DELETE request with a 412 Precondition Failed when using an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should not have modified the document for DELETE requests with an incorrect ETag",
+                              "children": []
+                            },
+                            {
+                              "text": "Should accept a DELETE request with a correct ETag",
+                              "children": []
+                            }
+                          ]
                         }
                       ]
                     },
@@ -6995,14 +7204,6 @@ module.exports = {
                 {
                   "text": "should return StatementResult using GET with \"format\"",
                   "children": []
-                },
-                {
-                  "text": "should return multipart response format StatementResult using GET with \"attachments\" parameter as true",
-                  "children": []
-                },
-                {
-                  "text": "should not return multipart response format using GET with \"attachments\" parameter as false",
-                  "children": []
                 }
               ]
             },
@@ -7142,6 +7343,14 @@ module.exports = {
             {
               "text": "An LRS's Statement Resource can process a GET request with \"attachments\" as a parameter",
               "children": [
+                {
+                  "text": "should return multipart response format StatementResult using GET with \"attachments\" parameter as true",
+                  "children": []
+                },
+                {
+                  "text": "should not return multipart response format using GET with \"attachments\" parameter as false",
+                  "children": []
+                },
                 {
                   "text": "should process using GET with \"attachments\"",
                   "children": []
@@ -7753,10 +7962,6 @@ module.exports = {
                 {
                   "text": "Updates the Last-Modified value when the corresponding document is updated.",
                   "children": []
-                },
-                {
-                  "text": "Provides the Last-Modified value matching the most recently updated document.",
-                  "children": []
                 }
               ]
             }
@@ -7946,10 +8151,6 @@ module.exports = {
                 {
                   "text": "Updates the Last-Modified value when the corresponding document is updated.",
                   "children": []
-                },
-                {
-                  "text": "Provides the Last-Modified value matching the most recently updated document.",
-                  "children": []
                 }
               ]
             }
@@ -8078,10 +8279,6 @@ module.exports = {
                 },
                 {
                   "text": "Updates the Last-Modified value when the corresponding document is updated.",
-                  "children": []
-                },
-                {
-                  "text": "Provides the Last-Modified value matching the most recently updated document.",
                   "children": []
                 }
               ]
@@ -13589,74 +13786,6 @@ module.exports = {
                   "children": []
                 }
               ]
-            }
-          ]
-        },
-        {
-          "text": "Concurrency for the Activity Profile Resource.",
-          "children": [
-            {
-              "text": "An LRS responding to a GET request SHALL add an ETag HTTP header to the response.",
-              "children": []
-            },
-            {
-              "text": "When responding to a GET Request the Etag header must be enclosed in quotes",
-              "children": []
-            },
-            {
-              "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
-              "children": [
-                {
-                  "text": "Properly handles DELETE requests with If-Match",
-                  "children": []
-                },
-                {
-                  "text": "Properly handles PUT requests with If-Match",
-                  "children": []
-                },
-                {
-                  "text": "Properly handles POST requests with If-Match",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "If a PUT request is received without either header for a resource that already exists",
-              "children": []
-            }
-          ]
-        },
-        {
-          "text": "Concurrency for the Agents Profile Resource.",
-          "children": [
-            {
-              "text": "An LRS responding to a GET request SHALL add an ETag HTTP header to the response.",
-              "children": []
-            },
-            {
-              "text": "When responding to a GET Request the Etag header must be enclosed in quotes",
-              "children": []
-            },
-            {
-              "text": "When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag",
-              "children": [
-                {
-                  "text": "Properly handles DELETE requests with If-Match",
-                  "children": []
-                },
-                {
-                  "text": "Properly handles PUT requests with If-Match",
-                  "children": []
-                },
-                {
-                  "text": "Properly handles POST requests with If-Match",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "If a PUT request is received without either header for a resource that already exists",
-              "children": []
             }
           ]
         }

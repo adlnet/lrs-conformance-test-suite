@@ -262,28 +262,34 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
         it('should include a Last-Modified header which matches the "stored" Timestamp of the statement.', function (done) {
 
             let statement = helper.buildStatement();
-            xapiRequests.sendStatementPromise(statement)
-                .then(postResponse => {
+            xapiRequests.sendStatementPromise(statement).then(postResponse => {
 
-                    let lastModifiedStr = postResponse.headers["Last-Modified"];
-                    expect(lastModifiedStr).to.not.be.undefined(
-                        "The LRS did not include a Last-Modified header when responding to this statement."
-                    );
+                let storedId = postResponse.data[0];
+                xapiRequests.getStatementExact(storedId).then(getResponse => {
 
+                    let lastModifiedStr = getResponse.headers.get("last-modified");
                     let lastModified = Date.parse(lastModifiedStr);
-                    expect(lastModified).to.not.be.NaN(
+                    expect(lastModified).to.not.eql(Number.NaN,
                         `The Last-Modified header could not be parsed -- received: ${lastModifiedStr}`
                     );
+                    
+                    let retrievedStatement = getResponse.data;
+                    let storedStr = retrievedStatement.stored;
+                    let stored = Date.parse(storedStr);
+                    expect(stored).to.not.eql(Number.NaN,
+                        `The "stored" property could not be parsed into a DateTime, received: ${storedStr}`
+                    );
 
-                    let storedId = postResponse.data[0];
-                    xapiRequests.getStatementExactPromise(storedId)
-                        .then(getResponse => {
+                    let storedWithoutMS = stored - (stored % 1000);
+                    let lastModifiedWithoutMS = lastModified - (lastModified % 1000);
 
-                            let stored = Date.parse(getResponse.stored);
-                            expect(stored).to.eql(lastModified);
-                            done();
-                        });
+                    expect(storedWithoutMS).to.eql(lastModifiedWithoutMS, 
+                        `The "stored" property did not match the Last-Modified to the seconds value: ${storedStr} vs. ${lastModifiedStr}`
+                    );
+
+                    done();
                 });
+            });
         });
     });
 
@@ -770,48 +776,6 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                     }
                 });
         });
-
-        it('should return multipart response format StatementResult using GET with "attachments" parameter as true', function (done) {
-            var query = helper.getUrlEncoding({ attachments: true });
-            request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-                .headers(helper.addAllHeaders({}))
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        expect(res.headers).to.have.property('content-type');
-                        var boundary = multipartParser.getBoundary(res.headers['content-type']);
-                        expect(boundary).to.be.ok;
-                        var parsed = multipartParser.parseMultipart(boundary, res.body);
-                        expect(parsed).to.be.ok;
-                        var results = helper.parse(parsed[0].body, done);
-                        expect(results).to.have.property('statements');
-                        done();
-                    }
-                });
-        });
-
-        it('should not return multipart response format using GET with "attachments" parameter as false', function (done) {
-            var query = helper.getUrlEncoding({ attachments: false });
-            request(helper.getEndpointAndAuth())
-                .get(helper.getEndpointStatements() + '?' + query)
-                .wait(helper.genDelay(stmtTime, '?' + query, undefined))
-                .headers(helper.addAllHeaders({}))
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    } else {
-                        var results = helper.parse(res.body);
-                        expect(results).to.have.property('statements');
-                        done();
-                    }
-                });
-        });
-
     });
 
     /**  XAPI-00158, Communication 2.1.3 GET Statements
@@ -1457,6 +1421,47 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
                         done(err);
                     } else {
                         stmtId = helper.parse(res.body, done)[0];
+                        done();
+                    }
+                });
+        });
+        
+        it('should return multipart response format StatementResult using GET with "attachments" parameter as true', function (done) {
+            var query = helper.getUrlEncoding({ attachments: true });
+            request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        expect(res.headers).to.have.property('content-type');
+                        var boundary = multipartParser.getBoundary(res.headers['content-type']);
+                        expect(boundary).to.be.ok;
+                        var parsed = multipartParser.parseMultipart(boundary, res.body);
+                        expect(parsed).to.be.ok;
+                        var results = helper.parse(parsed[0].body, done);
+                        expect(results).to.have.property('statements');
+                        done();
+                    }
+                });
+        });
+
+        it('should not return multipart response format using GET with "attachments" parameter as false', function (done) {
+            var query = helper.getUrlEncoding({ attachments: false });
+            request(helper.getEndpointAndAuth())
+                .get(helper.getEndpointStatements() + '?' + query)
+                .wait(helper.genDelay(stmtTime, '?' + query, undefined))
+                .headers(helper.addAllHeaders({}))
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        var results = helper.parse(res.body);
+                        expect(results).to.have.property('statements');
                         done();
                     }
                 });
@@ -3343,25 +3348,19 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
     */
     describe('The LRS shall set the "timestamp" property to the value of the "stored" property if not provided.', function () {
 
-        it('should set timestamp property to equal "stored" value if retrieved statement does not have its own timestamp', async function (done) {
+        it('should set timestamp property to equal "stored" value if retrieved statement does not have its own timestamp', async function () {
             let id = helper.generateUUID();
             let statement = helper.buildStatement();
             
             statement.timestamp = null;
             statement.id = id;
 
-            //send a statement without a timestamp to LRS
-            xapiRequests.sendStatementPromise(statement)
-                .then( _ => {
-                    //Retrieve statement
-                    xapiRequests.getStatementExactPromise(id)
-                        .then(res => {
-                            let statementFromLRS = res.data;
-                            expect(statementFromLRS.timestamp).is.eql(statementFromLRS.stored);
-                            done();
-                        })
-                    done();
-                })
+            let _ = await xapiRequests.sendStatementPromise(statement);
+            let res = await xapiRequests.getStatementExactPromise(id);
+
+            let statementFromLRS = res.data;
+
+            expect(statementFromLRS.timestamp).is.eql(statementFromLRS.stored);
         });
     });
 
@@ -3371,10 +3370,12 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
     */
     describe('The LRS shall not reject a timestamp for having a greater value than the current time, within an acceptable margin of error', function () {
 
-        it('accepts statements with greater value than current time', function (done) {
+        it('accepts statements with greater value than current time', async function () {
+            
             //Acceptable margin of error around five minutes
             var minutes = 5;
             var currentdate = new Date();
+
             //add five minutes to current time
             currentdate.setMinutes(currentdate.getMinutes() + minutes);
 
@@ -3384,17 +3385,10 @@ describe('Statement Resource Requirements (Communication 2.1)', () => {
             statement.timestamp = currentdate.toISOString();
             statement.id = id;
 
-            //send the statement with the altered timestamp to LRS
-            xapiRequests.sendStatementPromise(statement)
-                .then(res => {
-                    expect(res.status).to.eql(200);
-                    done();
-                })
-                .catch(_ => {
-                    done("LRS did not respond with a 200 for this request.");
-                })
-        });
+            let res = await xapiRequests.sendStatementPromise(statement);
 
+            expect(res.status).to.eql(200);
+        });
     })
 });
             

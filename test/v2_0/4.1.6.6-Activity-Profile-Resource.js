@@ -10,7 +10,7 @@ const xapiRequests = require("./util/requests");
 if (global.OAUTH)
     request = helper.OAuthRequest(request);
 
-describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
+describe('Activity Profile Resource Requirements (Communication 2.7)', function() {
 
     /**  Matchup with
      * XAPI-00285 - below
@@ -477,14 +477,14 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
             .expect(400, done);
     });
 
-    describe("The LRS shall include a Last-Modified header indicating when the document was last modified.", async () => {
+    describe("The LRS shall include a Last-Modified header indicating when the document was last modified.", function () {
 
         let document = helper.buildDocument();
         let updatedDocument = {
             ...document,
             name: "Updated Name:" + helper.generateUUID()
         };
-        let resourcePath = xapiRequests.resourcePaths.activityState;
+        let resourcePath = xapiRequests.resourcePaths.activityProfile;
         let resourceParams = helper.buildActivityProfile();
 
         before("Add the document", async () => {
@@ -497,7 +497,7 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
 
             let res = await xapiRequests.getDocuments(resourcePath, resourceParams);
 
-            let modifiedStr = res.headers["last-modified"];
+            let modifiedStr = res.headers.get("last-modified");
             let modifiedDate = Date.parse(modifiedStr);
 
             expect(modifiedDate).to.not.be.NaN;
@@ -505,52 +505,59 @@ describe('Activity Profile Resource Requirements (Communication 2.7)', () => {
 
         it("Updates the Last-Modified value when the corresponding document is updated.", async () => {
 
-            let originalRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let originalDocRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            await xapiRequests.delay(1500);
 
-            await xapiRequests.postDocument(resourcePath, updatedDocument, resourceParams);
+            let updateRes = await xapiRequests.postDocument(resourcePath, updatedDocument, resourceParams);
+            expect(updateRes.status).to.eql(204);
 
-            let updatedRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let updatedDocRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
 
-            let headerBeforeUpdate = Date.parse(originalRes.headers["last-modified"]);
-            let headerAfterUpdate = Date.parse(updatedRes.headers["last-modified"]);
+            let headerBeforeUpdate = Date.parse(originalDocRes.headers.get("last-modified"));
+            let headerAfterUpdate = Date.parse(updatedDocRes.headers.get("last-modified"));
 
             expect(headerAfterUpdate).to.be.greaterThan(headerBeforeUpdate);
         });
 
-        it("Provides the Last-Modified value matching the most recently updated document.", async() => {
+        /**
+         * As-written, this is not currently a requirement for xAPI 2.0.
+         * 
+         * It is present in the changelog, but not in the Multiple-GET documentation for an LRS.
+         */
+        // it("Provides the Last-Modified value matching the most recently updated document.", async() => {
 
-            let agent = {
-                "objectType": "Agent",
-                "account": {
-                    "homePage": "http://www.example.com/activity-profile/multiple-last-modified",
-                    "name": "Activity Profile: Multiple Last Modified"
-                }
-            };
+        //     let agent = {
+        //         "objectType": "Agent",
+        //         "account": {
+        //             "homePage": "http://www.example.com/activity-profile/multiple-last-modified",
+        //             "name": "Activity Profile: Multiple Last Modified"
+        //         }
+        //     };
 
-            let profileA = {...helper.buildActivityProfile(), agent};
-            let profileB = {...helper.buildActivityProfile(), agent};
+        //     let profileA = {...helper.buildActivityProfile(), agent};
+        //     let profileB = {...helper.buildActivityProfile(), agent};
             
-            await xapiRequests.postDocument(resourcePath, document, profileA);
-            await xapiRequests.postDocument(resourcePath, updatedDocument, profileB);
+        //     await xapiRequests.postDocument(resourcePath, document, profileA);
+        //     await xapiRequests.postDocument(resourcePath, updatedDocument, profileB);
 
-            let resA = await xapiRequests.getDocuments(resourcePath, profileA);
-            let resB = await xapiRequests.getDocuments(resourcePath, profileB);
+        //     let resA = await xapiRequests.getDocuments(resourcePath, profileA);
+        //     let resB = await xapiRequests.getDocuments(resourcePath, profileB);
 
-            let modifiedA = Date.parse(resA.headers["last-modified"]);
-            let modifiedB = Date.parse(resB.headers["last-modified"]);
+        //     let modifiedA = Date.parse(resA.headers.get("last-modified"));
+        //     let modifiedB = Date.parse(resB.headers.get("last-modified"));
 
-            let earliestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
-            let latestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
+        //     let earliestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
+        //     let latestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
 
-            let groupParams = {
-                activityId: profileA.activityId,
-                since: new Date(earliestTime).toUTCString()
-            };
+        //     let groupParams = {
+        //         activityId: profileA.activityId,
+        //         since: new Date(earliestTime).toUTCString()
+        //     };
             
-            let groupRes = await xapiRequests.getDocuments(resourcePath, groupParams);
-            let groupTime = Date.parse(groupRes.headers["last-modified"]);
+        //     let groupRes = await xapiRequests.getDocuments(resourcePath, groupParams);
+        //     let groupTime = Date.parse(groupRes.headers.get("last-modified"));
 
-            expect(groupTime).to.equal(latestTime);
-        });
+        //     expect(groupTime).to.equal(latestTime);
+        // });
     });
 });

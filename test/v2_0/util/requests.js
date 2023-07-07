@@ -404,6 +404,14 @@ const requests = {
             headers: headerOverrides
         })
         .catch(err => err.response);
+    },
+
+    /**
+     * Await a delay for a given number of milliseconds.
+     * @param {Number} ms Milliseconds to delay
+     */
+    delay: async(ms) => {
+        return new Promise((res, _) => setTimeout(res, ms));
     }
 };
 

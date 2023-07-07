@@ -746,7 +746,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
             });
     });
 
-    describe("The LRS shall include a Last-Modified header indicating when the document was last modified.", async() => {
+    describe("The LRS shall include a Last-Modified header indicating when the document was last modified.", function() {
         
         let document = helper.buildDocument();
         let updatedDocument = {
@@ -766,7 +766,7 @@ describe('State Resource Requirements (Communication 2.3)', function () {
 
             let res = await xapiRequests.getDocuments(resourcePath, resourceParams);
 
-            let modifiedStr = res.headers["last-modified"];
+            let modifiedStr = res.headers.get("last-modified");
             let modifiedDate = Date.parse(modifiedStr);
 
             expect(modifiedDate).to.not.be.NaN;
@@ -774,53 +774,60 @@ describe('State Resource Requirements (Communication 2.3)', function () {
 
         it("Updates the Last-Modified value when the corresponding document is updated.", async() => {
 
-            let originalRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let originalDocRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            await xapiRequests.delay(1500);
 
-            await xapiRequests.postDocument(resourcePath, updatedDocument, resourceParams);
+            let updateRes = await xapiRequests.postDocument(resourcePath, updatedDocument, resourceParams);
+            expect(updateRes.status).to.eql(204);
 
-            let updatedRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let updatedDocRes = await xapiRequests.getDocuments(resourcePath, resourceParams);
 
-            let headerBeforeUpdate = Date.parse(originalRes.headers["last-modified"]);
-            let headerAfterUpdate = Date.parse(updatedRes.headers["last-modified"]);
+            let headerBeforeUpdate = Date.parse(originalDocRes.headers.get("last-modified"));
+            let headerAfterUpdate = Date.parse(updatedDocRes.headers.get("last-modified"));
 
             expect(headerAfterUpdate).to.be.greaterThan(headerBeforeUpdate);
         });
 
-        it("Provides the Last-Modified value matching the most recently updated document.", async() => {
+        /**
+         * As-written, this is not currently a requirement for xAPI 2.0.
+         * 
+         * It is present in the changelog, but not in the Multiple-GET documentation for an LRS.
+         */
+        // it("Provides the Last-Modified value matching the most recently updated document.", async() => {
 
-            let agent = {
-                "objectType": "Agent",
-                "account": {
-                    "homePage": "http://www.example.com/state/multiple-last-modified",
-                    "name": "State: Multiple Last Modified"
-                }
-            };
+        //     let agent = {
+        //         "objectType": "Agent",
+        //         "account": {
+        //             "homePage": "http://www.example.com/state/multiple-last-modified",
+        //             "name": "State: Multiple Last Modified"
+        //         }
+        //     };
 
-            let stateA = {...helper.buildState(), agent};
-            let stateB = {...helper.buildState(), agent};
+        //     let stateA = {...helper.buildState(), agent};
+        //     let stateB = {...helper.buildState(), agent};
             
-            await xapiRequests.postDocument(resourcePath, document, stateA);
-            await xapiRequests.postDocument(resourcePath, updatedDocument, stateB);
+        //     await xapiRequests.postDocument(resourcePath, document, stateA);
+        //     await xapiRequests.postDocument(resourcePath, updatedDocument, stateB);
 
-            let resA = await xapiRequests.getDocuments(resourcePath, stateA);
-            let resB = await xapiRequests.getDocuments(resourcePath, stateB);
+        //     let resA = await xapiRequests.getDocuments(resourcePath, stateA);
+        //     let resB = await xapiRequests.getDocuments(resourcePath, stateB);
 
-            let modifiedA = Date.parse(resA.headers["last-modified"]);
-            let modifiedB = Date.parse(resB.headers["last-modified"]);
+        //     let modifiedA = Date.parse(resA.headers.get("last-modified"));
+        //     let modifiedB = Date.parse(resB.headers.get("last-modified"));
 
-            let earliestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
-            let latestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
+        //     let earliestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
+        //     let latestTime = modifiedA > modifiedB ? modifiedA : modifiedB;
 
-            let groupParams = {
-                ...stateA,
-                since: new Date(earliestTime).toUTCString()
-            };
-            delete groupParams.stateId;
+        //     let groupParams = {
+        //         ...stateA,
+        //         since: new Date(earliestTime).toUTCString()
+        //     };
+        //     delete groupParams.stateId;
             
-            let groupRes = await xapiRequests.getDocuments(resourcePath, groupParams);
-            let groupTime = Date.parse(groupRes.headers["last-modified"]);
+        //     let groupRes = await xapiRequests.getDocuments(resourcePath, groupParams);
+        //     let groupTime = Date.parse(groupRes.headers.get("last-modified"));
 
-            expect(groupTime).to.equal(latestTime);
-        });
+        //     expect(groupTime).to.equal(latestTime);
+        // });
     });
 });

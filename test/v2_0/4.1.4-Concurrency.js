@@ -11,7 +11,7 @@ const xapiRequests = require("./util/requests");
 
 request = request(helper.getEndpoint());
 
-async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, resourceParams) {
+function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, resourceParams) {
 
     describe(`Concurrency for the ${resourceName} Resource.`, () => {
 
@@ -95,7 +95,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
                 });
             });
             
-            describe("Properly handles POST requests with If-Match", async() => {
+            describe("Properly handles POST requests with If-Match", function() {
 
                 let document = helper.buildDocument();
                 let originalName = document.name;
@@ -141,7 +141,7 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
                 });
             });
             
-            it ("Properly handles DELETE requests with If-Match", async() => {
+            describe ("Properly handles DELETE requests with If-Match", function() {
 
                 let document = helper.buildDocument();
                 let originalName = document.name;
@@ -243,20 +243,20 @@ async function runConcurrencyTestsForDocumentResource(resourceName, resourcePath
     });
 }
 
-describe('(4.2.7) Concurrency', () => {
+describe('(4.1.4) Concurrency', () => {
 
     /**  XAPI-00322, Communication 3.1 Concurrency
      * An LRS must support HTTP/1.1 entity tags (ETags) to implement optimistic concurrency control when handling APIs where PUT may overwrite existing data (State, Agent Profile, and Activity Profile)
      */
-    describe("xAPI uses HTTP 1.1 entity tags (ETags) to implement optimistic concurrency control in the following resources, where PUT, POST or DELETE are allowed to overwrite or remove existing data.", async () => {
+    describe("xAPI uses HTTP 1.1 entity tags (ETags) to implement optimistic concurrency control in the following resources, where PUT, POST or DELETE are allowed to overwrite or remove existing data.", function() {
 
         let stateParams = helper.buildState();
         let activityProfileParams = helper.buildActivityProfile();
         let agentsProfileParams = helper.buildAgentProfile();
 
-        await runConcurrencyTestsForDocumentResource("Activity State", xapiRequests.resourcePaths.activityState, stateParams);
-        await runConcurrencyTestsForDocumentResource("Activity Profile", xapiRequests.resourcePaths.activityProfile, activityProfileParams);
-        await runConcurrencyTestsForDocumentResource("Agents Profile", xapiRequests.resourcePaths.agentsProfile, agentsProfileParams);
+        runConcurrencyTestsForDocumentResource("Activity State", xapiRequests.resourcePaths.activityState, stateParams);
+        runConcurrencyTestsForDocumentResource("Activity Profile", xapiRequests.resourcePaths.activityProfile, activityProfileParams);
+        runConcurrencyTestsForDocumentResource("Agents Profile", xapiRequests.resourcePaths.agentsProfile, agentsProfileParams);
     });
 });
 

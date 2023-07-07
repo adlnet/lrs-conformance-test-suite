@@ -11,7 +11,7 @@ const xapiRequests = require("./util/requests");
 if (global.OAUTH)
     request = helper.OAuthRequest(request);
 
-describe('Activities Resource Requirements (Communication 2.5)', () => {
+describe('Activities Resource Requirements (Communication 2.5)', function() {
 
     /**
      * XAPI-00250 - below
