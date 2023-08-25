@@ -1,0 +1,61 @@
+{
+  "objectType": "SubStatement",
+  "actor": {
+    "objectType": "Agent",
+    "name": "xAPI mbox_sha1sum",
+    "mbox_sha1sum": "cd9b00a5611f94eaa7b1661edab976068e364975"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/reported",
+    "display": {
+      "en-GB": "reported",
+      "en-US": "reported"
+    }
+  },
+  "object": {
+    "objectType": "Activity",
+    "id": "http://www.example.com/meetings/categories/teammeeting",
+    "definition": {
+      "name": {
+        "en": "Performance"
+      },
+      "description": {
+        "en": "This interaction measures performance over a day of RS sports:"
+      },
+      "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+      "moreInfo": "http://virtualmeeting.example.com/345256",
+      "interactionType": "performance",
+      "correctResponsesPattern": [
+        "pong[.]1:[,]dg[.]:10[,]lunch[.]"
+      ],
+      "steps": [
+        {
+          "id": "pong",
+          "description": {
+            "en-US": "Net pong matches won"
+          }
+        },
+        {
+          "id": "dg",
+          "description": {
+            "en-US": "Strokes over par in disc golf at Liberty"
+          }
+        },
+        {
+          "id": "lunch",
+          "description": {
+            "en-US": "Lunch having been eaten",
+            "something": "昼食は食べれました"
+          }
+        }
+      ],
+      "extensions": {
+        "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+        "http://example.com/profiles/meetings/extension/reporter": {
+          "name": "Thomas",
+          "id": "http://openid.com/342"
+        }
+      }
+    }
+  }
+}

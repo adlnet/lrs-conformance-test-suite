@@ -1,0 +1,51 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/categories/teammeeting",
+  "definition": {
+    "name": {
+      "en": "Choice"
+    },
+    "description": {
+      "en": "Which of these prototypes are available at the beta site?"
+    },
+    "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+    "moreInfo": "http://virtualmeeting.example.com/345256",
+    "interactionType": "choice",
+    "correctResponsesPattern": [
+      "golf[,]tetris"
+    ],
+    "choices": [
+      {
+        "id": "golf",
+        "description": {
+          "en-US": "Golf Example"
+        }
+      },
+      {
+        "id": "facebook",
+        "description": {
+          "en-US": "Facebook App"
+        }
+      },
+      {
+        "id": "tetris",
+        "description": {
+          "en-US": "Tetris Example"
+        }
+      },
+      {
+        "id": "scrabble",
+        "description": {
+          "en-US": "Scrabble Example"
+        }
+      }
+    ],
+    "extensions": {
+      "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+      "http://example.com/profiles/meetings/extension/reporter": {
+        "name": "Thomas",
+        "id": "http://openid.com/342"
+      }
+    }
+  }
+}

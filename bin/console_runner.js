@@ -3,8 +3,9 @@ var TestRunner = require('./testRunner.js').testRunner;
 var jsonSchema = require('jsonschema');
 var validate = jsonSchema.validate;
 var colors = require('colors');
-var libpath = require('path'),
-	fs = require('fs');
+var libpath = require('path');
+var fs = require('fs');
+const specConfig = require("../specConfig");
 
 require('pretty-error').start();
 
@@ -17,39 +18,41 @@ function clean_dir(val, dir) {
 }
 
 program
-    .version('0.0.1')
-    .option('-e, --endpoint [url]', 'xAPI endpoint')
+    .version('0.0.2')
+    .option('-x, --xapiVersion [string]', '🌟 New: Version of the xAPI spec to test against')
+    .option('-e, --endpoint [url]', 'xAPI Endpoint')
     .option('-u, --authUser [string]', 'Basic Auth Username')
     .option('-p, --authPassword [string]', 'Basic Auth Password')
     .option('-a, --basicAuth', 'Enable Basic Auth')
     .option('-o, --oAuth1', 'Enable oAuth 1')
     .option('-c, --consumer_key [string]', 'oAuth 1 Consumer Key')
     .option('-s, --consumer_secret [string]', 'oAuth 1 Consumer Secret')
-    .option('-r, --request_token_path [string]', 'Path to OAuth request token endpoint (relative to endpoint)')
-    .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint)')
-    .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint)')
-    .option('-g, --grep [string]', 'Only run tests that match the given pattern')
-    .option('-b, --bail', 'Abort the battery if one test fails')
-    .option('-d, --directory [value]', 'Specific directories of tests (as a comma seperated list with no spaces)', clean_dir, ['v1_0_3'])
-    .option('-z, --errors', 'Results log of failing tests only')
+    .option('-r, --request_token_path [string]', 'Path to OAuth request token endpoint (relative to endpoint).')
+    .option('-t, --auth_token_path [string]', 'Path to OAuth authorization token endpoint (relative to endpoint).')
+    .option('-l, --authorization_path [string]', 'Path to OAuth user authorization endpoint (relative to endpoint).')
+    .option('-g, --grep [string]', 'Only run tests that match the given pattern.')
+    .option('-b, --bail', 'Abort the battery if one test fails.')
+    .option('-d, --directory [value]', 'Specific directories of tests (as a comma-separated list with no spaces).', clean_dir, [...[]])
+    .option('-z, --errors', 'Results log of failing tests only.')
     .parse(process.argv);
 
 var options = {
-        endpoint: program.endpoint,
-        authUser: program.authUser,
-        authPass: program.authPassword,
-        basicAuth: program.basicAuth,
-        oAuth1: program.oAuth1,
-        consumer_key: program.consumer_key,
-        consumer_secret: program.consumer_secret,
-        request_token_path: program.request_token_path,
-        auth_token_path: program.auth_token_path,
-        authorization_path: program.authorization_path,
-        grep: program.grep,
-        bail: program.bail,
-        directory: program.directory,
-		errors: program.errors
-    }
+    xapiVersion: program.xapiVersion,
+    endpoint: program.endpoint,
+    authUser: program.authUser,
+    authPass: program.authPassword,
+    basicAuth: program.basicAuth,
+    oAuth1: program.oAuth1,
+    consumer_key: program.consumer_key,
+    consumer_secret: program.consumer_secret,
+    request_token_path: program.request_token_path,
+    auth_token_path: program.auth_token_path,
+    authorization_path: program.authorization_path,
+    grep: program.grep,
+    bail: program.bail,
+    directory: program.directory,
+    errors: program.errors
+}
 
 /*
 var valid = validate(options, {
@@ -90,23 +93,23 @@ if (valid.errors.length) {
 
 var testRunner = null;
 
-//catches ctrl+c event
+// Catches Ctrl+C event.
 process.on('SIGINT', function() {
-    console.log(colors.white('Aborting tests'));
+    console.log(colors.white('Aborting tests.'));
 	testRunner.cancel();
 });
 
 
 process.on('exit', function() {
     console.log(colors.white('Closed'));
-})
+});
 
 function start(options)
 {
     //These are already used to fetch the access token, and are not needed by the runer
-    delete options.request_token_path ;
-    delete options.auth_token_path ;
-    delete options.authorization_path ;
+    delete options.request_token_path;
+    delete options.auth_token_path;
+    delete options.authorization_path;
 
 	testRunner = new TestRunner('console', null, options);
     testRunner.start();
@@ -147,7 +150,7 @@ function start(options)
 				return temp;
 			}
 
-			// write log to file
+			// Write log to file.
 			var cleanLog = testRunner.getCleanRecord();
 			var output;
 			if (options.errors) {

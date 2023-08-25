@@ -1,0 +1,40 @@
+{
+    "contextGroups": [
+        {
+            "objectType": "contextGroup",
+            "group": {
+                "objectType": "Group",
+                "mbox": "mailto:team-1@example.com",
+                "member": [
+                    {
+                        "objectType": "Agent",
+                        "mbox": "mailto:player-1@example.com"
+                    },
+                    {
+                        "objectType": "Agent",
+                        "mbox": "mailto:player-2@example.com"
+                    }
+                ]
+            },
+            "relevantTypes": [
+                "https://example.com/xapi/american-footbal/activity-types/team/a"
+            ]
+        },
+        {
+            "objectType": "contextGroup",
+            "group": {
+                "objectType": "Group",
+                "mbox": "mailto:team-2@example.com",
+                "member": [
+                    {
+                        "objectType": "Agent",
+                        "mbox": "mailto:player-3@example.com"
+                    }
+                ]
+            },
+            "relevantTypes": [
+                "https://example.com/xapi/american-footbal/activity-types/team/b"
+            ]
+        }
+    ]
+}

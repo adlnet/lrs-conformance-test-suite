@@ -1,0 +1,25 @@
+{
+  "objectType": "Activity",
+  "id": "http://www.example.com/meetings/occurances/34534",
+  "definition": {
+    "type": "http://adlnet.gov/expapi/activities/meeting",
+    "name": {
+      "en-GB": "example meeting",
+      "en-US": "example meeting",
+      "something": "Beispiel Treffen"
+    },
+    "description": {
+      "en-GB": "An example meeting that happened on a specific occasion with certain people present.",
+      "en-US": "An example meeting that happened on a specific occasion with certain people present.",
+      "de": "Ein Beispiel Sitzung, die auf einem bestimmten Anlass mit bestimmten Personen zufällig anwesend."
+    },
+    "moreInfo": "http://virtualmeeting.example.com/345256",
+    "extensions": {
+      "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+      "http://example.com/profiles/meetings/extension/reporter": {
+        "name": "Thomas",
+        "id": "http://openid.com/342"
+      }
+    }
+  }
+}

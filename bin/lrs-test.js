@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+const specConfig = require('../specConfig');
+
 /**
  * Description : This is the command line interface for running the lrs conformance test suite.
  *
@@ -40,7 +43,8 @@
 
     function runTests(_options) {
         var optionsValidator = Joi.object({
-            directory: Joi.array().items(Joi.string().required()),
+            xapiVersion: Joi.string(),
+            directory: Joi.array().items(Joi.string()),
             /* See [RFC-3986](http://tools.ietf.org/html/rfc3986#page-17) */
             endpoint: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9+\.-]*:.+/, 'URI').required(),
             grep: Joi.string(),
@@ -86,9 +90,66 @@
             process.exit();
         }
 
-        var DIRECTORY = ['v1_0_3'];
+        let endpointSpecified = _options.endpoint != undefined;
+        let versionSpecified = _options.xapiVersion != undefined;
+
+        let directorySpecified = Array.isArray(_options.directory) && _options.directory.length > 0;
+        let defaultDirectory = specConfig.specToFolder[specConfig.defaultVersion];
+
+        if (!endpointSpecified) {
+            console.error(`You must specify an endpoint (-e or --endpoint) for your LRS.`); 
+            console.error(`LRS endpoints typically have the form: https://lrs.net/xapi.`); 
+            process.exit(1);
+        }
+
+        if (versionSpecified && directorySpecified) {
+            console.error(`Cannot specify both an xAPI Version and a Directory.`); 
+            process.exit(1);
+        }
+
+        // Set up a directory based on whether or not we provided an xAPI version
+        if (versionSpecified) {
+            let versionFolder = specConfig.specToFolder[_options.xapiVersion];
+            if (versionFolder != undefined)
+                _options.directory = [versionFolder];
+
+            else {
+                console.error(`Unknown version of the xAPI spec: ${_options.xapiVersion}.  Unable to find appropriate test suite.`); 
+                process.exit(1);
+            }
+        }
+
+        else if (directorySpecified) {
+            let matchingSpec = undefined;
+            for (let dir of _options.directory) {
+                let spec = specConfig.getSpecFromFolder(dir);
+                if (spec != matchingSpec) {
+                    if (matchingSpec == undefined)
+                        matchingSpec = spec;
+                    else {
+                        console.error(`Multiple directories specified which refer to different versions of the xAPI spec: ${spec} vs. ${matchingSpec}`); 
+                        process.exit(1);
+                    }
+                }
+            }
+
+            if (matchingSpec == undefined) {
+                console.error(`Unable to determine which version of xAPI to test against with diectories: ${_options.directory.join(", ")}`); 
+                process.exit(1);
+            }
+
+            _options.xapiVersion = matchingSpec;
+        }
+
+        if (!versionSpecified && !directorySpecified) {
+            _options.xapiVersion = specConfig.defaultVersion;
+            _options.directory = [defaultDirectory];
+            console.warn(`No xAPI version or manual path specified -- defaulting to ${specConfig.defaultVersion}.`); 
+        }
+
         var options = {
-            directory: _options.directory || DIRECTORY,
+            xapiVersion: _options.xapiVersion,
+            directory: _options.directory,
             endpoint: _options.endpoint,
             basicAuth: _options.basicAuth,
             authUser: _options.authUser,
@@ -119,17 +180,24 @@
             bail: options.bail
         });
 
+        console.log(`
+            \r\bAttempting xAPI Conformance Suite Against:
+            \r\r    xAPI Version: ${options.xapiVersion}
+            \r\r    Test Path(s): ${options.directory}
+            \r\r    LRS Endpoint: ${options.endpoint}
+        `);
+
         console.log("Grep is " + grep);
         process.env.DIRECTORY = options.directory[0];
 
-        //adds optional tests to the front in ascending order
+        // Adds optional tests to the front in ascending order.
         if (options.optional){
           options.optional.reverse().forEach(function(dir) {
               options.directory.unshift(dir);
           });
         }
 
-        console.log("directory is ", options.directory);
+        // console.log("directory is ", options.directory);
 
 
         process.env.LRS_ENDPOINT = options.endpoint;
@@ -137,7 +205,7 @@
         process.env.BASIC_AUTH_USER = options.authUser;
         process.env.BASIC_AUTH_PASSWORD = options.authPass;
         process.env.OAUTH1_ENABLED = options.oAuth1;
-
+        process.env.XAPI_VERSION = options.xapiVersion;
 
         if(options.oAuth1)
         {

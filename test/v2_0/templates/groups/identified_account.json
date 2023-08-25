@@ -1,0 +1,15 @@
+{
+  "objectType": "Group",
+  "name": "Group Identified",
+  "account": {
+    "homePage": "http://www.example.com",
+    "name": "xAPI account name"
+  },
+  "member": [
+    {
+      "objectType": "Agent",
+      "name": "xAPI mbox",
+      "mbox": "mailto:xapi@adlnet.gov"
+    }
+  ]
+}

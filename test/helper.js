@@ -9,7 +9,7 @@ var path = require('path');
 if (!process.env.EB_NODE_COMMAND) {
     (require('node-env-file'))(path.join(__dirname, './.env'));
 }
-(function (module, fs, extend, uuid, lodash, FormUrlencode, jws, crypto) {
+(function (module, fs, extend, uuid, lodashIsEqual, FormUrlencode, jws, crypto) {
 
 
     var oauth;
@@ -69,8 +69,8 @@ if (!process.env.EB_NODE_COMMAND) {
     /** Endpoint Statements */
     var URL_STATEMENTS = '/statements';
 
-    /** HTTP header xAPI Version */
-    var XAPI_VERSION = '1.0.3';
+    // /** HTTP header xAPI Version */
+    // var XAPI_VERSION = '2.0.0';
 
     module.exports = {
         /**
@@ -596,7 +596,7 @@ if (!process.env.EB_NODE_COMMAND) {
          * @returns {String}
          */
         getXapiVersion: function() {
-            return XAPI_VERSION;
+            return process.env.XAPI_VERSION;
         },
         /**
          * Performs deep compare of JSON original / other parameters to determine equivalence.
@@ -605,7 +605,7 @@ if (!process.env.EB_NODE_COMMAND) {
          * @returns {boolean}
          */
         isEqual: function (original, other) {
-            return lodash.isEqual(original, other);
+            return lodashIsEqual(original, other);
         },
         /**
          * Returns a string of a form encoded content with headers.
@@ -614,7 +614,7 @@ if (!process.env.EB_NODE_COMMAND) {
          */
         buildFormBody: function (content, id) {
             var body = {
-                'X-Experience-API-Version': '1.0.3',
+                'X-Experience-API-Version': process.env.XAPI_VERSION,
                 'content': JSON.stringify(content)
             }
             if (id) {
@@ -624,7 +624,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example Activity params.
-         * @returns {string}
          */
         buildActivity: function () {
             return {
@@ -633,7 +632,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example State params.
-         * @returns {json} state
          */
         buildState: function () {
             return {
@@ -650,7 +648,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example ActivityProfile params.
-         * @returns {json} activity profile
          */
         buildActivityProfile: function () {
             return {
@@ -660,7 +657,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example AgentProfile.
-         * @returns {json} agent profile
          */
         buildAgentProfile: function () {
             return {
@@ -676,7 +672,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Returns an example Agent params.
-         * @returns {json} agent
          */
         buildAgent: function () {
             return {
@@ -692,7 +687,6 @@ if (!process.env.EB_NODE_COMMAND) {
         },
         /**
          * Return sample document.
-         * @returns {json} document
          */
         buildDocument: function () {
             var document = {
@@ -990,4 +984,4 @@ if (!process.env.EB_NODE_COMMAND) {
             }
         });
     }
-}(module, require('fs'), require('extend'), require('node-uuid'), require('lodash-node'), require('form-urlencoded'), require('jws'), require('crypto')));
+}(module, require('fs'), require('extend'), require('uuid'), require('lodash.isequal'), require('form-urlencoded'), require('jws'), require('crypto')));

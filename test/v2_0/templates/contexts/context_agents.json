@@ -1,0 +1,15 @@
+{
+    "contextAgents": [
+        {
+            "objectType": "contextAgent",
+            "agent": {
+                "objectType": "Agent",
+                "mbox": "mailto:player-1@example.com"
+            },
+            "relevantTypes": [
+                "https://example.com/xapi/american-footbal/activity-types/personnel/player",
+                "https://example.com/xapi/american-footbal/activity-types/position/quarterback"
+            ]
+        }
+    ]
+}

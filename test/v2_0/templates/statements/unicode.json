@@ -1,0 +1,60 @@
+{
+  "actor": {
+    "objectType": "Agent",
+    "name": "xAPI mbox",
+    "mbox": "mailto:xapi@adlnet.gov"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/attended",
+    "display": {
+      "en-GB": "attended",
+      "en-US": "attended",
+      "ja-JP": "出席した",
+      "ko-KR": "참석",
+      "is-IS": "sótti",
+      "ru-RU": "участие",
+      "pa-IN": "ਹਾਜ਼ਰ",
+      "sk-SK": "zúčastnil",
+      "ar-EG": "حضر",
+      "hy-AM": "ներկա է գտնվել",
+      "kn-IN": "ಹಾಜರಿದ್ದರು"
+    }
+  },
+  "object": {
+    "objectType": "Activity",
+    "id": "http://www.example.com/unicode",
+    "definition": {
+      "name": {
+        "en": "Other",
+        "en-GB": "attended",
+        "en-US": "attended",
+        "ja-JP": "出席した",
+        "ko-KR": "참석",
+        "is-IS": "sótti",
+        "ru-RU": "участие",
+        "pa-IN": "ਹਾਜ਼ਰ",
+        "sk-SK": "zúčastnil",
+        "ar-EG": "حضر",
+        "hy-AM": "ներկա է գտնվել",
+        "kn-IN": "ಹಾಜರಿದ್ದರು"
+      },
+      "description": {
+        "en-US": "On this map, please mark Franklin, TN",
+        "en-GB": "On this map, please mark Franklin, TN"
+      },
+      "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+      "moreInfo": "http://virtualmeeting.example.com/345256",
+      "interactionType": "other",
+      "correctResponsesPattern": [
+        "(35.937432,-86.868896)"
+      ],
+      "extensions": {
+        "http://example.com/profiles/meetings/extension/location": "X:\\meetings\\minutes\\examplemeeting.one",
+        "http://example.com/profiles/meetings/extension/reporter": {
+          "name": "Thomas",
+          "id": "http://openid.com/342"
+        }
+      }
+    }
+  }
+}
