@@ -20,7 +20,7 @@ The following are the major changes that warranted the creation of additional te
 ### Installation  
 
 Dependency  
-This requires npm for installation.  NodeJS version 4.x or later.
+This requires npm for installation.  NodeJS version 8.x or later at a minimum, but it's recommended to use the latest LTS release.
 
 Clone and install
 
