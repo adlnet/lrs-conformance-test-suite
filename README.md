@@ -3,7 +3,10 @@ LRS Conformance Test Suite
 
 ### Description
 
-This is a NodeJS project that tests the 'MUST' requirements of the [xAPI Spec](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-About.md#experience-api) and is based on the ADL [testing requirements](https://adl.gitbooks.io/xapi-lrs-conformance-requirements/content/) repository. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite only supports basic authentication. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
+This is a NodeJS project that tests the 'MUST' requirements of the xAPI Spec, determined by the governing documents for the various versions of the xAPI Spec. This is actively being developed and new tests will be periodically added based on the testing requirements. Currently, this test suite only supports basic authentication. This test suite should also not run against a production LRS endpoint because the data is persisted and never voided.
+
+- For xAPI versions 1.0.3 and earlier, the documentation can be found on the **[ADL Initiative GitHub repository](https://github.com/adlnet/xAPI-Spec)**
+- For xAPI versions 2.0 and later, these will be hosted on the **[IEEE GitLab repository](https://opensource.ieee.org/xapi/xapi-base-standard-documentation)**
 
 ### xAPI 2.0 Update
 
