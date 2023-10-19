@@ -122,7 +122,7 @@ describe("(4.2.7) Additional Requirements for Data Types", function () {
     describe("Timestamps", function() {
 
         it ("checks if the LRS converts timestamps to UTC", async() => {
-            const dateEST = "2023-05-04T12:00-05:00";
+            const dateEST = "2023-05-04T12:00:00-05:00";
             const dateUTC = "2023-05-04T17:00:00.000Z";
 
             let id = helper.generateUUID();
