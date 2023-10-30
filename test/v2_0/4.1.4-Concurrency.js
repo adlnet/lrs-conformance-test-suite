@@ -70,7 +70,7 @@ function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, reso
                 
                 it("Should reject a PUT request with a 412 Precondition Failed when using an incorrect ETag", async() => {
 
-                    let incorrectTag = "1234";
+                    let incorrectTag = `"1234"`;
                     let incorrectResponse = await xapiRequests.putDocument(resourcePath, document, resourceParams, { "If-Match": incorrectTag });
 
                     expect(incorrectResponse.status).to.equal(412);
@@ -116,7 +116,7 @@ function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, reso
                 
                 it("Should reject a POST request with a 412 Precondition Failed when using an incorrect ETag", async() => {
 
-                    let incorrectTag = "1234";
+                    let incorrectTag = `"1234"`;
                     let incorrectResponse = await xapiRequests.postDocument(resourcePath, document, resourceParams, { "If-Match": incorrectTag });
 
                     expect(incorrectResponse.status).to.equal(412);
@@ -158,7 +158,7 @@ function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, reso
                 
                 it("Should reject a DELETE request with a 412 Precondition Failed when using an incorrect ETag", async() => {
 
-                    let incorrectTag = "1234";
+                    let incorrectTag = `"1234"`;
                     let incorrectResponse = await xapiRequests.deleteDocument(resourcePath, resourceParams, { "If-Match": incorrectTag });
 
                     expect(incorrectResponse.status).to.equal(412);
