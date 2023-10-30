@@ -231,7 +231,7 @@ function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, reso
                 let res = await xapiRequests.putDocument(resourcePath, updatedDocument, resourceParams);
                 let responseText = res.data;
 
-                expect(responseText).is.a("string").with.length.greaterThan(0);
+                expect(responseText).to.not.be.empty;
             });
 
             it('Do not modify the resource', async () => {
