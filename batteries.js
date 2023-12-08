@@ -7968,6 +7968,59 @@ module.exports = {
           ]
         },
         {
+          "text": "Agents Resource Requirements",
+          "children": [
+            {
+              "text": "An LRS has an Agents Resource with endpoint \"base IRI\" + /agents\"",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agents Resource accepts GET requests",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agent Resource upon processing a successful GET request returns a Person Object if the \"agent\" parameter can be found in the LRS and code 200 OK",
+              "children": []
+            },
+            {
+              "text": "An LRS's Agents Resource rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
+              "children": []
+            },
+            {
+              "text": "A Person Object's \"objectType\" property is a String and is \"Person\"",
+              "children": []
+            },
+            {
+              "text": "A Person Object's \"name\" property is an Array of Strings",
+              "children": []
+            },
+            {
+              "text": "A Person Object's \"mbox\" property is an Array of IRIs",
+              "children": []
+            },
+            {
+              "text": "A Person Object's \"mbox\" entries have the form \"mailto:emailaddress\"",
+              "children": []
+            },
+            {
+              "text": "A Person Object's \"mbox_sha1sum\" property is an Array of Strings",
+              "children": []
+            },
+            {
+              "text": "A Person Object's \"openid\" property is an Array of Strings",
+              "children": []
+            },
+            {
+              "text": "A Person Object's \"account\" property is an Array of Account Objects",
+              "children": []
+            },
+            {
+              "text": "An LRSs Agents Resource rejects a GET request with \"agent\" as a parameter if it is not a valid, in structure, Agent with error code 400 Bad Request",
+              "children": []
+            }
+          ]
+        },
+        {
           "text": "Activities Resource Requirements",
           "children": [
             {
@@ -8286,1094 +8339,53 @@ module.exports = {
           ]
         },
         {
-          "text": "",
+          "text": "About Resource Requirements",
           "children": [
             {
-              "text": "IRIs",
-              "children": [
-                {
-                  "text": "When storing or comparing IRIs, LRSs shall handle them only by using one or more of the approaches described in 5.3.1 (Simple String Comparison) and 5.3.2 (Syntax-Based Normalization) of RFC 3987",
-                  "children": []
-                }
-              ]
+              "text": "An LRS has an About Resource with endpoint \"base IRI\"+\"/about\"",
+              "children": []
             },
             {
-              "text": "Duration",
-              "children": [
-                {
-                  "text": "On receiving a Duration with more than 0.01 second precision, the LRS shall not reject the request.",
-                  "children": []
-                },
-                {
-                  "text": "On receiving a Duration with more than 0.01 second precision, the LRS may truncate the duration to 0.01 second precision.",
-                  "children": []
-                },
-                {
-                  "text": "When comparing Durations (or Statements containing them), any precision beyond 0.01 second precision shall not be included in the comparison.",
-                  "children": []
-                }
-              ]
+              "text": "An LRS's About Resource upon processing a successful GET request returns a version property and code 200 OK",
+              "children": []
             },
             {
-              "text": "Timestamps",
-              "children": [
-                {
-                  "text": "checks if the LRS converts timestamps to UTC",
-                  "children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "text": "Formatting Requirements",
-          "children": [
-            {
-              "text": "A Statement contains an \"actor\" property",
-              "children": [
-                {
-                  "text": "statement \"actor\" missing",
-                  "children": []
-                }
-              ]
+              "text": "An LRS's About Resource's version property is an array of strings",
+              "children": []
             },
             {
-              "text": "A Statement contains a \"verb\" property",
-              "children": [
-                {
-                  "text": "statement \"verb\" missing",
-                  "children": []
-                }
-              ]
+              "text": "An LRS's About Resource's version property contains at least one string of \"2.0.0\"",
+              "children": []
             },
             {
-              "text": "A Statement contains an \"object\" property",
-              "children": [
-                {
-                  "text": "statement \"object\" missing",
-                  "children": []
-                }
-              ]
+              "text": "An LRS's About Resource's version property can only have values of \"0.9\", \"0.95\", \"1.0.0\", or \"\"1.0.\" + X\" with",
+              "children": []
             },
             {
-              "text": "An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to \"null\", except in an \"extensions\" property",
+              "text": "An LRS rejects with error code 400 Bad Request, a Request which does not use a \"X-Experience-API-Version\" header name to any Resource except the About Resource",
               "children": [
                 {
-                  "text": "statement actor should fail on \"null\"",
+                  "text": "using Statement Endpoint",
                   "children": []
                 },
                 {
-                  "text": "statement verb should fail on \"null\"",
+                  "text": "using Activities Endpoint",
                   "children": []
                 },
                 {
-                  "text": "statement context should fail on \"null\"",
+                  "text": "using Activities Profile Endpoint",
                   "children": []
                 },
                 {
-                  "text": "statement object should fail on \"null\"",
+                  "text": "using Activities State Endpoint",
                   "children": []
                 },
                 {
-                  "text": "statement activity extensions can be empty",
+                  "text": "using Agents Endpoint",
                   "children": []
                 },
                 {
-                  "text": "statement result extensions can be empty",
-                  "children": []
-                },
-                {
-                  "text": "statement context extensions can be empty",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement activity extensions can be empty",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement result extensions can be empty",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement context extensions can be empty",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type",
-              "children": [
-                {
-                  "text": "with strings where numbers are required",
-                  "children": []
-                },
-                {
-                  "text": "even if those strings contain numbers",
-                  "children": []
-                },
-                {
-                  "text": "with strings where booleans are required",
-                  "children": []
-                },
-                {
-                  "text": "even if those strings contain booleans",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format, such as mailto IRI, UUID, or IRI, is required.",
-              "children": [
-                {
-                  "text": "statement \"id\" invalid numeric",
-                  "children": []
-                },
-                {
-                  "text": "statement \"id\" invalid object",
-                  "children": []
-                },
-                {
-                  "text": "statement \"id\" invalid UUID with too many digits",
-                  "children": []
-                },
-                {
-                  "text": "statement \"id\" invalid UUID with non A-F",
-                  "children": []
-                },
-                {
-                  "text": "statement actor \"agent\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement actor \"group\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement authority \"agent\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement authority \"group\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement context instructor \"agent\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement context instructor \"group\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement context team \"group\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement as \"agent\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement as \"group\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement\"s \"agent\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement\"s \"group\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement\"s context instructor \"agent\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement\"s context instructor \"group\" account \"name\" property is string",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement\"s context team \"group\" account \"name\" property is string",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification.",
-              "children": [
-                {
-                  "text": "should fail when not using \"id\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"actor\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"verb\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"object\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"result\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"context\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"timestamp\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"stored\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"authority\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"version\"",
-                  "children": []
-                },
-                {
-                  "text": "should fail when not using \"attachments\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request a Statement where the case of a value restricted to enumerated values does not match an enumerated value given in this specification exactly.",
-              "children": [
-                {
-                  "text": "when interactionType is wrong case (\"true-faLse\")",
-                  "children": []
-                },
-                {
-                  "text": "when interactionType is wrong case (\"choiCe\")",
-                  "children": []
-                },
-                {
-                  "text": "when interactionType is wrong case (\"fill-iN\")",
-                  "children": []
-                },
-                {
-                  "text": "when interactionType is wrong case (\"long-fiLl-in\")",
-                  "children": []
-                },
-                {
-                  "text": "when interactionType is wrong case (\"matchIng\")",
-                  "children": []
-                },
-                {
-                  "text": "when interactionType is wrong case (\"perfOrmance\")",
-                  "children": []
-                },
-                {
-                  "text": "when interactionType is wrong case (\"seqUencing\")",
-                  "children": []
-                },
-                {
-                  "text": "when interactionType is wrong case (\"liKert\")",
-                  "children": []
-                },
-                {
-                  "text": "when interactionType is wrong case (\"nUmeric\")",
-                  "children": []
-                },
-                {
-                  "text": "when interactionType is wrong case (\"Other\")",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "The LRS rejects with error code 400 Bad Request a token with does not validate as matching the RFC 5646 standard in the sequence of token lengths for language map keys.",
-              "children": [
-                {
-                  "text": "statement verb \"display\" should pass given de two letter language code only",
-                  "children": []
-                },
-                {
-                  "text": "statement verb \"display\" should fail given invalid language code",
-                  "children": []
-                },
-                {
-                  "text": "statement object \"name\" should pass given de-DE language-region code",
-                  "children": []
-                },
-                {
-                  "text": "statement object \"name\" should fail given invalid language code",
-                  "children": []
-                },
-                {
-                  "text": "statement object \"description\" should pass given zh-Hant language-script code",
-                  "children": []
-                },
-                {
-                  "text": "statement object \"description\" should fail given invalid language code",
-                  "children": []
-                },
-                {
-                  "text": "interaction components' description should pass given sr-Latn-RS language-script-region code",
-                  "children": []
-                },
-                {
-                  "text": "context.language should pass given three letter cmn language code",
-                  "children": []
-                },
-                {
-                  "text": "context.language should fail given invalid language code",
-                  "children": []
-                },
-                {
-                  "text": "statement attachment \"display\" should pass given es two letter language code only",
-                  "children": []
-                },
-                {
-                  "text": "statement attachment \"display\" should fail given invalid language code",
-                  "children": []
-                },
-                {
-                  "text": "statement attachment \"description\" should pass given es-MX language-UN region code",
-                  "children": []
-                },
-                {
-                  "text": "statement attachment \"description\" should fail given es-MX invalid language code",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement verb \"display\" should pass given sr-Cyrl language-script code",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement verb \"display\" should fail given invalid language code",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement activity \"name\" should pass given zh-Hans-CN language-script-region code",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement activity \"name\" should fail given zh-z-aaa-z-bbb-c-ccc invalid (two extensions with same single-letter prefix) language code",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement activity \"description\" should pass given ase three letter language code",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement activity \"description\" should fail given invalid language code",
-                  "children": []
-                },
-                {
-                  "text": "substatement interaction components' description should pass given ja two letter language code only",
-                  "children": []
-                },
-                {
-                  "text": "substatement context.language should pass given two letter fr-CA language-region code",
-                  "children": []
-                },
-                {
-                  "text": "substatement context.language should fail given invalid language code",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754",
-              "children": [
-                {
-                  "text": "should pass and keep precision",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "The LRS rejects with error code 400 Bad Request parameter values which do not validate to the same standards required for values of the same types in Statements",
-              "children": [
-                {
-                  "text": "should reject when statementId value is invalid",
-                  "children": []
-                },
-                {
-                  "text": "should reject when statementId value is invalid",
-                  "children": []
-                },
-                {
-                  "text": "should reject when statementId value is invalid",
-                  "children": []
-                },
-                {
-                  "text": "should reject when statementId value is invalid",
-                  "children": []
-                },
-                {
-                  "text": "should reject when statementId value is invalid",
-                  "children": []
-                },
-                {
-                  "text": "should reject when statementId value is invalid",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "All Objects are well-created JSON Objects",
-              "children": [
-                {
-                  "text": "An LRS rejects a not well-created JSON Object",
-                  "children": []
-                },
-                {
-                  "text": "Statements Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "Agents Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement actor template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement authority template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement context instructor template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement as agent template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement\"s agent template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement\"s context instructor template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "Groups Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement actor template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement authority template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement context instructor template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement context team template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement as group template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement\"s group template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement\"s context instructor template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement\"s context team template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "A Group is defined by \"objectType\" of an \"actor\" property or \"object\" property with value \"Group\"",
-                  "children": [
-                    {
-                      "text": "statement actor \"objectType\" accepts \"Group\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement authority \"objectType\" accepts \"Group\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement context instructor \"objectType\" accepts \"Group\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement context team \"objectType\" accepts \"Group\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement as group \"objectType\" accepts \"Group\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement\"s group \"objectType\" accepts \"Group\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement\"s context instructor \"objectType\" accepts \"Group\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement\"s context team \"objectType\" accepts \"Group\"",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "An Anonymous Group is defined by \"objectType\" of an \"actor\" or \"object\" with value \"Group\" and by none of \"mbox\", \"mbox_sha1sum\", \"openid\", or \"account\" being used",
-                  "children": [
-                    {
-                      "text": "statement actor does not require functional identifier",
-                      "children": []
-                    },
-                    {
-                      "text": "statement authority does not require functional identifier",
-                      "children": []
-                    },
-                    {
-                      "text": "statement context instructor does not require functional identifier",
-                      "children": []
-                    },
-                    {
-                      "text": "statement context team does not require functional identifier",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement as group does not require functional identifier",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement\"s group does not require functional identifier",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement\"s context instructor does not require functional identifier",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement\"s context team does not require functional identifier",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "Verbs Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement verb template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass substatement verb template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "Objects Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement activity template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement activity template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement agent template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement agent template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement group template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement group template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement StatementRef template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement StatementRef template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement SubStatement template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "Activities Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement activity default template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement activity default template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity choice template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity fill-in template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity numeric template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity likert template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity long-fill-in template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity matching template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity other template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity performance template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity sequencing template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement activity true-false template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement activity choice template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement activity likert template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement activity matching template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement activity performance template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement activity sequencing template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "An Activity Definition uses the following properties: name, description, type, moreInfo, interactionType, or extensions",
-                  "children": [
-                    {
-                      "text": "statement activity \"definition\" missing all properties",
-                      "children": []
-                    },
-                    {
-                      "text": "statement activity \"definition\" contains \"name\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement activity \"definition\" contains \"description\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement activity \"definition\" contains \"type\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement activity \"definition\" contains \"moreInfo\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement activity \"definition\" contains \"extensions\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement activity \"definition\" contains \"interactionType\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement activity \"definition\" missing all properties",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement activity \"definition\" contains \"name\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement activity \"definition\" contains \"description\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement activity \"definition\" contains \"type\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement activity \"definition\" contains \"moreInfo\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement activity \"definition\" contains \"extensions\"",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement activity \"definition\" contains \"interactionType\"",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "SubStatements Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement SubStatement template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "StatementRefs Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement StatementRef template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass substatement StatementRef template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "Results Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement result template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass substatement result template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "Contexts Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement context template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass substatement context template",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "A ContextActivity is defined as a single Activity of the \"value\" of the \"contextActivities\" property",
-                  "children": [
-                    {
-                      "text": "statement context \"contextActivities parent\" value is activity",
-                      "children": []
-                    },
-                    {
-                      "text": "statement context \"contextActivities grouping\" value is activity",
-                      "children": []
-                    },
-                    {
-                      "text": "statement context \"contextActivities category\" value is activity",
-                      "children": []
-                    },
-                    {
-                      "text": "statement context \"contextActivities other\" value is activity",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement context \"contextActivities parent\" value is activity",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement context \"contextActivities grouping\" value is activity",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement context \"contextActivities category\" value is activity",
-                      "children": []
-                    },
-                    {
-                      "text": "statement substatement context \"contextActivities other\" value is activity",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "text": "Languages Verify Templates",
-                  "children": [
-                    {
-                      "text": "should pass statement verb template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement object template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement attachment template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement verb template",
-                      "children": []
-                    },
-                    {
-                      "text": "should pass statement substatement object template",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request a Statement containing IRL or IRI values without a scheme.",
-              "children": [
-                {
-                  "text": "should fail with bad verb id scheme",
-                  "children": []
-                },
-                {
-                  "text": "should fail with bad verb openid scheme",
-                  "children": []
-                },
-                {
-                  "text": "should fail with bad account homePage",
-                  "children": []
-                },
-                {
-                  "text": "should fail with bad object id",
-                  "children": []
-                },
-                {
-                  "text": "should fail with bad object type",
-                  "children": []
-                },
-                {
-                  "text": "should fail with bad object moreInfo",
-                  "children": []
-                },
-                {
-                  "text": "should fail with attachment bad usageType",
-                  "children": []
-                },
-                {
-                  "text": "should fail with bad attachment fileUrl",
-                  "children": []
-                },
-                {
-                  "text": "should fail with bad object definition extension",
-                  "children": []
-                },
-                {
-                  "text": "should fail with bad context extension",
-                  "children": []
-                },
-                {
-                  "text": "should fail with bad result extension",
-                  "children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "text": "Statement Lifecycle Requirements",
-          "children": [
-            {
-              "text": "A Voiding Statement is defined as a Statement whose \"verb\" property's \"id\" property's IRI ending with \"voided\"",
-              "children": [
-                {
-                  "text": "statement verb voided IRI ends with \"voided\" (WARNING: this applies \"Upon receiving a Statement that voids another, the LRS SHOULD NOT* reject the request on the grounds of the Object of that voiding Statement not being present\")",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "A Voiding Statement's \"objectType\" field has a value of \"StatementRef\"",
-              "children": [
-                {
-                  "text": "statement verb voided uses substatement with \"StatementRef\"",
-                  "children": []
-                },
-                {
-                  "text": "statement verb voided does not use object \"StatementRef\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS",
-              "children": [
-                {
-                  "text": "Should return a voided statement when using GET \"voidedStatementId\"",
-                  "children": []
-                },
-                {
-                  "text": "Should return 404 when using GET with \"statementId\"",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "A Voiding Statement cannot Target another Voiding Statement",
-              "children": [
-                {
-                  "text": "Should not void an already voided statement",
-                  "children": []
-                },
-                {
-                  "text": "Should not void a voiding statement",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS SHALL NOT reject a voided statement because it cannot find the ID of the Object of that statement, nor does the LRS have to try to find it.",
-              "children": [
-                {
-                  "text": "Shall not reject a voided statement.",
-                  "children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "text": "Id Property Requirements",
-          "children": [
-            {
-              "text": "All UUID types follow requirements of RFC4122",
-              "children": [
-                {
-                  "text": "statement \"id\" invalid UUID with too many digits",
-                  "children": []
-                },
-                {
-                  "text": "statement \"id\" invalid UUID with non A-F",
-                  "children": []
-                },
-                {
-                  "text": "statement object statementref \"id\" invalid UUID with too many digits",
-                  "children": []
-                },
-                {
-                  "text": "statement object statementref \"id\" invalid UUID with non A-F",
-                  "children": []
-                },
-                {
-                  "text": "statement context \"registration\" invalid UUID with too many digits",
-                  "children": []
-                },
-                {
-                  "text": "statement context \"registration\" invalid UUID with non A-F",
-                  "children": []
-                },
-                {
-                  "text": "statement context \"statement\" invalid UUID with too many digits",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement context \"statement\" invalid UUID with non A-F",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "All UUID types are in standard String form",
-              "children": [
-                {
-                  "text": "statement \"id\" invalid numeric",
-                  "children": []
-                },
-                {
-                  "text": "statement \"id\" invalid object",
-                  "children": []
-                },
-                {
-                  "text": "statement object statementref \"id\" invalid numeric",
-                  "children": []
-                },
-                {
-                  "text": "statement object statementref \"id\" invalid object",
-                  "children": []
-                },
-                {
-                  "text": "statement context \"registration\" invalid numeric",
-                  "children": []
-                },
-                {
-                  "text": "statement context \"registration\" invalid object",
-                  "children": []
-                },
-                {
-                  "text": "statement context \"statement\" invalid numeric",
-                  "children": []
-                },
-                {
-                  "text": "statement substatement context \"statement\" invalid object",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "An LRS generates the \"id\" property of a Statement if none is provided",
-              "children": [
-                {
-                  "text": "should complete an empty id property",
+                  "text": "using Agents Profile Endpoint",
                   "children": []
                 }
               ]
@@ -12506,60 +11518,96 @@ module.exports = {
           ]
         },
         {
-          "text": "Timestamp Property Requirements",
+          "text": "Attachments Property Requirements",
           "children": [
             {
-              "text": "A \"timestamp\" property is a TimeStamp",
+              "text": "A Statement's \"attachments\" property is an array of Attachments",
               "children": [
                 {
-                  "text": "statement \"template\" invalid string",
+                  "text": "statement \"attachments\" is an array",
                   "children": []
                 },
                 {
-                  "text": "statement \"template\" invalid date",
-                  "children": []
-                },
-                {
-                  "text": "statement \"template\" future date",
-                  "children": []
-                },
-                {
-                  "text": "substatement \"template\" invalid string",
-                  "children": []
-                },
-                {
-                  "text": "substatement \"template\" invalid date",
-                  "children": []
-                },
-                {
-                  "text": "substatement \"template\" future date",
-                  "children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "text": "Stored Property Requirements",
-          "children": [
-            {
-              "text": "An LRS MUST accept statements with the stored property",
-              "children": [
-                {
-                  "text": "using POST",
-                  "children": []
-                },
-                {
-                  "text": "using PUT",
+                  "text": "statement \"attachments\" not an array",
                   "children": []
                 }
               ]
             },
             {
-              "text": "A stored property must be a TimeStamp",
+              "text": "An Attachment is an Object",
               "children": [
                 {
-                  "text": "retrieve statements, test a stored property",
+                  "text": "statement \"attachment\" invalid numeric",
+                  "children": []
+                },
+                {
+                  "text": "statement \"attachment\" invalid string",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A \"usageType\" property is an IRI",
+              "children": [
+                {
+                  "text": "statement \"usageType\" invalid string",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A \"contentType\" property is an Internet Media/MIME type",
+              "children": [
+                {
+                  "text": "statement \"contentType\" invalid number",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A \"length\" property is an Integer",
+              "children": [
+                {
+                  "text": "statement \"length\" invalid string",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A \"sha2\" property is a String",
+              "children": [
+                {
+                  "text": "statement \"sha2\" invalid string",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A \"fileUrl\" property is an IRL",
+              "children": [
+                {
+                  "text": "statement \"fileUrl\" invalid string",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A \"display\" property is a Language Map",
+              "children": [
+                {
+                  "text": "statement attachment \"display\" language map numeric",
+                  "children": []
+                },
+                {
+                  "text": "statement attachment \"display\" language map string",
+                  "children": []
+                },
+                {
+                  "text": "statement attachment \"description\" language map numeric",
+                  "children": []
+                },
+                {
+                  "text": "statement attachment \"description\" language map string",
                   "children": []
                 }
               ]
@@ -12653,6 +11701,155 @@ module.exports = {
           ]
         },
         {
+          "text": "Id Property Requirements",
+          "children": [
+            {
+              "text": "All UUID types follow requirements of RFC4122",
+              "children": [
+                {
+                  "text": "statement \"id\" invalid UUID with too many digits",
+                  "children": []
+                },
+                {
+                  "text": "statement \"id\" invalid UUID with non A-F",
+                  "children": []
+                },
+                {
+                  "text": "statement object statementref \"id\" invalid UUID with too many digits",
+                  "children": []
+                },
+                {
+                  "text": "statement object statementref \"id\" invalid UUID with non A-F",
+                  "children": []
+                },
+                {
+                  "text": "statement context \"registration\" invalid UUID with too many digits",
+                  "children": []
+                },
+                {
+                  "text": "statement context \"registration\" invalid UUID with non A-F",
+                  "children": []
+                },
+                {
+                  "text": "statement context \"statement\" invalid UUID with too many digits",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement context \"statement\" invalid UUID with non A-F",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "All UUID types are in standard String form",
+              "children": [
+                {
+                  "text": "statement \"id\" invalid numeric",
+                  "children": []
+                },
+                {
+                  "text": "statement \"id\" invalid object",
+                  "children": []
+                },
+                {
+                  "text": "statement object statementref \"id\" invalid numeric",
+                  "children": []
+                },
+                {
+                  "text": "statement object statementref \"id\" invalid object",
+                  "children": []
+                },
+                {
+                  "text": "statement context \"registration\" invalid numeric",
+                  "children": []
+                },
+                {
+                  "text": "statement context \"registration\" invalid object",
+                  "children": []
+                },
+                {
+                  "text": "statement context \"statement\" invalid numeric",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement context \"statement\" invalid object",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS generates the \"id\" property of a Statement if none is provided",
+              "children": [
+                {
+                  "text": "should complete an empty id property",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Stored Property Requirements",
+          "children": [
+            {
+              "text": "An LRS MUST accept statements with the stored property",
+              "children": [
+                {
+                  "text": "using POST",
+                  "children": []
+                },
+                {
+                  "text": "using PUT",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A stored property must be a TimeStamp",
+              "children": [
+                {
+                  "text": "retrieve statements, test a stored property",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Timestamp Property Requirements",
+          "children": [
+            {
+              "text": "A \"timestamp\" property is a TimeStamp",
+              "children": [
+                {
+                  "text": "statement \"template\" invalid string",
+                  "children": []
+                },
+                {
+                  "text": "statement \"template\" invalid date",
+                  "children": []
+                },
+                {
+                  "text": "statement \"template\" future date",
+                  "children": []
+                },
+                {
+                  "text": "substatement \"template\" invalid string",
+                  "children": []
+                },
+                {
+                  "text": "substatement \"template\" invalid date",
+                  "children": []
+                },
+                {
+                  "text": "substatement \"template\" future date",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
           "text": "Version Property Requirements",
           "children": [
             {
@@ -12687,96 +11884,1006 @@ module.exports = {
           ]
         },
         {
-          "text": "Attachments Property Requirements",
+          "text": "Statement Lifecycle Requirements",
           "children": [
             {
-              "text": "A Statement's \"attachments\" property is an array of Attachments",
+              "text": "A Voiding Statement is defined as a Statement whose \"verb\" property's \"id\" property's IRI ending with \"voided\"",
               "children": [
                 {
-                  "text": "statement \"attachments\" is an array",
+                  "text": "statement verb voided IRI ends with \"voided\" (WARNING: this applies \"Upon receiving a Statement that voids another, the LRS SHOULD NOT* reject the request on the grounds of the Object of that voiding Statement not being present\")",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A Voiding Statement's \"objectType\" field has a value of \"StatementRef\"",
+              "children": [
+                {
+                  "text": "statement verb voided uses substatement with \"StatementRef\"",
                   "children": []
                 },
                 {
-                  "text": "statement \"attachments\" not an array",
+                  "text": "statement verb voided does not use object \"StatementRef\"",
                   "children": []
                 }
               ]
             },
             {
-              "text": "An Attachment is an Object",
+              "text": "A Voided Statement is defined as a Statement that is not a Voiding Statement and is the Target of a Voiding Statement within the LRS",
               "children": [
                 {
-                  "text": "statement \"attachment\" invalid numeric",
+                  "text": "Should return a voided statement when using GET \"voidedStatementId\"",
                   "children": []
                 },
                 {
-                  "text": "statement \"attachment\" invalid string",
+                  "text": "Should return 404 when using GET with \"statementId\"",
                   "children": []
                 }
               ]
             },
             {
-              "text": "A \"usageType\" property is an IRI",
+              "text": "A Voiding Statement cannot Target another Voiding Statement",
               "children": [
                 {
-                  "text": "statement \"usageType\" invalid string",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "A \"contentType\" property is an Internet Media/MIME type",
-              "children": [
-                {
-                  "text": "statement \"contentType\" invalid number",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "A \"length\" property is an Integer",
-              "children": [
-                {
-                  "text": "statement \"length\" invalid string",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "A \"sha2\" property is a String",
-              "children": [
-                {
-                  "text": "statement \"sha2\" invalid string",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "A \"fileUrl\" property is an IRL",
-              "children": [
-                {
-                  "text": "statement \"fileUrl\" invalid string",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "text": "A \"display\" property is a Language Map",
-              "children": [
-                {
-                  "text": "statement attachment \"display\" language map numeric",
+                  "text": "Should not void an already voided statement",
                   "children": []
                 },
                 {
-                  "text": "statement attachment \"display\" language map string",
+                  "text": "Should not void a voiding statement",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS SHALL NOT reject a voided statement because it cannot find the ID of the Object of that statement, nor does the LRS have to try to find it.",
+              "children": [
+                {
+                  "text": "Shall not reject a voided statement.",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "",
+          "children": [
+            {
+              "text": "IRIs",
+              "children": [
+                {
+                  "text": "When storing or comparing IRIs, LRSs shall handle them only by using one or more of the approaches described in 5.3.1 (Simple String Comparison) and 5.3.2 (Syntax-Based Normalization) of RFC 3987",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "Duration",
+              "children": [
+                {
+                  "text": "On receiving a Duration with more than 0.01 second precision, the LRS shall not reject the request.",
                   "children": []
                 },
                 {
-                  "text": "statement attachment \"description\" language map numeric",
+                  "text": "On receiving a Duration with more than 0.01 second precision, the LRS may truncate the duration to 0.01 second precision.",
                   "children": []
                 },
                 {
-                  "text": "statement attachment \"description\" language map string",
+                  "text": "When comparing Durations (or Statements containing them), any precision beyond 0.01 second precision shall not be included in the comparison.",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "Timestamps",
+              "children": [
+                {
+                  "text": "checks if the LRS converts timestamps to UTC",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Formatting Requirements",
+          "children": [
+            {
+              "text": "A Statement contains an \"actor\" property",
+              "children": [
+                {
+                  "text": "statement \"actor\" missing",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A Statement contains a \"verb\" property",
+              "children": [
+                {
+                  "text": "statement \"verb\" missing",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "A Statement contains an \"object\" property",
+              "children": [
+                {
+                  "text": "statement \"object\" missing",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request any Statement having a property whose value is set to \"null\", except in an \"extensions\" property",
+              "children": [
+                {
+                  "text": "statement actor should fail on \"null\"",
+                  "children": []
+                },
+                {
+                  "text": "statement verb should fail on \"null\"",
+                  "children": []
+                },
+                {
+                  "text": "statement context should fail on \"null\"",
+                  "children": []
+                },
+                {
+                  "text": "statement object should fail on \"null\"",
+                  "children": []
+                },
+                {
+                  "text": "statement activity extensions can be empty",
+                  "children": []
+                },
+                {
+                  "text": "statement result extensions can be empty",
+                  "children": []
+                },
+                {
+                  "text": "statement context extensions can be empty",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement activity extensions can be empty",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement result extensions can be empty",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement context extensions can be empty",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request a Statement which uses the wrong data type",
+              "children": [
+                {
+                  "text": "with strings where numbers are required",
+                  "children": []
+                },
+                {
+                  "text": "even if those strings contain numbers",
+                  "children": []
+                },
+                {
+                  "text": "with strings where booleans are required",
+                  "children": []
+                },
+                {
+                  "text": "even if those strings contain booleans",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request a Statement which uses any non-format-following key or value, including the empty string, where a string with a particular format, such as mailto IRI, UUID, or IRI, is required.",
+              "children": [
+                {
+                  "text": "statement \"id\" invalid numeric",
+                  "children": []
+                },
+                {
+                  "text": "statement \"id\" invalid object",
+                  "children": []
+                },
+                {
+                  "text": "statement \"id\" invalid UUID with too many digits",
+                  "children": []
+                },
+                {
+                  "text": "statement \"id\" invalid UUID with non A-F",
+                  "children": []
+                },
+                {
+                  "text": "statement actor \"agent\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement actor \"group\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement authority \"agent\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement authority \"group\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement context instructor \"agent\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement context instructor \"group\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement context team \"group\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement as \"agent\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement as \"group\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement\"s \"agent\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement\"s \"group\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement\"s context instructor \"agent\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement\"s context instructor \"group\" account \"name\" property is string",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement\"s context team \"group\" account \"name\" property is string",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request a Statement where the case of a key does not match the case specified in this specification.",
+              "children": [
+                {
+                  "text": "should fail when not using \"id\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"actor\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"verb\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"object\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"result\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"context\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"timestamp\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"stored\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"authority\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"version\"",
+                  "children": []
+                },
+                {
+                  "text": "should fail when not using \"attachments\"",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request a Statement where the case of a value restricted to enumerated values does not match an enumerated value given in this specification exactly.",
+              "children": [
+                {
+                  "text": "when interactionType is wrong case (\"true-faLse\")",
+                  "children": []
+                },
+                {
+                  "text": "when interactionType is wrong case (\"choiCe\")",
+                  "children": []
+                },
+                {
+                  "text": "when interactionType is wrong case (\"fill-iN\")",
+                  "children": []
+                },
+                {
+                  "text": "when interactionType is wrong case (\"long-fiLl-in\")",
+                  "children": []
+                },
+                {
+                  "text": "when interactionType is wrong case (\"matchIng\")",
+                  "children": []
+                },
+                {
+                  "text": "when interactionType is wrong case (\"perfOrmance\")",
+                  "children": []
+                },
+                {
+                  "text": "when interactionType is wrong case (\"seqUencing\")",
+                  "children": []
+                },
+                {
+                  "text": "when interactionType is wrong case (\"liKert\")",
+                  "children": []
+                },
+                {
+                  "text": "when interactionType is wrong case (\"nUmeric\")",
+                  "children": []
+                },
+                {
+                  "text": "when interactionType is wrong case (\"Other\")",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "The LRS rejects with error code 400 Bad Request a token with does not validate as matching the RFC 5646 standard in the sequence of token lengths for language map keys.",
+              "children": [
+                {
+                  "text": "statement verb \"display\" should pass given de two letter language code only",
+                  "children": []
+                },
+                {
+                  "text": "statement verb \"display\" should fail given invalid language code",
+                  "children": []
+                },
+                {
+                  "text": "statement object \"name\" should pass given de-DE language-region code",
+                  "children": []
+                },
+                {
+                  "text": "statement object \"name\" should fail given invalid language code",
+                  "children": []
+                },
+                {
+                  "text": "statement object \"description\" should pass given zh-Hant language-script code",
+                  "children": []
+                },
+                {
+                  "text": "statement object \"description\" should fail given invalid language code",
+                  "children": []
+                },
+                {
+                  "text": "interaction components' description should pass given sr-Latn-RS language-script-region code",
+                  "children": []
+                },
+                {
+                  "text": "context.language should pass given three letter cmn language code",
+                  "children": []
+                },
+                {
+                  "text": "context.language should fail given invalid language code",
+                  "children": []
+                },
+                {
+                  "text": "statement attachment \"display\" should pass given es two letter language code only",
+                  "children": []
+                },
+                {
+                  "text": "statement attachment \"display\" should fail given invalid language code",
+                  "children": []
+                },
+                {
+                  "text": "statement attachment \"description\" should pass given es-MX language-UN region code",
+                  "children": []
+                },
+                {
+                  "text": "statement attachment \"description\" should fail given es-MX invalid language code",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement verb \"display\" should pass given sr-Cyrl language-script code",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement verb \"display\" should fail given invalid language code",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement activity \"name\" should pass given zh-Hans-CN language-script-region code",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement activity \"name\" should fail given zh-z-aaa-z-bbb-c-ccc invalid (two extensions with same single-letter prefix) language code",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement activity \"description\" should pass given ase three letter language code",
+                  "children": []
+                },
+                {
+                  "text": "statement substatement activity \"description\" should fail given invalid language code",
+                  "children": []
+                },
+                {
+                  "text": "substatement interaction components' description should pass given ja two letter language code only",
+                  "children": []
+                },
+                {
+                  "text": "substatement context.language should pass given two letter fr-CA language-region code",
+                  "children": []
+                },
+                {
+                  "text": "substatement context.language should fail given invalid language code",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "An LRS stores 32-bit floating point numbers with at least the precision of IEEE 754",
+              "children": [
+                {
+                  "text": "should pass and keep precision",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "The LRS rejects with error code 400 Bad Request parameter values which do not validate to the same standards required for values of the same types in Statements",
+              "children": [
+                {
+                  "text": "should reject when statementId value is invalid",
+                  "children": []
+                },
+                {
+                  "text": "should reject when statementId value is invalid",
+                  "children": []
+                },
+                {
+                  "text": "should reject when statementId value is invalid",
+                  "children": []
+                },
+                {
+                  "text": "should reject when statementId value is invalid",
+                  "children": []
+                },
+                {
+                  "text": "should reject when statementId value is invalid",
+                  "children": []
+                },
+                {
+                  "text": "should reject when statementId value is invalid",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "All Objects are well-created JSON Objects",
+              "children": [
+                {
+                  "text": "An LRS rejects a not well-created JSON Object",
+                  "children": []
+                },
+                {
+                  "text": "Statements Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Agents Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement actor template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement authority template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement context instructor template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement as agent template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement\"s agent template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement\"s context instructor template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Groups Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement actor template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement authority template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement context instructor template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement context team template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement as group template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement\"s group template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement\"s context instructor template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement\"s context team template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "A Group is defined by \"objectType\" of an \"actor\" property or \"object\" property with value \"Group\"",
+                  "children": [
+                    {
+                      "text": "statement actor \"objectType\" accepts \"Group\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement authority \"objectType\" accepts \"Group\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement context instructor \"objectType\" accepts \"Group\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement context team \"objectType\" accepts \"Group\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement as group \"objectType\" accepts \"Group\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement\"s group \"objectType\" accepts \"Group\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement\"s context instructor \"objectType\" accepts \"Group\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement\"s context team \"objectType\" accepts \"Group\"",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "An Anonymous Group is defined by \"objectType\" of an \"actor\" or \"object\" with value \"Group\" and by none of \"mbox\", \"mbox_sha1sum\", \"openid\", or \"account\" being used",
+                  "children": [
+                    {
+                      "text": "statement actor does not require functional identifier",
+                      "children": []
+                    },
+                    {
+                      "text": "statement authority does not require functional identifier",
+                      "children": []
+                    },
+                    {
+                      "text": "statement context instructor does not require functional identifier",
+                      "children": []
+                    },
+                    {
+                      "text": "statement context team does not require functional identifier",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement as group does not require functional identifier",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement\"s group does not require functional identifier",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement\"s context instructor does not require functional identifier",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement\"s context team does not require functional identifier",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Verbs Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement verb template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass substatement verb template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Objects Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement activity template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement activity template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement agent template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement agent template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement group template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement group template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement StatementRef template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement StatementRef template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement SubStatement template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Activities Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement activity default template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement activity default template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity choice template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity fill-in template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity numeric template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity likert template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity long-fill-in template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity matching template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity other template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity performance template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity sequencing template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement activity true-false template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement activity choice template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement activity likert template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement activity matching template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement activity performance template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement activity sequencing template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "An Activity Definition uses the following properties: name, description, type, moreInfo, interactionType, or extensions",
+                  "children": [
+                    {
+                      "text": "statement activity \"definition\" missing all properties",
+                      "children": []
+                    },
+                    {
+                      "text": "statement activity \"definition\" contains \"name\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement activity \"definition\" contains \"description\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement activity \"definition\" contains \"type\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement activity \"definition\" contains \"moreInfo\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement activity \"definition\" contains \"extensions\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement activity \"definition\" contains \"interactionType\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement activity \"definition\" missing all properties",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement activity \"definition\" contains \"name\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement activity \"definition\" contains \"description\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement activity \"definition\" contains \"type\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement activity \"definition\" contains \"moreInfo\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement activity \"definition\" contains \"extensions\"",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement activity \"definition\" contains \"interactionType\"",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "SubStatements Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement SubStatement template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "StatementRefs Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement StatementRef template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass substatement StatementRef template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Results Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement result template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass substatement result template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Contexts Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement context template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass substatement context template",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "A ContextActivity is defined as a single Activity of the \"value\" of the \"contextActivities\" property",
+                  "children": [
+                    {
+                      "text": "statement context \"contextActivities parent\" value is activity",
+                      "children": []
+                    },
+                    {
+                      "text": "statement context \"contextActivities grouping\" value is activity",
+                      "children": []
+                    },
+                    {
+                      "text": "statement context \"contextActivities category\" value is activity",
+                      "children": []
+                    },
+                    {
+                      "text": "statement context \"contextActivities other\" value is activity",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement context \"contextActivities parent\" value is activity",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement context \"contextActivities grouping\" value is activity",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement context \"contextActivities category\" value is activity",
+                      "children": []
+                    },
+                    {
+                      "text": "statement substatement context \"contextActivities other\" value is activity",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "text": "Languages Verify Templates",
+                  "children": [
+                    {
+                      "text": "should pass statement verb template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement object template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement attachment template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement verb template",
+                      "children": []
+                    },
+                    {
+                      "text": "should pass statement substatement object template",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "text": "An LRS rejects with error code 400 Bad Request a Statement containing IRL or IRI values without a scheme.",
+              "children": [
+                {
+                  "text": "should fail with bad verb id scheme",
+                  "children": []
+                },
+                {
+                  "text": "should fail with bad verb openid scheme",
+                  "children": []
+                },
+                {
+                  "text": "should fail with bad account homePage",
+                  "children": []
+                },
+                {
+                  "text": "should fail with bad object id",
+                  "children": []
+                },
+                {
+                  "text": "should fail with bad object type",
+                  "children": []
+                },
+                {
+                  "text": "should fail with bad object moreInfo",
+                  "children": []
+                },
+                {
+                  "text": "should fail with attachment bad usageType",
+                  "children": []
+                },
+                {
+                  "text": "should fail with bad attachment fileUrl",
+                  "children": []
+                },
+                {
+                  "text": "should fail with bad object definition extension",
+                  "children": []
+                },
+                {
+                  "text": "should fail with bad context extension",
+                  "children": []
+                },
+                {
+                  "text": "should fail with bad result extension",
                   "children": []
                 }
               ]
@@ -13480,7 +13587,7 @@ module.exports = {
                   "children": []
                 },
                 {
-                  "text": "An LRS REJECTS an alternate request syntax PUT issued as a POST",
+                  "text": "An LRS rejects an alternate request syntax PUT issued as a POST",
                   "children": []
                 },
                 {
@@ -13495,15 +13602,15 @@ module.exports = {
                   "text": "An LRS will reject an alternate request syntax sending content which does not have a form parameter with the name of \"content\"",
                   "children": [
                     {
-                      "text": "will pass PUT with content body which is url encoded",
+                      "text": "will reject PUT with content body which is url encoded",
                       "children": []
                     },
                     {
-                      "text": "will fail PUT with no content body",
+                      "text": "will reject PUT with no content body",
                       "children": []
                     },
                     {
-                      "text": "will fail PUT with content body which is not url encoded",
+                      "text": "will reject PUT with content body which is not url encoded",
                       "children": []
                     }
                   ]
@@ -13535,113 +13642,6 @@ module.exports = {
             {
               "text": "A Document Merge only performs overwrites at one level deep, although the entire object is replaced.",
               "children": []
-            }
-          ]
-        },
-        {
-          "text": "Agents Resource Requirements",
-          "children": [
-            {
-              "text": "An LRS has an Agents Resource with endpoint \"base IRI\" + /agents\"",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agents Resource accepts GET requests",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agent Resource upon processing a successful GET request returns a Person Object if the \"agent\" parameter can be found in the LRS and code 200 OK",
-              "children": []
-            },
-            {
-              "text": "An LRS's Agents Resource rejects a GET request without \"agent\" as a parameter with error code 400 Bad Request",
-              "children": []
-            },
-            {
-              "text": "A Person Object's \"objectType\" property is a String and is \"Person\"",
-              "children": []
-            },
-            {
-              "text": "A Person Object's \"name\" property is an Array of Strings",
-              "children": []
-            },
-            {
-              "text": "A Person Object's \"mbox\" property is an Array of IRIs",
-              "children": []
-            },
-            {
-              "text": "A Person Object's \"mbox\" entries have the form \"mailto:emailaddress\"",
-              "children": []
-            },
-            {
-              "text": "A Person Object's \"mbox_sha1sum\" property is an Array of Strings",
-              "children": []
-            },
-            {
-              "text": "A Person Object's \"openid\" property is an Array of Strings",
-              "children": []
-            },
-            {
-              "text": "A Person Object's \"account\" property is an Array of Account Objects",
-              "children": []
-            },
-            {
-              "text": "An LRSs Agents Resource rejects a GET request with \"agent\" as a parameter if it is not a valid, in structure, Agent with error code 400 Bad Request",
-              "children": []
-            }
-          ]
-        },
-        {
-          "text": "About Resource Requirements",
-          "children": [
-            {
-              "text": "An LRS has an About Resource with endpoint \"base IRI\"+\"/about\"",
-              "children": []
-            },
-            {
-              "text": "An LRS's About Resource upon processing a successful GET request returns a version property and code 200 OK",
-              "children": []
-            },
-            {
-              "text": "An LRS's About Resource's version property is an array of strings",
-              "children": []
-            },
-            {
-              "text": "An LRS's About Resource's version property contains at least one string of \"2.0.0\"",
-              "children": []
-            },
-            {
-              "text": "An LRS's About Resource's version property can only have values of \"0.9\", \"0.95\", \"1.0.0\", or \"\"1.0.\" + X\" with",
-              "children": []
-            },
-            {
-              "text": "An LRS rejects with error code 400 Bad Request, a Request which does not use a \"X-Experience-API-Version\" header name to any Resource except the About Resource",
-              "children": [
-                {
-                  "text": "using Statement Endpoint",
-                  "children": []
-                },
-                {
-                  "text": "using Activities Endpoint",
-                  "children": []
-                },
-                {
-                  "text": "using Activities Profile Endpoint",
-                  "children": []
-                },
-                {
-                  "text": "using Activities State Endpoint",
-                  "children": []
-                },
-                {
-                  "text": "using Agents Endpoint",
-                  "children": []
-                },
-                {
-                  "text": "using Agents Profile Endpoint",
-                  "children": []
-                }
-              ]
             }
           ]
         },
