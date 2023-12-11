@@ -92,17 +92,17 @@ describe('Alternate Request Syntax Requirements (Communication 1.3)', function (
 
         describe('An LRS will reject an alternate request syntax sending content which does not have a form parameter with the name of "content" (Communication 1.3.s3.b4)', function () {
             it('will reject PUT with content body which is url encoded', async function () {
-                var headers = oldHelpers.addAllHeaders({});
-                var auth = headers['Authorization'];
-                var alternateParams = {
+                let defaultHeaders = oldHelpers.addAllHeaders({});
+                let auth = defaultHeaders['Authorization'];
+                let alternateParams = {
                     method: 'PUT'
                 };
 
-                var templates = [
+                let templates = [
                     {statement: '{{statements.default}}'}
                 ];
-                var statement = oldHelpers.createFromTemplate(templates).statement;
-                var payload = {
+                let statement = oldHelpers.createFromTemplate(templates).statement;
+                let payload = {
                     statementId: oldHelpers.generateUUID(),
                     content: JSON.stringify(statement),
                     'X-Experience-API-Version': '2.0.0',
