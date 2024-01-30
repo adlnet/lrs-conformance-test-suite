@@ -14,7 +14,7 @@
     var INVALID_DATE_00 = "2008-09-15T15:53:00.601-00";
     var INVALID_DATE_0000 = "2008-09-15T15:53:00.601-0000";
     var INVALID_DATE_00_00 = "2008-09-15T15:53:00.601-00:00";
-    var VALID_RFC = "2008-09-15 15:53:00.601+00:00"
+    var VALID_RFC = "2008-09-15T15:53:00.601+00:00"
 
     // configures tests
     module.exports.config = function () {
