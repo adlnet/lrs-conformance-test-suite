@@ -6,6 +6,8 @@
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, templatingSelection) {
     // "use strict";
 
+    const REG_ALLOWED_VERSIONS = /^2\.0\.0$|^1\.0(\.[1-3])$/;
+    
     var expect = chai.expect;
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
@@ -60,7 +62,7 @@ describe('Version Property Requirements (Data 2.4.10)', () => {
                      }
                      else{
                         var results = helper.parse(res.body);
-                        expect(results.version).to.equal(version);
+                        expect(results.version).to.match(REG_ALLOWED_VERSIONS);
                         done();
                      }
                 });

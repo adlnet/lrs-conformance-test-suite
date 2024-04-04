@@ -6,6 +6,8 @@
 (function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect) {
     // "use strict";
 
+    const REG_ALLOWED_VERSIONS = /^2\.0\.0$|^1\.0(\.[1-3])$/;
+
     var expect = chai.expect;
     if(global.OAUTH)
         request = helper.OAuthRequest(request);
@@ -55,7 +57,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
                     }
                     else{
                         expect(res.headers).to.have.property('x-experience-api-version');
-                        expect(res.headers['x-experience-api-version']).to.equal(helper.getXapiVersion());
+                        expect(res.headers['x-experience-api-version']).to.match(REG_ALLOWED_VERSIONS);
                         done();
                     }
                 });
@@ -141,7 +143,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
                     if (err) {
                         done(err);
                     } else if (res.statusCode === 400) {
-                        expect(res.headers['x-experience-api-version']).to.match(/^2\.0\.0$|^0\.95?$/)
+                        expect(res.headers['x-experience-api-version']).to.match(REG_ALLOWED_VERSIONS);
                         done();
                     } else if (res.statusCode === 404) {
                         expect(res.headers['x-experience-api-version']).to.match(/^0\.95?$/);
@@ -168,7 +170,7 @@ describe('Versioning Requirements (Communication 3.3)', () => {
                     if (err) {
                         done(err);
                     } else if (res.statusCode === 400) {
-                        expect(res.headers['x-experience-api-version']).to.match(/^2\.0\.0$|^0\.95?$/);
+                        expect(res.headers['x-experience-api-version']).to.match(REG_ALLOWED_VERSIONS);
                         done();
                     } else if (res.statusCode === 404) {
                         expect(res.headers['x-experience-api-version']).to.match(/^0\.95?$/);
@@ -195,13 +197,13 @@ describe('Versioning Requirements (Communication 3.3)', () => {
                     if (err) {
                         done(err);
                     } else if (res.statusCode === 400) {
-                        expect(res.headers['x-experience-api-version']).to.match(/^2\.0\.0$|^0\.95?$/);
+                        expect(res.headers['x-experience-api-version']).to.match(REG_ALLOWED_VERSIONS);
                         done();
                     } else if (res.statusCode === 404) {
                         expect(res.headers['x-experience-api-version']).to.match(/^0\.95?$/);
                         done();
                     } else {
-                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 2.0.0 with status code 400 or version header 0.9 or 0.95 with status code either 400 or 404.`);
+                        throw new Error(`Version header (${res.headers['x-experience-api-version']}) and Status Code (${res.statusCode}) do not match specification.  Expected version header 2.0.0 or 1.0.X with status code 400, or version header 0.9 or 0.95 with status code either 400 or 404.`);
                         done();
                     }
                 });

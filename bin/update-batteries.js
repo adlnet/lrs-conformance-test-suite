@@ -8,6 +8,7 @@ function createMockApp() {
     let mockApp = expresss();
 
     mockApp.all("/xapi/*", (req, res, next) => {
+        
         res.set('Content-Type', 'text/plain');
         res.set('x-experience-api-consistent-through', (new Date(Date.now() +100)).toISOString());
         res.set('x-experience-api-version', "1.0.3");
