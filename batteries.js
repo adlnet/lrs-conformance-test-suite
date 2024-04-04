@@ -6676,7 +6676,7 @@ module.exports = {
     }
   },
   "2.0.0": {
-    "conformanceTestCount": 1442,
+    "conformanceTestCount": 1435,
     "tests": {
       "text": "",
       "children": [
@@ -13576,46 +13576,8 @@ module.exports = {
           "text": "Alternate Request Syntax Requirements",
           "children": [
             {
-              "text": "The LRS does NOT allow Alternate Request Syntax in xAPI 2.0",
-              "children": [
-                {
-                  "text": "An LRS rejects POST requests containing method query parameters",
-                  "children": []
-                },
-                {
-                  "text": "An LRS rejects an alternate request syntax not issued as a POST",
-                  "children": []
-                },
-                {
-                  "text": "An LRS rejects an alternate request syntax PUT issued as a POST",
-                  "children": []
-                },
-                {
-                  "text": "During an alternate request syntax the LRS treats the listed form parameters, 'Authorization', 'X-Experience-API-Version', 'Content-Type', 'Content-Length', 'If-Match' and 'If-None-Match', as header parameters",
-                  "children": []
-                },
-                {
-                  "text": "An LRS will reject an alternate request syntax which contains any extra information with error code 400 Bad Request",
-                  "children": []
-                },
-                {
-                  "text": "An LRS will reject an alternate request syntax sending content which does not have a form parameter with the name of \"content\"",
-                  "children": [
-                    {
-                      "text": "will reject PUT with content body which is url encoded",
-                      "children": []
-                    },
-                    {
-                      "text": "will reject PUT with no content body",
-                      "children": []
-                    },
-                    {
-                      "text": "will reject PUT with content body which is not url encoded",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
+              "text": "The LRS Spec does not mandate any properties regarding Alternate Request Syntax in xAPI 2.0",
+              "children": []
             }
           ]
         },

@@ -6,12 +6,9 @@ const specs = require("../specConfig");
 
 function createMockApp() {
     let mockApp = expresss();
-    let requestCount = 0;
 
     mockApp.all("/xapi/*", (req, res, next) => {
         
-        console.log(requestCount++, req.method, req.path, req.headers, req.query, req.originalUrl);
-
         res.set('Content-Type', 'text/plain');
         res.set('x-experience-api-consistent-through', (new Date(Date.now() +100)).toISOString());
         res.set('x-experience-api-version', "1.0.3");
@@ -88,10 +85,6 @@ async function createBattery(version) {
                 console.log(`[${version}] found ${record.summary.total} tests.`);
     
                 return resolve(info);
-            }
-
-            if(msg.action === 'log'){
-                console.log(msg.payload);
             }
         });
     
