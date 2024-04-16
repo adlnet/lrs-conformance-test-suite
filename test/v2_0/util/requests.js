@@ -89,6 +89,57 @@ const requests = {
     },
 
     /**
+     * Create a basic request context that will be passed along the request chain
+     * during a given test's series of requests.
+     */
+    createContext: () => {
+        let context = {
+            responses: []
+        };
+
+        context.toString = (err) => {
+
+            let stringOutput = "";
+            let requestIndex = 0;
+
+            if(err)
+                stringOutput += err + "\n\n";
+                
+            for (res of context.responses) {
+
+                requestIndex++;
+
+                stringOutput += `Request ${requestIndex}:\n`;
+                stringOutput += ("_______________________________________")+ "\n";
+
+                stringOutput += (res.request._header);
+                if(res.request._hasBody){
+                    
+                    let body = JSON.parse(res.config.data).data;
+                    stringOutput += (body.toString("utf8"))+ "\n";
+                    stringOutput += "\n";
+                }
+                
+                stringOutput += `Response ${requestIndex}:\n`;
+
+                stringOutput += ("_______________________________________")+ "\n";
+                stringOutput += ("HTTP/"+res.httpVersion +" "+ res.statusCode +" "+ res.statusMessage)+ "\n";
+                for(var i in res.headers)
+                {
+                    stringOutput += (i + ": " +res.headers[i])+ "\n";
+                }
+                stringOutput += "\n";
+                stringOutput += (res.data) + "\n";
+                stringOutput += ("=======================================")+ "\n";
+            }
+
+            return stringOutput;
+        };
+
+        return context;
+    },
+
+    /**
      * POST an xAPI statement to the LRS.
      * @param {Object} statement The xAPI statement to send. 
      * @param {Object} headerOverrides Headers to override for this request. 
@@ -342,14 +393,18 @@ const requests = {
      * @param {Object} headerOverrides Optional headers to override for this request.
      * @returns {Promise<axiosBase.AxiosResponse>} The LRS's simplified response.
      */
-    getDocuments: async(resourcePath, params, headerOverrides) => {
+    getDocuments: async(context, resourcePath, params, headerOverrides) => {
         let endpoint = joinPaths(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
 
-        return axios.get(endpoint + query, {
+        let res = await axios.get(endpoint + query, {
             headers: headerOverrides
         })
         .catch(err => err.response);
+
+        context.responses.push(res);
+
+        return res;
     },
     
     /**
@@ -364,10 +419,14 @@ const requests = {
         let endpoint = joinPaths(LRS_ENDPOINT, resourcePath);
         let query = "?" + oldHelpers.getUrlEncoding(params);
         
-        return axios.put(endpoint + query, document, {
+        let res = await axios.put(endpoint + query, document, {
             headers: headerOverrides
         })
         .catch(err => err.response);
+        
+        context.responses.push(res);
+
+        return res;
     },
     
     /**

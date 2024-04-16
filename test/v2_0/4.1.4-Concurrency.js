@@ -24,7 +24,9 @@ function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, reso
 
         it('An LRS responding to a GET request SHALL add an ETag HTTP header to the response.', async() => {
 
-            let documentResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let context = xapiRequests.createContext();
+
+            let documentResponse = await xapiRequests.getDocuments(context, resourcePath, resourceParams);
             let etag = documentResponse.headers.etag;
 
             expect(etag).to.be.a("string");
@@ -32,7 +34,9 @@ function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, reso
         
         it('When responding to a GET Request the Etag header must be enclosed in quotes', async() => {
 
-            let documentResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+            let context = xapiRequests.createContext();
+            
+            let documentResponse = await xapiRequests.getDocuments(context, resourcePath, resourceParams);
             let etag = documentResponse.headers.etag;
 
             expect(etag).to.be.a("string");
