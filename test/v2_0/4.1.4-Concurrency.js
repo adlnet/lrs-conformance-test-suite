@@ -33,6 +33,8 @@ function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, reso
         it('When responding to a GET Request the Etag header must be enclosed in quotes', async() => {
 
             let documentResponse = await xapiRequests.getDocuments(resourcePath, resourceParams);
+
+            /** @type {string} */
             let etag = documentResponse.headers.etag;
 
             expect(etag).to.be.a("string");
@@ -40,11 +42,27 @@ function runConcurrencyTestsForDocumentResource(resourceName, resourcePath, reso
             if (etag[0] !== '"') {
                 expect(etag[0]).to.equal('W');
                 expect(etag[1]).to.equal('/');
-                etag = str.substring(2)
+                etag = etag.substring(2);
             }
+
+            // We previously checked for the 40 character SHA1 hash as mandated by the 1.0.3 tests,
+            // but no algorithm has been specified for xAPI 2.0 with the IEEE spec.  
+            //
+            // As such, the 40 character check is being removed, and the only current check is that
+            // an ETag of any length has been provided.  We will only check that any sort of value has
+            // been provided as the hash.
+            //
+            // expect(etag[0]).to.equal('"');
+            // expect(etag[41]).to.equal('"');
+
+            let hasInnerContents = etag.length >= 3;
+            expect(hasInnerContents).to.equal(true);
+
+            let firstChar = etag[0];
+            let lastChar = etag[etag.length - 1];
             
-            expect(etag[0]).to.equal('"');
-            expect(etag[41]).to.equal('"');
+            expect(firstChar).to.equal('"');
+            expect(lastChar).to.equal('"');
         });
 
         describe('When responding to a PUT, POST, or DELETE request, must handle the If-Match header as described in RFC 2616, HTTP/1.1 if it contains an ETag', async () => {
