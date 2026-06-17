@@ -3,7 +3,7 @@
  * found at https://github.com/adlnet/xapi-lrs-conformance-requirements
  */
 
-(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, templatingSelection) {
+(function (module, fs, extend, moment, request, requestPromise, chai, liburl, Joi, helper, multipartParser, redirect, templatingSelection, timestampPrecision) {
     // "use strict";
 
     var expect = chai.expect;
@@ -421,6 +421,7 @@ describe('Special Data Types and Rules (Data 4.0)', function () {
  * A Timestamp MUST preserve precision to at least milliseconds (3 decimal points beyond seconds). The LRS accepts a statement with a valid timestamp which has more than 3 decimal points beyond seconds and when recalled it returns at least 3 decimals points beyond seconds.
  */
     describe('A Timestamp MUST preserve precision to at least milliseconds, 3 decimal points beyond seconds. (Data 4.5.s1.b3, XAPI-00122)', function () {
+        var hasMillisecondPrecision = timestampPrecision.hasMillisecondPrecision;
 
         it('retrieve statements, test a timestamp property', function (done) {
             request(helper.getEndpointAndAuth())
@@ -440,14 +441,15 @@ describe('Special Data Types and Rules (Data 4.0)', function () {
                         expect(chkStored.isValid()).to.be.true;
                         expect(isNaN(chkStored._pf.parsedDateParts[6])).to.be.false;
                         //precision to milliseconds
-                        if ((chkStored._pf.parsedDateParts[6] % 10) > 0) {
-                            expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                        var hasPrecision = hasMillisecondPrecision(stmts[num].timestamp);
+                        if (hasPrecision) {
+                            expect(hasPrecision).to.be.true;
                             done();
                         } else {
                             if (++num < stmts.length) {
                                 milliChecker(num);
                             } else {
-                                expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                                expect(hasPrecision).to.be.true;
                                 done();
                             }
                         }
@@ -474,14 +476,15 @@ describe('Special Data Types and Rules (Data 4.0)', function () {
                         expect(chkStored.isValid()).to.be.true;
                         expect(isNaN(chkStored._pf.parsedDateParts[6])).to.be.false;
                         //precision to milliseconds
-                        if ((chkStored._pf.parsedDateParts[6] % 10) > 0) {
-                            expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                        var hasPrecision = hasMillisecondPrecision(stmts[num].stored);
+                        if (hasPrecision) {
+                            expect(hasPrecision).to.be.true;
                             done();
                         } else {
                             if (++num < stmts.length) {
                                 milliChecker(num);
                             } else {
-                                expect(chkStored._pf.parsedDateParts[6] % 10).to.be.above(0);
+                                expect(hasPrecision).to.be.true;
                                 done();
                             }
                         }
@@ -499,4 +502,4 @@ describe('Special Data Types and Rules (Data 4.0)', function () {
 
 });
 
-}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('./../templatingSelection.js')));
+}(module, require('fs'), require('extend'), require('moment'), require('super-request'), require('supertest-as-promised'), require('chai'), require('url'), require('joi'), require('./../helper'), require('./../multipartParser'), require('./../redirect.js'), require('./../templatingSelection.js'), require('./util/timestampPrecision.js')));
